@@ -6,7 +6,8 @@
 
 package monopoly;
 
-public final class Constantes {
+public final class Constantes
+{
 
     // Porcentaje de incremento del valor de los solares sin vender cuando los jugadores completen
     public final static double INCREMENTO_VUELTAS = 0.05;
