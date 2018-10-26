@@ -1,4 +1,3 @@
-
 import monopoly.Edificio;
 import monopoly.TipoEdificio;
 import monopoly.TipoGrupo;
