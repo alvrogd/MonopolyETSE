@@ -82,8 +82,8 @@ public class Juego {
 
         jugadores.put(jugador.getNombre(), jugador);
         nombresJugadores.add(jugador.getNombre());
-        tablero.getAvataresContenidos().put(String.valueOf(jugador.getAvatar().getIdentificador()), jugador.getAvatar());
-
+        //tablero.getAvataresContenidos().put(String.valueOf(jugador.getAvatar().getIdentificador()), jugador.getAvatar());
+        //Para meter los avatares en el tablero, para cuando esté listo Jugador
     }
 
 
