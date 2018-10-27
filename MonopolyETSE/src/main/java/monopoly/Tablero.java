@@ -45,6 +45,7 @@ public class Tablero {
         dado = new Dado();
     }
 
+    /* Getters */
     public ArrayList<ArrayList<Casilla>> getCasillas() {
         return casillas;
     }
@@ -56,5 +57,4 @@ public class Tablero {
     public HashMap<String, Casilla> getCasillasTablero() {
         return casillasTablero;
     }
-
 }

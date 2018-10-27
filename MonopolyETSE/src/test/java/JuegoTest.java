@@ -43,11 +43,11 @@ public class JuegoTest {
         fila.add(transporte.getCasillas().get(0));
 
         casillas.add(fila);
-        Juego juego = new Juego(casillas, Banca);
+        Juego juego = new Juego(casillas);
 
-        juego.putJugador(new Jugador("Fran", TipoAvatar.coche));
-        juego.putJugador(new Jugador("Alvaro", TipoAvatar.coche));
-        juego.putJugador(new Jugador("Perico", TipoAvatar.esfinge));
+        juego.addJugador(new Jugador("Fran", TipoAvatar.coche));
+        juego.addJugador(new Jugador("Alvaro", TipoAvatar.coche));
+        juego.addJugador(new Jugador("Perico", TipoAvatar.esfinge));
         juego.iniciarJuego();
 
     }

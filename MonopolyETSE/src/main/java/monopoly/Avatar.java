@@ -42,4 +42,8 @@ public class Avatar {
         movimientoEstandar = true;
 
     }
+
+    public char getIdentificador() {
+        return identificador;
+    }
 }

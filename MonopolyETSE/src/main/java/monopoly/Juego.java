@@ -16,14 +16,10 @@ public class Juego {
     private boolean iniciado;
 
     /* Constructores */
-    public Juego(ArrayList<ArrayList<Casilla>> casillas, Jugador Banca) {
+    public Juego(ArrayList<ArrayList<Casilla>> casillas) {
 
         if (casillas == null) {
             System.out.println("Casillas hace referencia a null");
-            System.exit(1);
-        }
-        if (Banca == null) {
-            System.out.println("Banca hace referencia a null");
             System.exit(1);
         }
 
@@ -42,7 +38,7 @@ public class Juego {
             }
         }
 
-        this.Banca = Banca;
+        Banca = new Jugador("Banca", TipoAvatar.banca);
         turno = Banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
@@ -76,8 +72,8 @@ public class Juego {
         return turno;
     }
 
-    /*Setter*/
-    public void putJugador(Jugador jugador) {
+    /* Setters */
+    public void addJugador(Jugador jugador) {
 
         if (jugador == null) {
             System.out.println("Jugador referencia a null");
@@ -86,8 +82,11 @@ public class Juego {
 
         jugadores.put(jugador.getNombre(), jugador);
         nombresJugadores.add(jugador.getNombre());
+        tablero.getAvataresContenidos().put(String.valueOf(jugador.getAvatar().getIdentificador()), jugador.getAvatar());
 
     }
+
+
 
 
     /* Métodos */
