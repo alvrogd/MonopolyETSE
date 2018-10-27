@@ -44,4 +44,17 @@ public class Tablero {
         avataresContenidos = new HashMap<>();
         dado = new Dado();
     }
+
+    public ArrayList<ArrayList<Casilla>> getCasillas() {
+        return casillas;
+    }
+
+    public HashMap<String, Avatar> getAvataresContenidos() {
+        return avataresContenidos;
+    }
+
+    public HashMap<String, Casilla> getCasillasTablero() {
+        return casillasTablero;
+    }
+
 }

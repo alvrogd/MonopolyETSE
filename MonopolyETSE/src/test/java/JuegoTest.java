@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class JuegoTest {
 
     @Test
-    public void constructorJuego() {
+    public void crearJuego() {
         ArrayList<ArrayList<Casilla>> casillas = new ArrayList<>();
         ArrayList<Casilla> fila = new ArrayList<>();
         Jugador Banca = new Jugador("Banca", TipoAvatar.banca);
@@ -47,13 +47,8 @@ public class JuegoTest {
 
         juego.putJugador(new Jugador("Fran", TipoAvatar.coche));
         juego.putJugador(new Jugador("Alvaro", TipoAvatar.coche));
-
+        juego.putJugador(new Jugador("Perico", TipoAvatar.esfinge));
         juego.iniciarJuego();
-        System.out.println("Turno: " + juego.getTurno());
-        juego.finalizarTurno();
-        System.out.println("Turno: " + juego.getTurno());
-
-
 
     }
 
