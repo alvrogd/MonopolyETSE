@@ -13,12 +13,17 @@ public class Juego {
     private Jugador Banca;
     private Tablero tablero;
     private Iterator iterador;
+    private boolean iniciado;
 
     /* Constructores */
-    public Juego(ArrayList<ArrayList<Casilla>> casillas) {
+    public Juego(ArrayList<ArrayList<Casilla>> casillas, Jugador Banca) {
 
         if (casillas == null) {
             System.out.println("Casillas hace referencia a null");
+            System.exit(1);
+        }
+        if (Banca == null) {
+            System.out.println("Banca hace referencia a null");
             System.exit(1);
         }
 
@@ -37,11 +42,12 @@ public class Juego {
             }
         }
 
-        Banca = new Jugador("Banca", TipoAvatar.banca);
+        this.Banca = Banca;
         turno = Banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
         tablero = new Tablero(casillas);
+        iniciado = false;
 
     }
 
@@ -62,6 +68,10 @@ public class Juego {
         return (jugadores.get(jugador.getNombre()));
     }
 
+    public Jugador getBanca() {
+        return Banca;
+    }
+
     /*Setter*/
     public void putJugador(Jugador jugador) {
 
@@ -72,21 +82,46 @@ public class Juego {
 
         jugadores.put(jugador.getNombre(), jugador);
         nombresJugadores.add(jugador.getNombre());
-        iterador = nombresJugadores.iterator();
+
     }
 
 
     /*Métodos*/
-    public void finalizarTurno(){
 
-        if(iterador == null){
-            System.out.println("No se ha añadido ningún jugador.");
-            System.exit(1);
-        }
-        if(iterador.hasNext())
-            turno = jugadores.get(iterador.next());
-        else
+    public void iniciarJuego() {
+        if (!iniciado) {
+            iniciado = true;
             iterador = nombresJugadores.iterator();
+            turno = jugadores.get(iterador.next());
+        } else {
+            System.out.println("El juego ya está iniciado");
+            return;
+        }
+    }
+
+    public void finalizarTurno() {
+
+        if (iniciado) {
+
+            System.out.println("Turno anterior " + turno.getNombre());
+
+            if (iterador == null) {
+                System.out.println("No se ha añadido ningún jugador.");
+                System.exit(1);
+            }
+
+            if (iterador.hasNext())
+                turno = jugadores.get(iterador.next());
+            else {
+                iterador = nombresJugadores.iterator();
+                turno = jugadores.get(iterador.next());
+            }
+
+            System.out.printf("Turno actual " + turno.getNombre());
+        } else {
+            System.out.println("Juego no iniciado.");
+            return;
+        }
 
     }
 }

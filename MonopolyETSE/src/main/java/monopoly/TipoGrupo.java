@@ -9,9 +9,23 @@ public enum TipoGrupo {
     rojo(Constantes.PRECIO_INICIAL_GRUPO_4),
     marron(Constantes.PRECIO_INICIAL_GRUPO_5),
     verde(Constantes.PRECIO_INICIAL_GRUPO_6),
-    azul(Constantes.PRECIO_INICIAL_GRUPO_7);
+    azul(Constantes.PRECIO_INICIAL_GRUPO_7),
+    suerte(),
+    comunidad(),
+    impuesto1(Constantes.IMPUESTO_1),
+    impuesto2(Constantes.IMPUESTO_2),
+    transporte(),
+    servicios(),
+    carcel(),
+    parking(),
+    salida(),
+    irCarcel();
 
     private final double precioInicial;
+
+    private TipoGrupo(){
+        this.precioInicial = 1E99;
+    }
 
     private TipoGrupo(double precioInicial) {
 
