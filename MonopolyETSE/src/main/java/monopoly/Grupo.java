@@ -10,13 +10,21 @@ public class Grupo {
     private final double precio;
     private final ArrayList<Casilla> casillas;
 
-    public Grupo(TipoGrupo tipo, String... casillas) {
+    public Grupo(TipoGrupo tipo, Juego juego,String... casillas) {
+
+        Jugador banca;
 
         //Comprobación del tipo de grupo
         if (tipo == null) {
             System.out.println("Tipo referencia a null");
             System.exit(1);
         }
+        if(juego == null){
+            System.out.println("Juego referencia a null");
+            System.exit(1);
+        }
+
+        banca = (juego.getJugadores()).get("Banca");
 
         this.tipo = tipo;
         precio = tipo.getPrecioInicial();
@@ -29,8 +37,8 @@ public class Grupo {
                 System.out.println("Casilla incorrecta.");
                 System.exit(1);
             }
-            //aux = new Casilla(c, this,) a ver como coño le paso la banca
-            //this.casillas.add(aux);
+            aux = new Casilla(c, this, banca);
+            this.casillas.add(aux);
         }
 
     }

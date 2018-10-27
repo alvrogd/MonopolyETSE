@@ -38,4 +38,8 @@ public class Juego {
         tablero = new Tablero(casillas);
 
     }
+
+    public HashMap<String, Jugador> getJugadores() {
+        return jugadores;
+    }
 }
