@@ -11,7 +11,7 @@ public class Edificio {
     public Edificio(TipoEdificio tipoEdificio, TipoGrupo grupo) {
 
         //Comprobación de TipoGrupo
-        if (tipo == null) {
+        if (tipoEdificio == null) {
             System.out.println("Error en el tipo de edificio.");
             System.exit(1);
         }
