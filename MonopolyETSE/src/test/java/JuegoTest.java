@@ -49,7 +49,11 @@ public class JuegoTest {
         juego.putJugador(new Jugador("Alvaro", TipoAvatar.coche));
 
         juego.iniciarJuego();
+        System.out.println("Turno: " + juego.getTurno());
         juego.finalizarTurno();
+        System.out.println("Turno: " + juego.getTurno());
+
+
 
     }
 

@@ -72,6 +72,10 @@ public class Juego {
         return Banca;
     }
 
+    public Jugador getTurno(){
+        return turno;
+    }
+
     /*Setter*/
     public void putJugador(Jugador jugador) {
 
@@ -103,8 +107,6 @@ public class Juego {
 
         if (iniciado) {
 
-            System.out.println("Turno anterior " + turno.getNombre());
-
             if (iterador == null) {
                 System.out.println("No se ha añadido ningún jugador.");
                 System.exit(1);
@@ -117,7 +119,6 @@ public class Juego {
                 turno = jugadores.get(iterador.next());
             }
 
-            System.out.printf("Turno actual " + turno.getNombre());
         } else {
 
             System.out.println("Juego no iniciado.");
