@@ -3,6 +3,7 @@ package monopoly;
 import java.util.Random;
 
 public class Dado {
+
     // Generador de números aleatorios
     private Random random;
 

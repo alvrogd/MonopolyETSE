@@ -9,6 +9,7 @@ package monopoly;
 public final class Constantes {
 
     // Porcentaje de incremento del valor de los solares sin vender cuando los jugadores completen
+    // NUMERO_VUELTAS_INCREMENTO
     public final static double INCREMENTO_VUELTAS = 0.05;
     public final static int NUMERO_VUELTAS_INCREMENTO = 4;
 
@@ -40,7 +41,7 @@ public final class Constantes {
     // Dinero inicial para cada jugador
     public final static double DINERO_INICIAL = SUMA_PRECIO_SOLARES / 3;
 
-    // Dinero de la casilla de salida (n
+    // Dinero de la casilla de salida
     public final static double DINERO_SALIDA = SUMA_PRECIO_SOLARES / NUMERO_SOLARES;
 
     // Factor con el que determinar el precio de una casilla de servicio
