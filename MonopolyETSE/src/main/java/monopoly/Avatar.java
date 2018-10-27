@@ -139,8 +139,8 @@ public class Avatar {
 
     public void salirCarcel() {
 
-        if( isEstaCarcel() == false ) {
-            System.err.println( "Error: el avatar no se encuentra en la cárcel.");
+        if (isEstaCarcel() == false) {
+            System.err.println("Error: el avatar no se encuentra en la cárcel.");
             return;
         }
 
@@ -149,15 +149,36 @@ public class Avatar {
     }
 
 
-    public void mover( int numeroCasillas ) {
+    public void mover(int numeroCasillas) {
 
-        if( numeroCasillas < 2 ) {
-            System.err.println( "Error: el número sacado en una tirada no puede ser menor que 2.");
+        if (numeroCasillas < 2) {
+            System.err.println("Error: el número sacado en una tirada no puede ser menor que 2.");
             return;
         }
 
-        for( int i = 0; i < numeroCasillas; i++ )
+        for (int i = 0; i < numeroCasillas; i++)
             setPosicion(getPosicion().getSiguienteCasilla());
+
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+
+        // Si este objeto y el objeto pasado como parámetro apuntan a la misma dirección de memoria
+        if (this == o) return (true);
+
+            // Si el parámetro referencia a null
+        else if (o == null) return (false);
+
+        // Si el parámetro no es un objeto de tipo Avatar
+        if (getClass() != o.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder llamar a sus métodos
+        final Avatar otro = (Avatar) o;
+
+        // Si el identificador es distinto; son el mismo objeto
+        return getIdentificador() == otro.getIdentificador();
 
     }
 

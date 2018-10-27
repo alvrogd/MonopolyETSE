@@ -11,6 +11,8 @@ public class Casilla {
     private final Casilla siguienteCasilla;
 
     private Jugador propietario;
+    private boolean estaHipotecada;
+
     private HashMap<String, Avatar> avataresContenidos;
 
     private double alquiler;
@@ -43,10 +45,10 @@ public class Casilla {
         this.siguienteCasilla = siguienteCasilla;
 
         this.propietario = propietario;
+        this.estaHipotecada = false;
+
         avataresContenidos = new HashMap<>();
 
-        // Aquí no se realiza la comprobación del tipoGrupo porque ya se hace en el constructor de Grupo, y previamente
-        // se ha comprobado si grupo es null
         this.alquiler = grupo.getTipo().getPrecioInicial();
 
         edificiosContenidos = new HashMap<>();
@@ -63,18 +65,32 @@ public class Casilla {
         return grupo;
     }
 
+    public Casilla getSiguienteCasilla() {
+        return siguienteCasilla;
+    }
+
     public Jugador getPropietario() {
         return propietario;
     }
-
-    public Casilla getSiguienteCasilla() { return siguienteCasilla; }
 
     public void setPropietario(Jugador propietario) {
         this.propietario = propietario;
     }
 
+    public boolean isEstaHipotecada() {
+        return estaHipotecada;
+    }
+
+    public void setEstaHipotecada(boolean estaHipotecada) {
+        this.estaHipotecada = estaHipotecada;
+    }
+
     public HashMap<String, Avatar> getAvataresContenidos() {
         return avataresContenidos;
+    }
+
+    public void setAvataresContenidos(HashMap<String, Avatar> avataresContenidos) {
+        this.avataresContenidos = avataresContenidos;
     }
 
     public double getAlquiler() {
@@ -87,5 +103,9 @@ public class Casilla {
 
     public HashMap<TipoEdificio, ArrayList<Edificio>> getEdificiosContenidos() {
         return edificiosContenidos;
+    }
+
+    public void setEdificiosContenidos(HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos) {
+        this.edificiosContenidos = edificiosContenidos;
     }
 }
