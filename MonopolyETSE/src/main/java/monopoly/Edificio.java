@@ -7,24 +7,23 @@ public class Edificio {
     private final double precioCompra;
 
 
-
     /* Constructor */
     public Edificio(TipoEdificio tipoEdificio, TipoGrupo grupo) {
 
         //Comprobación de TipoGrupo
-        if(tipo == null) {
+        if (tipo == null) {
             System.out.println("Error en el tipo de edificio.");
             System.exit(1);
         }
 
-        if(grupo == null){
+        if (grupo == null) {
             System.out.println("Error en el tipo de grupo");
             System.exit(1);
         }
 
         tipo = tipoEdificio;
 
-        precioCompra = grupo.getPrecioInicial()*tipoEdificio.getCompra();
+        precioCompra = grupo.getPrecioInicial() * tipoEdificio.getCompra();
 
     }
 

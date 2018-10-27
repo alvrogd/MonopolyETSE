@@ -30,8 +30,8 @@ public class Tablero {
                 System.out.println("Casillas hace referencia a null");
                 System.exit(1);
             }
-            for(Casilla c: array){
-                if(c == null){
+            for (Casilla c : array) {
+                if (c == null) {
                     System.out.println("Casilla hace referencia a null");
                     System.exit(1);
                 }

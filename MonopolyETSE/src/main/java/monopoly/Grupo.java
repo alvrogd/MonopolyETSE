@@ -10,7 +10,7 @@ public class Grupo {
     private final double precio;
     private final ArrayList<Casilla> casillas;
 
-    public Grupo(TipoGrupo tipo, Juego juego,String... casillas) {
+    public Grupo(TipoGrupo tipo, Juego juego, String... casillas) {
 
         Jugador banca;
 
@@ -19,7 +19,7 @@ public class Grupo {
             System.out.println("Tipo referencia a null");
             System.exit(1);
         }
-        if(juego == null){
+        if (juego == null) {
             System.out.println("Juego referencia a null");
             System.exit(1);
         }

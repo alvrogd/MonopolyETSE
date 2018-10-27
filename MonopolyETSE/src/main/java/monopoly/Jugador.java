@@ -5,12 +5,10 @@ import java.util.ArrayList;
 public class Jugador {
 
     /* Atributos */
-    private String nombre;
+    private final String nombre;
     private Avatar avatar;
     private double fortuna;
     private ArrayList<Casilla> propiedades;
-
-
 
 
     /* Constructores */
@@ -29,4 +27,23 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
 
     }
+
+    /*Getters y setters*/
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public double getFortuna() {
+        return fortuna;
+    }
+
+    public ArrayList<Casilla> getPropiedades() {
+        return propiedades;
+    }
+
 }

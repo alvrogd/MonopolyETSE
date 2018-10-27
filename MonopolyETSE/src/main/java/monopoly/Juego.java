@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Juego {
 
     private Jugador turno;
-    private HashMap<String,Jugador> jugadores;
+    private HashMap<String, Jugador> jugadores;
     private ArrayList<String> nombresJugadores;
     private Tablero tablero;
 
@@ -24,15 +24,15 @@ public class Juego {
                 System.out.println("Casillas hace referencia a null");
                 System.exit(1);
             }
-            for(Casilla c: array){
-                if(c == null){
+            for (Casilla c : array) {
+                if (c == null) {
                     System.out.println("Casilla hace referencia a null");
                     System.exit(1);
                 }
             }
         }
 
-        turno = new Jugador("Banca",TipoAvatar.banca);
+        turno = new Jugador("Banca", TipoAvatar.banca);
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
         tablero = new Tablero(casillas);
@@ -42,4 +42,30 @@ public class Juego {
     public HashMap<String, Jugador> getJugadores() {
         return jugadores;
     }
+
+    public Tablero getTablero() {
+        return tablero;
+    }
+
+    public ArrayList<String> getNombresJugadores() {
+        return nombresJugadores;
+    }
+
+    public void putJugador(Jugador jugador) {
+
+        if (jugador == null) {
+            System.out.println("Jugador referencia a null");
+            System.exit(1);
+        }
+
+        jugadores.put(jugador.getNombre(), jugador);
+        nombresJugadores.add(jugador.getNombre());
+
+    }
+
+    public Jugador getJugador(Jugador jugador) {
+        return (jugadores.get(jugador.getNombre()));
+    }
+
+
 }
