@@ -7,9 +7,9 @@ public class EdificioTest {
 
     @Test
     public void constructorEdificio(){
-        Edificio casa = new Edificio(TipoEdificio.casa, TipoGrupo.naranja);
-        System.out.println("s");
-
+        Edificio casa = new Edificio(TipoEdificio.pistaDeporte, TipoGrupo.negro);
+        System.out.printf("Precio edificio: %.0fK\n", casa.getPrecioCompra());
+        System.out.println("Tipo edificio: " + casa.getTipo());
     }
 
 }
