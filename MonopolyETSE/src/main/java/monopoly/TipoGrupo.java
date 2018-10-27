@@ -24,7 +24,7 @@ public enum TipoGrupo {
     private final double precioInicial;
 
     private TipoGrupo(){
-        this.precioInicial = 1E99;
+        this.precioInicial = -1;
     }
 
     private TipoGrupo(double precioInicial) {

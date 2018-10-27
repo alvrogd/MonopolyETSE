@@ -36,7 +36,7 @@ public class Avatar {
 
         identificador = 'h';
 
-        //identificador
+        // Identificador
         this.tipo = tipo;
 
         movimientoEstandar = true;

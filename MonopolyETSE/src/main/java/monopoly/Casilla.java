@@ -39,8 +39,9 @@ public class Casilla {
         this.propietario = propietario;
         avataresContenidos = new HashMap<>();
 
-        tipoGrupo = grupo.getTipo(); //Aquí no se realiza la comprobación del tipoGrupo porque ya se hace en el
-        //constructor de Grupo, y previamente se ha comprobado si grupo es null.
+        //Aquí no se realiza la comprobación del tipoGrupo porque ya se hace en el constructor de Grupo, y previamente
+        // se ha comprobado si grupo es null
+        tipoGrupo = grupo.getTipo();
 
         this.alquiler = tipoGrupo.getPrecioInicial();
 

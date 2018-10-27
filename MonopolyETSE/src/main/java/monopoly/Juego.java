@@ -51,7 +51,7 @@ public class Juego {
 
     }
 
-    /*Getters*/
+    /* Getters */
     public HashMap<String, Jugador> getJugadores() {
         return jugadores;
     }
@@ -90,7 +90,7 @@ public class Juego {
     }
 
 
-    /*Métodos*/
+    /* Métodos */
 
     public void iniciarJuego() {
         if (!iniciado) {
