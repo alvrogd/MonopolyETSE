@@ -119,6 +119,7 @@ public class Juego {
 
             System.out.printf("Turno actual " + turno.getNombre());
         } else {
+
             System.out.println("Juego no iniciado.");
             return;
         }
