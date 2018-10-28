@@ -161,12 +161,10 @@ public class Jugador {
         }
 
         // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
-        // todo que el método getPrecio devuelva el precio actualizado tras los posibles incrementos
         if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
             System.out.println("El jugador no dispone de suficiente liquidez como para realiza la compra");
             return;
         } else {
-            // todo que el método getPrecio devuelva el precio actualizado tras los posibles incrementos
             setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
             transferirCasilla(vendedor, this, casilla);
         }
@@ -185,9 +183,8 @@ public class Jugador {
             return;
         }
 
-        // todo que el método getPrecio devuelva el precio original de la casilla
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original
-        setFortuna(getFortuna() + (casilla.getGrupo().getPrecio() / 2));
+        setFortuna(getFortuna() + (casilla.getGrupo().getTipo().getPrecioInicial() / 2));
         casilla.setHipotecada(true);
 
     }
@@ -205,15 +202,13 @@ public class Jugador {
             return;
         }
 
-        // todo que el método getPrecio devuelva el precio original de la casilla
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
-        if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio() * 1.10)) {
+        if (balanceNegativoTrasPago(casilla.getGrupo().getTipo().getPrecioInicial() * 1.10)) {
             System.out.println("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla");
             return;
         } else {
-            // todo que el método getPrecio devuelva el precio original de la casilla
-            setFortuna(getFortuna() - casilla.getGrupo().getPrecio() * 1.10);
+            setFortuna(getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() * 1.10);
             casilla.setHipotecada(false);
         }
 

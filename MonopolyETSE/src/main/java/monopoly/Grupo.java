@@ -7,9 +7,9 @@ import java.util.Objects;
 public class Grupo {
 
     private final TipoGrupo tipo;
-    private final double precio;
+    private double precio;
     private final ArrayList<Casilla> casillas;
-
+    //todo override del tipogrupo
     public Grupo(TipoGrupo tipo, Jugador Banca, String... casillas) {
 
         //Comprobación del tipo de grupo

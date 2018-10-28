@@ -5,7 +5,7 @@ import java.util.Random;
 public class Avatar {
 
     /* Atributos */
-
+    //todo meterle el tablero
     // Se resetea a false al completar una vuelta
     private boolean haEstadoCarcel;
     // Si se encuentra en la cárcel actualmente
@@ -15,7 +15,7 @@ public class Avatar {
     private int vueltas;
     // Casilla actual
     private Casilla posicion;
-
+    // todo obtener posicion a partir de la posicion de la casilla actual
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
     // Uno de los cuatro tipos de avatares disponibles

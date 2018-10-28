@@ -10,39 +10,19 @@ public class Juego {
     private Jugador turno;
     private HashMap<String, Jugador> jugadores;
     private ArrayList<String> nombresJugadores;
-    private Jugador Banca;
+    private Jugador banca;
     private Tablero tablero;
     private Iterator iterador;
     private boolean iniciado;
 
     /* Constructores */
-    public Juego(ArrayList<ArrayList<Casilla>> casillas) {
+    public Juego() {
 
-        if (casillas == null) {
-            System.out.println("Casillas hace referencia a null");
-            System.exit(1);
-        }
-
-        //Se comprueba si las casillas están bien inicializadas
-
-        for (ArrayList<Casilla> array : casillas) {
-            if (array == null) {
-                System.out.println("Casillas hace referencia a null");
-                System.exit(1);
-            }
-            for (Casilla c : array) {
-                if (c == null) {
-                    System.out.println("Casilla hace referencia a null");
-                    System.exit(1);
-                }
-            }
-        }
-
-        Banca = new Jugador("Banca", TipoAvatar.banca);
-        turno = Banca;
+        banca = new Jugador("banca", TipoAvatar.banca);
+        turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
-        tablero = new Tablero(casillas);
+        tablero = new Tablero(banca);
         iniciado = false;
 
     }
@@ -65,7 +45,7 @@ public class Juego {
     }
 
     public Jugador getBanca() {
-        return Banca;
+        return banca;
     }
 
     public Jugador getTurno(){
@@ -82,7 +62,7 @@ public class Juego {
 
         jugadores.put(jugador.getNombre(), jugador);
         nombresJugadores.add(jugador.getNombre());
-        //tablero.getAvataresContenidos().put(String.valueOf(jugador.getAvatar().getIdentificador()), jugador.getAvatar());
+        tablero.getAvataresContenidos().put((Character)jugador.getAvatar().getIdentificador(), jugador.getAvatar());
         //Para meter los avatares en el tablero, para cuando esté listo Jugador
     }
 
