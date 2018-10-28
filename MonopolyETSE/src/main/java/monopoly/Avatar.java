@@ -151,6 +151,7 @@ public class Avatar {
 
 
     // todo añadir comportamiento en función de la casilla a la que se ha llegado
+    // todo identificar casilla empleado su grupo
     public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {

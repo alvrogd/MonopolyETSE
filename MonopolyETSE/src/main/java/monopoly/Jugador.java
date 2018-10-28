@@ -19,6 +19,7 @@ public class Jugador {
     // Propiedades en posesión
     private ArrayList<Casilla> propiedades;
 
+    // todo añadir referencia a Jugador
 
 
     /* Constructores */
