@@ -8,10 +8,11 @@ public class Casilla {
     /* Atributos */
     private final String nombre;
     private final Grupo grupo;
+    // todo cada casilla debe referenciar a la siguiente al crearla para simplificar en gran medida el código
     private final Casilla siguienteCasilla;
 
     private Jugador propietario;
-    private boolean estaHipotecada;
+    private boolean hipotecada;
 
     private HashMap<String, Avatar> avataresContenidos;
 
@@ -45,7 +46,7 @@ public class Casilla {
         this.siguienteCasilla = siguienteCasilla;
 
         this.propietario = propietario;
-        this.estaHipotecada = false;
+        this.hipotecada = false;
 
         avataresContenidos = new HashMap<>();
 
@@ -77,12 +78,12 @@ public class Casilla {
         this.propietario = propietario;
     }
 
-    public boolean isEstaHipotecada() {
-        return estaHipotecada;
+    public boolean isHipotecada() {
+        return hipotecada;
     }
 
-    public void setEstaHipotecada(boolean estaHipotecada) {
-        this.estaHipotecada = estaHipotecada;
+    public void setHipotecada(boolean hipotecada) {
+        this.hipotecada = hipotecada;
     }
 
     public HashMap<String, Avatar> getAvataresContenidos() {

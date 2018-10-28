@@ -9,7 +9,7 @@ public class Avatar {
     // Se resetea a false al completar una vuelta
     private boolean haEstadoCarcel;
     // Si se encuentra en la cárcel actualmente
-    private boolean estaCarcel;
+    private boolean encarcelado;
 
     // Vueltas completadas en el tablero
     private int vueltas;
@@ -41,13 +41,14 @@ public class Avatar {
         }
 
         haEstadoCarcel = false;
-        estaCarcel = false;
+        encarcelado = false;
 
         vueltas = 0;
         posicion = casillaInicial;
 
         // Generador de aleatorios
         Random random = new Random();
+        // todo crear un identificador único para cada avatar
         identificador = (char) random.nextInt(256);    // Carácter ASCII del 0 al 255
 
         // Identificador
@@ -62,7 +63,7 @@ public class Avatar {
     /* Getters y setters */
 
     public boolean isHaEstadoCarcel() {
-        return haEstadoCarcel;
+        return (haEstadoCarcel);
     }
 
 
@@ -71,18 +72,18 @@ public class Avatar {
     }
 
 
-    public boolean isEstaCarcel() {
-        return estaCarcel;
+    public boolean isEncarcelado() {
+        return (encarcelado);
     }
 
 
-    public void setEstaCarcel(boolean estaCarcel) {
-        this.estaCarcel = estaCarcel;
+    public void setEncarcelado(boolean encarcelado) {
+        this.encarcelado = encarcelado;
     }
 
 
     public int getVueltas() {
-        return vueltas;
+        return (vueltas);
     }
 
 
@@ -98,7 +99,7 @@ public class Avatar {
 
 
     public Casilla getPosicion() {
-        return posicion;
+        return (posicion);
     }
 
 
@@ -115,17 +116,17 @@ public class Avatar {
 
 
     public char getIdentificador() {
-        return identificador;
+        return (identificador);
     }
 
 
     public TipoAvatar getTipo() {
-        return tipo;
+        return (tipo);
     }
 
 
     public boolean isMovimientoEstandar() {
-        return movimientoEstandar;
+        return (movimientoEstandar);
     }
 
 
@@ -139,17 +140,18 @@ public class Avatar {
 
     public void salirCarcel() {
 
-        if (isEstaCarcel() == false) {
+        if (!isEncarcelado()) {
             System.err.println("Error: el avatar no se encuentra en la cárcel.");
             return;
         }
 
-        setEstaCarcel(false);
+        setEncarcelado(false);
 
     }
 
 
-    public void mover(int numeroCasillas) {
+    // todo añadir comportamiento en función de la casilla a la que se ha llegado
+    public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {
             System.err.println("Error: el número sacado en una tirada no puede ser menor que 2.");
@@ -178,7 +180,7 @@ public class Avatar {
         final Avatar otro = (Avatar) o;
 
         // Si el identificador es distinto; son el mismo objeto
-        return getIdentificador() == otro.getIdentificador();
+        return (getIdentificador() == otro.getIdentificador());
 
     }
 
