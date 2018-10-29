@@ -8,9 +8,8 @@ public class Casilla {
     /* Atributos */
     private final String nombre;
     private final Grupo grupo;
-    // todo cada casilla debe referenciar a la siguiente al crearla para simplificar en gran medida el código
-    //private final Casilla siguienteCasilla;
     // todo posicion de casilla
+    private final int posicionEnTablero;
     private Jugador propietario;
     private boolean hipotecada;
 
@@ -24,17 +23,17 @@ public class Casilla {
 
     /* Constructores */
 
-    public Casilla(String nombre, Grupo grupo, Jugador propietario) {
+    public Casilla(String nombre, Grupo grupo, int posicion, Jugador propietario) {
 
         if (grupo == null) {
             System.err.println("Error: grupo no inicializado.");
             System.exit(1);
         }
 
-        /*if( siguienteCasilla == null ){
-            System.err.println("Error: siguiente casilla no inicializada");
+        if( posicion < 0 ) {
+            System.err.println("Error: posición de la casilla en el tablero menor que 0");
             System.exit(1);
-        }*/
+        }
 
         if (propietario == null) {
             System.err.println("Error: jugador no inicializado.");
@@ -43,7 +42,7 @@ public class Casilla {
 
         this.nombre = nombre;
         this.grupo = grupo;
-        this.siguienteCasilla = siguienteCasilla;
+        this.posicionEnTablero = posicion;
 
         this.propietario = propietario;
         this.hipotecada = false;
@@ -66,8 +65,8 @@ public class Casilla {
         return grupo;
     }
 
-    public Casilla getSiguienteCasilla() {
-        return siguienteCasilla;
+    public int getPosicionEnTablero() {
+        return posicionEnTablero;
     }
 
     public Jugador getPropietario() {

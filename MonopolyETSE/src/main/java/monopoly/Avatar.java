@@ -1,11 +1,18 @@
 package monopoly;
 
+import java.util.Collection;
 import java.util.Random;
 
 public class Avatar {
 
     /* Atributos */
-    //todo meterle el tablero
+
+    // Jugador al que pertenece
+    private final Jugador jugador;
+
+    // Tablero en el que se encuentra
+    private final Tablero tablero;
+
     // Se resetea a false al completar una vuelta
     private boolean haEstadoCarcel;
     // Si se encuentra en la cárcel actualmente
@@ -15,7 +22,7 @@ public class Avatar {
     private int vueltas;
     // Casilla actual
     private Casilla posicion;
-    // todo obtener posicion a partir de la posicion de la casilla actual
+
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
     // Uno de los cuatro tipos de avatares disponibles
@@ -28,7 +35,17 @@ public class Avatar {
 
     /* Constructores */
 
-    public Avatar(TipoAvatar tipo, Casilla casillaInicial) {
+    public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
+
+        if (jugador == null) {
+            System.err.println("Error: jugador no inicializado.");
+            System.exit(1);
+        }
+
+        if (tablero == null) {
+            System.err.println("Error: tablero no inicializado.");
+            System.exit(1);
+        }
 
         if (tipo == null) {
             System.err.println("Error: tipo de avatar no inicializado.");
@@ -40,18 +57,33 @@ public class Avatar {
             System.exit(1);
         }
 
+        this.jugador = jugador;
+
+        this.tablero = tablero;
+
         haEstadoCarcel = false;
         encarcelado = false;
 
         vueltas = 0;
         posicion = casillaInicial;
 
-        // Generador de aleatorios
+        // Identificador aleatorio y único
         Random random = new Random();
-        // todo crear un identificador único para cada avatar
-        identificador = (char) random.nextInt(256);    // Carácter ASCII del 0 al 255
+        boolean identificadorUnico;
+        char identificadorAleatorio;
+        Collection<Avatar> avatares = tablero.getAvataresContenidos().values();
 
-        // Identificador
+        do {
+            identificadorAleatorio = (char) random.nextInt(256);    // Carácter ASCII del 0 al 255
+            identificadorUnico = true;
+            for (Avatar avatar : avatares) {
+                if (avatar.getIdentificador() == identificadorAleatorio)
+                    identificadorUnico = false;
+            }
+        } while (!identificadorUnico);
+
+        identificador = identificadorAleatorio;
+
         this.tipo = tipo;
 
         movimientoEstandar = true;
@@ -61,6 +93,16 @@ public class Avatar {
 
 
     /* Getters y setters */
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+
+    public Tablero getTablero() {
+        return tablero;
+    }
+
 
     public boolean isHaEstadoCarcel() {
         return (haEstadoCarcel);
@@ -159,8 +201,9 @@ public class Avatar {
             return;
         }
 
-        for (int i = 0; i < numeroCasillas; i++)
-            setPosicion(getPosicion().getSiguienteCasilla());
+        int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+        posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
+
 
     }
 
