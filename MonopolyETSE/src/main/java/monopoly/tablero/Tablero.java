@@ -46,9 +46,26 @@ public class Tablero {
 
     private void crearGrupos(){
         //todo pasarle a grupo tablero para que meta casillas
-        Grupo negro = new Grupo(TipoGrupo.negro, banca, "Negro1","Negro2");
+
+        ArrayList<Object> aux = new ArrayList<>();
+        aux.add(0); aux.add("negro1");
+
+        ArrayList<Object> aux2 = new ArrayList<>();
+        aux2.add(1); aux2.add("negro2");
+
+        Grupo negro = new Grupo(TipoGrupo.negro, banca, aux, aux2);
         grupos.put(TipoGrupo.negro, negro);
-        Grupo cyan = new Grupo(TipoGrupo.azul, banca, "Cyan1","Cyan2","Cyan3");
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("cyan1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(1); aux2.add("cyan2");
+
+        ArrayList<Object> aux3 = new ArrayList<>();
+        aux3.add(2); aux3.add("cyan3");
+
+        Grupo cyan = new Grupo(TipoGrupo.cyan, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.cyan, cyan);
         Grupo naranja = new Grupo(TipoGrupo.naranja, banca, "Naranja1","Naranja2", "Naranja3");
         grupos.put(TipoGrupo.naranja, naranja);
@@ -86,7 +103,7 @@ public class Tablero {
     }
 
     private void anadirCasillas(){
-
+        casillas;
     }
 
     /* Getters */
@@ -100,6 +117,10 @@ public class Tablero {
 
     public HashMap<String, Casilla> getCasillasTablero() {
         return casillasTablero;
+    }
+
+    public Jugador getBanca(){
+        return banca;
     }
 
 }
