@@ -3,7 +3,6 @@ package monopoly.jugadores;
 import monopoly.Constantes;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoGrupo;
 
 import java.util.Collection;
 import java.util.Random;
