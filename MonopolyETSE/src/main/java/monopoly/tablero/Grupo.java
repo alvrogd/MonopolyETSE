@@ -10,17 +10,17 @@ public class Grupo {
     private final TipoGrupo tipo;
     private double precio;
     private final ArrayList<Casilla> casillas;
-    //todo override del tipogrupo
+
     //Se le pasa un arrayList que contiene la tupla posicion / nombreCasilla
-    public Grupo(TipoGrupo tipo, Jugador Banca, ArrayList<Object>... casillas) {
+    public Grupo(TipoGrupo tipo, Tablero tablero, ArrayList<Object>... casillas) {
 
         //Comprobación del tipo de grupo
         if (tipo == null) {
             System.err.println("Tipo referencia a null");
             System.exit(1);
         }
-        if (Banca == null) {
-            System.err.println("Banca referencia a null");
+        if (tablero == null) {
+            System.err.println("Tablero referencia a null");
             System.exit(1);
         }
         if(casillas == null) {
@@ -44,7 +44,11 @@ public class Grupo {
                 System.exit(1);
             }
 
-            aux = new Casilla(c.get(1), this, c.get(0), Banca);
+            aux = new Casilla(c.get(1), this, c.get(0), tablero.getBanca());
+
+            tablero.getCasillas().add(c.get(0),aux);
+            tablero.getCasillasTablero().put(c.get(1),aux);
+
             this.casillas.add(aux);
         }
     }
