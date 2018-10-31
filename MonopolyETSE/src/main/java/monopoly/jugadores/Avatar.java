@@ -22,6 +22,8 @@ public class Avatar {
     private boolean haEstadoCarcel;
     // Si se encuentra en la cárcel actualmente
     private boolean encarcelado;
+    // Número de turnos que ha pasado en la cárcel
+    private int turnosEnCarcel;
 
     // Vueltas completadas en el tablero
     private int vueltas;
@@ -68,6 +70,7 @@ public class Avatar {
 
         haEstadoCarcel = false;
         encarcelado = false;
+        turnosEnCarcel = 0;
 
         vueltas = 0;
         posicion = casillaInicial;
@@ -126,6 +129,21 @@ public class Avatar {
 
     public void setEncarcelado(boolean encarcelado) {
         this.encarcelado = encarcelado;
+    }
+
+
+    public int getTurnosEnCarcel() {
+        return turnosEnCarcel;
+    }
+
+
+    public void setTurnosEnCarcel(int turnosEnCarcel) {
+
+        if (turnosEnCarcel < 0) {
+            System.err.println("Error: el número turnos en la cárcel de un avatar no puede ser menor a 0.");
+            return;
+        }
+        this.turnosEnCarcel = turnosEnCarcel;
     }
 
 
@@ -206,11 +224,34 @@ public class Avatar {
             return;
         }
 
+        // Si está en la cárcel y no ha sacado dobles
+        if (isEncarcelado()) {
+
+            if( !dobles ) {
+                System.out.println("No se puede salir de la cárcel sin sacar dobles");
+                setTurnosEnCarcel(getTurnosEnCarcel() + 1);
+
+                // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
+                if (getTurnosEnCarcel() == 3) {
+                    System.out.println( "Has estado en la cárcel el número máximo de turnos permitidos" );
+                    getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
+                    setEncarcelado(false);
+                }
+                // En caso contrario, no se hace nada
+                else
+                    return;
+            }
+            else
+                setEncarcelado(false);
+
+
+        }
+
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
         posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
 
         // En función del tipo de casilla
-        switch( posicion.getGrupo().getTipo() ) {
+        switch (posicion.getGrupo().getTipo()) {
 
             case suerte:
                 // acción asociada a la casilla de suerte
@@ -245,7 +286,7 @@ public class Avatar {
                 break;
 
             case parking:
-                // acción asociada a la casilla de parking
+                caerEnParking();
                 break;
 
             case salida:
@@ -282,13 +323,11 @@ public class Avatar {
 
 
     private void caerEnCasillaObtenible() {
-        
-        // Si ha caído en una casilla que no es de la banca
-        if( !getPosicion().getPropietario().equals(getTablero().getBanca())) {
 
-            // Y ha sido comprada por otro jugador
-            if( !getPosicion().getPropietario().equals(getJugador()))
-                getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
+        if (!getPosicion().isComprable()) {
+
+            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
 
         }
 
@@ -297,20 +336,40 @@ public class Avatar {
 
     private void caerEnImpuesto1() {
 
-        getJugador().pagar( getTablero().getBanca(), Constantes.IMPUESTO_1 );
+        getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_1);
+        // Se añade la cantidad pagada al "alquiler" del parking
+        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+                Constantes.POSICION_PARKING % 10);
+        parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_1);
 
     }
 
     private void caerEnImpuesto2() {
 
-        getJugador().pagar( getTablero().getBanca(), Constantes.IMPUESTO_2 );
+        getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_2);
+        // Se añade la cantidad pagada al "alquiler" del parking
+        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+                Constantes.POSICION_PARKING % 10);
+        parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_2);
 
     }
 
     private void caerEnIrACarcel() {
 
-        setPosicion(getTablero().getCasillasTablero().get("carcel"));
+        setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
+
+    }
+
+
+    private void caerEnParking() {
+
+        // Se añaden a la fortuna del jugador los impuestos recaudados
+        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+                Constantes.POSICION_PARKING % 10);
+        getJugador().setFortuna(getJugador().getFortuna() + parking.getAlquiler());
+        // Y se resetea el valor del "alquiler" del parking
+        parking.setAlquiler(0);
 
     }
 
@@ -318,10 +377,11 @@ public class Avatar {
     private void caerEnSalida() {
 
         // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
-        if( !isHaEstadoCarcel() )
+        if (!isHaEstadoCarcel())
             getJugador().setFortuna(getJugador().getFortuna() + Constantes.DINERO_SALIDA);
 
-        setHaEstadoCarcel( false );
+        setHaEstadoCarcel(false);
+        setTurnosEnCarcel(0);
 
     }
 

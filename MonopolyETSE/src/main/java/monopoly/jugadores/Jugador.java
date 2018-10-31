@@ -182,6 +182,8 @@ public class Jugador {
 
         } else {
             setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
+            casilla.setComprable(false);
+            casilla.setAlquiler(casilla.getGrupo().getPrecio());
             transferirCasilla(vendedor, this, casilla);
         }
     }

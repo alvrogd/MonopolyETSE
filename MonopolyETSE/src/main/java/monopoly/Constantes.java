@@ -54,5 +54,8 @@ public final class Constantes {
     public final static double IMPUESTO_1 = DINERO_SALIDA;
     public final static double IMPUESTO_2 = DINERO_SALIDA / 2;
 
+    // Posición de casillas clave
+    public final static int POSICION_CARCEL = 10;
+    public final static int POSICION_PARKING = 20;
 
 }
