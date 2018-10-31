@@ -1,4 +1,4 @@
-package monopoly;
+package monopoly.jugadores;
 
 public enum TipoAvatar {
     pelota,

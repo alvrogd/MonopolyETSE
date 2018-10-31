@@ -1,8 +1,6 @@
 
-import monopoly.*;
+import monopoly.tablero.TipoGrupo;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 public class GrupoTest {
 

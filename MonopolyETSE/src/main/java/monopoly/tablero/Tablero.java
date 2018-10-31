@@ -1,4 +1,8 @@
-package monopoly;
+package monopoly.tablero;
+
+import monopoly.jugadores.Avatar;
+import monopoly.Dado;
+import monopoly.jugadores.Jugador;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +16,7 @@ public class Tablero {
 
     private ArrayList<ArrayList<Casilla>> casillas;
     private HashMap<String, Casilla> casillasTablero;
-    private HashMap<TipoGrupo,Grupo> grupos;
+    private HashMap<TipoGrupo, Grupo> grupos;
 
     private HashMap<Character, Avatar> avataresContenidos;
 

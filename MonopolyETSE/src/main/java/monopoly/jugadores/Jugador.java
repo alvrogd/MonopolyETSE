@@ -1,4 +1,9 @@
-package monopoly;
+package monopoly.jugadores;
+
+import monopoly.Constantes;
+import monopoly.Dado;
+import monopoly.tablero.Casilla;
+import monopoly.tablero.Tablero;
 
 import java.util.ArrayList;
 

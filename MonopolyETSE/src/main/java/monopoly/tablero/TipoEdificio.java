@@ -1,4 +1,6 @@
-package monopoly;
+package monopoly.tablero;
+
+import monopoly.Constantes;
 
 public enum TipoEdificio {
     casa(Constantes.COEF_CASA),

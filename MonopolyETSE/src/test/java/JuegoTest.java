@@ -1,5 +1,10 @@
 
 import monopoly.*;
+import monopoly.jugadores.Jugador;
+import monopoly.jugadores.TipoAvatar;
+import monopoly.tablero.Casilla;
+import monopoly.tablero.Grupo;
+import monopoly.tablero.TipoGrupo;
 import org.junit.Test;
 
 import java.util.ArrayList;

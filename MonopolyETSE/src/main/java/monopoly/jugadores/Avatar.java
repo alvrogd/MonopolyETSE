@@ -1,4 +1,8 @@
-package monopoly;
+package monopoly.jugadores;
+
+import monopoly.tablero.Casilla;
+import monopoly.tablero.Tablero;
+import monopoly.tablero.TipoGrupo;
 
 import java.util.Collection;
 import java.util.Random;
@@ -204,6 +208,50 @@ public class Avatar {
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
         posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
 
+        // En función del tipo de casilla
+        switch( posicion.getGrupo().getTipo() ) {
+
+            case suerte:
+                // acción asociada a la casilla de suerte
+                break;
+
+            case comunidad:
+                // acción asociada a la casilla de comunidad
+                break;
+
+            case impuesto1:
+                // acción asociada a la casilla de impuesto1
+                break;
+
+            case impuesto2:
+                // acción asociada a la casilla de impuesto2
+                break;
+
+            case transporte:
+                // acción asociada a la casilla de transporte
+                break;
+
+            case servicios:
+                // acción asociada a la casilla de servicios
+                break;
+
+            case carcel:
+                // acción asociada a la casilla de cárcel
+                break;
+
+            case irCarcel:
+                // acción asociada a la casilla ir a la cárcel
+                break;
+
+            case parking:
+                // acción asociada a la casilla de parking
+                break;
+
+            case salida:
+                // acción asociada a la casilla de salida
+                break;
+
+        }
 
     }
 

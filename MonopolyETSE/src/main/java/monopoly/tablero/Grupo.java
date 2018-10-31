@@ -1,8 +1,9 @@
-package monopoly;
+package monopoly.tablero;
 
+
+import monopoly.jugadores.Jugador;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Grupo {
 

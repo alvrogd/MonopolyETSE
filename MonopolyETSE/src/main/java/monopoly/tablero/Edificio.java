@@ -1,4 +1,7 @@
-package monopoly;
+package monopoly.tablero;
+
+import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.TipoGrupo;
 
 public class Edificio {
 

@@ -1,5 +1,9 @@
 package monopoly;
 
+import monopoly.jugadores.Jugador;
+import monopoly.jugadores.TipoAvatar;
+import monopoly.tablero.Tablero;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
