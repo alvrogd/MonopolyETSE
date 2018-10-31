@@ -169,10 +169,17 @@ public class Jugador {
             return;
         }
 
+        // Si la casilla no pertenece a la banca
+        if( !getAvatar().getPosicion().getPropietario().equals(getAvatar().getTablero().getBanca())) {
+            System.out.println("La casilla no pertenece a la banca");
+            return;
+        }
+
         // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
         if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
             System.out.println("El jugador no dispone de suficiente liquidez como para realiza la compra.");
             return;
+
         } else {
             setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
             transferirCasilla(vendedor, this, casilla);
@@ -277,7 +284,31 @@ public class Jugador {
 
     }
 
+
     // todo equals de jugador para comprobar si es propietario de la casilla en la que cae
+    @Override
+    public boolean equals( Object obj ) {
+
+        // Si apuntan a la misma dirección de memoria
+        if( this == obj ) return( true );
+
+        // Si el objeto con el que se compara apunta a null
+        if( obj == null ) return( false );
+
+        // Si no pertenecen a la misma clase
+        if( getClass() != obj.getClass() ) return( false );
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
+        // llamar a sus métodos
+        final Jugador otro = ( Jugador)obj;
+
+        // Si los identificadores de sus avatares son el mismo
+        if( this.getAvatar().getIdentificador() != otro.getAvatar().getIdentificador() ) return( false );
+
+        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
+        return( true );
+
+    } /* Fin del método equals */
 
 }
 

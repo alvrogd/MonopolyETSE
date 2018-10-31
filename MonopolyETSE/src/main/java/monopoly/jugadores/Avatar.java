@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import monopoly.Constantes;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
@@ -220,19 +221,19 @@ public class Avatar {
                 break;
 
             case impuesto1:
-                // acción asociada a la casilla de impuesto1
+                caerEnImpuesto1();
                 break;
 
             case impuesto2:
-                // acción asociada a la casilla de impuesto2
+                caerEnImpuesto2();
                 break;
 
             case transporte:
-                // acción asociada a la casilla de transporte
+                caerEnCasillaObtenible();
                 break;
 
             case servicios:
-                // acción asociada a la casilla de servicios
+                caerEnCasillaObtenible();
                 break;
 
             case carcel:
@@ -240,7 +241,7 @@ public class Avatar {
                 break;
 
             case irCarcel:
-                // acción asociada a la casilla ir a la cárcel
+                caerEnIrACarcel();
                 break;
 
             case parking:
@@ -248,8 +249,11 @@ public class Avatar {
                 break;
 
             case salida:
-                // acción asociada a la casilla de salida
+                caerEnSalida();
                 break;
+
+            default:
+                caerEnCasillaObtenible();
 
         }
 
@@ -273,6 +277,51 @@ public class Avatar {
 
         // Si el identificador es distinto; son el mismo objeto
         return (getIdentificador() == otro.getIdentificador());
+
+    }
+
+
+    private void caerEnCasillaObtenible() {
+        
+        // Si ha caído en una casilla que no es de la banca
+        if( !getPosicion().getPropietario().equals(getTablero().getBanca())) {
+
+            // Y ha sido comprada por otro jugador
+            if( !getPosicion().getPropietario().equals(getJugador()))
+                getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+
+        }
+
+    }
+
+
+    private void caerEnImpuesto1() {
+
+        getJugador().pagar( getTablero().getBanca(), Constantes.IMPUESTO_1 );
+
+    }
+
+    private void caerEnImpuesto2() {
+
+        getJugador().pagar( getTablero().getBanca(), Constantes.IMPUESTO_2 );
+
+    }
+
+    private void caerEnIrACarcel() {
+
+        setPosicion(getTablero().getCasillasTablero().get("carcel"));
+        setEncarcelado(true);
+
+    }
+
+
+    private void caerEnSalida() {
+
+        // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
+        if( !isHaEstadoCarcel() )
+            getJugador().setFortuna(getJugador().getFortuna() + Constantes.DINERO_SALIDA);
+
+        setHaEstadoCarcel( false );
 
     }
 
