@@ -19,7 +19,7 @@ public enum TipoGrupo {
     transporte(),
     servicios(),
     carcel(),
-    parking(),
+    parking(0),
     salida(),
     irCarcel();
 
