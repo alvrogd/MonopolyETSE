@@ -229,11 +229,11 @@ public class Avatar {
                 break;
 
             case transporte:
-                // acción asociada a la casilla de transporte
+                caerEnCasillaObtenible();
                 break;
 
             case servicios:
-                // acción asociada a la casilla de servicios
+                caerEnCasillaObtenible();
                 break;
 
             case carcel:
@@ -251,6 +251,9 @@ public class Avatar {
             case salida:
                 caerEnSalida();
                 break;
+
+            default:
+                caerEnCasillaObtenible();
 
         }
 
@@ -274,6 +277,20 @@ public class Avatar {
 
         // Si el identificador es distinto; son el mismo objeto
         return (getIdentificador() == otro.getIdentificador());
+
+    }
+
+
+    private void caerEnCasillaObtenible() {
+        
+        // Si ha caído en una casilla que no es de la banca
+        if( !getPosicion().getPropietario().equals(getTablero().getBanca())) {
+
+            // Y ha sido comprada por otro jugador
+            if( !getPosicion().getPropietario().equals(getJugador()))
+                getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+
+        }
 
     }
 
