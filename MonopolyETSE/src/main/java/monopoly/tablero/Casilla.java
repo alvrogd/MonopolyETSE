@@ -56,7 +56,7 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
-        this.alquiler = grupo.getTipo().getPrecioInicial();
+        this.alquiler = 0;
 
         edificiosContenidos = new HashMap<>();
 

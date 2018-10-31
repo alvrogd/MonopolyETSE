@@ -12,7 +12,7 @@ public class Grupo {
     private final ArrayList<Casilla> casillas;
 
     //Se le pasa un arrayList que contiene la tupla posicion / nombreCasilla
-    public Grupo(TipoGrupo tipo, Tablero tablero, ArrayList<Object>... casillas) {
+    public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... casillas) {
 
         //Comprobación del tipo de grupo
         if (tipo == null) {
@@ -44,7 +44,7 @@ public class Grupo {
                 System.exit(1);
             }
 
-            aux = new Casilla(c.get(1), this, c.get(0), tablero.getBanca());
+            aux = new Casilla(c.get(1), this, comprable, c.get(0), tablero.getBanca());
 
             tablero.getCasillas().add(c.get(0),aux);
             tablero.getCasillasTablero().put(c.get(1),aux);
