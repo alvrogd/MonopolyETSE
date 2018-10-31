@@ -47,6 +47,9 @@ public class Tablero {
     private void crearGrupos(){
         //todo pasarle a grupo tablero para que meta casillas
 
+
+        //Casillas negras
+
         ArrayList<Object> aux = new ArrayList<>();
         aux.add(0); aux.add("negro1");
 
@@ -56,35 +59,141 @@ public class Tablero {
         Grupo negro = new Grupo(TipoGrupo.negro, banca, aux, aux2);
         grupos.put(TipoGrupo.negro, negro);
 
+
+        //Casillas cyan
+
         aux = new ArrayList<>();
-        aux.add(0); aux.add("cyan1");
+        aux.add(2); aux.add("cyan1");
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add("cyan2");
+        aux2.add(3); aux2.add("cyan2");
 
         ArrayList<Object> aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add("cyan3");
+        aux3.add(4); aux3.add("cyan3");
 
         Grupo cyan = new Grupo(TipoGrupo.cyan, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.cyan, cyan);
-        Grupo naranja = new Grupo(TipoGrupo.naranja, banca, "Naranja1","Naranja2", "Naranja3");
+
+
+        //Casillas naranja
+
+        aux = new ArrayList<>();
+        aux.add(5); aux.add("naranja1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(6); aux2.add("naranja2");
+
+        aux3 = new ArrayList<>();
+        aux3.add(7); aux3.add("naranja3");
+
+        Grupo naranja = new Grupo(TipoGrupo.naranja, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.naranja, naranja);
-        Grupo rosa = new Grupo(TipoGrupo.rosa, banca, "Rosa1","Rosa2", "Rosa3");
+
+
+        //Casillas rosa
+
+        aux = new ArrayList<>();
+        aux.add(8); aux.add("rosa1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(9); aux2.add("rosa2");
+
+        ArrayList<Object> aux3 = new ArrayList<>();
+        aux3.add(10); aux3.add("rosa3");
+
+        Grupo rosa = new Grupo(TipoGrupo.rosa, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.rosa, rosa);
-        Grupo rojo = new Grupo(TipoGrupo.rojo, banca, "Rojo1","Rojo2", "Rojo3");
+
+
+        //Casillas rojo
+
+        aux = new ArrayList<>();
+        aux.add(11); aux.add("rojo1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(12); aux2.add("rojo2");
+
+        ArrayList<Object> aux3 = new ArrayList<>();
+        aux3.add(13); aux3.add("rojo3");
+
+        Grupo rojo = new Grupo(TipoGrupo.rojo, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.rojo, rojo);
-        Grupo verde = new Grupo(TipoGrupo.verde, banca, "Verde1", "Verde2", "Verde3");
+
+
+        //Casillas verde
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("verde1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(1); aux2.add("verde2");
+
+        ArrayList<Object> aux3 = new ArrayList<>();
+        aux3.add(2); aux3.add("verde3");
+
+        Grupo verde = new Grupo(TipoGrupo.verde, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.verde, verde);
-        Grupo azul = new Grupo(TipoGrupo.azul, banca, "Azul1","Azul2)");
+
+
+        //Casilla azul
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("azul1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(1); aux2.add("azul2");
+
+        Grupo azul = new Grupo(TipoGrupo.azul, banca, aux, aux2);
         grupos.put(TipoGrupo.azul, azul);
-        Grupo marron = new Grupo(TipoGrupo.marron, banca, "Marron1", "Marron2", "Marron3");
+
+
+        //Casilla marron
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("marron1");
+
+        aux2 = new ArrayList<>();
+        aux2.add(1); aux2.add("marron2");
+
+        ArrayList<Object> aux3 = new ArrayList<>();
+        aux3.add(2); aux3.add("marron3");
+
+        Grupo marron = new Grupo(TipoGrupo.marron, banca, aux, aux2, aux3);
         grupos.put(TipoGrupo.marron, marron);
-        Grupo salida = new Grupo(TipoGrupo.salida, banca, "Salida");
+
+
+        //Salida
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("salida");
+
+        Grupo salida = new Grupo(TipoGrupo.salida, banca, aux);
         grupos.put(TipoGrupo.salida, salida);
-        Grupo carcel = new Grupo(TipoGrupo.carcel, banca, "Carcel");
+
+
+        //Carcel
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("carcel");
+
+        Grupo carcel = new Grupo(TipoGrupo.carcel, banca, aux);
         grupos.put(TipoGrupo.carcel, carcel);
-        Grupo parking = new Grupo(TipoGrupo.parking, banca, "Parking");
+
+
+        //Parking
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("parking");
+
+        Grupo parking = new Grupo(TipoGrupo.parking, banca, aux);
         grupos.put(TipoGrupo.parking, parking);
+
+
+        //irCarcel
+
+        aux = new ArrayList<>();
+        aux.add(0); aux.add("marron1");
+
         Grupo irCarcel = new Grupo(TipoGrupo.irCarcel, banca, "irCarcel"); //26
         grupos.put(TipoGrupo.irCarcel, irCarcel);
         Grupo transporte = new Grupo(TipoGrupo.transporte, banca, "T1","T2","T3","T4"); //30
