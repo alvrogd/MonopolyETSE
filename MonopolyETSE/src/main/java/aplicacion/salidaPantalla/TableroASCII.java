@@ -7,13 +7,13 @@ public class TableroASCII {
     /* Atributos */
 
     // Número de caracteres de una unidad
-    private final static int caracteresPorUnidad = 2;
+    private final static int caracteresPorUnidad = 3;
 
     // Tamaño de las casillas
-    private final static int anchoEsquina = 7 * caracteresPorUnidad;
-    private final static int altoEsquina = 2 * caracteresPorUnidad;
-    private final static int anchoNormal = 7 * caracteresPorUnidad;
-    private final static int altoNormal = 2 * caracteresPorUnidad;
+    private final static int anchoEsquina = 5 * caracteresPorUnidad;
+    private final static int altoEsquina = 1 * caracteresPorUnidad;
+    private final static int anchoNormal = 5 * caracteresPorUnidad;
+    private final static int altoNormal = 1 * caracteresPorUnidad;
 
     // Número de casillas por cada fila
     private final static int casillasPorFila = 10;
@@ -25,6 +25,18 @@ public class TableroASCII {
     // Número de líneas
     private final static int numeroLineas = 2 * altoEsquina + 9 * altoNormal + separadoresPorFila;
 
+    // Caracteres
+    private final static char barraHorizontal = '─';
+    private final static char barraVertical = '│';
+    private final static char esquinaNO = '┘';
+    private final static char esquinaNE = '└';
+    private final static char esquinaNOE = '┴';
+    private final static char esquinaNOS = '┤';
+    private final static char esquinaNOES = '┼';
+    private final static char esquinaNES = '├';
+    private final static char esquinaOS = '┐';
+    private final static char esquinaOES = '┬';
+    private final static char esquinaES = '┌';
 
 
     /* Métodos */
@@ -63,7 +75,10 @@ public class TableroASCII {
 
     private static void insertarFilaSuperior(StringBuilder stringBuilder) {
 
-        insertarCasilla(stringBuilder, 0, true, false, true, false, true);
+        insertarCasilla(stringBuilder, 0, true, false, true, false,
+                true);
+        insertarCasilla(stringBuilder,anchoEsquina + 1, true, false, false,
+                false, false);
 
     }
 
@@ -71,100 +86,228 @@ public class TableroASCII {
     private static void insertarCasilla(StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
                                         boolean izquierda, boolean derecha, boolean esquina) {
 
-        int iterante;
-        int ancho;
-        int alto;
-
-        // Se obtiene los correspondientes anchos y altos de la casilla a insertar
-        if (esquina) {
-            ancho = anchoEsquina + 2;    // Incluyendo los separadores
-            alto = altoEsquina + 2;    // Incluyendo los separadores
-        } else {
-            ancho = anchoNormal + 2;
-            alto = altoNormal + 2;
-        }
-
-        // El límite superior se comienza a insertar desde la posición inicial de la casilla
-        iterante = posicion;
-        insertarLimiteHorizontal(stringBuilder, iterante, ancho, superior);
-
-        // El límite inferior se comienza a insertar aumentando la posición inicial en el alto total menos una línea
-        iterante = posicion + (alto - 1) * caracteresPorLinea;
-        insertarLimiteHorizontal(stringBuilder, iterante, ancho, inferior);
-
-        // El límite izquierdo se comienza a insertar desde la posición inicial de la casilla
-        iterante = posicion;
-        insertarLimiteVertical(stringBuilder, iterante, alto, izquierda);
-
-        // El límite derecho se comienza a insertar aumentando a la posición inicial el ancho total menos un carácter
-        iterante = posicion + (ancho - 1);
-        insertarLimiteVertical(stringBuilder, iterante, alto, derecha);
+        insertarLimites(stringBuilder, posicion, superior, inferior, izquierda, derecha, esquina);
 
 
     }
 
 
-    private static void insertarLimites( StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
-                                         boolean izquierda, boolean derecha, boolean esquina) {
+    private static void insertarLimites(StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
+                                        boolean izquierda, boolean derecha, boolean esquina) {
 
         int iterante;
         int ancho;
         int alto;
+        int anchoTotal;
+        int altoTotal;
 
         // Se obtiene los correspondientes anchos y altos de la casilla a insertar
         if (esquina) {
-            ancho = anchoEsquina + 2;    // Incluyendo los separadores
-            alto = altoEsquina + 2;    // Incluyendo los separadores
+            ancho = anchoEsquina;
+            alto = altoEsquina;
         } else {
-            ancho = anchoNormal + 2;
-            alto = altoNormal + 2;
+            ancho = anchoNormal;
+            alto = altoNormal;
         }
 
-        // El límite superior se comienza a insertar desde la posición inicial de la casilla
-        iterante = posicion;
-        insertarLimiteHorizontal(stringBuilder, iterante, ancho, superior);
+        anchoTotal = ancho + 2;    // Incluyendo los separadores
+        altoTotal = alto + 2;    // Incluyendo los separadores
 
-        // El límite inferior se comienza a insertar aumentando la posición inicial en el alto total menos una línea
-        iterante = posicion + (alto - 1) * caracteresPorLinea;
-        insertarLimiteHorizontal(stringBuilder, iterante, ancho, inferior);
+        // Se insertan los límites de la casilla ignorando por el momento las esquinas
 
-        // El límite izquierdo se comienza a insertar desde la posición inicial de la casilla
-        iterante = posicion;
-        insertarLimiteVertical(stringBuilder, iterante, alto, izquierda);
+        // El límite superior se comienza a insertar desde la posición inicial de la casilla más un carácter para no
+        // modificar la esquina superior izquierda
+        iterante = posicion + 1;
+        insertarLimiteHorizontal(stringBuilder, iterante, ancho);
 
-        // El límite derecho se comienza a insertar aumentando a la posición inicial el ancho total menos un carácter
-        iterante = posicion + (ancho - 1);
-        insertarLimiteVertical(stringBuilder, iterante, alto, derecha);
+        // El límite inferior se comienza a insertar aumentando la posición inicial en el alto total menos una línea, y
+        // sumando un carácter para no modificar la esquina inferior izquierda
+        iterante = posicion + (altoTotal - 1) * caracteresPorLinea + 1;
+        insertarLimiteHorizontal(stringBuilder, iterante, ancho);
+
+        // El límite izquierdo se comienza a insertar sumando a la posición inicial una línea para no modificar la
+        // esquina superior izquierda
+        iterante = posicion + caracteresPorLinea;
+        insertarLimiteVertical(stringBuilder, iterante, alto);
+
+        // El límite derecho se comienza a insertar aumentando a la posición inicial el ancho total menos un carácter,
+        // y sumándole una línea para no modificar la esquina superior derecha
+        iterante = posicion + (anchoTotal - 1) + caracteresPorLinea;
+        insertarLimiteVertical(stringBuilder, iterante, alto);
+
+        // Ahora, se insertan las esquinas
+
+        insertarEsquinaSuperiorIzquierda(stringBuilder, posicion);
+        insertarEsquinaSuperiorDerecha(stringBuilder, posicion + (anchoTotal - 1));
+        insertarEsquinaInferiorIzquierda(stringBuilder, posicion + (altoTotal - 1) * caracteresPorLinea);
+        insertarEsquinaInferiorDerecha(stringBuilder, posicion + (altoTotal - 1) * caracteresPorLinea +
+                (anchoTotal - 1));
+
+
+    }
+
+    private static void insertarEsquinaSuperiorIzquierda(StringBuilder stringBuilder, int posicion) {
+
+        // Se comprueba si ya existe una carácter escrito por otra casilla
+        char esquinaActual = stringBuilder.charAt(posicion);
+
+        switch (esquinaActual) {
+
+            case esquinaNOES:
+            case esquinaNES:
+            case esquinaOES:
+            case esquinaES:
+                break;
+
+            case esquinaNO:
+            case esquinaNOE:
+            case esquinaNOS:
+                stringBuilder.setCharAt(posicion, esquinaNOES);
+                break;
+
+            case barraVertical:
+            case esquinaNE:
+                stringBuilder.setCharAt(posicion, esquinaNES);
+                break;
+
+            case barraHorizontal:
+            case esquinaOS:
+                stringBuilder.setCharAt(posicion, esquinaOES);
+                break;
+
+            default:
+                stringBuilder.setCharAt(posicion, esquinaES);
+                break;
+
+        }
+
+    }
+
+    private static void insertarEsquinaSuperiorDerecha(StringBuilder stringBuilder, int posicion) {
+
+        // Se comprueba si ya existe una carácter escrito por otra casilla
+        char esquinaActual = stringBuilder.charAt(posicion);
+
+        switch (esquinaActual) {
+
+            case esquinaNOS:
+            case esquinaNOES:
+            case esquinaOS:
+            case esquinaOES:
+                break;
+
+            case barraVertical:
+            case esquinaNO:
+                stringBuilder.setCharAt(posicion, esquinaNOS);
+                break;
+
+            case esquinaNE:
+            case esquinaNOE:
+            case esquinaNES:
+                stringBuilder.setCharAt(posicion, esquinaNOES);
+                break;
+
+            case barraHorizontal:
+            case esquinaES:
+                stringBuilder.setCharAt(posicion, esquinaOES);
+                break;
+
+            default:
+                stringBuilder.setCharAt(posicion, esquinaOS);
+                break;
+
+        }
+
+    }
+
+    private static void insertarEsquinaInferiorIzquierda(StringBuilder stringBuilder, int posicion) {
+
+        // Se comprueba si ya existe una carácter escrito por otra casilla
+        char esquinaActual = stringBuilder.charAt(posicion);
+
+        switch (esquinaActual) {
+
+            case esquinaNE:
+            case esquinaNOE:
+            case esquinaNOES:
+            case esquinaNES:
+                break;
+
+            case barraHorizontal:
+            case esquinaNO:
+                stringBuilder.setCharAt(posicion, esquinaNOE);
+                break;
+
+            case esquinaNOS:
+            case esquinaOES:
+                stringBuilder.setCharAt(posicion, esquinaNOES);
+
+            case esquinaOS:
+                stringBuilder.setCharAt(posicion, esquinaOES);
+
+            case barraVertical:
+            case esquinaES:
+                stringBuilder.setCharAt(posicion, esquinaNES);
+
+            default:
+                stringBuilder.setCharAt(posicion, esquinaNE);
+                break;
+
+        }
+
+    }
+
+    private static void insertarEsquinaInferiorDerecha(StringBuilder stringBuilder, int posicion) {
+
+        // Se comprueba si ya existe una carácter escrito por otra casilla
+        char esquinaActual = stringBuilder.charAt(posicion);
+
+        switch (esquinaActual) {
+
+            case esquinaNO:
+            case esquinaNOE:
+            case esquinaNOS:
+            case esquinaNOES:
+                break;
+
+            case barraHorizontal:
+            case esquinaNE:
+                stringBuilder.setCharAt(posicion, esquinaNOE);
+                break;
+
+            case barraVertical:
+            case esquinaOS:
+                stringBuilder.setCharAt(posicion, esquinaNOS);
+
+            case esquinaNES:
+            case esquinaOES:
+            case esquinaES:
+                stringBuilder.setCharAt(posicion, esquinaNOES);
+
+            default:
+                stringBuilder.setCharAt(posicion, esquinaNO);
+                break;
+
+        }
 
     }
 
 
-    private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, int tamano, boolean bold) {
+    private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, int tamano) {
 
-        if (bold)
-            for (int i = 0; i < tamano; i++)
-                stringBuilder.setCharAt(iterante++, '━');
-        else
-            for (int i = 0; i < tamano; i++)
-                stringBuilder.setCharAt(iterante++, '─');
+        for (int i = 0; i < tamano; i++)
+            stringBuilder.setCharAt(iterante++, barraHorizontal);
 
     }
 
-    private static void insertarLimiteVertical(StringBuilder stringBuilder, int iterante, int tamano, boolean bold) {
+    private static void insertarLimiteVertical(StringBuilder stringBuilder, int iterante, int tamano) {
 
-        if (bold)
-            for (int i = 0; i < tamano; i++) {
-                stringBuilder.setCharAt(iterante, '┃');
-                iterante += caracteresPorLinea;
-            }
-        else
-            for (int i = 0; i < tamano; i++) {
-                stringBuilder.setCharAt(iterante, '│');
-                iterante += caracteresPorLinea;
-            }
+        for (int i = 0; i < tamano; i++) {
+            stringBuilder.setCharAt(iterante, barraVertical);
+            iterante += caracteresPorLinea;
+        }
 
     }
-
 
     /*private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, boolean bold) {
 
