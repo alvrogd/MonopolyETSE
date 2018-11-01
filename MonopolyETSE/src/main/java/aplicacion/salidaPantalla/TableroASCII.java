@@ -67,6 +67,8 @@ public class TableroASCII {
         // Se insertan las filas al tablero
         insertarFilaSuperior(tableroPintado);
 
+        corregirEspaciado(tableroPintado);
+
 
         return (tableroPintado.toString());
 
@@ -76,17 +78,22 @@ public class TableroASCII {
     private static void insertarFilaSuperior(StringBuilder stringBuilder) {
 
         insertarCasilla(stringBuilder, 0, true, false, true, false,
-                true);
-        insertarCasilla(stringBuilder,anchoEsquina + 1, true, false, false,
-                false, false);
+                true, "C1", TipoColor.rojoANSI);
+        insertarCasilla(stringBuilder, anchoEsquina + 1, true, false, false,
+                false, false, "C2", TipoColor.azulANSI);
 
     }
 
 
     private static void insertarCasilla(StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
-                                        boolean izquierda, boolean derecha, boolean esquina) {
+                                        boolean izquierda, boolean derecha, boolean esquina, String nombre, TipoColor
+                                                color) {
 
+        // Se pintan los límites de la casilla
         insertarLimites(stringBuilder, posicion, superior, inferior, izquierda, derecha, esquina);
+
+        // Se imprime su nombre
+        insertarNombre(stringBuilder, posicion, esquina, nombre, color);
 
 
     }
@@ -305,6 +312,64 @@ public class TableroASCII {
         for (int i = 0; i < tamano; i++) {
             stringBuilder.setCharAt(iterante, barraVertical);
             iterante += caracteresPorLinea;
+        }
+
+    }
+
+    private static void insertarNombre(StringBuilder stringBuilder, int posicion, boolean esquina, String nombre,
+                                       TipoColor color) {
+
+        int ancho;
+        int alto;
+        int posicionEscritura;
+
+        // todo comprobación de que la cadena no sea demasiado larga
+        // Se obtiene los correspondientes anchos y altos de la casilla a insertar
+        if (esquina) {
+            ancho = anchoEsquina;
+            alto = altoEsquina;
+        } else {
+            ancho = anchoNormal;
+            alto = altoNormal;
+        }
+
+        // Y se guarda el nombre
+        System.out.println("Tamaño nombre: " + nombre.length());
+        StringBuilder nombreConColor = new StringBuilder();
+        nombreConColor.append(color.getFondo()).append(nombre).append(TipoColor.resetAnsi.getFondo());
+        //nombreConColor.append(nombre);
+        System.out.println("Tamaño con color: " + nombreConColor.toString().length());
+
+        // Se sitúa en la primera columna de la primera línea libre de la casilla pintada
+        posicionEscritura = posicion + caracteresPorLinea + 1;
+        // Ahora se desplaza de modo que el texto quede centrado
+        posicionEscritura += (ancho - nombreConColor.length()) / 2;
+        // Se copian uno a uno los caracteres de la String creada, por lo que debe comprobarse si es menor la longitud
+        // de esta o el espacio disponible
+        int menor = (nombreConColor.toString().length() < ancho) ? nombreConColor.toString().length() : ancho;
+
+        for (int i = 0; i < menor; i++)
+            stringBuilder.setCharAt(posicionEscritura++, nombreConColor.toString().charAt(i));
+
+
+        /*// Se sitúa en la primera columna de la primera línea libre de la casilla pintada
+        posicionEscritura = posicion + caracteresPorLinea + 1;
+        // Ahora se desplaza de modo que el texto quede centrado
+        posicionEscritura += ( ancho - nombre.length() )/ 2;
+        // Y se guarda el nombre
+        stringBuilder.replace(posicionEscritura, posicionEscritura + nombre.length(), nombre);*/
+
+    }
+
+    private static void corregirEspaciado(StringBuilder stringBuilder) {
+
+        for (int i = 0; i < stringBuilder.toString().length(); i++) {
+
+            if (stringBuilder.charAt(i) == '[') {
+                i += 4;
+                stringBuilder.insert(i, "     ");
+                i += 5;
+            }
         }
 
     }
