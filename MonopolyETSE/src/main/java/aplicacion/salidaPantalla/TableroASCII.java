@@ -337,6 +337,8 @@ public class TableroASCII {
         System.out.println("Tamaño nombre: " + nombre.length());
         StringBuilder nombreConColor = new StringBuilder();
         nombreConColor.append(color.getFondo()).append(nombre).append(TipoColor.resetAnsi.getFondo());
+        //int espaciosLibres = ancho - nombreConColor.toString().length();
+        //or( int i = 0; i < espaciosLibres / 2)
         //nombreConColor.append(nombre);
         System.out.println("Tamaño con color: " + nombreConColor.toString().length());
 
