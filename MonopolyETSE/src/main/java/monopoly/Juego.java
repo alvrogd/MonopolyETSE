@@ -22,11 +22,11 @@ public class Juego {
     /* Constructores */
     public Juego() {
 
-        banca = new Jugador("banca", TipoAvatar.banca);
-        turno = banca;
+        //banca = new Jugador("banca", TipoAvatar.banca);
+        //turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
-        tablero = new Tablero(banca);
+        //tablero = new Tablero(banca);  // todo comentado porque es imposible compilar con errores para probar algo
         iniciado = false;
 
     }
