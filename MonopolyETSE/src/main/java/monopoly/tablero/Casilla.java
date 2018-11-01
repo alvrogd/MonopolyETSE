@@ -11,7 +11,7 @@ public class Casilla {
     /* Atributos */
     private final String nombre;
     private final Grupo grupo;
-    // todo posicion de casilla
+
     private final int posicionEnTablero;
     private Jugador propietario;
     private boolean hipotecada;
@@ -19,6 +19,8 @@ public class Casilla {
     private HashMap<String, Avatar> avataresContenidos;
 
     private double alquiler;
+    private boolean comprable;
+
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
 
 
@@ -26,7 +28,7 @@ public class Casilla {
 
     /* Constructores */
 
-    public Casilla(String nombre, Grupo grupo, int posicion, Jugador propietario) {
+    public Casilla(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario) {
 
         if (grupo == null) {
             System.err.println("Error: grupo no inicializado.");
@@ -47,12 +49,14 @@ public class Casilla {
         this.grupo = grupo;
         this.posicionEnTablero = posicion;
 
+        this.comprable = comprable;
+
         this.propietario = propietario;
         this.hipotecada = false;
 
         avataresContenidos = new HashMap<>();
 
-        this.alquiler = grupo.getTipo().getPrecioInicial();
+        this.alquiler = 0;
 
         edificiosContenidos = new HashMap<>();
 
@@ -78,6 +82,14 @@ public class Casilla {
 
     public void setPropietario(Jugador propietario) {
         this.propietario = propietario;
+    }
+
+    public boolean isComprable() {
+        return comprable;
+    }
+
+    public void setComprable(boolean comprable) {
+        this.comprable = comprable;
     }
 
     public boolean isHipotecada() {
