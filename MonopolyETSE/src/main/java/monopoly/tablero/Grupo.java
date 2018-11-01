@@ -44,12 +44,12 @@ public class Grupo {
                 System.exit(1);
             }
 
-            /*aux = new Casilla(c.get(1), this, comprable, c.get(0), tablero.getBanca());
+            aux = new Casilla(c.get(1), this, comprable, c.get(0), tablero.getBanca());
 
             tablero.getCasillas().add(c.get(0),aux);
             tablero.getCasillasTablero().put(c.get(1),aux);
 
-            this.casillas.add(aux);*/  // todo o sino es imposible compilar para probar algo
+            this.casillas.add(aux);
         }
     }
 
