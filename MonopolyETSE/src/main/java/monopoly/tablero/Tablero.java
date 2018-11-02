@@ -38,7 +38,9 @@ public class Tablero {
         //Se inicializan las filas de casillas mediante un bucle for
 
         for(int i = 0; i < 4; i++){
-            casillas.add(new ArrayList<Casilla>());
+            casillas.add(new ArrayList<Casilla>(10));
+            for(int j = 0; j < 10; j++)
+                casillas.get(i).add(null);
         }
 
         casillasTablero = new HashMap<String, Casilla>();

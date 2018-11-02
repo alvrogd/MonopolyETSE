@@ -39,14 +39,14 @@ public class Grupo {
                 System.err.println("Casilla incorrecta.");
                 System.exit(1);
             }
-            if(c.size() != 2){
-                System.err.println("Argumentos incorrectos.");
+            if(c.size() != 3){
+                System.err.println("Tupla de posiciones incorrecta.");
                 System.exit(1);
             }
 
             aux = new Casilla((String)c.get(2), this, comprable, 10*(int)c.get(0)+(int)c.get(1), tablero.getBanca());
 
-            tablero.getCasillas().get((int)c.get(0)).add((int)c.get(1),aux);
+            tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
             tablero.getCasillasTablero().put((String)c.get(2),aux);
 
             this.casillas.add(aux);
