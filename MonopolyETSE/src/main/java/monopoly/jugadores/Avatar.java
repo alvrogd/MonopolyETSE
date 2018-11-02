@@ -115,6 +115,8 @@ public class Avatar {
 
         identificador = identificadorAleatorio;
 
+        casillaInicial.getAvataresContenidos().put(jugador.getNombre(), this);
+
         this.tipo = tipo;
 
         movimientoEstandar = true;

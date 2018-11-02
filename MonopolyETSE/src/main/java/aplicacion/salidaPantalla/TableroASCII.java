@@ -1,9 +1,13 @@
 package aplicacion.salidaPantalla;
 
+import monopoly.jugadores.Avatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 
 import javax.swing.plaf.metal.MetalBorders;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class TableroASCII {
 
@@ -105,8 +109,8 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla izquierda
-        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, true, false, true,
-                casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+        insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, true,
+                false, true);
         // Se suma el ancho de la casilla y un separador
         posicionIterada += anchoEsquina + 1;
         posicionCasillaIterada += superior ? 1 : -1;
@@ -114,9 +118,9 @@ public class TableroASCII {
                 posicionCasillaIterada % casillasPorFila);
 
         // Se insertan las casillas intermedias
-        for (int i = 1; i < casillasPorFila - 1; i++) {
-            insertarCasilla(stringBuilder, posicionIterada, superior, !superior, false, false,
-                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+        for (int i = 1; i < casillasPorFila; i++) {
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, false,
+                    false, false);
 
             posicionIterada += anchoEsquina + 1;
             posicionCasillaIterada += superior ? 1 : -1;
@@ -125,8 +129,8 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla derecha
-        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, false, true, true,
-                casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+        insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, false,
+                true, true);
 
     }
 
@@ -140,14 +144,14 @@ public class TableroASCII {
 
             // Casilla izquierda
             casillaIterada = tablero.getCasillas().get(1).get(i);
-            insertarCasilla(stringBuilder, posicionIterada, false, false, true, false,
-                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, false, false, true,
+                    false, false);
 
             // Casilla derecha
             posicionIterada += (anchoEsquina + 9 * anchoNormal + separadoresPorFila - 2);
             casillaIterada = tablero.getCasillas().get(3).get(i);
-            insertarCasilla(stringBuilder, posicionIterada, false, false, false, true,
-                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, false, false, false,
+                    true, false);
 
             // Se sitúa en la siguiente casilla izquierda a insertar
             posicionIterada += anchoEsquina + 3 + altoNormal * caracteresPorLinea;
@@ -157,15 +161,17 @@ public class TableroASCII {
     }
 
 
-    private static void insertarCasilla(StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
-                                        boolean izquierda, boolean derecha, boolean esquina, String nombre, TipoColor
-                                                color) {
+    private static void insertarCasilla(StringBuilder stringBuilder, Casilla casilla, int posicion, boolean superior,
+                                        boolean inferior, boolean izquierda, boolean derecha, boolean esquina) {
 
         // Se pintan los límites de la casilla
         insertarLimites(stringBuilder, posicion, superior, inferior, izquierda, derecha, esquina);
 
         // Se imprime su nombre
-        insertarNombre(stringBuilder, posicion, esquina, nombre, color);
+        insertarNombre(stringBuilder, posicion, esquina, casilla.getNombre(), casilla.getGrupo().getTipo().getColor());
+
+        // Se insertan los jugadores contenidos
+        insertarJugadores(stringBuilder, posicion, esquina, casilla.getAvataresContenidos());
 
 
     }
@@ -320,13 +326,16 @@ public class TableroASCII {
             case esquinaNOS:
             case esquinaOES:
                 stringBuilder.setCharAt(posicion, esquinaNOES);
+                break;
 
             case esquinaOS:
                 stringBuilder.setCharAt(posicion, esquinaOES);
+                break;
 
             case barraVertical:
             case esquinaES:
                 stringBuilder.setCharAt(posicion, esquinaNES);
+                break;
 
             default:
                 stringBuilder.setCharAt(posicion, esquinaNE);
@@ -357,11 +366,13 @@ public class TableroASCII {
             case barraVertical:
             case esquinaOS:
                 stringBuilder.setCharAt(posicion, esquinaNOS);
+                break;
 
             case esquinaNES:
             case esquinaOES:
             case esquinaES:
                 stringBuilder.setCharAt(posicion, esquinaNOES);
+                break;
 
             default:
                 stringBuilder.setCharAt(posicion, esquinaNO);
@@ -406,7 +417,7 @@ public class TableroASCII {
             alto = altoNormal;
         }
 
-        // Y se guarda el nombr
+        // Y se guarda el nombre
 
         // Variable en la que guardar el nombre con color
         StringBuilder nombreConColor = new StringBuilder();
@@ -442,6 +453,51 @@ public class TableroASCII {
             stringBuilder.setCharAt(posicionEscritura++, nombreConColor.toString().charAt(i));
 
     }
+
+
+    private static void insertarJugadores(StringBuilder stringBuilder, int posicion, boolean esquina,
+                                          HashMap avataresContenidos) {
+
+        int ancho;
+        int alto;
+        int posicionEscritura;
+        int charLibres;
+
+        // Se obtiene los correspondientes anchos y altos de la casilla a insertar
+        if (esquina) {
+            ancho = anchoEsquina;
+            alto = altoEsquina;
+        } else {
+            ancho = anchoNormal;
+            alto = altoNormal;
+        }
+
+        // Y se guardan los avatares
+
+        Collection valores = avataresContenidos.values();
+        Iterator iterador = valores.iterator();
+
+        StringBuilder avatares = new StringBuilder();
+
+        // Se añaden los avatares
+        while (iterador.hasNext()) {
+            Avatar avatarIterado = (Avatar) iterador.next();
+            avatares.append(avatarIterado.getIdentificador());
+            avatares.append( ' ' );
+        }
+
+        // Se sitúa en la primera columna de la mitad de la casilla pintada
+        posicionEscritura = posicion + caracteresPorLinea * (alto / 2 + alto % 2) + 1;
+
+        // Se copian uno a uno los caracteres de la String creada, por lo que debe comprobarse si es menor la longitud
+        // de esta o el espacio disponible
+        int menor = (avatares.toString().length() < ancho) ? avatares.toString().length() : ancho;
+
+        for (int i = 0; i < menor; i++)
+            stringBuilder.setCharAt(posicionEscritura++, avatares.toString().charAt(i));
+
+    }
+
 
     private static void corregirEspaciado(StringBuilder stringBuilder) {
 
