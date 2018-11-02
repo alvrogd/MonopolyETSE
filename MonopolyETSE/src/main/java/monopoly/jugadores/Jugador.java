@@ -36,7 +36,7 @@ public class Jugador {
         this.fortuna = 1E99;
 
         this.propiedades = new ArrayList<>();
-        
+
     }
 
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {

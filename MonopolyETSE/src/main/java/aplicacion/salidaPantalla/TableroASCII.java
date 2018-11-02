@@ -322,6 +322,7 @@ public class TableroASCII {
         int ancho;
         int alto;
         int posicionEscritura;
+        int charLibres;
 
         // todo comprobación de que la cadena no sea demasiado larga
         // Se obtiene los correspondientes anchos y altos de la casilla a insertar
@@ -333,14 +334,29 @@ public class TableroASCII {
             alto = altoNormal;
         }
 
-        // Y se guarda el nombre
-        System.out.println("Tamaño nombre: " + nombre.length());
+        // Y se guarda el nombr
+
+        // Variable en la que guardar el nombre con color
         StringBuilder nombreConColor = new StringBuilder();
-        nombreConColor.append(color.getFondo()).append(nombre).append(TipoColor.resetAnsi.getFondo());
-        //int espaciosLibres = ancho - nombreConColor.toString().length();
-        //or( int i = 0; i < espaciosLibres / 2)
-        //nombreConColor.append(nombre);
-        System.out.println("Tamaño con color: " + nombreConColor.toString().length());
+        // Cantidad de huecos que quedarán libres en el String, los cuales se emplearán para añadir espacios
+        charLibres = ancho - nombre.length() - color.getFondo().length() - TipoColor.resetAnsi.getFondo().length();
+
+        // Color de fondo
+        nombreConColor.append(color.getFondo());
+
+        // Se añaden los espacios libres al inicio del nombre
+        for( int i = 0; i < charLibres / 2; i++ )
+            nombreConColor.append(' ');
+
+        // Nombre
+        nombreConColor.append(nombre);
+
+        // Se añaden los espacios libres al final del nombre
+        for( int i = 0; i < charLibres / 2 + charLibres % 2; i++ )
+            nombreConColor.append(' ');
+
+        // Se quita el color de fondo
+        nombreConColor.append(TipoColor.resetAnsi.getFondo());
 
         // Se sitúa en la primera columna de la primera línea libre de la casilla pintada
         posicionEscritura = posicion + caracteresPorLinea + 1;
@@ -353,45 +369,34 @@ public class TableroASCII {
         for (int i = 0; i < menor; i++)
             stringBuilder.setCharAt(posicionEscritura++, nombreConColor.toString().charAt(i));
 
-
-        /*// Se sitúa en la primera columna de la primera línea libre de la casilla pintada
-        posicionEscritura = posicion + caracteresPorLinea + 1;
-        // Ahora se desplaza de modo que el texto quede centrado
-        posicionEscritura += ( ancho - nombre.length() )/ 2;
-        // Y se guarda el nombre
-        stringBuilder.replace(posicionEscritura, posicionEscritura + nombre.length(), nombre);*/
-
     }
 
     private static void corregirEspaciado(StringBuilder stringBuilder) {
 
+        // En caso de que se encuentre un color de fondo en el String, deben añadirse los espacios tras este para que
+        // también se vean coloreados; en caso contrario, deben introducirse antes del reseteo de color
+        boolean reseteoColor = true;
+
         for (int i = 0; i < stringBuilder.toString().length(); i++) {
 
             if (stringBuilder.charAt(i) == '[') {
-                i += 4;
-                stringBuilder.insert(i, "     ");
-                i += 5;
+
+                reseteoColor = !reseteoColor;
+
+                // Si es la cadena para resetar el color, se añaden antes
+                if( !reseteoColor ) {
+                    i += 4;
+                    stringBuilder.insert(i, "     ");
+                    i += 5;
+                }
+
+                // En caso contrario, se añaden después
+                else {
+                    i -= 1;
+                    stringBuilder.insert(i, "     ");
+                    i += 10;
+                }
             }
         }
-
     }
-
-    /*private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, boolean bold) {
-
-        // Posición desde la que comenzar a insertar el límite superior
-        int posicion;
-
-        if (superior)
-            posicion = 0;
-        else
-            // Se saltan todas las líneas excepto la última, restando 1 dado que el índice inicial es 0
-            posicion = (numeroLineas - 1) * caracteresPorLinea - 1;
-
-        // Se resta 1 a caracteresPorLinea para no reemplazar el salto de línea
-        for (int i = 0; i < caracteresPorLinea - 1; i++)
-            stringBuilder.setCharAt(posicion++, '━');
-
-    }*/
-
-
 }
