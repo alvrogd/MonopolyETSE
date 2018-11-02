@@ -66,7 +66,7 @@ public class TableroASCII {
             tableroPintado.setCharAt(i, '\n');
 
         // Se insertan las filas al tablero
-        insertarFilaSuperior(tableroPintado);
+        insertarFilaSuperior(tableroPintado, tablero);
 
         corregirEspaciado(tableroPintado);
 
@@ -82,16 +82,38 @@ public class TableroASCII {
         insertarCasilla(stringBuilder, anchoEsquina + 1, true, false, false,
                 false, false, "C2", TipoColor.azulANSI);*/
         int posicionIterada = 0;
-        Casilla casillaIterada = tablero.getCasillas().get(20/10).get(20%10);
+        int posicionCasillaIterada = 20;
+        Casilla casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
+                posicionCasillaIterada%casillasPorFila);
 
         // Se inserta la casilla superior izquierda
         insertarCasilla(stringBuilder, posicionIterada, true, false, true, false,
-                true, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().get);
+                true, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+        // Se suma el ancho de la casilla y un separador
+        posicionIterada += anchoEsquina + 1;
+        posicionCasillaIterada++;
+        casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
+                posicionCasillaIterada%casillasPorFila);
 
-        for (int i = 0; i < casillasPorFila; i++) {
-            insertarCasilla(stringBuilder, );
+        // Se insertan las casillas intermedias
+        for (int i = 1; i < casillasPorFila - 1; i++) {
+            insertarCasilla(stringBuilder, posicionIterada, true, false, false, false,
+                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
 
+            posicionIterada += anchoEsquina + 1;
+            posicionCasillaIterada++;
+            casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
+                    posicionCasillaIterada%casillasPorFila);
         }
+
+        // Se inserta la casilla superior derecha
+        insertarCasilla(stringBuilder, posicionIterada, true, false, false, true,
+                true, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+        // Se suma el ancho de la casilla y un separador
+        posicionIterada += anchoEsquina + 1;
+        posicionCasillaIterada++;
+        casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
+                posicionCasillaIterada%casillasPorFila);
 
     }
 
