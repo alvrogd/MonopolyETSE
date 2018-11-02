@@ -40,6 +40,30 @@ public class Avatar {
 
 
     /* Constructores */
+    public Avatar( Jugador jugador ) {
+
+        if (jugador == null) {
+            System.err.println("Error: jugador no inicializado.");
+            System.exit(1);
+        }
+
+        this.jugador = jugador;
+        this.tablero = null;
+
+        haEstadoCarcel = false;
+        encarcelado = false;
+        turnosEnCarcel = 0;
+
+        vueltas = 0;
+        posicion = null;
+
+        identificador = 'B';
+
+        tipo = TipoAvatar.banca;
+
+        movimientoEstandar = true;
+
+    } /* Fin del constructor para la banca */
 
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 

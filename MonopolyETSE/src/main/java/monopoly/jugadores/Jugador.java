@@ -27,6 +27,17 @@ public class Jugador {
 
 
     /* Constructores */
+    public Jugador( String nombre ) {
+
+        this.nombre = nombre;
+
+        this.avatar = new Avatar(this);
+
+        this.fortuna = 1E99;
+
+        this.propiedades = new ArrayList<>();
+        
+    }
 
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 

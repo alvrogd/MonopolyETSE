@@ -5,5 +5,5 @@ public enum TipoAvatar {
     coche,
     esfinge,
     sombrero,
-    banca
+    banca;
 }
