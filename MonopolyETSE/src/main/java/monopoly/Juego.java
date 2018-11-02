@@ -22,7 +22,7 @@ public class Juego {
     /* Constructores */
     public Juego() {
 
-        banca = new Jugador("banca", TipoAvatar.banca);
+        banca = new Jugador("banca");
         turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
