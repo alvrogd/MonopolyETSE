@@ -3,6 +3,8 @@ package aplicacion.salidaPantalla;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 
+import javax.swing.plaf.metal.MetalBorders;
+
 public class TableroASCII {
 
     /* Atributos */
@@ -11,9 +13,9 @@ public class TableroASCII {
     private final static int caracteresPorUnidad = 3;
 
     // Tamaño de las casillas
-    private final static int anchoEsquina = 5 * caracteresPorUnidad;
+    private final static int anchoEsquina = 7 * caracteresPorUnidad;
     private final static int altoEsquina = 1 * caracteresPorUnidad;
-    private final static int anchoNormal = 5 * caracteresPorUnidad;
+    private final static int anchoNormal = 7 * caracteresPorUnidad;
     private final static int altoNormal = 1 * caracteresPorUnidad;
 
     // Número de casillas por cada fila
@@ -67,6 +69,8 @@ public class TableroASCII {
 
         // Se insertan las filas al tablero
         insertarFila(true, tableroPintado, tablero);
+        insertarFila(false, tableroPintado, tablero);
+        insertarColumnas(tableroPintado, tablero);
 
         corregirEspaciado(tableroPintado);
 
@@ -87,26 +91,27 @@ public class TableroASCII {
         Casilla casillaIterada;
 
         // Si es la fila superior
-        if( superior ) {
+        if (superior) {
             posicionIterada = 0;
             posicionCasillaIterada = 20;
             casillaIterada = tablero.getCasillas().get(posicionCasillaIterada / casillasPorFila).get(
                     posicionCasillaIterada % casillasPorFila);
         } else {
-            posicionIterada = 0;
+            posicionIterada = (altoEsquina + 9 * altoNormal + separadoresPorFila - 2) * caracteresPorLinea;
+            //posicionIterada = 1220 + caracteresPorLinea;
             posicionCasillaIterada = 10;
             casillaIterada = tablero.getCasillas().get(posicionCasillaIterada / casillasPorFila).get(
                     posicionCasillaIterada % casillasPorFila);
         }
 
         // Se inserta la casilla izquierda
-        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, true, false,true,
+        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, true, false, true,
                 casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
         // Se suma el ancho de la casilla y un separador
         posicionIterada += anchoEsquina + 1;
         posicionCasillaIterada += superior ? 1 : -1;
-        casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
-                posicionCasillaIterada%casillasPorFila);
+        casillaIterada = tablero.getCasillas().get(posicionCasillaIterada / casillasPorFila).get(
+                posicionCasillaIterada % casillasPorFila);
 
         // Se insertan las casillas intermedias
         for (int i = 1; i < casillasPorFila - 1; i++) {
@@ -115,13 +120,39 @@ public class TableroASCII {
 
             posicionIterada += anchoEsquina + 1;
             posicionCasillaIterada += superior ? 1 : -1;
-            casillaIterada = tablero.getCasillas().get(posicionCasillaIterada/casillasPorFila).get(
-                    posicionCasillaIterada%casillasPorFila);
+            casillaIterada = tablero.getCasillas().get(posicionCasillaIterada / casillasPorFila).get(
+                    posicionCasillaIterada % casillasPorFila);
         }
 
         // Se inserta la casilla derecha
-        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, false, true,true,
+        insertarCasilla(stringBuilder, posicionIterada, superior, !superior, false, true, true,
                 casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+
+    }
+
+    private static void insertarColumnas(StringBuilder stringBuilder, Tablero tablero) {
+
+        int posicionIterada = (altoEsquina + 1) * caracteresPorLinea;
+        Casilla casillaIterada = null;
+
+        // Cada iteración inserta una fila de las columnas
+        for (int i = 9; i > 0; i--) {
+
+            // Casilla izquierda
+            casillaIterada = tablero.getCasillas().get(1).get(i);
+            insertarCasilla(stringBuilder, posicionIterada, false, false, true, false,
+                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+
+            // Casilla derecha
+            posicionIterada += (anchoEsquina + 9 * anchoNormal + separadoresPorFila - 2);
+            casillaIterada = tablero.getCasillas().get(3).get(i);
+            insertarCasilla(stringBuilder, posicionIterada, false, false, false, true,
+                    false, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().getColor());
+
+            // Se sitúa en la siguiente casilla izquierda a insertar
+            posicionIterada += anchoEsquina + 3 + altoNormal * caracteresPorLinea;
+        }
+
 
     }
 
