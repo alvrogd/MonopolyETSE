@@ -1,5 +1,6 @@
 package aplicacion.salidaPantalla;
 
+import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 
 public class TableroASCII {
@@ -43,14 +44,14 @@ public class TableroASCII {
 
     public static String pintaTablero(Tablero tablero, int escalado) {
 
-        /*if (tablero == null) {
+        if (tablero == null) {
             System.out.println("Error: tablero no inicializado");
             return (null);
         }
         if (escalado <= 0) {
             System.out.println("Error: el escalado debe ser mayor que 0");
             return (null);
-        }*/
+        }
 
         // String a devolver
         StringBuilder tableroPintado = new StringBuilder();
@@ -69,18 +70,28 @@ public class TableroASCII {
 
         corregirEspaciado(tableroPintado);
 
-
         return (tableroPintado.toString());
 
     }
 
 
-    private static void insertarFilaSuperior(StringBuilder stringBuilder) {
+    private static void insertarFilaSuperior(StringBuilder stringBuilder, Tablero tablero) {
 
-        insertarCasilla(stringBuilder, 0, true, false, true, false,
+        /*insertarCasilla(stringBuilder, 0, true, false, true, false,
                 true, "C1", TipoColor.rojoANSI);
         insertarCasilla(stringBuilder, anchoEsquina + 1, true, false, false,
-                false, false, "C2", TipoColor.azulANSI);
+                false, false, "C2", TipoColor.azulANSI);*/
+        int posicionIterada = 0;
+        Casilla casillaIterada = tablero.getCasillas().get(20/10).get(20%10);
+
+        // Se inserta la casilla superior izquierda
+        insertarCasilla(stringBuilder, posicionIterada, true, false, true, false,
+                true, casillaIterada.getNombre(), casillaIterada.getGrupo().getTipo().get);
+
+        for (int i = 0; i < casillasPorFila; i++) {
+            insertarCasilla(stringBuilder, );
+
+        }
 
     }
 
@@ -345,14 +356,14 @@ public class TableroASCII {
         nombreConColor.append(color.getFondo());
 
         // Se añaden los espacios libres al inicio del nombre
-        for( int i = 0; i < charLibres / 2; i++ )
+        for (int i = 0; i < charLibres / 2; i++)
             nombreConColor.append(' ');
 
         // Nombre
         nombreConColor.append(nombre);
 
         // Se añaden los espacios libres al final del nombre
-        for( int i = 0; i < charLibres / 2 + charLibres % 2; i++ )
+        for (int i = 0; i < charLibres / 2 + charLibres % 2; i++)
             nombreConColor.append(' ');
 
         // Se quita el color de fondo
@@ -384,7 +395,7 @@ public class TableroASCII {
                 reseteoColor = !reseteoColor;
 
                 // Si es la cadena para resetar el color, se añaden antes
-                if( !reseteoColor ) {
+                if (!reseteoColor) {
                     i += 4;
                     stringBuilder.insert(i, "     ");
                     i += 5;

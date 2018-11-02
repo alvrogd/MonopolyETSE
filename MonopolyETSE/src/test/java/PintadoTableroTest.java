@@ -1,10 +1,11 @@
 import aplicacion.salidaPantalla.TableroASCII;
+import monopoly.Juego;
 import org.junit.Before;
 import org.junit.Test;
 
 public class PintadoTableroTest {
 
-    /*private Juego juego;
+    private Juego juego;
 
     @Before
     public void setUp()
@@ -13,16 +14,16 @@ public class PintadoTableroTest {
     }
 
     @Test
-    public void veinteTiradas()
+    public void imprimirTablero()
     {
         TableroASCII.pintaTablero(juego.getTablero(), 1);
-    }*/
+    }
 
 
-    @Test
+    /*@Test
     public void imprimirTablero()
     {
         System.out.println(TableroASCII.pintaTablero(null, 1));
-    }
+    }*/
 
 }
