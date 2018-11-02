@@ -4,7 +4,6 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 
-import javax.swing.plaf.metal.MetalBorders;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
