@@ -8,7 +8,10 @@ public class Output {
 
     public static void imprimirCabeceraJugador(Jugador jugador){
 
-        String impresion = "╭";
+        StringBuilder impresion = new StringBuilder();
+
+        impresion.append("╭");
+
         Scanner entrada = new Scanner(System.in);
         String comando;
         int tamNombre = jugador.getNombre().length();
@@ -18,37 +21,50 @@ public class Output {
         for(int i = 0; i <= tamNombre + 10 + digitosFortuna; i++){
 
             if(i == 1 || i == tamNombre+4 || i == tamNombre + 10 + digitosFortuna)
-                impresion += "┬";
+                impresion.append("┬");
             else
-                impresion += "─";
+                impresion.append("─");
 
         }
 
 
-        impresion += "─╮";
-        impresion += "\n";
-        impresion += "│ │ ";
-        impresion += jugador.getNombre();
-        impresion += " │ ";
-        impresion += (int)jugador.getFortuna();
-        impresion += "K $";
-        impresion += " │ │";
-        impresion += "\n";
-
-        impresion += "╰";
+        impresion.append("─╮");
+        impresion.append("\n");
+        impresion.append("│ │ ");
+        impresion.append(jugador.getNombre());
+        impresion.append(" │ ");
+        impresion.append(TipoColor.VerdeANSI.getFondo());
+        impresion.append((int)jugador.getFortuna());
+        impresion.append("K $");
+        impresion.append(TipoColor.resetAnsi.getFondo());
+        impresion.append(" │ │");
+        impresion.append("\n");
+        impresion.append("╰");
 
         for(int i = 0; i <= tamNombre + 10 + digitosFortuna; i++){
 
-            if(i == 1 || i == tamNombre+4 || i == tamNombre + 10 + digitosFortuna)
-                impresion += "┴";
+            if(i == tamNombre+4 || i == tamNombre + 10 + digitosFortuna)
+                impresion.append("┴");
+
+            else if(i == 1)
+                impresion.append("┼");
+
             else
-                impresion += "─";
+                impresion.append("─");
 
         }
 
-        impresion += "─╯";
+        impresion.append("─╯");
 
         System.out.println(impresion);
+    }
+
+    public static void imprimirEntradaComando(){
+
+        Scanner entrada = new Scanner(System.in);
+
+        System.out.println("  ╰──> Comando: ");
+
     }
 
 }
