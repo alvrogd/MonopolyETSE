@@ -25,6 +25,7 @@ public class OutputTest {
         System.out.println(jugador.getFortuna());
 
         Output.imprimirCabeceraJugador(jugador);
+        System.out.println(Output.imprimirEntradaComando());
 
     }
 
