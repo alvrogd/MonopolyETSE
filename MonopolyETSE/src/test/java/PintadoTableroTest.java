@@ -19,6 +19,7 @@ public class PintadoTableroTest {
                 juego.getTablero().getCasillas().get(0).get(0)));
         juego.addJugador(new Jugador( "Yisucristo", juego.getTablero(), TipoAvatar.coche,
                 juego.getTablero().getCasillas().get(0).get(0)));
+        juego.getTablero().getCasillas().get(1).get(1).setPropietario(juego.getJugadores().get("Pepe"));
     }
 
     @Test

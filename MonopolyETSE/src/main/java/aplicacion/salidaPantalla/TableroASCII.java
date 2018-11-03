@@ -4,6 +4,7 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -103,7 +104,7 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla izquierda
-        insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, true,
+        insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, superior, !superior, true,
                 false);
 
         // Se suman el ancho de la casilla y un separador, para insertar la casilla contigua desde la posición inicial
@@ -116,7 +117,7 @@ public class TableroASCII {
 
         // Se insertan las casillas intermedias
         for (int i = 1; i < casillasPorFila; i++) {
-            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, false,
+            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, superior, !superior, false,
                     false);
 
             posicionIterada += anchoCasilla + 1;
@@ -126,7 +127,7 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla derecha
-        insertarCasilla(stringBuilder, casillaIterada, posicionIterada, superior, !superior, false,
+        insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, superior, !superior, false,
                 true);
 
     }
@@ -146,8 +147,8 @@ public class TableroASCII {
             // Las casillas izquierdas son insertadas de mayor a menor en función del orden del tablero; las derechas
             // son insertadas de menor a mayor
             casillaIterada = tablero.getCasillas().get(1).get(i);
-            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, false, false, true,
-                    false);
+            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, false, false,
+                    true,false);
 
             // Casilla derecha
 
@@ -155,8 +156,8 @@ public class TableroASCII {
             // intermedios
             posicionIterada += ((casillasPorLado - 1) * anchoCasilla + separadoresPorLado - 2);
             casillaIterada = tablero.getCasillas().get(3).get(casillasPorFila - i);
-            insertarCasilla(stringBuilder, casillaIterada, posicionIterada, false, false, false,
-                    true);
+            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, false, false,
+                    false,true);
 
             // Se sitúa en la siguiente casilla izquierda a insertar (1 separador + ancho de la casilla + 1 separador +
             // salto de línea + líneas del alto de la casilla)
@@ -167,8 +168,8 @@ public class TableroASCII {
     }
 
 
-    private static void insertarCasilla(StringBuilder stringBuilder, Casilla casilla, int posicion, boolean superior,
-                                        boolean inferior, boolean izquierda, boolean derecha) {
+    private static void insertarCasilla(StringBuilder stringBuilder, Tablero tablero, Casilla casilla, int posicion,
+                                        boolean superior, boolean inferior, boolean izquierda, boolean derecha) {
 
         // Se pintan los límites de la casilla
         insertarLimites(stringBuilder, posicion, superior, inferior, izquierda, derecha);
@@ -179,6 +180,8 @@ public class TableroASCII {
         // Se insertan los jugadores contenidos
         insertarJugadores(stringBuilder, posicion, casilla.getAvataresContenidos());
 
+        // Se inserta el nombre de su propietario o, en su defecto, el precio de compra
+        insertarPropietario(stringBuilder, tablero, posicion, casilla);
 
     }
 
@@ -462,6 +465,42 @@ public class TableroASCII {
 
         for (int i = 0; i < menor; i++)
             stringBuilder.setCharAt(posicionEscritura++, avatares.charAt(i));
+
+    }
+
+
+    private static void insertarPropietario(StringBuilder stringBuilder, Tablero tablero, int posicion, Casilla
+            casilla) {
+
+        int posicionEscritura;
+        StringBuilder propietario = new StringBuilder();
+
+        // Si la casilla no tiene un propietario
+        if (casilla.getPropietario().equals(tablero.getBanca())) {
+
+            // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
+            // de suerte o de comunidad)
+            double precio = casilla.getGrupo().getPrecio();
+            if( precio <= 0) return;
+            //DecimalFormat decimal = new DecimalFormat(".##");
+            //propietario.append(decimal.format(precio)).append("K €");
+            propietario.append(String.format("%.2f", precio)).append("K €");    // Supone un incremento de 5 ms
+
+        }
+
+        else
+            propietario.append("Prop.: ").append(casilla.getPropietario().getNombre());
+
+
+        // Se sitúa en la esquina inferior izquierda de la casilla (no en el separador)
+        posicionEscritura = posicion + 1 + altoCasilla * caracteresPorLinea;
+
+        // Se copian uno a uno los caracteres de la String creada, por lo que debe comprobarse si es menor la longitud
+        // de esta o el espacio disponible
+        int menor = (propietario.length() < anchoCasilla) ? propietario.length() : anchoCasilla;
+
+        for (int i = 0; i < menor; i++)
+            stringBuilder.setCharAt(posicionEscritura++, propietario.charAt(i));
 
     }
 
