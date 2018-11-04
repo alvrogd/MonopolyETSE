@@ -19,7 +19,8 @@ public enum TipoColor {
     AzulANSI( "\u001B[34m"),
     VioletaANSI( "\u001B[35m" ),
     CianANSI( "\u001B[36m" ),
-    BlancoANSI( "\u001B[37m" );
+    BlancoANSI( "\u001B[37m" ),
+    Negrita("\u001B[1m");
 
     private final String fondo;
 

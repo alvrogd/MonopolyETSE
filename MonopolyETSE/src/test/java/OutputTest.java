@@ -30,7 +30,7 @@ public class OutputTest {
 
         Aplicacion app = new Aplicacion();
 
-        app.introducirComando(jugador);
+        app.introducirComando();
     }
 
 }

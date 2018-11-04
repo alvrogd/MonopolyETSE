@@ -1,8 +1,10 @@
 package aplicacion;
 
 import aplicacion.salidaPantalla.Output;
+import aplicacion.salidaPantalla.TipoColor;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.TipoAvatar;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,23 +19,25 @@ public class Aplicacion {
 
     }
 
-    public void introducirComando(Jugador jugador){
+    public void introducirComando(){
 
         Scanner entrada = new Scanner(System.in);
         String linea;
 
-        Output.imprimirCabeceraJugador(jugador);
+        if(juego.getTurno() == null){
+            System.err.println("Juego no iniciado.");
+            return;
+        }
+
+        Output.imprimirCabeceraJugador(juego.getTurno());
         Output.imprimirEntradaComando();
 
         //linea = entrada.nextLine();
 
-        ArrayList<Object> comando = toComando("listar jugadores");
+        interpretarComando(toComando("crear jugador Francisco coche"));
 
-        if(comando.get(0) != null) {
-            System.out.println(((TipoComando) comando.get(0)).getComando());
-            if(comando.size() == 2)
-                System.out.println((String) comando.get(1));
-        }
+        //System.out.println(juego.getJugadores().get("Francisco").getNombre());
+        //System.out.println(juego.getJugadores().get("Francisco").getAvatar().getTipo());
 
     }
 
@@ -67,19 +71,20 @@ public class Aplicacion {
 
         switch(comando.get(0)){
             case "crear":
-                if(argc < 2){
+                if(argc < 3){
                     //todo output errores
-                    System.err.println("Opción del comando -crear- incorrecta.");
+                    Output.errorComando("Opción del comando -crear- incorrecta.");
                     salida.add(null);
                     break;
                 }
                 switch(comando.get(1)){
                     case "jugador":
                         salida.add(TipoComando.crearJugador);
+                        salida.add(comando.get(2));
                         break;
 
                     default:
-                        System.err.println("Opción del comando -crear- incorrecta.");
+                        Output.errorComando("Opción del comando -crear- incorrecta.");
                         salida.add(null);
                         break;
                 }
@@ -91,7 +96,7 @@ public class Aplicacion {
 
             case "listar":
                 if(argc < 2){
-                    System.err.println("Opción del comando -listar- incorrecta");
+                    Output.errorComando("Opción del comando -listar- incorrecta");
                     salida.add(null);
                     break;
                 }
@@ -109,7 +114,7 @@ public class Aplicacion {
                         break;
 
                     default:
-                        System.err.println("Opción del comando -listar- incorrecta.");
+                        Output.errorComando("Opción del comando -listar- incorrecta.");
                         salida.add(null);
                         break;
                 }
@@ -117,7 +122,7 @@ public class Aplicacion {
 
             case "lanzar":
                 if(argc < 2){
-                    System.err.println("Opción del comando -lanzar- incorrecta.");
+                    Output.errorComando("Opción del comando -lanzar- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -127,7 +132,7 @@ public class Aplicacion {
                         break;
 
                     default:
-                        System.err.println("Opción del comando -lanzar- incorrecta.");
+                        Output.errorComando("Opción del comando -lanzar- incorrecta.");
                         salida.add(null);
                         break;
                 }
@@ -135,7 +140,7 @@ public class Aplicacion {
 
             case "acabar":
                 if(argc < 2){
-                    System.err.println("Opción del comando -acabar- incorrecta.");
+                    Output.errorComando("Opción del comando -acabar- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -145,7 +150,7 @@ public class Aplicacion {
                         break;
 
                     default:
-                        System.err.println("Opción del comando -acabar- incorrecta.");
+                        Output.errorComando("Opción del comando -acabar- incorrecta.");
                         salida.add(null);
                         break;
                 }
@@ -153,7 +158,7 @@ public class Aplicacion {
 
             case "salir":
                 if(argc < 2){
-                    System.err.println("Opción del comando -salir- incorrecta.");
+                    Output.errorComando("Opción del comando -salir- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -163,7 +168,7 @@ public class Aplicacion {
                         break;
 
                     default:
-                        System.err.println("Opción del comando -salir- incorrecta.");
+                        Output.errorComando("Opción del comando -salir- incorrecta.");
                         salida.add(null);
                         break;
                 }
@@ -171,7 +176,7 @@ public class Aplicacion {
 
             case "describir":
                 if(argc < 2){
-                    System.err.println("Opción del comando -describir- incorrecta.");
+                    Output.errorComando("Opción del comando -describir- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -188,7 +193,7 @@ public class Aplicacion {
 
                     case "avatar":
                         if(argc < 3){
-                            System.err.println("Opción del comando -describir- incorrecta.");
+                            Output.errorComando("Opción del comando -describir- incorrecta.");
                             salida.add(null);
                             break;
                         }
@@ -209,7 +214,7 @@ public class Aplicacion {
 
             case "comprar":
                 if(argc < 3){
-                    System.err.println("Opción del comando -comprar- incorrecta.");
+                    Output.errorComando("Opción del comando -comprar- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -223,7 +228,7 @@ public class Aplicacion {
 
             case "ver":
                 if(argc < 3){
-                    System.err.println("Opción del comando -ver- incorrecta.");
+                    Output.errorComando("Opción del comando -ver- incorrecta.");
                     salida.add(null);
                     break;
                 }
@@ -233,19 +238,73 @@ public class Aplicacion {
                         break;
 
                     default:
-                        System.err.println("Opción del comando -ver- incorrecta.");
+                        Output.errorComando("Opción del comando -ver- incorrecta.");
                         break;
                 }
                 break;
 
             default:
-                System.err.println("Comando incorrecto.");
+                Output.errorComando("Comando incorrecto.");
                 salida.add(null);
                 break;
 
         }
 
         return salida;
+    }
+
+    private void interpretarComando(ArrayList<Object> comando){
+
+        if((TipoComando)comando.get(0) == TipoComando.crearJugador) {
+            String aux = "";
+            char[] argc = ((String) comando.get(1)).toCharArray();
+            int tamArg = ((String) comando.get(1)).length();
+
+            ArrayList<String> argumentoSeparados = new ArrayList<>();
+
+            for (int i = 0; i < tamArg; i++) {
+
+                if (argc[i] == ' ') {
+                    argumentoSeparados.add(aux);
+                    aux = "";
+                } else {
+                    aux += argc[i];
+                }
+
+            }
+            argumentoSeparados.add(aux);
+
+            if(argumentoSeparados.size() < 2){
+
+                Output.errorComando("Introduzca el avatar después del nombre en la opción «crear»");
+                return;
+            }
+
+            TipoAvatar avatar = TipoAvatar.toAvatar((String) argumentoSeparados.get(1));
+
+            if(avatar == null){
+
+                Output.errorComando("Avatar incorrecto en la opción -crear-");
+
+                ArrayList<String> sugerencia = new ArrayList<>();
+
+                sugerencia.add("Los avatares disponibles son los siguientes:");
+                sugerencia.add("    -> Coche.");
+                sugerencia.add("    -> Esfinge.");
+                sugerencia.add("    -> Pelota.");
+                sugerencia.add("    -> Sombrero.");
+
+                Output.sugerencia(sugerencia);
+                return;
+            }
+
+            Jugador jugador = new Jugador((String) argumentoSeparados.get(0), juego.getTablero(),
+                    avatar, juego.getTablero().getCasillas().get(0).get(0));
+
+            juego.addJugador(jugador);
+
+
+        }
     }
 
 }
