@@ -56,6 +56,10 @@ public class Juego {
         return turno;
     }
 
+    public boolean isIniciado() {
+        return iniciado;
+    }
+
     /* Setters */
     public void addJugador(Jugador jugador) {
 
@@ -69,9 +73,6 @@ public class Juego {
         tablero.getAvataresContenidos().put(jugador.getAvatar().getIdentificador(), jugador.getAvatar());
         //Para meter los avatares en el tablero, para cuando esté listo Jugador
     }
-
-
-
 
     /* Métodos */
 

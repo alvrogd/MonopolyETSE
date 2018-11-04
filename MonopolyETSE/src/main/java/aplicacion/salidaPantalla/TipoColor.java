@@ -4,6 +4,9 @@ public enum TipoColor {
 
     // Colores
     resetAnsi( "\u001B[00m" ),
+
+    //todo cambiar y meter todo en uno
+    //Color de fondo
     negroANSI( "\u001B[40m" ),
     rojoANSI( "\u001B[41m" ),
     verdeANSI( "\u001B[42m" ),
@@ -12,6 +15,8 @@ public enum TipoColor {
     violetaANSI( "\u001B[45m" ),
     cianANSI( "\u001B[46m" ),
     blancoANSI( "\u001B[47m" ),
+
+    //Color de letra
     NegroANSI( "\u001B[30m" ),
     RojoANSI( "\u001B[31m" ),
     VerdeANSI( "\u001B[32m" ),

@@ -26,6 +26,7 @@ public enum TipoGrupo {
 
     private final int precioInicial;
     private final TipoColor color;
+
     private TipoGrupo(TipoColor color){
         this.precioInicial = -1;
         this.color = color;

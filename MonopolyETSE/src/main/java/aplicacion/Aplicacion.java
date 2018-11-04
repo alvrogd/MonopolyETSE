@@ -13,35 +13,41 @@ public class Aplicacion {
 
     private Juego juego;
 
-    public Aplicacion(){
+    public Aplicacion() {
 
         juego = new Juego();
 
     }
 
-    public void introducirComando(){
+    public void introducirComando() {
 
         Scanner entrada = new Scanner(System.in);
         String linea;
 
-        if(juego.getTurno() == null){
+        if (juego.getTurno() == null) {
             System.err.println("Juego no iniciado.");
             return;
         }
 
+        interpretarComando(toComando("crear jugador Francisco sombrero"));
+
+        juego.iniciarJuego();
+
+        interpretarComando(toComando("crear jugador Alvaro sombrero"));
+
         Output.imprimirCabeceraJugador(juego.getTurno());
         Output.imprimirEntradaComando();
 
-        //linea = entrada.nextLine();
+        ArrayList<String> mens = new ArrayList<>();
 
-        interpretarComando(toComando("crear jugador Francisco coche"));
+        //linea = entrada.nextLine();
 
         //System.out.println(juego.getJugadores().get("Francisco").getNombre());
         //System.out.println(juego.getJugadores().get("Francisco").getAvatar().getTipo());
 
     }
 
-    private ArrayList<Object> toComando(String linea){
+    private ArrayList<Object> toComando(String linea) {
 
         ArrayList<Object> salida = new ArrayList<>();
 
@@ -54,7 +60,7 @@ public class Aplicacion {
 
         int contador = 0, i;
 
-        for(i = 0; i < tam; i++){
+        for (i = 0; i < tam; i++) {
 
             if (cadena[i] == ' ' && contador < 2) {
                 comando.add(aux);
@@ -69,15 +75,15 @@ public class Aplicacion {
 
         argc = comando.size();
 
-        switch(comando.get(0)){
+        switch (comando.get(0)) {
             case "crear":
-                if(argc < 3){
+                if (argc < 3) {
                     //todo output errores
                     Output.errorComando("Opción del comando -crear- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "jugador":
                         salida.add(TipoComando.crearJugador);
                         salida.add(comando.get(2));
@@ -95,12 +101,12 @@ public class Aplicacion {
                 break;
 
             case "listar":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -listar- incorrecta");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "jugadores":
                         salida.add(TipoComando.listarJugadores);
                         break;
@@ -121,12 +127,12 @@ public class Aplicacion {
                 break;
 
             case "lanzar":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -lanzar- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "dados":
                         salida.add(TipoComando.lanzarDados);
                         break;
@@ -139,12 +145,12 @@ public class Aplicacion {
                 break;
 
             case "acabar":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -acabar- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "turno":
                         salida.add(TipoComando.finalizarTurno);
                         break;
@@ -157,12 +163,12 @@ public class Aplicacion {
                 break;
 
             case "salir":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -salir- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "carcel":
                         salida.add(TipoComando.salirCarcel);
                         break;
@@ -175,14 +181,14 @@ public class Aplicacion {
                 break;
 
             case "describir":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -describir- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "jugador":
-                        if(argc < 3){
+                        if (argc < 3) {
                             System.err.println("Opción del comando -describir- incorrecta.");
                             salida.add(null);
                             break;
@@ -192,7 +198,7 @@ public class Aplicacion {
                         break;
 
                     case "avatar":
-                        if(argc < 3){
+                        if (argc < 3) {
                             Output.errorComando("Opción del comando -describir- incorrecta.");
                             salida.add(null);
                             break;
@@ -203,7 +209,7 @@ public class Aplicacion {
 
                     default:
                         salida.add(TipoComando.describirCasilla);
-                        if(argc < 3){
+                        if (argc < 3) {
                             salida.add(comando.get(1));
                         } else {
                             salida.add(comando.get(1) + " " + comando.get(2));
@@ -213,12 +219,12 @@ public class Aplicacion {
                 break;
 
             case "comprar":
-                if(argc < 3){
+                if (argc < 3) {
                     Output.errorComando("Opción del comando -comprar- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     default:
                         salida.add(TipoComando.comprarPropiedad);
                         salida.add(comando.get(1));
@@ -227,12 +233,12 @@ public class Aplicacion {
                 break;
 
             case "ver":
-                if(argc < 3){
+                if (argc < 3) {
                     Output.errorComando("Opción del comando -ver- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "tablero":
                         salida.add(TipoComando.verTablero);
                         break;
@@ -253,37 +259,64 @@ public class Aplicacion {
         return salida;
     }
 
-    private void interpretarComando(ArrayList<Object> comando){
+    private void interpretarComando(ArrayList<Object> comando) {
 
-        if((TipoComando)comando.get(0) == TipoComando.crearJugador) {
+        //comando -> posicion 0: TipoComando; posicion 1: String con los argumentos
+
+        if ((TipoComando) comando.get(0) == TipoComando.crearJugador) {
             String aux = "";
+
+            //Se pasan los argumentos a un array de caracteres
             char[] argc = ((String) comando.get(1)).toCharArray();
+
+            //Longitud del String
             int tamArg = ((String) comando.get(1)).length();
 
+            //En argumentoSeparados se irán añadiendo los argumentos separados por palabras
             ArrayList<String> argumentoSeparados = new ArrayList<>();
 
+            //Se comprueba que el juego no esté iniciado.
+            if (juego.isIniciado()) {
+
+                Output.errorComando("El juego ya está iniciado. No se pueden añadir más jugadores.");
+                return;
+
+            }
+
+            //Se recorre el array de caracteres
             for (int i = 0; i < tamArg; i++) {
 
                 if (argc[i] == ' ') {
+                    //Si se ha llegado a un espacio se mete la palabra en el ArrayList argumentoSeparados
                     argumentoSeparados.add(aux);
                     aux = "";
                 } else {
+                    //Se va creando la palabra añadiendo los caracteres a aux
                     aux += argc[i];
                 }
 
             }
+
+            //Al salir del bucle la última palabra también se añade al ArrayList.
             argumentoSeparados.add(aux);
 
-            if(argumentoSeparados.size() < 2){
+            //Se comprueba que haya al menos dos argumentos, ya que hay que introducir nombre de usuario y el avatar
+            if (argumentoSeparados.size() < 2) {
 
+                //Se manda un mensaje de error y finaliza
                 Output.errorComando("Introduzca el avatar después del nombre en la opción «crear»");
                 return;
             }
 
+            //Con la función toAvatar se pasa el String donde está el avatar a TipoAvatar, en caso de que no exista el
+            //tipo avatar será igual a null.
             TipoAvatar avatar = TipoAvatar.toAvatar((String) argumentoSeparados.get(1));
 
-            if(avatar == null){
+            //Se comprueba que se ha introducido bien el tipo de avatar
+            if (avatar == null) {
 
+                //En caso de que el avatar sea incorrecta se manda un error al usuario y una sugerencia con los diversos
+                //tipos de avatares
                 Output.errorComando("Avatar incorrecto en la opción -crear-");
 
                 ArrayList<String> sugerencia = new ArrayList<>();
@@ -295,12 +328,16 @@ public class Aplicacion {
                 sugerencia.add("    -> Sombrero.");
 
                 Output.sugerencia(sugerencia);
+
                 return;
             }
 
+            //Si todas las comprobaciones han ido bien, se creará el jugador con sus parámetros y como casilla inicial
+            //la salida.
             Jugador jugador = new Jugador((String) argumentoSeparados.get(0), juego.getTablero(),
                     avatar, juego.getTablero().getCasillas().get(0).get(0));
 
+            //Se añade el jugador al juego
             juego.addJugador(jugador);
 
 
