@@ -29,11 +29,10 @@ public class Aplicacion {
             return;
         }
 
-        interpretarComando(toComando("crear jugador Francisco sombrero"));
-
-        juego.iniciarJuego();
-
+        interpretarComando(toComando("crear jugador Francisco sombero"));
+        
         interpretarComando(toComando("crear jugador Alvaro sombrero"));
+        juego.iniciarJuego();
 
         Output.imprimirCabeceraJugador(juego.getTurno());
         Output.imprimirEntradaComando();

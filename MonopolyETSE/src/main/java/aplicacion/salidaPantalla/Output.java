@@ -250,7 +250,7 @@ public class Output {
 
         caracteresContar += opcion.length();
 
-        impresion.append(color.getFondo());
+        impresion.append(color.getLetra());
         impresion.append("\n╔");
 
         for(int i = 0; i < max+2*ancho+caracteresContar; i++){
@@ -276,11 +276,11 @@ public class Output {
 
                 if (i == 0) {
 
-                    impresion.append(color.getFondo());
-                    impresion.append(TipoColor.Negrita.getFondo());
+                    impresion.append(color.getLetra());
+                    impresion.append(TipoColor.Negrita.getLetra());
                     impresion.append(opcion);
-                    impresion.append(TipoColor.resetAnsi.getFondo());
-                    impresion.append(color.getFondo());
+                    impresion.append(TipoColor.resetAnsi.getLetra());
+                    impresion.append(color.getLetra());
                     impresion.append(mensaje.get(i));
 
                     for (int j = 0; j < ancho; j++) {
@@ -314,7 +314,7 @@ public class Output {
             impresion.append("═");
         }
 
-        impresion.append("╝").append(TipoColor.resetAnsi.getFondo()).append("\n");
+        impresion.append("╝").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
         System.out.println(impresion);
     }
@@ -322,21 +322,21 @@ public class Output {
     public static void errorComando(String error){
         ArrayList<String> errores = new ArrayList<>();
         errores.add(error);
-        imprimirRecuadro(errores, "error", TipoColor.RojoANSI, 3, 1);
+        imprimirRecuadro(errores, "error", TipoColor.rojoANSI, 3, 1);
     }
 
     public static void errorComando(ArrayList<String> error){
-        imprimirRecuadro(error, "error", TipoColor.RojoANSI, 3, 1);
+        imprimirRecuadro(error, "error", TipoColor.rojoANSI, 3, 1);
     }
 
     public static void sugerencia(String sugerencia){
         ArrayList<String> sugerencias = new ArrayList<>();
         sugerencias.add(sugerencia);
-        imprimirRecuadro(sugerencias, "sugerencia", TipoColor.VerdeANSI, 3, 1);
+        imprimirRecuadro(sugerencias, "sugerencia", TipoColor.verdeANSI, 3, 1);
     }
 
     public static void sugerencia(ArrayList<String> sugerencia){
-        imprimirRecuadro(sugerencia, "sugerencia", TipoColor.VerdeANSI, 3, 1);
+        imprimirRecuadro(sugerencia, "sugerencia", TipoColor.verdeANSI, 3, 1);
     }
 
 

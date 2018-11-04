@@ -77,12 +77,16 @@ public class Juego {
     /* Métodos */
 
     public void iniciarJuego() {
+        if(jugadores.isEmpty()){
+            System.err.println("No ha introducido ningún jugador");
+            return;
+        }
         if (!iniciado) {
             iniciado = true;
             iterador = nombresJugadores.iterator();
             turno = jugadores.get(iterador.next());
         } else {
-            System.out.println("El juego ya está iniciado");
+            System.err.println("El juego ya está iniciado");
             return;
         }
     }
