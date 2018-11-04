@@ -480,7 +480,7 @@ public class TableroASCII {
 
             // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
             // de suerte o de comunidad)
-            double precio = casilla.getGrupo().getPrecio();
+            int precio = casilla.getGrupo().getPrecio();
             if( precio <= 0) return;
             //DecimalFormat decimal = new DecimalFormat(".##");
             //propietario.append(decimal.format(precio)).append("K €");
