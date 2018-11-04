@@ -27,16 +27,17 @@ public class Output {
 
         }
 
+        //todo varios appends
 
-        impresion.append("─╮");
-        impresion.append("\n");
-        impresion.append("│ │ ");
+        impresion.append("─╮\n│ │ ");
         impresion.append(jugador.getNombre());
         impresion.append(" │ ");
+
         impresion.append(TipoColor.VerdeANSI.getFondo());
         impresion.append((int)jugador.getFortuna());
-        impresion.append("K $");
+        impresion.append("K €");
         impresion.append(TipoColor.resetAnsi.getFondo());
+
         impresion.append(" │ │");
         impresion.append("\n");
         impresion.append("╰");
@@ -63,7 +64,7 @@ public class Output {
 
         Scanner entrada = new Scanner(System.in);
 
-        System.out.println("  ╰──> Comando: ");
+        System.out.println("  ╰──> Acción: ");
 
     }
 

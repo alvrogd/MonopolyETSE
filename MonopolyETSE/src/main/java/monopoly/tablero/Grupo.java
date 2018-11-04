@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Grupo {
 
     private final TipoGrupo tipo;
-    private double precio;
+    private int precio;
     private final ArrayList<Casilla> casillas;
 
     //Se le pasa un arrayList que contiene la tupla posicion / nombreCasilla
@@ -53,7 +53,7 @@ public class Grupo {
         }
     }
 
-    public double getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 

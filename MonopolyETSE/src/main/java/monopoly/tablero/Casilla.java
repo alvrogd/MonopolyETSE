@@ -18,7 +18,7 @@ public class Casilla {
 
     private HashMap<String, Avatar> avataresContenidos;
 
-    private double alquiler;
+    private int alquiler;
     private boolean comprable;
 
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
@@ -108,11 +108,11 @@ public class Casilla {
         this.avataresContenidos = avataresContenidos;
     }
 
-    public double getAlquiler() {
+    public int getAlquiler() {
         return alquiler;
     }
 
-    public void setAlquiler(double alquiler) {
+    public void setAlquiler(int alquiler) {
         this.alquiler = alquiler;
     }
 

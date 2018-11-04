@@ -1,3 +1,4 @@
+import aplicacion.Aplicacion;
 import aplicacion.salidaPantalla.Output;
 import aplicacion.salidaPantalla.TableroASCII;
 import monopoly.Juego;
@@ -20,13 +21,16 @@ public class OutputTest {
     public void imprimirTablero()
     {
         Jugador jugador = new Jugador("Paquita la Chocolatera", juego.getTablero(), TipoAvatar.coche, juego.getTablero().getCasillas().get(0).get(0));
-        jugador.setFortuna(1000000000);
+        jugador.setFortuna(1000);
         System.out.println(jugador.getNombre());
         System.out.println(jugador.getFortuna());
 
         Output.imprimirCabeceraJugador(jugador);
-        System.out.println(Output.imprimirEntradaComando());
+        Output.imprimirEntradaComando();
 
+        Aplicacion app = new Aplicacion();
+
+        app.introducirComando(jugador);
     }
 
 }

@@ -24,21 +24,21 @@ public enum TipoGrupo {
     salida(TipoColor.resetAnsi),
     irCarcel(TipoColor.resetAnsi);
 
-    private final double precioInicial;
+    private final int precioInicial;
     private final TipoColor color;
     private TipoGrupo(TipoColor color){
         this.precioInicial = -1;
         this.color = color;
     }
 
-    private TipoGrupo(double precioInicial, TipoColor color) {
+    private TipoGrupo(int precioInicial, TipoColor color) {
 
         this.precioInicial = precioInicial;
         this.color = color;
 
     }
 
-    public double getPrecioInicial() {
+    public int getPrecioInicial() {
 
         return precioInicial;
 

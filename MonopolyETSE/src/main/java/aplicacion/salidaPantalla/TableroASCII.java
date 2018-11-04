@@ -484,7 +484,7 @@ public class TableroASCII {
             if( precio <= 0) return;
             //DecimalFormat decimal = new DecimalFormat(".##");
             //propietario.append(decimal.format(precio)).append("K €");
-            propietario.append(String.format("%.2f", precio)).append("K €");    // Supone un incremento de 5 ms
+            propietario.append(precio).append("K €");    // Supone un incremento de 5 ms
 
         }
 

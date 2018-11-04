@@ -2,8 +2,10 @@ package aplicacion;
 
 public enum TipoComando {
 
+    crear("crear"),
     crearJugador("crear jugador"),
     turno("jugador"),
+    listar("listar"),
     listarJugadores("listar jugadores"),
     listarAvatares("listar avatares"),
     lanzarDados("lanzar dados"),
@@ -19,7 +21,7 @@ public enum TipoComando {
 
     private final String comando;
 
-    public TipoComando(String comando){
+    private TipoComando(String comando){
         this.comando = comando;
     }
 

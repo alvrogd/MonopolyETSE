@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import com.sun.org.apache.xerces.internal.utils.XMLSecurityManager;
 import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.Casilla;
@@ -17,7 +18,7 @@ public class Jugador {
     private final Avatar avatar;
 
     // Cantidad de dinero disponible
-    private double fortuna;
+    private Integer fortuna;
     // Si se encuentra en bancarrota o no
     private boolean estaBancarrota;
 
@@ -33,7 +34,7 @@ public class Jugador {
 
         this.avatar = new Avatar(this);
 
-        this.fortuna = 1E99;
+        this.fortuna = Integer.MAX_VALUE;
 
         this.propiedades = new ArrayList<>();
 
@@ -80,12 +81,12 @@ public class Jugador {
     }
 
 
-    public double getFortuna() {
+    public int getFortuna() {
         return (fortuna);
     }
 
 
-    public void setFortuna(double fortuna) {
+    public void setFortuna(int fortuna) {
 
         if (fortuna < 0) {
             System.err.println("Error: la fortuna de un jugador no puede ser menor a 0.");
@@ -135,7 +136,7 @@ public class Jugador {
 
     /* Métodos */
 
-    public void pagar(Jugador receptor, double importe) {
+    public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
             System.err.println("Error: jugador no inicializado.");
@@ -233,11 +234,11 @@ public class Jugador {
 
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
-        if (balanceNegativoTrasPago(casilla.getGrupo().getTipo().getPrecioInicial() * 1.10)) {
+        if (balanceNegativoTrasPago((int)(casilla.getGrupo().getTipo().getPrecioInicial() * 1.10))) {
             System.out.println("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
             return;
         } else {
-            setFortuna(getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() * 1.10);
+            setFortuna((int)(getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() * 1.10));
             casilla.setHipotecada(false);
         }
 
@@ -261,7 +262,7 @@ public class Jugador {
     }
 
 
-    private boolean balanceNegativoTrasPago(double importe) {
+    private boolean balanceNegativoTrasPago(int importe) {
 
         if (importe < 0.0) {
             System.err.println("Error: el importe de un pago no puede ser negativo.");
