@@ -1,3 +1,4 @@
+import aplicacion.TipoComando;
 import aplicacion.salidaPantalla.TableroASCII;
 import aplicacion.Aplicacion;
 import monopoly.jugadores.Jugador;
@@ -10,19 +11,20 @@ import java.util.ArrayList;
 public class AplicacionTest {
 
     @Test
-    public void crearJuego() {
+    public void crearAplicacion() {
 
         Aplicacion aplicacion = new Aplicacion();
 
-        aplicacion.get.addJugador(new Jugador("Fran", juego.getTablero(), TipoAvatar.coche,
-                juego.getTablero().getCasillas().get(0).get(0)));
-        juego.addJugador(new Jugador("Alvaro", juego.getTablero(), TipoAvatar.coche,
-                juego.getTablero().getCasillas().get(0).get(0)));
-        juego.addJugador(new Jugador("Perico", juego.getTablero(), TipoAvatar.esfinge,
-                juego.getTablero().getCasillas().get(0).get(0)));
-        juego.iniciarJuego();
+        aplicacion.getJuego().addJugador(new Jugador("Fran", aplicacion.getJuego().getTablero(), TipoAvatar.coche,
+                aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
+        aplicacion.getJuego().addJugador(new Jugador("Alvaro", aplicacion.getJuego().getTablero(), TipoAvatar.coche,
+                aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
+        aplicacion.getJuego().addJugador(new Jugador("Perico", aplicacion.getJuego().getTablero(), TipoAvatar.esfinge,
+                aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
 
-        System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+        aplicacion.getJuego().iniciarJuego();
+
+        aplicacion.introducirComando("ver tablero");
     }
 
 }

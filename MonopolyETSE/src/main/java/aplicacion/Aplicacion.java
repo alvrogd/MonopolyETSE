@@ -25,32 +25,20 @@ public class Aplicacion {
         return juego;
     }
 
-    public void introducirComando() {
+    public void introducirComando(String entrada) {
 
-        Scanner entrada = new Scanner(System.in);
         String linea;
+        ArrayList<Object> toComando;
 
         if (juego.getTurno() == null) {
             System.err.println("Juego no iniciado.");
             return;
         }
 
-        interpretarComando(toComando("crear jugador Guapo sombrero"));
-
-        interpretarComando(toComando("crear jugador Alvaro sombrero"));
-        interpretarComando(toComando("jugador"));
-        juego.iniciarJuego();
-        interpretarComando(toComando("jugador"));
-        interpretarComando(toComando("listar avatares"));
-        Output.imprimirCabeceraJugador(juego.getTurno());
-        Output.imprimirEntradaComando();
-
-        ArrayList<String> mens = new ArrayList<>();
-
-        //linea = entrada.nextLine();
-
-        //System.out.println(juego.getJugadores().get("Francisco").getNombre());
-        //System.out.println(juego.getJugadores().get("Francisco").getAvatar().getTipo());
+        if((toComando = toComando(entrada)) == null){
+            return;
+        }
+        interpretarComando(toComando);
 
     }
 
@@ -246,7 +234,7 @@ public class Aplicacion {
                 break;
 
             case "ver":
-                if (argc < 3) {
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -ver- incorrecta.");
                     salida.add(null);
                     break;
@@ -368,7 +356,19 @@ public class Aplicacion {
                 return;
             }
 
-            Output.respuesta("El jugador que tiene el turno es: "+juego.getTurno().getNombre());
+            ArrayList<String> auxiliar = new ArrayList<>();
+            ArrayList<String> informacionEnviar = new ArrayList<>();
+
+            auxiliar = Output.JugadortoArrayString(juego.getTurno());
+
+            informacionEnviar.add("Información del jugador que tiene el turno.");
+
+            //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
+               for(int i = 0; i < 2; i++){
+                   informacionEnviar.add("    -> "+auxiliar.get(i));
+               }
+
+            Output.respuesta(informacionEnviar);
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 

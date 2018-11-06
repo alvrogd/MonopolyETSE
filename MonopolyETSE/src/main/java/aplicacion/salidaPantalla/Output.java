@@ -340,42 +340,74 @@ public class Output {
         datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
         datos.add(((Integer)jugador.getFortuna()).toString() + "K €");
 
-        //Con un Iterator iremos recorriendo las propiedades del jugador.
-        Iterator iterador = jugador.getPropiedades().iterator();
-
-        //En la variable hasNext almacenaremos el valor booleano de si hay un siguiente en el iterador.
-        boolean hasNext;
+        //Numero de propiedades del jugador
+        int numPropiedades = jugador.getPropiedades().size();
 
         //En la variable auxiliar se añadirá el String a añadir de las propiedades
         StringBuilder prop = new StringBuilder();
+        //Se calcula el número de propiedades y de prop hipotecadas para que si son 0 añadir un formato especial.
+        int numProp=0;
 
-        //
+        //Lo mismo que la anterior pero con las propiedades hipotecadas
         StringBuilder propHipotecadas = new StringBuilder();
-        Casilla casillaAuxiliar;
+        int numHip=0;
+        ArrayList<Casilla> casillas;
         prop.append("[");
 
-        do{
+        for(int i = 0; i < numPropiedades; i++){
 
-            casillaAuxiliar=  (Casilla)(iterador.next());
+            casillas = jugador.getPropiedades();
 
-            //se añade el color de la casilla
-            prop.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
+            //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
+            if(casillas.get(i).isHipotecada()){
+                //se añade el color de la casilla
+                propHipotecadas.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
 
-            //se añade el nombre de la casilla
-            prop.append(casillaAuxiliar.getNombre());
+                //se añade el nombre de la casilla
+                propHipotecadas.append(casillas.get(i).getNombre());
 
-            prop.append(TipoColor.resetAnsi.getLetra());
+                propHipotecadas.append(TipoColor.resetAnsi.getLetra());
 
-            //En caso de que sea la última propiedad del jugador no se añade la coma
-            hasNext = iterador.hasNext();
-            if(hasNext)
-                prop.append(", ");
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades-1)
+                    propHipotecadas.append(", ");
+
+                numProp++;
+
+            } else {
+                //se añade el color de la casilla
+                prop.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
+
+                //se añade el nombre de la casilla
+                prop.append(casillas.get(i).getNombre());
+
+                prop.append(TipoColor.resetAnsi.getLetra());
+
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades-1)
+                    prop.append(", ");
+
+                numHip++;
+
+            }
 
         }
-        while(hasNext);
+
+
+        if(numProp == 0){
+            prop.append("Sin propiedades");
+        }
+        if(numHip == 0){
+            propHipotecadas.append("Sin propiedades hipotecadas");
+        }
 
         prop.append("]");
+        propHipotecadas.append("]");
 
+        datos.add(prop.toString());
+        datos.add(propHipotecadas.toString());
+
+        return datos;
     }
 
     public static void errorComando(String error) {
