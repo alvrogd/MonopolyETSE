@@ -329,7 +329,7 @@ public class Output {
     public static ArrayList<String> JugadortoArrayString(Jugador jugador){
         if(jugador == null){
             System.err.println("Jugador referencia a null.");
-            return;
+            return null;
         }
 
         //En datos se almacenarán los datos que se devuelven.
@@ -347,24 +347,35 @@ public class Output {
         boolean hasNext;
 
         //En la variable auxiliar se añadirá el String a añadir de las propiedades
-        StringBuilder aux = new StringBuilder();
-        aux.append("[");
+        StringBuilder prop = new StringBuilder();
+
+        //
+        StringBuilder propHipotecadas = new StringBuilder();
+        Casilla casillaAuxiliar;
+        prop.append("[");
 
         do{
-            aux.append(((Casilla)(iterador.next())).getGrupo().getTipo().getColor().getLetra());
 
-            aux.append(((Casilla)(iterador.next())).getNombre());
+            casillaAuxiliar=  (Casilla)(iterador.next());
 
-            aux.append(TipoColor.resetAnsi.getLetra()).append(", ");
+            //se añade el color de la casilla
+            prop.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
 
+            //se añade el nombre de la casilla
+            prop.append(casillaAuxiliar.getNombre());
+
+            prop.append(TipoColor.resetAnsi.getLetra());
+
+            //En caso de que sea la última propiedad del jugador no se añade la coma
             hasNext = iterador.hasNext();
             if(hasNext)
-                aux.append(", ");
+                prop.append(", ");
 
         }
         while(hasNext);
 
-        aux.append("]");
+        prop.append("]");
+
     }
 
     public static void errorComando(String error) {
