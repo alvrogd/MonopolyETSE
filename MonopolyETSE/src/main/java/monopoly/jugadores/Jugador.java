@@ -160,11 +160,18 @@ public class Jugador {
 
             setEstaBancarrota(true);
 
+            Output.respuesta("¡El jugador ha caído en bancarrota!",
+                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
+
         }
 
         // En caso contrario, dispone de la suficiente liquidez como para pagar
         else {
             setFortuna(getFortuna() - importe);
+
+            Output.respuesta("Se ha efectuado un pago:",
+                    "        -> Receptor: " + receptor.getNombre(),
+                    "        -> Importe: " + importe);
             receptor.setFortuna(receptor.getFortuna() + importe);
         }
 
@@ -185,34 +192,44 @@ public class Jugador {
 
         // Si la casilla no pertenece a la banca
         if (!getAvatar().getPosicion().getPropietario().equals(getAvatar().getTablero().getBanca())) {
-            System.out.println("La casilla no pertenece a la banca");
+            Output.respuesta("La casilla no pertenece a la banca");
             return;
         }
 
         // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
         if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
-            System.out.println("El jugador no dispone de suficiente liquidez como para realiza la compra.");
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
             return;
 
         } else {
-            // Si es un solar, el alquiler es el precio del grupo
+
+            int importe = 0;
+            // Si no es un solar, el alquiler es el precio del grupo
             if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
                     getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
 
-                setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
+                importe = casilla.getGrupo().getPrecio();
+                setFortuna(getFortuna() - importe);
                 casilla.setComprable(false);
-                casilla.setAlquiler(casilla.getGrupo().getPrecio());
+                casilla.setAlquiler(importe);
                 transferirCasilla(vendedor, this, casilla);
 
             }
             // Si es un solar, el alquiler es proporcional al número de casillas del grupo
             else {
-                setFortuna(getFortuna() - casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size());
+
+                importe = casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size();
+                setFortuna(getFortuna() - importe);
                 casilla.setComprable(false);
-                casilla.setAlquiler((int) (0.1 * casilla.getGrupo().getPrecio() /
-                        casilla.getGrupo().getCasillas().size()));
+                casilla.setAlquiler((int) (0.1 * importe));
                 transferirCasilla(vendedor, this, casilla);
+
             }
+
+            Output.respuesta("Se ha efectuado un pago:",
+                    "        -> Receptor: " + vendedor.getNombre(),
+                    "        -> Importe: " + importe);
+
         }
     }
 
@@ -229,10 +246,15 @@ public class Jugador {
             return;
         }
 
+        int importe = 0;
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original; el alquiler es un 10% del
         // importe de compra
-        setFortuna(getFortuna() + ((5 * casilla.getAlquiler())));
+        importe = 5 * casilla.getAlquiler();
+        setFortuna(getFortuna() + importe);
         casilla.setHipotecada(true);
+
+        Output.respuesta("Se ha hipotecado la casilla:",
+                "        -> Importe obtenido: " + importe);
 
     }
 
@@ -251,13 +273,16 @@ public class Jugador {
 
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
-        if (balanceNegativoTrasPago((int) (casilla.getGrupo().getTipo().getPrecioInicial() /
-                casilla.getGrupo().getCasillas().size() * 1.10))) {
-            System.out.println("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
+        int importe = (int) (casilla.getAlquiler() * 5 * 1.10);
+        if (balanceNegativoTrasPago(importe)) {
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
             return;
         } else {
-            setFortuna((int) (getFortuna() - casilla.getAlquiler() * 5 * 1.10));
+            setFortuna(getFortuna() - importe );
             casilla.setHipotecada(false);
+
+            Output.respuesta("Se ha deshipotecado la casilla:",
+                    "        -> Importe pagado: " + importe);
         }
 
 
@@ -274,6 +299,10 @@ public class Jugador {
         int primeraTirada = dado.lanzarDado();
         int segundaTirada = dado.lanzarDado();
         boolean dobles = primeraTirada == segundaTirada;
+
+        Output.respuesta("Se han tirado los dados:",
+                "        -> Primer dado: " + primeraTirada,
+                "        -> Segundo dado: " + segundaTirada );
 
         getAvatar().mover(primeraTirada + segundaTirada, dobles);
 
@@ -312,6 +341,10 @@ public class Jugador {
         casilla.setPropietario(receptor);
         receptor.getPropiedades().add(casilla);
         emisor.getPropiedades().remove(casilla);
+
+        Output.respuesta("Se ha transferido la casilla:",
+                "        -> Receptor: " + receptor.getNombre(),
+                "        -> Casilla: " + casilla.getNombre() );
 
     }
 
