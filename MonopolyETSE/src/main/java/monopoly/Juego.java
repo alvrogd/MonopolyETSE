@@ -22,7 +22,7 @@ public class Juego {
     /* Constructores */
     public Juego() {
 
-        banca = new Jugador("banca", TipoAvatar.banca);
+        banca = new Jugador("banca");
         turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
@@ -56,6 +56,10 @@ public class Juego {
         return turno;
     }
 
+    public boolean isIniciado() {
+        return iniciado;
+    }
+
     /* Setters */
     public void addJugador(Jugador jugador) {
 
@@ -66,22 +70,23 @@ public class Juego {
 
         jugadores.put(jugador.getNombre(), jugador);
         nombresJugadores.add(jugador.getNombre());
-        tablero.getAvataresContenidos().put((Character)jugador.getAvatar().getIdentificador(), jugador.getAvatar());
+        tablero.getAvataresContenidos().put(jugador.getAvatar().getIdentificador(), jugador.getAvatar());
         //Para meter los avatares en el tablero, para cuando esté listo Jugador
     }
-
-
-
 
     /* Métodos */
 
     public void iniciarJuego() {
+        if(jugadores.isEmpty()){
+            System.err.println("No ha introducido ningún jugador");
+            return;
+        }
         if (!iniciado) {
             iniciado = true;
             iterador = nombresJugadores.iterator();
             turno = jugadores.get(iterador.next());
         } else {
-            System.out.println("El juego ya está iniciado");
+            System.err.println("El juego ya está iniciado");
             return;
         }
     }

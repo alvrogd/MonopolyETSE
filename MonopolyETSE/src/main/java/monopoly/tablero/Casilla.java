@@ -11,14 +11,16 @@ public class Casilla {
     /* Atributos */
     private final String nombre;
     private final Grupo grupo;
-    // todo posicion de casilla
+
     private final int posicionEnTablero;
     private Jugador propietario;
     private boolean hipotecada;
 
     private HashMap<String, Avatar> avataresContenidos;
 
-    private double alquiler;
+    private int alquiler;
+    private boolean comprable;
+
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
 
 
@@ -26,14 +28,14 @@ public class Casilla {
 
     /* Constructores */
 
-    public Casilla(String nombre, Grupo grupo, int posicion, Jugador propietario) {
+    public Casilla(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario) {
 
         if (grupo == null) {
             System.err.println("Error: grupo no inicializado.");
             System.exit(1);
         }
 
-        if( posicion < 0 ) {
+        if (posicion < 0) {
             System.err.println("Error: posición de la casilla en el tablero menor que 0");
             System.exit(1);
         }
@@ -47,12 +49,14 @@ public class Casilla {
         this.grupo = grupo;
         this.posicionEnTablero = posicion;
 
+        this.comprable = comprable;
+
         this.propietario = propietario;
         this.hipotecada = false;
 
         avataresContenidos = new HashMap<>();
 
-        this.alquiler = grupo.getTipo().getPrecioInicial();
+        this.alquiler = 0;
 
         edificiosContenidos = new HashMap<>();
 
@@ -80,6 +84,14 @@ public class Casilla {
         this.propietario = propietario;
     }
 
+    public boolean isComprable() {
+        return comprable;
+    }
+
+    public void setComprable(boolean comprable) {
+        this.comprable = comprable;
+    }
+
     public boolean isHipotecada() {
         return hipotecada;
     }
@@ -96,11 +108,11 @@ public class Casilla {
         this.avataresContenidos = avataresContenidos;
     }
 
-    public double getAlquiler() {
+    public int getAlquiler() {
         return alquiler;
     }
 
-    public void setAlquiler(double alquiler) {
+    public void setAlquiler(int alquiler) {
         this.alquiler = alquiler;
     }
 
@@ -111,4 +123,30 @@ public class Casilla {
     public void setEdificiosContenidos(HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos) {
         this.edificiosContenidos = edificiosContenidos;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+
+        // Si apuntan a la misma dirección de memoria
+        if (this == obj) return (true);
+
+        // Si el objeto con el que se compara apunta a null
+        if (obj == null) return (false);
+
+        // Si no pertenecen a la misma clase
+        if (getClass() != obj.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
+        // llamar a sus métodos
+        final Casilla otro = (Casilla) obj;
+
+        // Si los identificadores de sus avatares son el mismo
+        if (this.getPosicionEnTablero() != otro.getPosicionEnTablero()) return (false);
+
+        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
+        return (true);
+
+    } /* Fin del método equals */
+
 }
