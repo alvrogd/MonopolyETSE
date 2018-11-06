@@ -8,10 +8,10 @@ import java.util.ArrayList;
 public class Grupo {
 
     private final TipoGrupo tipo;
-    private double precio;
+    private int precio;
     private final ArrayList<Casilla> casillas;
 
-    //Se le pasa un arrayList que contiene la tupla posicion / nombreCasilla
+    //Se le pasa un arrayList que contiene la tupla fila / posicion / nombreCasilla
     public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... casillas) {
 
         //Comprobación del tipo de grupo
@@ -39,21 +39,21 @@ public class Grupo {
                 System.err.println("Casilla incorrecta.");
                 System.exit(1);
             }
-            if(c.size() != 2){
-                System.err.println("Argumentos incorrectos.");
+            if(c.size() != 3){
+                System.err.println("Tupla de posiciones incorrecta.");
                 System.exit(1);
             }
 
-            aux = new Casilla(c.get(1), this, comprable, c.get(0), tablero.getBanca());
+            aux = new Casilla((String)c.get(2), this, comprable, 10*(int)c.get(0)+(int)c.get(1), tablero.getBanca());
 
-            tablero.getCasillas().add(c.get(0),aux);
-            tablero.getCasillasTablero().put(c.get(1),aux);
+            tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
+            tablero.getCasillasTablero().put((String)c.get(2),aux);
 
             this.casillas.add(aux);
         }
     }
 
-    public double getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 

@@ -7,7 +7,7 @@ public class Edificio {
 
     /* Atributos */
     private final TipoEdificio tipo;
-    private final double precioCompra;
+    private final int precioCompra;
 
 
     /* Constructor */
@@ -26,7 +26,7 @@ public class Edificio {
 
         tipo = tipoEdificio;
 
-        precioCompra = grupo.getPrecioInicial() * tipoEdificio.getCompra();
+        precioCompra = (int) (grupo.getPrecioInicial() * tipoEdificio.getCompra());
 
     }
 
@@ -35,7 +35,7 @@ public class Edificio {
         return tipo;
     }
 
-    public double getPrecioCompra() {
+    public int getPrecioCompra() {
         return precioCompra;
     }
 
