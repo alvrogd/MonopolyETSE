@@ -36,9 +36,9 @@ public class Aplicacion {
         }
 
         if((toComando = toComando(entrada)) == null){
-            interpretarComando(toComando);
             return;
         }
+        interpretarComando(toComando);
 
     }
 
@@ -358,6 +358,7 @@ public class Aplicacion {
 
             ArrayList<String> informacion = new ArrayList<>();
 
+            informacion = Jugador
             Output.respuesta("Información sobre el jugador del turno actual: ");
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
