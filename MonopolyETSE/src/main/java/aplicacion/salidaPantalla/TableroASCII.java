@@ -3,6 +3,7 @@ package aplicacion.salidaPantalla;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import aplicacion.salidaPantalla.Output;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -51,7 +52,7 @@ public class TableroASCII {
     public static String pintaTablero(Tablero tablero) {
 
         if (tablero == null) {
-            System.out.println("Error: tablero no inicializado");
+            Output.sugerencia("Error: tablero no inicializado");
             return (null);
         }
 
@@ -404,7 +405,6 @@ public class TableroASCII {
         int charLibres;
         StringBuilder nombreConColor = new StringBuilder();
 
-        // todo comprobación de que la cadena no sea demasiado larga
         // Cantidad de huecos que quedarán libres en el String, los cuales se emplearán para añadir espacios (debe
         // tenerse en cuenta el espacio ocupado por los códigos de color)
         charLibres = anchoCasilla - nombre.length() - color.getFondo().length() -
