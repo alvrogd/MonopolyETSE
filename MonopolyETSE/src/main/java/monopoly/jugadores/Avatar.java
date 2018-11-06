@@ -8,8 +8,6 @@ import aplicacion.salidaPantalla.Output;
 import java.util.Collection;
 import java.util.Random;
 
-// todo revisar divisiones por si se hacen entre ints
-
 public class Avatar {
 
     /* Atributos */
