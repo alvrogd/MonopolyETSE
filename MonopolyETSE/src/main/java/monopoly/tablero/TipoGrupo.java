@@ -10,7 +10,7 @@ public enum TipoGrupo {
     rosa(Constantes.PRECIO_INICIAL_GRUPO_2, TipoColor.violetaANSI),
     naranja(Constantes.PRECIO_INICIAL_GRUPO_3, TipoColor.amarilloANSI),
     rojo(Constantes.PRECIO_INICIAL_GRUPO_4, TipoColor.rojoANSI),
-    marron(Constantes.PRECIO_INICIAL_GRUPO_5, TipoColor.amarilloANSI),
+    marron(Constantes.PRECIO_INICIAL_GRUPO_5, TipoColor.blancoANSI),
     verde(Constantes.PRECIO_INICIAL_GRUPO_6, TipoColor.verdeANSI),
     azul(Constantes.PRECIO_INICIAL_GRUPO_7, TipoColor.azulANSI),
     suerte(TipoColor.resetAnsi),

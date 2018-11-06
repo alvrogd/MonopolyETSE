@@ -9,6 +9,8 @@ import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 
+// todo avisar de acciones por pantalla
+
 public class Jugador {
 
     /* Atributos */

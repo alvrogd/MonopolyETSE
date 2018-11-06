@@ -8,6 +8,8 @@ import aplicacion.salidaPantalla.Output;
 import java.util.Collection;
 import java.util.Random;
 
+// todo avisar de acciones por pantalla
+
 public class Avatar {
 
     /* Atributos */
@@ -37,8 +39,7 @@ public class Avatar {
 
     // Moverse de casilla en casilla o empleando el movimiento especial del tipo de avatar
     private boolean movimientoEstandar;
-    
-    //todo pago de servicios :-)
+
 
     /* Constructores */
     public Avatar(Jugador jugador) {
