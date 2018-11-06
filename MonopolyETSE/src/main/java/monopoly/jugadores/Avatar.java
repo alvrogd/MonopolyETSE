@@ -235,6 +235,28 @@ public class Avatar {
             return;
         }
 
+        if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
+            return;
+        }
+
+        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel" );
+        getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
+
+        setEncarcelado(false);
+
+    }
+
+    public void forzarSalirCarcel() {
+
+        if (!isEncarcelado()) {
+            Output.sugerencia("Error: el avatar no se encuentra en la cárcel.");
+            return;
+        }
+
+        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel" );
+        getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
+
         setEncarcelado(false);
 
     }
@@ -256,10 +278,8 @@ public class Avatar {
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == 3) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos",
-                            "Se pagará el importe correspondiente para salir de ella" );
-                    getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
-                    setEncarcelado(false);
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos" );
+                    forzarSalirCarcel();
                 }
                 // En caso contrario, no se hace nada
                 else

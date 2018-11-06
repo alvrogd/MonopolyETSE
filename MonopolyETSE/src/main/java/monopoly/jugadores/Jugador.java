@@ -307,7 +307,7 @@ public class Jugador {
     }
 
 
-    private boolean balanceNegativoTrasPago(int importe) {
+    public boolean balanceNegativoTrasPago(int importe) {
 
         if (importe < 0.0) {
             Output.sugerencia("Error: el importe de un pago no puede ser negativo.");
