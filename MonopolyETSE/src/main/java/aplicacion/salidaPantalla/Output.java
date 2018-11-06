@@ -3,11 +3,11 @@ package aplicacion.salidaPantalla;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.Casilla;
+import monopoly.tablero.Edificio;
+import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.TipoGrupo;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
 
 public class Output {
 
@@ -289,7 +289,7 @@ public class Output {
                 impresion.append(color.getLetra());
                 impresion.append(mensaje.get(i));
 
-                for (int j = 0; j < ancho; j++) {
+                for (int j = 0; j < ancho + max - mensaje.get(i).length(); j++) {
                     impresion.append(" ");
                 }
 
@@ -337,9 +337,9 @@ public class Output {
         ArrayList<String> datos = new ArrayList<>();
 
         //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
-        datos.add("Jugador: "+jugador.getNombre());
-        datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
-        datos.add("Fortuna: "+((Integer)jugador.getFortuna()).toString() + "K €");
+        datos.add("(*) Jugador: "+jugador.getNombre());
+        datos.add("        -> Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
+        datos.add("        -> Fortuna: "+((Integer)jugador.getFortuna()).toString() + "K €");
 
         //Numero de propiedades del jugador
         int numPropiedades = jugador.getPropiedades().size();
@@ -353,8 +353,8 @@ public class Output {
         StringBuilder propHipotecadas = new StringBuilder();
         int numHip=0;
         ArrayList<Casilla> casillas;
-        prop.append("Propiedades: [");
-        propHipotecadas.append("Propiedades hipotecadas: [");
+        prop.append("        -> Propiedades: [");
+        propHipotecadas.append("        -> Propiedades hipotecadas: [");
 
         for(int i = 0; i < numPropiedades; i++){
 
@@ -416,12 +416,59 @@ public class Output {
 
         ArrayList<String> informacion = new ArrayList<>();
 
-        informacion.add("ID: "+avatar.getIdentificador());
-        informacion.add("Tipo: "+avatar.getTipo().getNombre());
-        informacion.add("Casilla: "+avatar.getPosicion().getNombre());
-        informacion.add("Jugador: "+avatar.getJugador().getNombre());
+        informacion.add("(*) Avatar ID: "+avatar.getIdentificador());
+        informacion.add("        -> Tipo: "+avatar.getTipo().getNombre());
+        informacion.add("        -> Casilla: "+avatar.getPosicion().getNombre());
+        informacion.add("        -> Jugador: "+avatar.getJugador().getNombre());
 
         return informacion;
+    }
+
+    public static ArrayList<String> CasillatoArrayString(Casilla casilla){
+
+        ArrayList<String> informacion = new ArrayList<>();
+        Edificio aux;
+
+        int valorCasilla;
+
+        informacion.add("(*) Casilla: "+casilla.getNombre());
+        informacion.add("        -> Tipo: "+casilla.getGrupo().getTipo().getTipoCasilla());
+        informacion.add("        -> Grupo: "+casilla.getGrupo().getTipo());
+        informacion.add("        -> Propietario: "+casilla.getPropietario().getNombre());
+
+
+
+        if( casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
+                TipoGrupo.transporte)
+            valorCasilla = casilla.getGrupo().getPrecio();
+        else
+            valorCasilla = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
+
+        // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
+        // de suerte o de comunidad)
+        if (valorCasilla <= 0){
+
+            informacion.add("        -> Valor: "+valorCasilla);
+            informacion.add("        -> Alquiler: "+casilla.getAlquiler());
+
+            aux = new Edificio(TipoEdificio.hotel, casilla.getGrupo().getTipo());
+            informacion.add("        -> Valor hotel: "+aux.getPrecioCompra());
+
+            aux = new Edificio(TipoEdificio.casa, casilla.getGrupo().getTipo());
+            informacion.add("        -> Valor casa: "+aux.getPrecioCompra());
+
+            aux = new Edificio(TipoEdificio.piscina, casilla.getGrupo().getTipo());
+            informacion.add("        -> Valor piscina: "+aux.getPrecioCompra());
+
+            aux = new Edificio(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
+            informacion.add("        -> Valor pista de deporte: "+aux.getPrecioCompra());
+
+            informacion.add("        -> Alquiler con una casa: ");
+
+        }
+
+        return informacion;
+
     }
 
     public static void errorComando(String error) {
@@ -446,6 +493,7 @@ public class Output {
         imprimirRecuadro(error, "error", TipoColor.rojoANSI, 3, 1);
     }
 
+    //todo sacar los String individuales
     public static void sugerencia(String sugerencia) {
         ArrayList<String> sugerencias = new ArrayList<>();
         sugerencias.add(sugerencia);

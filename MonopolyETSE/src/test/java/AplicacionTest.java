@@ -26,7 +26,7 @@ public class AplicacionTest {
 
         System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
 
-        aplicacion.introducirComando("listar avatares");
+        aplicacion.introducirComando("acabar turno");
     }
 
 }

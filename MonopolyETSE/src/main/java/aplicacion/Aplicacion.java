@@ -405,13 +405,12 @@ public class Aplicacion {
                 respuesta.add("");
 
                 //Se añade el nombre del jugador
-                respuesta.add("(*) "+jugador);
 
                 tam = infoEnviar.size();
 
                 //Se imprime la información de infoEnviar, exceptuando el nombre del jugador, por eso j = 1.
-                for(int j = 1; j < tam; j++)
-                    respuesta.add("        -> "+infoEnviar.get(j));
+                for(int j = 0; j < tam; j++)
+                    respuesta.add(infoEnviar.get(j));
             }
 
             Output.respuesta(respuesta);
@@ -438,11 +437,10 @@ public class Aplicacion {
                 avatares = Output.AvatartoArrayString(juego.getJugador(jugador).getAvatar());
 
                 respuesta.add("");
-                respuesta.add("(*) Avatar "+avatares.get(0));
 
                 tam = avatares.size();
-                for(int i = 1; i < tam; i++){
-                    respuesta.add("        -> "+avatares.get(i));
+                for(int i = 0; i < tam; i++){
+                    respuesta.add(avatares.get(i));
                 }
 
             }
@@ -462,12 +460,29 @@ public class Aplicacion {
 
         } else if((TipoComando) comando.get(0) == TipoComando.finalizarTurno){
 
+            ArrayList<String> jugador = new ArrayList<>();
+
             if(!juego.isIniciado()){
                 Output.errorComando("El juego no se ha iniciado.");
                 return;
             }
 
             juego.finalizarTurno();
+
+            Output.respuesta("El jugador actual es "+juego.getTurno().getNombre());
+
+        } else if((TipoComando) comando.get(0) == TipoComando.salirCarcel){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            juego.getTurno().getAvatar().salirCarcel();
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirCasilla){
+
+
 
         }
     }
