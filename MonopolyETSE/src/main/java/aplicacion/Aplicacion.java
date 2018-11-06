@@ -358,8 +358,13 @@ public class Aplicacion {
 
             ArrayList<String> informacion = new ArrayList<>();
 
-            informacion = Jugador
-            Output.respuesta("Información sobre el jugador del turno actual: ");
+            informacion = Output.JugadortoArrayString(juego.getTurno());
+
+            //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
+            informacion.remove(2);
+            informacion.remove(3);
+
+            Output.respuesta(informacion);
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 
