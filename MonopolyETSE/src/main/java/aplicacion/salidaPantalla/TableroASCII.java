@@ -4,6 +4,7 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
+import monopoly.tablero.TipoGrupo;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -149,7 +150,7 @@ public class TableroASCII {
             // son insertadas de menor a mayor
             casillaIterada = tablero.getCasillas().get(1).get(i);
             insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, false, false,
-                    true,false);
+                    true, false);
 
             // Casilla derecha
 
@@ -158,7 +159,7 @@ public class TableroASCII {
             posicionIterada += ((casillasPorLado - 1) * anchoCasilla + separadoresPorLado - 2);
             casillaIterada = tablero.getCasillas().get(3).get(casillasPorFila - i);
             insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada, false, false,
-                    false,true);
+                    false, true);
 
             // Se sitúa en la siguiente casilla izquierda a insertar (1 separador + ancho de la casilla + 1 separador +
             // salto de línea + líneas del alto de la casilla)
@@ -478,17 +479,25 @@ public class TableroASCII {
         // Si la casilla no tiene un propietario
         if (casilla.getPropietario().equals(tablero.getBanca())) {
 
+            int precio = 0;
+
+            // Si es una casilla de servicios o de transporte, el precio no es repartido entre los integrantes del
+            // grupo
+            if( casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
+                    TipoGrupo.transporte)
+                precio = casilla.getGrupo().getPrecio();
+            else
+                precio = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
+
             // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
             // de suerte o de comunidad)
-            int precio = casilla.getGrupo().getPrecio();
-            if( precio <= 0) return;
+            if (precio <= 0) return;
+            
             //DecimalFormat decimal = new DecimalFormat(".##");
             //propietario.append(decimal.format(precio)).append("K €");
             propietario.append(precio).append("K €");    // Supone un incremento de 5 ms
 
-        }
-
-        else
+        } else
             propietario.append("Prop.: ").append(casilla.getPropietario().getNombre());
 
 
