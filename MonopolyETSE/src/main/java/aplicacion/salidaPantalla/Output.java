@@ -376,6 +376,7 @@ public class Output {
 
         prop.append("]");
 
+        return null;
     }
 
     public static void errorComando(String error) {

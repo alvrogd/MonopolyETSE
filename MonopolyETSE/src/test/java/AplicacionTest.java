@@ -14,7 +14,7 @@ public class AplicacionTest {
 
         Aplicacion aplicacion = new Aplicacion();
 
-        aplicacion.get.addJugador(new Jugador("Fran", juego.getTablero(), TipoAvatar.coche,
+        /*aplicacion.get.addJugador(new Jugador("Fran", juego.getTablero(), TipoAvatar.coche,
                 juego.getTablero().getCasillas().get(0).get(0)));
         juego.addJugador(new Jugador("Alvaro", juego.getTablero(), TipoAvatar.coche,
                 juego.getTablero().getCasillas().get(0).get(0)));
@@ -22,7 +22,7 @@ public class AplicacionTest {
                 juego.getTablero().getCasillas().get(0).get(0)));
         juego.iniciarJuego();
 
-        System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+        System.out.println(TableroASCII.pintaTablero(juego.getTablero()));*/
     }
 
 }

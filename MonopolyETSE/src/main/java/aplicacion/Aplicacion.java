@@ -25,32 +25,19 @@ public class Aplicacion {
         return juego;
     }
 
-    public void introducirComando() {
+    public void introducirComando(String entrada) {
 
-        Scanner entrada = new Scanner(System.in);
         String linea;
+        ArrayList<Object> toComando;
 
         if (juego.getTurno() == null) {
             System.err.println("Juego no iniciado.");
             return;
         }
 
-        interpretarComando(toComando("crear jugador Guapo sombrero"));
-
-        interpretarComando(toComando("crear jugador Alvaro sombrero"));
-        interpretarComando(toComando("jugador"));
-        juego.iniciarJuego();
-        interpretarComando(toComando("jugador"));
-        interpretarComando(toComando("listar avatares"));
-        Output.imprimirCabeceraJugador(juego.getTurno());
-        Output.imprimirEntradaComando();
-
-        ArrayList<String> mens = new ArrayList<>();
-
-        //linea = entrada.nextLine();
-
-        //System.out.println(juego.getJugadores().get("Francisco").getNombre());
-        //System.out.println(juego.getJugadores().get("Francisco").getAvatar().getTipo());
+        if((toComando = toComando(entrada)) == null){
+            return;
+        }
 
     }
 
