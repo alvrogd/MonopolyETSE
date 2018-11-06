@@ -44,8 +44,10 @@ public class Juego {
         return nombresJugadores;
     }
 
-    public Jugador getJugador(Jugador jugador) {
-        return (jugadores.get(jugador.getNombre()));
+
+    //todo esto se usa?
+    public Jugador getJugador(String jugador) {
+        return (jugadores.get(jugador));
     }
 
     public Jugador getBanca() {

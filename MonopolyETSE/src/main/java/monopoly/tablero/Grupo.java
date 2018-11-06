@@ -13,7 +13,7 @@ public class Grupo {
 
     public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... casillas) {
 
-        //Comprobación del tipo de grupo
+        //Comprobación del tipo de grupoinfoEnviar.size();
         if (tipo == null) {
             System.err.println("Tipo referencia a null");
             System.exit(1);
