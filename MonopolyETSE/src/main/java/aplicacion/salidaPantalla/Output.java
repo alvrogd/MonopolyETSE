@@ -447,7 +447,19 @@ public class Output {
     public static void respuesta(String respuesta) {
         ArrayList<String> respuestas = new ArrayList<>();
         respuestas.add(respuesta);
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+        respuesta(respuestas);
+    }
+
+    public static void respuesta(String... respuestas){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String resp:respuestas){
+            informacion.add(resp);
+        }
+
+        respuesta(informacion);
+
     }
 
     public static void respuesta(ArrayList<String> respuestas) {
