@@ -36,6 +36,7 @@ public class Aplicacion {
         }
 
         if((toComando = toComando(entrada)) == null){
+            interpretarComando(toComando);
             return;
         }
 
@@ -355,7 +356,9 @@ public class Aplicacion {
                 return;
             }
 
-            Output.respuesta("El jugador que tiene el turno es: "+juego.getTurno().getNombre());
+            ArrayList<String> informacion = new ArrayList<>();
+
+            Output.respuesta("Información sobre el jugador del turno actual: ");
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 
