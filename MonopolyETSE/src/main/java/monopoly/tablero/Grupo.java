@@ -11,7 +11,6 @@ public class Grupo {
     private int precio;
     private final ArrayList<Casilla> casillas;
 
-    //Se le pasa un arrayList que contiene la tupla fila / posicion / nombreCasilla
     public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... casillas) {
 
         //Comprobación del tipo de grupoinfoEnviar.size();
