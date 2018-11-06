@@ -266,6 +266,8 @@ public class Aplicacion {
 
         //comando -> posicion 0: TipoComando; posicion 1: String con los argumentos
 
+        //todo hacer subfunciones mas pequeñas en switch
+
         if(comando == null){
             System.err.println("Comando referencia a null.");
             return;
@@ -372,8 +374,53 @@ public class Aplicacion {
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 
+            //Listar jugadores, en respuesta se añade la información que se pasará a output.
+            ArrayList<String> respuesta = new ArrayList<>();
+
+            //Se almacenan los nombres de los jugadores
+            ArrayList<String> jugadores;
+
+            //Array donde está la información recibida de JugadorToArrayString
+            ArrayList<String> infoEnviar;
+
+            //Se comprueba si el juego se ha iniciado o no
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            jugadores = juego.getNombresJugadores();
+
+            //1ª línea del mensaje
+            respuesta.add("Los jugadores que participan en el juego son, con su respectivo orden: ");
+
+            //Variable para guardar el tamaño del array recibido por JugadorToArrayString
+            int tam;
+
+            for(String jugador:jugadores){
+                //Se obtiene la información del jugador con la función JugadortoArrayString
+                infoEnviar = Output.JugadortoArrayString(juego.getJugador(jugador));
+
+                //Nueva línea
+                respuesta.add("");
+
+                //Se añade el nombre del jugador
+                respuesta.add("(*) "+jugador);
+
+                tam = infoEnviar.size();
+
+                //Se imprime la información de infoEnviar, exceptuando el nombre del jugador, por eso j = 1.
+                for(int j = 1; j < tam; j++)
+                    respuesta.add("        -> "+infoEnviar.get(j));
+            }
+
+            Output.respuesta(respuesta);
+
+        } else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+
             ArrayList<String> respuesta = new ArrayList<>();
             ArrayList<String> jugadores;
+            ArrayList<String> avatares;
 
             if(!juego.isIniciado()){
                 Output.errorComando("El juego no se ha iniciado.");
@@ -382,34 +429,22 @@ public class Aplicacion {
 
             jugadores = juego.getNombresJugadores();
 
-            respuesta.add("Los jugadores que participan en el juego son, con su respectivo orden: ");
+            int tam;
 
-            for(String jugador:jugadores){
-                respuesta.add("      -> "+jugador);
-            }
+            respuesta.add("Los avatares que hay en el tablero son los siguientes en su correspondiente orden:");
 
-            Output.respuesta(respuesta);
+            for(String jugador: jugadores){
 
-        } else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+                avatares = Output.AvatartoArrayString(juego.getJugador(jugador).getAvatar());
 
-            ArrayList<String> respuesta = new ArrayList<>();
-            ArrayList<String> nombresJugadores;
-            HashMap<String, Jugador> jugadores;
+                respuesta.add("");
+                respuesta.add("(*) Avatar "+avatares.get(0));
 
-            if(!juego.isIniciado()){
-                Output.errorComando("El juego no se ha iniciado.");
-                return;
-            }
+                tam = avatares.size();
+                for(int i = 1; i < tam; i++){
+                    respuesta.add("        -> "+avatares.get(i));
+                }
 
-            jugadores = juego.getJugadores();
-            nombresJugadores = juego.getNombresJugadores();
-
-            respuesta.add("Los jugadores que están en el tablero son, con su respectivo orden: ");
-
-            Avatar avatarAux;
-            for(String jugador:nombresJugadores){
-                avatarAux = jugadores.get(jugador).getAvatar();
-                respuesta.add("      -> ID: "+ avatarAux.getIdentificador());
             }
 
             Output.respuesta(respuesta);

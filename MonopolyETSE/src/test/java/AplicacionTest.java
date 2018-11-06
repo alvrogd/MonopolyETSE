@@ -24,7 +24,9 @@ public class AplicacionTest {
 
         aplicacion.getJuego().iniciarJuego();
 
-        aplicacion.introducirComando("ver tablero");
+        System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
+
+        aplicacion.introducirComando("listar avatares");
     }
 
 }

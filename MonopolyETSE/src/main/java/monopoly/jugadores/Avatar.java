@@ -38,7 +38,7 @@ public class Avatar {
     // Moverse de casilla en casilla o empleando el movimiento especial del tipo de avatar
     private boolean movimientoEstandar;
 
-
+    //todo pago de servicios :-)
 
     /* Constructores */
     public Avatar( Jugador jugador ) {

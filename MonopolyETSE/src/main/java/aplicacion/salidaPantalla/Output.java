@@ -1,5 +1,6 @@
 package aplicacion.salidaPantalla;
 
+import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.Casilla;
 
@@ -338,7 +339,7 @@ public class Output {
         //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
         datos.add("Jugador: "+jugador.getNombre());
         datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
-        datos.add(((Integer)jugador.getFortuna()).toString() + "K €");
+        datos.add("Fortuna: "+((Integer)jugador.getFortuna()).toString() + "K €");
 
         //Numero de propiedades del jugador
         int numPropiedades = jugador.getPropiedades().size();
@@ -352,7 +353,8 @@ public class Output {
         StringBuilder propHipotecadas = new StringBuilder();
         int numHip=0;
         ArrayList<Casilla> casillas;
-        prop.append("[");
+        prop.append("Propiedades: [");
+        propHipotecadas.append("Propiedades hipotecadas: [");
 
         for(int i = 0; i < numPropiedades; i++){
 
@@ -410,6 +412,18 @@ public class Output {
         return datos;
     }
 
+    public static ArrayList<String> AvatartoArrayString(Avatar avatar){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        informacion.add("ID: "+avatar.getIdentificador());
+        informacion.add("Tipo: "+avatar.getTipo().getNombre());
+        informacion.add("Casilla: "+avatar.getPosicion().getNombre());
+        informacion.add("Jugador: "+avatar.getJugador().getNombre());
+
+        return informacion;
+    }
+
     public static void errorComando(String error) {
         ArrayList<String> errores = new ArrayList<>();
         errores.add(error);
@@ -437,6 +451,6 @@ public class Output {
     }
 
     public static void respuesta(ArrayList<String> respuestas) {
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.verdeANSI, 3, 1);
+        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
     }
 }
