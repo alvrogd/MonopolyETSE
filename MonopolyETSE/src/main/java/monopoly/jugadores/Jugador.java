@@ -9,7 +9,7 @@ import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 
-// todo avisar de acciones por pantalla
+// todo revisar divisiones por si se hacen entre ints
 
 public class Jugador {
 
