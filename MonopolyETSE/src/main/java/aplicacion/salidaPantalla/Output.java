@@ -348,9 +348,12 @@ public class Output {
 
         //En la variable auxiliar se añadirá el String a añadir de las propiedades
         StringBuilder prop = new StringBuilder();
+        //Se calcula el número de propiedades y de prop hipotecadas para que si son 0 añadir un formato especial.
+        int numProp=0;
 
-        //
+        //Lo mismo que la anterior pero con las propiedades hipotecadas
         StringBuilder propHipotecadas = new StringBuilder();
+        int numHip=0;
         Casilla casillaAuxiliar;
         prop.append("[");
 
@@ -358,25 +361,59 @@ public class Output {
 
             casillaAuxiliar=  (Casilla)(iterador.next());
 
-            //se añade el color de la casilla
-            prop.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
+            //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
+            if(casillaAuxiliar.isHipotecada()){
+                //se añade el color de la casilla
+                propHipotecadas.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
 
-            //se añade el nombre de la casilla
-            prop.append(casillaAuxiliar.getNombre());
+                //se añade el nombre de la casilla
+                propHipotecadas.append(casillaAuxiliar.getNombre());
 
-            prop.append(TipoColor.resetAnsi.getLetra());
+                propHipotecadas.append(TipoColor.resetAnsi.getLetra());
 
-            //En caso de que sea la última propiedad del jugador no se añade la coma
-            hasNext = iterador.hasNext();
-            if(hasNext)
-                prop.append(", ");
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                hasNext = iterador.hasNext();
+                if (hasNext)
+                    propHipotecadas.append(", ");
+
+                numProp++;
+
+            } else {
+                //se añade el color de la casilla
+                prop.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
+
+                //se añade el nombre de la casilla
+                prop.append(casillaAuxiliar.getNombre());
+
+                prop.append(TipoColor.resetAnsi.getLetra());
+
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                hasNext = iterador.hasNext();
+                if (hasNext)
+                    prop.append(", ");
+
+                numHip++;
+
+            }
 
         }
         while(hasNext);
 
-        prop.append("]");
 
-        return null;
+        if(numProp == 0){
+            prop.append("Sin propiedades");
+        }
+        if(numHip == 0){
+            propHipotecadas.append("Sin propiedades hipotecadas");
+        }
+
+        prop.append("]");
+        propHipotecadas.append("]");
+
+        datos.add(prop.toString());
+        datos.add(propHipotecadas.toString());
+
+        return datos;
     }
 
     public static void errorComando(String error) {

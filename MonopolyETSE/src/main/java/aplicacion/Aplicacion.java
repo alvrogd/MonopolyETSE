@@ -233,7 +233,7 @@ public class Aplicacion {
                 break;
 
             case "ver":
-                if (argc < 3) {
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -ver- incorrecta.");
                     salida.add(null);
                     break;
