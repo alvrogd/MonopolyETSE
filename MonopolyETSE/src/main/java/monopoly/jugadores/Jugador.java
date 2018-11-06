@@ -9,8 +9,6 @@ import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 
-// todo revisar divisiones por si se hacen entre ints
-
 public class Jugador {
 
     /* Atributos */
@@ -218,7 +216,7 @@ public class Jugador {
             // Si es un solar, el alquiler es proporcional al número de casillas del grupo
             else {
 
-                importe = casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size();
+                importe = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
                 setFortuna(getFortuna() - importe);
                 casilla.setComprable(false);
                 casilla.setAlquiler((int) (0.1 * importe));
@@ -278,7 +276,7 @@ public class Jugador {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
             return;
         } else {
-            setFortuna(getFortuna() - importe );
+            setFortuna(getFortuna() - importe);
             casilla.setHipotecada(false);
 
             Output.respuesta("Se ha deshipotecado la casilla:",
@@ -302,7 +300,7 @@ public class Jugador {
 
         Output.respuesta("Se han tirado los dados:",
                 "        -> Primer dado: " + primeraTirada,
-                "        -> Segundo dado: " + segundaTirada );
+                "        -> Segundo dado: " + segundaTirada);
 
         getAvatar().mover(primeraTirada + segundaTirada, dobles);
 
@@ -344,7 +342,7 @@ public class Jugador {
 
         Output.respuesta("Se ha transferido la casilla:",
                 "        -> Receptor: " + receptor.getNombre(),
-                "        -> Casilla: " + casilla.getNombre() );
+                "        -> Casilla: " + casilla.getNombre());
 
     }
 
