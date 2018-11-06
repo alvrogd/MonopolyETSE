@@ -26,9 +26,8 @@ public class Jugador {
     private ArrayList<Casilla> propiedades;
 
 
-
     /* Constructores */
-    public Jugador( String nombre ) {
+    public Jugador(String nombre) {
 
         this.nombre = nombre;
 
@@ -182,7 +181,7 @@ public class Jugador {
         }
 
         // Si la casilla no pertenece a la banca
-        if( !getAvatar().getPosicion().getPropietario().equals(getAvatar().getTablero().getBanca())) {
+        if (!getAvatar().getPosicion().getPropietario().equals(getAvatar().getTablero().getBanca())) {
             System.out.println("La casilla no pertenece a la banca");
             return;
         }
@@ -195,7 +194,7 @@ public class Jugador {
         } else {
             setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
             casilla.setComprable(false);
-            casilla.setAlquiler(casilla.getGrupo().getPrecio());
+            casilla.setAlquiler(casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size());
             transferirCasilla(vendedor, this, casilla);
         }
     }
@@ -214,7 +213,8 @@ public class Jugador {
         }
 
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original
-        setFortuna(getFortuna() + (casilla.getGrupo().getTipo().getPrecioInicial() / 2));
+        setFortuna(getFortuna() + ((casilla.getGrupo().getTipo().getPrecioInicial() /
+                casilla.getGrupo().getCasillas().size()) / 2));
         casilla.setHipotecada(true);
 
     }
@@ -234,11 +234,13 @@ public class Jugador {
 
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
-        if (balanceNegativoTrasPago((int)(casilla.getGrupo().getTipo().getPrecioInicial() * 1.10))) {
+        if (balanceNegativoTrasPago((int) (casilla.getGrupo().getTipo().getPrecioInicial() /
+                casilla.getGrupo().getCasillas().size() * 1.10))) {
             System.out.println("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
             return;
         } else {
-            setFortuna((int)(getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() * 1.10));
+            setFortuna((int) (getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() /
+                    casilla.getGrupo().getCasillas().size() * 1.10));
             casilla.setHipotecada(false);
         }
 
@@ -293,34 +295,32 @@ public class Jugador {
 
         casilla.setPropietario(receptor);
         receptor.getPropiedades().add(casilla);
-        // todo realizar el override de equals para que el método funcione correctamente
         emisor.getPropiedades().remove(casilla);
 
     }
 
 
-    // todo equals de jugador para comprobar si es propietario de la casilla en la que cae
     @Override
-    public boolean equals( Object obj ) {
+    public boolean equals(Object obj) {
 
         // Si apuntan a la misma dirección de memoria
-        if( this == obj ) return( true );
+        if (this == obj) return (true);
 
         // Si el objeto con el que se compara apunta a null
-        if( obj == null ) return( false );
+        if (obj == null) return (false);
 
         // Si no pertenecen a la misma clase
-        if( getClass() != obj.getClass() ) return( false );
+        if (getClass() != obj.getClass()) return (false);
 
         // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
         // llamar a sus métodos
-        final Jugador otro = ( Jugador)obj;
+        final Jugador otro = (Jugador) obj;
 
         // Si los identificadores de sus avatares son el mismo
-        if( this.getAvatar().getIdentificador() != otro.getAvatar().getIdentificador() ) return( false );
+        if (this.getAvatar().getIdentificador() != otro.getAvatar().getIdentificador()) return (false);
 
         /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
-        return( true );
+        return (true);
 
     } /* Fin del método equals */
 

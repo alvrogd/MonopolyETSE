@@ -53,7 +53,7 @@ public class JuegoTest {
         juego.addJugador(new Jugador("Fran", TipoAvatar.coche));
         juego.addJugador(new Jugador("Alvaro", TipoAvatar.coche));
         juego.addJugador(new Jugador("Perico", TipoAvatar.esfinge));
-        juego.iniciarJuego();*/  // todo imposible compilar con errores
+        juego.iniciarJuego();*/ // todo imposible compilar con errores
 
     }
 

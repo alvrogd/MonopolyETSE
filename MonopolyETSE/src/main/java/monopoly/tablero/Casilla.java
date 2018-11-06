@@ -35,7 +35,7 @@ public class Casilla {
             System.exit(1);
         }
 
-        if( posicion < 0 ) {
+        if (posicion < 0) {
             System.err.println("Error: posición de la casilla en el tablero menor que 0");
             System.exit(1);
         }
@@ -123,4 +123,30 @@ public class Casilla {
     public void setEdificiosContenidos(HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos) {
         this.edificiosContenidos = edificiosContenidos;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+
+        // Si apuntan a la misma dirección de memoria
+        if (this == obj) return (true);
+
+        // Si el objeto con el que se compara apunta a null
+        if (obj == null) return (false);
+
+        // Si no pertenecen a la misma clase
+        if (getClass() != obj.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
+        // llamar a sus métodos
+        final Casilla otro = (Casilla) obj;
+
+        // Si los identificadores de sus avatares son el mismo
+        if (this.getPosicionEnTablero() != otro.getPosicionEnTablero()) return (false);
+
+        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
+        return (true);
+
+    } /* Fin del método equals */
+
 }
