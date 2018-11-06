@@ -356,15 +356,19 @@ public class Aplicacion {
                 return;
             }
 
-            ArrayList<String> informacion = new ArrayList<>();
+            ArrayList<String> auxiliar = new ArrayList<>();
+            ArrayList<String> informacionEnviar = new ArrayList<>();
 
-            informacion = Output.JugadortoArrayString(juego.getTurno());
+            auxiliar = Output.JugadortoArrayString(juego.getTurno());
+
+            informacionEnviar.add("Información del jugador que tiene el turno.");
 
             //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
-            informacion.remove(2);
-            informacion.remove(3);
+               for(int i = 0; i < 2; i++){
+                   informacionEnviar.add("    -> "+auxiliar.get(i));
+               }
 
-            Output.respuesta(informacion);
+            Output.respuesta(informacionEnviar);
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 

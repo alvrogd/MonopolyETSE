@@ -340,11 +340,8 @@ public class Output {
         datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
         datos.add(((Integer)jugador.getFortuna()).toString() + "K €");
 
-        //Con un Iterator iremos recorriendo las propiedades del jugador.
-        Iterator iterador = jugador.getPropiedades().iterator();
-
-        //En la variable hasNext almacenaremos el valor booleano de si hay un siguiente en el iterador.
-        boolean hasNext;
+        //Numero de propiedades del jugador
+        int numPropiedades = jugador.getPropiedades().size();
 
         //En la variable auxiliar se añadirá el String a añadir de las propiedades
         StringBuilder prop = new StringBuilder();
@@ -354,42 +351,40 @@ public class Output {
         //Lo mismo que la anterior pero con las propiedades hipotecadas
         StringBuilder propHipotecadas = new StringBuilder();
         int numHip=0;
-        Casilla casillaAuxiliar;
+        ArrayList<Casilla> casillas;
         prop.append("[");
 
-        do{
+        for(int i = 0; i < numPropiedades; i++){
 
-            casillaAuxiliar=  (Casilla)(iterador.next());
+            casillas = jugador.getPropiedades();
 
             //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
-            if(casillaAuxiliar.isHipotecada()){
+            if(casillas.get(i).isHipotecada()){
                 //se añade el color de la casilla
-                propHipotecadas.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
+                propHipotecadas.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
 
                 //se añade el nombre de la casilla
-                propHipotecadas.append(casillaAuxiliar.getNombre());
+                propHipotecadas.append(casillas.get(i).getNombre());
 
                 propHipotecadas.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
-                hasNext = iterador.hasNext();
-                if (hasNext)
+                if (i != numPropiedades-1)
                     propHipotecadas.append(", ");
 
                 numProp++;
 
             } else {
                 //se añade el color de la casilla
-                prop.append(casillaAuxiliar.getGrupo().getTipo().getColor().getLetra());
+                prop.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
 
                 //se añade el nombre de la casilla
-                prop.append(casillaAuxiliar.getNombre());
+                prop.append(casillas.get(i).getNombre());
 
                 prop.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
-                hasNext = iterador.hasNext();
-                if (hasNext)
+                if (i != numPropiedades-1)
                     prop.append(", ");
 
                 numHip++;
@@ -397,7 +392,6 @@ public class Output {
             }
 
         }
-        while(hasNext);
 
 
         if(numProp == 0){
