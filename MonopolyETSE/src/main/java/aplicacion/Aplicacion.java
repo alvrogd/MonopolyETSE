@@ -460,6 +460,15 @@ public class Aplicacion {
 
             juego.getTurno().lanzarDados(juego.getTablero().getDado());
 
+        } else if((TipoComando) comando.get(0) == TipoComando.finalizarTurno){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            juego.finalizarTurno();
+
         }
     }
 

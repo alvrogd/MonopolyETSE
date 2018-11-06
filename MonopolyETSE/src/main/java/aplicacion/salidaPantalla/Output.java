@@ -427,7 +427,19 @@ public class Output {
     public static void errorComando(String error) {
         ArrayList<String> errores = new ArrayList<>();
         errores.add(error);
-        imprimirRecuadro(errores, "error", TipoColor.rojoANSI, 3, 1);
+        errorComando(errores);
+    }
+
+    public static void errorComando(String... errores){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String err:errores){
+            informacion.add(err);
+        }
+
+        errorComando(informacion);
+
     }
 
     public static void errorComando(ArrayList<String> error) {
@@ -437,7 +449,19 @@ public class Output {
     public static void sugerencia(String sugerencia) {
         ArrayList<String> sugerencias = new ArrayList<>();
         sugerencias.add(sugerencia);
-        imprimirRecuadro(sugerencias, "sugerencia", TipoColor.verdeANSI, 3, 1);
+        sugerencia(sugerencias);
+    }
+
+    public static void sugerencia(String... sugerencias){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String sug:sugerencias){
+            informacion.add(sug);
+        }
+
+        sugerencia(informacion);
+
     }
 
     public static void sugerencia(ArrayList<String> sugerencia) {
@@ -447,7 +471,19 @@ public class Output {
     public static void respuesta(String respuesta) {
         ArrayList<String> respuestas = new ArrayList<>();
         respuestas.add(respuesta);
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+        respuesta(respuestas);
+    }
+
+    public static void respuesta(String... respuestas){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String resp:respuestas){
+            informacion.add(resp);
+        }
+
+        respuesta(informacion);
+
     }
 
     public static void respuesta(ArrayList<String> respuestas) {
