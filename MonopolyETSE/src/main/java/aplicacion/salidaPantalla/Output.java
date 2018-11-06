@@ -243,6 +243,9 @@ public class Output {
                 opcion = "[!] ERROR: ";
                 break;
 
+            case "respuesta":
+                opcion = "[R] ";
+                break;
             default:
                 opcion = "[*] " + tipo;
                 break;
@@ -339,5 +342,13 @@ public class Output {
         imprimirRecuadro(sugerencia, "sugerencia", TipoColor.verdeANSI, 3, 1);
     }
 
+    public static void respuesta(String respuesta){
+        ArrayList<String> respuestas = new ArrayList<>();
+        respuestas.add(respuesta);
+        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+    }
 
+    public static void respuesta(ArrayList<String> respuestas){
+        imprimirRecuadro(respuestas, "respuesta", TipoColor.verdeANSI, 3, 1);
+    }
 }

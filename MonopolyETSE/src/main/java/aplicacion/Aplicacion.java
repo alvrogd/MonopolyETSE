@@ -7,6 +7,7 @@ import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Aplicacion {
@@ -29,11 +30,13 @@ public class Aplicacion {
             return;
         }
 
-        interpretarComando(toComando("crear jugador Francisco sombero"));
-        
-        interpretarComando(toComando("crear jugador Alvaro sombrero"));
-        juego.iniciarJuego();
+        interpretarComando(toComando("crear jugador Guapo sombrero"));
 
+        interpretarComando(toComando("crear jugador Alvaro sombrero"));
+        interpretarComando(toComando("jugador"));
+        juego.iniciarJuego();
+        interpretarComando(toComando("jugador"));
+        interpretarComando(toComando("listar jugadores"));
         Output.imprimirCabeceraJugador(juego.getTurno());
         Output.imprimirEntradaComando();
 
@@ -262,6 +265,11 @@ public class Aplicacion {
 
         //comando -> posicion 0: TipoComando; posicion 1: String con los argumentos
 
+        if(comando == null){
+            System.err.println("Comando referencia a null.");
+            return;
+        }
+
         if ((TipoComando) comando.get(0) == TipoComando.crearJugador) {
             String aux = "";
 
@@ -340,7 +348,57 @@ public class Aplicacion {
             juego.addJugador(jugador);
 
 
-        }
+        } else if((TipoComando) comando.get(0) == TipoComando.turno){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Output.respuesta("El jugador que tiene el turno es: "+juego.getTurno().getNombre());
+
+        } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
+
+            ArrayList<String> respuesta = new ArrayList<>();
+            ArrayList<String> jugadores;
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            jugadores = juego.getNombresJugadores();
+
+            respuesta.add("Los jugadores que participan en el juego son, con su respectivo orden: ");
+
+            for(String jugador:jugadores){
+                respuesta.add("      -> "+jugador);
+            }
+
+            Output.respuesta(respuesta);
+
+        } /*else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+
+            ArrayList<String> respuesta = new ArrayList<>();
+            ArrayList<String> nombresJugadores;
+            HashMap<String, Jugador> jugadores;
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            jugadores = juego.getJugadores();
+
+            respuesta.add("Los jugadores que están en el tablero son, con su respectivo orden: ");
+
+            for(String avatar:jugadores){
+                respuesta.add("      -> "+avatar);
+            }
+
+            Output.respuesta(respuesta);
+
+        }*/
     }
 
 }
