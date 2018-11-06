@@ -1,9 +1,11 @@
 package aplicacion.salidaPantalla;
 
 import monopoly.jugadores.Jugador;
+import monopoly.tablero.Casilla;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Output {
@@ -320,6 +322,49 @@ public class Output {
         impresion.append("╝").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
         System.out.println(impresion);
+    }
+
+    //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
+    //imprimir recuadro
+    public static ArrayList<String> JugadortoArrayString(Jugador jugador){
+        if(jugador == null){
+            System.err.println("Jugador referencia a null.");
+            return;
+        }
+
+        //En datos se almacenarán los datos que se devuelven.
+        ArrayList<String> datos = new ArrayList<>();
+
+        //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
+        datos.add("Jugador: "+jugador.getNombre());
+        datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
+        datos.add(((Integer)jugador.getFortuna()).toString() + "K €");
+
+        //Con un Iterator iremos recorriendo las propiedades del jugador.
+        Iterator iterador = jugador.getPropiedades().iterator();
+
+        //En la variable hasNext almacenaremos el valor booleano de si hay un siguiente en el iterador.
+        boolean hasNext;
+
+        //En la variable auxiliar se añadirá el String a añadir de las propiedades
+        StringBuilder aux = new StringBuilder();
+        aux.append("[");
+
+        do{
+            aux.append(((Casilla)(iterador.next())).getGrupo().getTipo().getColor().getLetra());
+
+            aux.append(((Casilla)(iterador.next())).getNombre());
+
+            aux.append(TipoColor.resetAnsi.getLetra()).append(", ");
+
+            hasNext = iterador.hasNext();
+            if(hasNext)
+                aux.append(", ");
+
+        }
+        while(hasNext);
+
+        aux.append("]");
     }
 
     public static void errorComando(String error) {

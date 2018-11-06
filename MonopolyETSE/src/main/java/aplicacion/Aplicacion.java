@@ -3,6 +3,7 @@ package aplicacion;
 import aplicacion.salidaPantalla.Output;
 import aplicacion.salidaPantalla.TipoColor;
 import monopoly.Juego;
+import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 
@@ -18,6 +19,10 @@ public class Aplicacion {
 
         juego = new Juego();
 
+    }
+
+    public Juego getJuego(){
+        return juego;
     }
 
     public void introducirComando() {
@@ -36,7 +41,7 @@ public class Aplicacion {
         interpretarComando(toComando("jugador"));
         juego.iniciarJuego();
         interpretarComando(toComando("jugador"));
-        interpretarComando(toComando("listar jugadores"));
+        interpretarComando(toComando("listar avatares"));
         Output.imprimirCabeceraJugador(juego.getTurno());
         Output.imprimirEntradaComando();
 
@@ -49,6 +54,9 @@ public class Aplicacion {
 
     }
 
+    //Función que devuelve la tupla (TipoComando, String Argumentos), si se le pasa una línea devuelve la información
+    //separada en el comando y en sus correspondientes argumentos.
+
     private ArrayList<Object> toComando(String linea) {
 
         ArrayList<Object> salida = new ArrayList<>();
@@ -60,10 +68,14 @@ public class Aplicacion {
         String aux = "";
         int argc;
 
+        //Con contador se cuenta el número de palabras que se han separado
         int contador = 0, i;
+
+        //Se separa la línea por comando y por argumentos
 
         for (i = 0; i < tam; i++) {
 
+            //Los comandos a tratar tienen como mucho dos palabras por eso contador < 2
             if (cadena[i] == ' ' && contador < 2) {
                 comando.add(aux);
                 aux = "";
@@ -80,7 +92,6 @@ public class Aplicacion {
         switch (comando.get(0)) {
             case "crear":
                 if (argc < 3) {
-                    //todo output errores
                     Output.errorComando("Opción del comando -crear- incorrecta.");
                     salida.add(null);
                     break;
@@ -261,6 +272,8 @@ public class Aplicacion {
         return salida;
     }
 
+    //Función que interpreta la tupla devuelta por toComando realizando las acciones específicas del comando.
+
     private void interpretarComando(ArrayList<Object> comando) {
 
         //comando -> posicion 0: TipoComando; posicion 1: String con los argumentos
@@ -377,7 +390,7 @@ public class Aplicacion {
 
             Output.respuesta(respuesta);
 
-        } /*else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+        } else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
 
             ArrayList<String> respuesta = new ArrayList<>();
             ArrayList<String> nombresJugadores;
@@ -389,16 +402,19 @@ public class Aplicacion {
             }
 
             jugadores = juego.getJugadores();
+            nombresJugadores = juego.getNombresJugadores();
 
             respuesta.add("Los jugadores que están en el tablero son, con su respectivo orden: ");
 
-            for(String avatar:jugadores){
-                respuesta.add("      -> "+avatar);
+            Avatar avatarAux;
+            for(String jugador:nombresJugadores){
+                avatarAux = jugadores.get(jugador).getAvatar();
+                respuesta.add("      -> ID: "+ avatarAux.getIdentificador());
             }
 
             Output.respuesta(respuesta);
 
-        }*/
+        }
     }
 
 }
