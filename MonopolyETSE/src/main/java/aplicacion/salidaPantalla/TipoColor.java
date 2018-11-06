@@ -2,6 +2,7 @@ package aplicacion.salidaPantalla;
 
 public enum TipoColor {
 
+    // todo añadir colores restantes
     // Colores
     resetAnsi( "\u001B[00m", "\u001B[00m" ),
     negroANSI( "\u001B[40m","\u001B[30m" ),

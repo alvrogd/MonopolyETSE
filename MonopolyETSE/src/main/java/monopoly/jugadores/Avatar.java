@@ -39,9 +39,8 @@ public class Avatar {
     private boolean movimientoEstandar;
 
 
-
     /* Constructores */
-    public Avatar( Jugador jugador ) {
+    public Avatar(Jugador jugador) {
 
         if (jugador == null) {
             Output.errorComando("Error: jugador no inicializado.");
@@ -106,7 +105,7 @@ public class Avatar {
         Collection<Avatar> avatares = tablero.getAvataresContenidos().values();
 
         do {
-            identificadorAleatorio = (char) random.nextInt(256);    // Carácter ASCII del 0 al 255
+            identificadorAleatorio = (char) (random.nextInt(256 - 32) + 32);    // Carácter ASCII del 32 al 255
             identificadorUnico = true;
             for (Avatar avatar : avatares) {
                 if (avatar.getIdentificador() == identificadorAleatorio)
@@ -251,21 +250,20 @@ public class Avatar {
         // Si está en la cárcel y no ha sacado dobles
         if (isEncarcelado()) {
 
-            if( !dobles ) {
+            if (!dobles) {
                 System.out.println("No se puede salir de la cárcel sin sacar dobles");
                 setTurnosEnCarcel(getTurnosEnCarcel() + 1);
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == 3) {
-                    System.out.println( "Has estado en la cárcel el número máximo de turnos permitidos" );
+                    System.out.println("Has estado en la cárcel el número máximo de turnos permitidos");
                     getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
                     setEncarcelado(false);
                 }
                 // En caso contrario, no se hace nada
                 else
                     return;
-            }
-            else
+            } else
                 setEncarcelado(false);
 
 
@@ -294,11 +292,11 @@ public class Avatar {
                 break;
 
             case transporte:
-                caerEnCasillaObtenible();
+                caerEnTransporte();
                 break;
 
             case servicios:
-                caerEnCasillaObtenible();
+                caerEnServicio(numeroCasillas);
                 break;
 
             case carcel:
@@ -318,7 +316,7 @@ public class Avatar {
                 break;
 
             default:
-                caerEnCasillaObtenible();
+                caerEnSolar();
 
         }
 
@@ -346,7 +344,32 @@ public class Avatar {
     }
 
 
-    private void caerEnCasillaObtenible() {
+    private void caerEnTransporte() {
+
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
+        if (!getPosicion().isComprable()) {
+
+            getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
+                    getJugador().numeroTransportesObtenidos() * 0.25));
+
+        }
+
+    }
+
+
+    private void caerEnServicio(int numeroCasillas) {
+
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
+        if (!getPosicion().isComprable()) {
+
+            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO);
+
+        }
+
+    }
+
+
+    private void caerEnSolar() {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable()) {
@@ -356,7 +379,6 @@ public class Avatar {
         }
 
     }
-
 
     private void caerEnImpuesto1() {
 

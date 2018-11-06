@@ -5,6 +5,7 @@ import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 
@@ -192,10 +193,24 @@ public class Jugador {
             return;
 
         } else {
-            setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
-            casilla.setComprable(false);
-            casilla.setAlquiler(casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size());
-            transferirCasilla(vendedor, this, casilla);
+            // Si es un solar, el alquiler es el precio del grupo
+            if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
+                    getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
+
+                setFortuna(getFortuna() - casilla.getGrupo().getPrecio());
+                casilla.setComprable(false);
+                casilla.setAlquiler(casilla.getGrupo().getPrecio());
+                transferirCasilla(vendedor, this, casilla);
+
+            }
+            // Si es un solar, el alquiler es proporcional al número de casillas del grupo
+            else {
+                setFortuna(getFortuna() - casilla.getGrupo().getPrecio() / casilla.getGrupo().getCasillas().size());
+                casilla.setComprable(false);
+                casilla.setAlquiler((int) (0.1 * casilla.getGrupo().getPrecio() /
+                        casilla.getGrupo().getCasillas().size()));
+                transferirCasilla(vendedor, this, casilla);
+            }
         }
     }
 
@@ -212,9 +227,9 @@ public class Jugador {
             return;
         }
 
-        // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original
-        setFortuna(getFortuna() + ((casilla.getGrupo().getTipo().getPrecioInicial() /
-                casilla.getGrupo().getCasillas().size()) / 2));
+        // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original; el alquiler es un 10% del
+        // importe de compra
+        setFortuna(getFortuna() + ((5 * casilla.getAlquiler())));
         casilla.setHipotecada(true);
 
     }
@@ -239,8 +254,7 @@ public class Jugador {
             System.out.println("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
             return;
         } else {
-            setFortuna((int) (getFortuna() - casilla.getGrupo().getTipo().getPrecioInicial() /
-                    casilla.getGrupo().getCasillas().size() * 1.10));
+            setFortuna((int) (getFortuna() - casilla.getAlquiler() * 5 * 1.10));
             casilla.setHipotecada(false);
         }
 
@@ -296,6 +310,23 @@ public class Jugador {
         casilla.setPropietario(receptor);
         receptor.getPropiedades().add(casilla);
         emisor.getPropiedades().remove(casilla);
+
+    }
+
+
+    public int numeroTransportesObtenidos() {
+
+        int numero = 0;
+
+        for (Casilla casilla : getPropiedades()) {
+
+            if (casilla.getGrupo().getTipo() == TipoGrupo.transporte)
+                numero++;
+
+        }
+
+        return (numero);
+
 
     }
 
