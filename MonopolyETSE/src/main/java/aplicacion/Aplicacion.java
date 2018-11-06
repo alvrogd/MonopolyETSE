@@ -80,7 +80,6 @@ public class Aplicacion {
         switch (comando.get(0)) {
             case "crear":
                 if (argc < 3) {
-                    //todo output errores
                     Output.errorComando("Opción del comando -crear- incorrecta.");
                     salida.add(null);
                     break;

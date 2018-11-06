@@ -1,6 +1,6 @@
 package monopoly.jugadores;
 
-import com.sun.org.apache.xerces.internal.utils.XMLSecurityManager;
+import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.Casilla;
@@ -42,17 +42,17 @@ public class Jugador {
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
         if (tablero == null) {
-            System.err.println("Error: tablero no inicializado.");
+            Output.errorComando("Error: tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipoAvatar == null) {
-            System.err.println("Error: tipo de avatar no inicializado.");
+            Output.errorComando("Error: tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            System.out.println("Error: casilla inicial no inicializada.");
+            Output.errorComando("Error: casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -88,7 +88,7 @@ public class Jugador {
     public void setFortuna(int fortuna) {
 
         if (fortuna < 0) {
-            System.err.println("Error: la fortuna de un jugador no puede ser menor a 0.");
+            Output.sugerencia("Error: la fortuna de un jugador no puede ser menor a 0.");
             return;
         }
 
@@ -115,14 +115,14 @@ public class Jugador {
     public void setPropiedades(ArrayList<Casilla> propiedades) {
 
         if (propiedades == null) {
-            System.err.println("Error: propiedades no inicializadas.");
+            Output.sugerencia("Error: propiedades no inicializadas.");
             return;
         }
 
         for (Casilla casilla : propiedades) {
 
             if (casilla == null) {
-                System.err.println("Error: casilla no inicializada.");
+                Output.sugerencia("Error: casilla no inicializada.");
                 return;
             }
 
@@ -138,12 +138,12 @@ public class Jugador {
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
-            System.err.println("Error: jugador no inicializado.");
+            Output.sugerencia("Error: jugador no inicializado.");
             return;
         }
 
         if (importe < 0) {
-            System.err.println("Error: no se puede pagar a un jugador una cantidad menor a 0.");
+            Output.sugerencia("Error: no se puede pagar a un jugador una cantidad menor a 0.");
             return;
         }
 
@@ -171,12 +171,12 @@ public class Jugador {
     public void comprar(Jugador vendedor, Casilla casilla) {
 
         if (vendedor == null) {
-            System.err.println("Error: jugador no inicializado.");
+            Output.sugerencia("Error: jugador no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            System.err.println("Error: casilla no inicializada.");
+            Output.sugerencia("Error: casilla no inicializada.");
             return;
         }
 
@@ -203,12 +203,12 @@ public class Jugador {
     public void hipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            System.err.println("Error: casilla no inicializada.");
+            Output.sugerencia("Error: casilla no inicializada.");
             return;
         }
 
         if (casilla.isHipotecada()) {
-            System.err.println("Error: la casilla ya se encuentra hipotecada.");
+            Output.sugerencia("Error: la casilla ya se encuentra hipotecada.");
             return;
         }
 
@@ -223,12 +223,12 @@ public class Jugador {
     public void deshipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            System.err.println("Error: casilla no inicializada.");
+            Output.sugerencia("Error: casilla no inicializada.");
             return;
         }
 
         if (!casilla.isHipotecada()) {
-            System.err.println("Error: la casilla no se encuentra hipotecada.");
+            Output.sugerencia("Error: la casilla no se encuentra hipotecada.");
             return;
         }
 
@@ -251,7 +251,7 @@ public class Jugador {
     public void lanzarDados(Dado dado) {
 
         if (dado == null) {
-            System.err.println("Error: dado no inicializado.");
+            Output.sugerencia("Error: dado no inicializado.");
             return;
         }
 
@@ -267,7 +267,7 @@ public class Jugador {
     private boolean balanceNegativoTrasPago(int importe) {
 
         if (importe < 0.0) {
-            System.err.println("Error: el importe de un pago no puede ser negativo.");
+            Output.sugerencia("Error: el importe de un pago no puede ser negativo.");
             // Se devuelve true dado que los métodos que emplean a este continuan la transacción correspondiente en
             // caso de obtener false al llamarlo
             return (true);
@@ -279,17 +279,17 @@ public class Jugador {
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
-            System.err.println("Error: emisor no inicializado.");
+            Output.sugerencia("Error: emisor no inicializado.");
             return;
         }
 
         if (receptor == null) {
-            System.err.println("Error: receptor no inicializado.");
+            Output.sugerencia("Error: receptor no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            System.err.println("Error: casilla no inicializada.");
+            Output.sugerencia("Error: casilla no inicializada.");
             return;
         }
 

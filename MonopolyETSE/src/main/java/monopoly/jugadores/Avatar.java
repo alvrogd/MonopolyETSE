@@ -3,6 +3,7 @@ package monopoly.jugadores;
 import monopoly.Constantes;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import aplicacion.salidaPantalla.Output;
 
 import java.util.Collection;
 import java.util.Random;
@@ -43,7 +44,7 @@ public class Avatar {
     public Avatar( Jugador jugador ) {
 
         if (jugador == null) {
-            System.err.println("Error: jugador no inicializado.");
+            Output.errorComando("Error: jugador no inicializado.");
             System.exit(1);
         }
 
@@ -68,17 +69,17 @@ public class Avatar {
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
-            System.err.println("Error: jugador no inicializado.");
+            Output.errorComando("Error: jugador no inicializado.");
             System.exit(1);
         }
 
         if (tablero == null) {
-            System.err.println("Error: tablero no inicializado.");
+            Output.errorComando("Error: tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipo == null) {
-            System.err.println("Error: tipo de avatar no inicializado.");
+            Output.errorComando("Error: tipo de avatar no inicializado.");
             System.exit(1);
         }
 
@@ -165,7 +166,7 @@ public class Avatar {
     public void setTurnosEnCarcel(int turnosEnCarcel) {
 
         if (turnosEnCarcel < 0) {
-            System.err.println("Error: el número turnos en la cárcel de un avatar no puede ser menor a 0.");
+            Output.sugerencia("Error: el número turnos en la cárcel de un avatar no puede ser menor a 0.");
             return;
         }
         this.turnosEnCarcel = turnosEnCarcel;
@@ -180,7 +181,7 @@ public class Avatar {
     public void setVueltas(int vueltas) {
 
         if (vueltas < 0) {
-            System.err.println("Error: el número de vueltas de un avatar no puede ser menor a 0.");
+            Output.sugerencia("Error: el número de vueltas de un avatar no puede ser menor a 0.");
             return;
         }
 
@@ -196,7 +197,7 @@ public class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            System.err.println("Error: casilla no inicializada.");
+            Output.sugerencia("Error: casilla no inicializada.");
             return;
         }
 
@@ -231,7 +232,7 @@ public class Avatar {
     public void salirCarcel() {
 
         if (!isEncarcelado()) {
-            System.err.println("Error: el avatar no se encuentra en la cárcel.");
+            Output.sugerencia("Error: el avatar no se encuentra en la cárcel.");
             return;
         }
 
@@ -243,7 +244,7 @@ public class Avatar {
     public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {
-            System.err.println("Error: el número sacado en una tirada no puede ser menor que 2.");
+            Output.sugerencia("Error: el número sacado en una tirada no puede ser menor que 2.");
             return;
         }
 
