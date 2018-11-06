@@ -1,5 +1,6 @@
 package aplicacion.salidaPantalla;
 
+import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.Casilla;
 
@@ -329,7 +330,7 @@ public class Output {
     public static ArrayList<String> JugadortoArrayString(Jugador jugador){
         if(jugador == null){
             System.err.println("Jugador referencia a null.");
-            return;
+            return null;
         }
 
         //En datos se almacenarán los datos que se devuelven.
@@ -338,39 +339,107 @@ public class Output {
         //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
         datos.add("Jugador: "+jugador.getNombre());
         datos.add("Avatar: "+((Character)jugador.getAvatar().getIdentificador()).toString());
-        datos.add(((Integer)jugador.getFortuna()).toString() + "K €");
+        datos.add("Fortuna: "+((Integer)jugador.getFortuna()).toString() + "K €");
 
-        //Con un Iterator iremos recorriendo las propiedades del jugador.
-        Iterator iterador = jugador.getPropiedades().iterator();
-
-        //En la variable hasNext almacenaremos el valor booleano de si hay un siguiente en el iterador.
-        boolean hasNext;
+        //Numero de propiedades del jugador
+        int numPropiedades = jugador.getPropiedades().size();
 
         //En la variable auxiliar se añadirá el String a añadir de las propiedades
-        StringBuilder aux = new StringBuilder();
-        aux.append("[");
+        StringBuilder prop = new StringBuilder();
+        //Se calcula el número de propiedades y de prop hipotecadas para que si son 0 añadir un formato especial.
+        int numProp=0;
 
-        do{
-            aux.append(((Casilla)(iterador.next())).getGrupo().getTipo().getColor().getLetra());
+        //Lo mismo que la anterior pero con las propiedades hipotecadas
+        StringBuilder propHipotecadas = new StringBuilder();
+        int numHip=0;
+        ArrayList<Casilla> casillas;
+        prop.append("Propiedades: [");
+        propHipotecadas.append("Propiedades hipotecadas: [");
 
-            aux.append(((Casilla)(iterador.next())).getNombre());
+        for(int i = 0; i < numPropiedades; i++){
 
-            aux.append(TipoColor.resetAnsi.getLetra()).append(", ");
+            casillas = jugador.getPropiedades();
 
-            hasNext = iterador.hasNext();
-            if(hasNext)
-                aux.append(", ");
+            //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
+            if(casillas.get(i).isHipotecada()){
+                //se añade el color de la casilla
+                propHipotecadas.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
+
+                //se añade el nombre de la casilla
+                propHipotecadas.append(casillas.get(i).getNombre());
+
+                propHipotecadas.append(TipoColor.resetAnsi.getLetra());
+
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades-1)
+                    propHipotecadas.append(", ");
+
+                numProp++;
+
+            } else {
+                //se añade el color de la casilla
+                prop.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
+
+                //se añade el nombre de la casilla
+                prop.append(casillas.get(i).getNombre());
+
+                prop.append(TipoColor.resetAnsi.getLetra());
+
+                //En caso de que sea la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades-1)
+                    prop.append(", ");
+
+                numHip++;
+
+            }
 
         }
-        while(hasNext);
 
-        aux.append("]");
+
+        if(numProp == 0){
+            prop.append("Sin propiedades");
+        }
+        if(numHip == 0){
+            propHipotecadas.append("Sin propiedades hipotecadas");
+        }
+
+        prop.append("]");
+        propHipotecadas.append("]");
+
+        datos.add(prop.toString());
+        datos.add(propHipotecadas.toString());
+
+        return datos;
+    }
+
+    public static ArrayList<String> AvatartoArrayString(Avatar avatar){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        informacion.add("ID: "+avatar.getIdentificador());
+        informacion.add("Tipo: "+avatar.getTipo().getNombre());
+        informacion.add("Casilla: "+avatar.getPosicion().getNombre());
+        informacion.add("Jugador: "+avatar.getJugador().getNombre());
+
+        return informacion;
     }
 
     public static void errorComando(String error) {
         ArrayList<String> errores = new ArrayList<>();
         errores.add(error);
-        imprimirRecuadro(errores, "error", TipoColor.rojoANSI, 3, 1);
+        errorComando(errores);
+    }
+
+    public static void errorComando(String... errores){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String err:errores){
+            informacion.add(err);
+        }
+
+        errorComando(informacion);
+
     }
 
     public static void errorComando(ArrayList<String> error) {
@@ -380,7 +449,19 @@ public class Output {
     public static void sugerencia(String sugerencia) {
         ArrayList<String> sugerencias = new ArrayList<>();
         sugerencias.add(sugerencia);
-        imprimirRecuadro(sugerencias, "sugerencia", TipoColor.verdeANSI, 3, 1);
+        sugerencia(sugerencias);
+    }
+
+    public static void sugerencia(String... sugerencias){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String sug:sugerencias){
+            informacion.add(sug);
+        }
+
+        sugerencia(informacion);
+
     }
 
     public static void sugerencia(ArrayList<String> sugerencia) {
@@ -390,10 +471,22 @@ public class Output {
     public static void respuesta(String respuesta) {
         ArrayList<String> respuestas = new ArrayList<>();
         respuestas.add(respuesta);
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+        respuesta(respuestas);
+    }
+
+    public static void respuesta(String... respuestas){
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for(String resp:respuestas){
+            informacion.add(resp);
+        }
+
+        respuesta(informacion);
+
     }
 
     public static void respuesta(ArrayList<String> respuestas) {
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.verdeANSI, 3, 1);
+        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
     }
 }

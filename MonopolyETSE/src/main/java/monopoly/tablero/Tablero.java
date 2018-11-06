@@ -299,4 +299,8 @@ public class Tablero {
         return banca;
     }
 
+    public Dado getDado(){
+        return dado;
+    }
+
 }

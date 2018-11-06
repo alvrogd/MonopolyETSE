@@ -1,12 +1,21 @@
 package monopoly.jugadores;
 
 public enum TipoAvatar {
-    pelota,
-    coche,
-    esfinge,
-    sombrero,
-    banca;
+    pelota("pelota"),
+    coche("coche"),
+    esfinge("esfinge"),
+    sombrero("sombrero"),
+    banca("banca");
 
+    private String nombre;
+
+    private TipoAvatar(String nombre){
+        this.nombre = nombre;
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
 
     public static TipoAvatar toAvatar(String avatar){
         switch(avatar){
