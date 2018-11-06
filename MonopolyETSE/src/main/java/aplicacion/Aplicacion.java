@@ -449,6 +449,17 @@ public class Aplicacion {
 
             Output.respuesta(respuesta);
 
+        } else if((TipoComando) comando.get(0) == TipoComando.lanzarDados){
+
+
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            juego.getTurno().lanzarDados(juego.getTablero().getDado());
+
         }
     }
 
