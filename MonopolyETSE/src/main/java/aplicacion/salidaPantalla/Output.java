@@ -208,12 +208,12 @@ public class Output {
 
     public static void imprimirEntradaComando() {
 
-        System.out.println("\t\uD83D\uDC49 Acción: ");
+        System.out.print("\t\uD83D\uDC49 Acción: ");
 
     }
 
 
-    private static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
+    public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
         StringBuilder impresion = new StringBuilder();
 
         int lineas = mensaje.size();
@@ -252,6 +252,10 @@ public class Output {
             case "respuesta":
                 opcion = "[R] ";
                 break;
+
+            case "mensaje":
+                opcion = "";
+                break;
             default:
                 opcion = "[*] " + tipo;
                 break;
@@ -288,9 +292,9 @@ public class Output {
                 impresion.append(color.getLetra());
                 impresion.append(TipoColor.Negrita.getLetra());
                 impresion.append(opcion);
+                impresion.append(mensaje.get(i));
                 impresion.append(TipoColor.resetAnsi.getLetra());
                 impresion.append(color.getLetra());
-                impresion.append(mensaje.get(i));
 
                 for (int j = 0; j < ancho + max - mensaje.get(i).length(); j++) {
                     impresion.append(" ");
@@ -611,5 +615,38 @@ public class Output {
 
     public static void respuesta(ArrayList<String> respuestas) {
         imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+    }
+
+    public static void mensaje(String... mensajes) {
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for (String resp : mensajes) {
+            informacion.add(resp);
+        }
+
+        mensaje(informacion);
+
+    }
+
+    public static void mensaje(ArrayList<String> mensajes) {
+        imprimirRecuadro(mensajes, "mensaje", TipoColor.amarilloANSI, 3, 1);
+    }
+
+    public static void imprimirAyuda(){
+        ArrayList<String> ayuda = new ArrayList<>();
+        ayuda.add("Información sobre comandos.");
+        ayuda.add("");
+        ayuda.add(" -> crear jugador <nombre> <tipo_Avatar>");
+        ayuda.add("      (*) Crea un jugador con el nombre introducido y su tipo de avatar.");
+        ayuda.add("      (*) Tipos de avatares disponibles:");
+        ayuda.add("               - Coche");
+        ayuda.add("               - Esfinge");
+        ayuda.add("               - Sombrero");
+        ayuda.add("               - Pelota");
+        ayuda.add("");
+        ayuda.add(" -> jugador");
+        ayuda.add("      (*) Informa del jugador que tiene el turno.");
+        imprimirRecuadro(ayuda,"AYUDA: ", TipoColor.violetaANSI, 3, 1);
     }
 }
