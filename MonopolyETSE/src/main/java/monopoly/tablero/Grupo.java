@@ -1,6 +1,7 @@
 package monopoly.tablero;
 
 
+import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 
 import java.util.ArrayList;
@@ -71,6 +72,22 @@ public class Grupo {
 
     public ArrayList<Casilla> getCasillas() {
         return casillas;
+    }
+
+    public void setPrecio(int precio){
+
+        if(precio < 0){
+            System.err.println("El precio no puede ser negativo");
+            return;
+        }
+
+        this.precio = precio;
+
+        int nuevoAlquiler = (int) (Constantes.COEF_ALQUILER * (precio / (double) getCasillas().size()));
+
+        for(Casilla casilla:getCasillas()){
+            casilla.setAlquiler(nuevoAlquiler);
+        }
     }
 
 
