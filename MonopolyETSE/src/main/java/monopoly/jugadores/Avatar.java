@@ -46,6 +46,7 @@ public class Avatar {
 
     /**
      * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
+     *
      * @param jugador jugador que sea la Banca
      */
     public Avatar(Jugador jugador) {
@@ -77,9 +78,10 @@ public class Avatar {
 
     /**
      * Constructor que crea el avatar de un jugador normal
-     * @param jugador jugador cuyo avatar se va a crear
-     * @param tablero tablero del juego
-     * @param tipo tipo de avatar a crear
+     *
+     * @param jugador        jugador cuyo avatar se va a crear
+     * @param tablero        tablero del juego
+     * @param tipo           tipo de avatar a crear
      * @param casillaInicial casilla en la que posicionar el avatar del jugador
      */
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
@@ -305,8 +307,9 @@ public class Avatar {
     /**
      * Mueve al jugador de un avatar, en caso de no estar encarcelado, o estarlo y sacar dobles; si se ha estado en la
      * cárcel el número máximo de turnos permitidos, se fuerza su salida
+     *
      * @param numeroCasillas cantidad de casillas a moverse
-     * @param dobles si los dados han dado el mismo valor
+     * @param dobles         si los dados han dado el mismo valor
      */
     public void mover(int numeroCasillas, boolean dobles) {
 
@@ -341,8 +344,9 @@ public class Avatar {
 
         // Se calcula la posición nueva del avatar
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+
         // Y se establece
-        posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
+        posicion = getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10);
 
         // Si ha pasado por la casilla de salida
         if (posicionFinal >= 40)
@@ -351,7 +355,7 @@ public class Avatar {
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
-        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this );
+        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {

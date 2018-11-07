@@ -40,7 +40,7 @@ public class Jugador {
 
         this.avatar = new Avatar(this);
 
-        this.fortuna = Integer.MAX_VALUE;
+        this.fortuna = Integer.MAX_VALUE/2;
 
         this.propiedades = new ArrayList<>();
 

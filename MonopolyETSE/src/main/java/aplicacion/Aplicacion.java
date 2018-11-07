@@ -18,6 +18,7 @@ public class Aplicacion {
 
     private Juego juego;
     private Menu menu;
+    private boolean haLanzadoDados;
 
     public Aplicacion() {
 
@@ -314,11 +315,6 @@ public class Aplicacion {
                 return;
             }
 
-            if(juego.getNombresJugadores().contains((String)comando.get(1))){
-                Output.errorComando("Ese jugador ya pertenece al juego.");
-                return;
-            }
-
             //Se recorre el array de caracteres
             for (int i = 0; i < tamArg; i++) {
 
@@ -341,6 +337,11 @@ public class Aplicacion {
 
                 //Se manda un mensaje de error y finaliza
                 Output.errorComando("Introduzca el avatar después del nombre en la opción «crear»");
+                return;
+            }
+
+            if(juego.getNombresJugadores().contains((String)argumentoSeparados.get(0))){
+                Output.errorComando("Ese jugador ya pertenece al juego.");
                 return;
             }
 
@@ -397,7 +398,7 @@ public class Aplicacion {
 
             //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
                for(int i = 0; i < 2; i++){
-                   informacionEnviar.add("    -> "+auxiliar.get(i));
+                   informacionEnviar.add(auxiliar.get(i));
                }
 
             Output.respuesta(informacionEnviar);
@@ -483,6 +484,11 @@ public class Aplicacion {
 
             if(!juego.isIniciado()){
                 Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            if(juego.isHaLanzadoDados()){
+                Output.errorComando("Ya has lanzado los dados.");
                 return;
             }
 
@@ -630,7 +636,6 @@ public class Aplicacion {
             juego.iniciarJuego();
         }
     }
-
 }
 
 
