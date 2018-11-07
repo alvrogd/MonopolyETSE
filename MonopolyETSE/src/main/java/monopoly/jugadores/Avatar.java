@@ -68,22 +68,22 @@ public class Avatar {
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
-            Output.errorComando("Error: jugador no inicializado.");
+            Output.errorComando("Jugador no inicializado.");
             System.exit(1);
         }
 
         if (tablero == null) {
-            Output.errorComando("Error: tablero no inicializado.");
+            Output.errorComando("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipo == null) {
-            Output.errorComando("Error: tipo de avatar no inicializado.");
+            Output.errorComando("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            System.out.println("Error: casilla inicial no inicializada.");
+            System.out.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -165,7 +165,7 @@ public class Avatar {
     public void setTurnosEnCarcel(int turnosEnCarcel) {
 
         if (turnosEnCarcel < 0) {
-            Output.sugerencia("Error: el número turnos en la cárcel de un avatar no puede ser menor a 0.");
+            Output.sugerencia("El número turnos en la cárcel de un avatar no puede ser menor a 0.");
             return;
         }
         this.turnosEnCarcel = turnosEnCarcel;
@@ -180,7 +180,7 @@ public class Avatar {
     public void setVueltas(int vueltas) {
 
         if (vueltas < 0) {
-            Output.sugerencia("Error: el número de vueltas de un avatar no puede ser menor a 0.");
+            Output.sugerencia("El número de vueltas de un avatar no puede ser menor a 0.");
             return;
         }
 
@@ -196,7 +196,7 @@ public class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            Output.sugerencia("Error: casilla no inicializada.");
+            Output.sugerencia("Casilla no inicializada.");
             return;
         }
 
@@ -231,7 +231,7 @@ public class Avatar {
     public void salirCarcel() {
 
         if (!isEncarcelado()) {
-            Output.sugerencia("Error: el avatar no se encuentra en la cárcel.");
+            Output.sugerencia("El avatar no se encuentra en la cárcel.");
             return;
         }
 
@@ -240,7 +240,7 @@ public class Avatar {
             return;
         }
 
-        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel" );
+        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel." );
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -250,11 +250,11 @@ public class Avatar {
     public void forzarSalirCarcel() {
 
         if (!isEncarcelado()) {
-            Output.sugerencia("Error: el avatar no se encuentra en la cárcel.");
+            Output.sugerencia("El avatar no se encuentra en la cárcel.");
             return;
         }
 
-        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel" );
+        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel." );
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -265,7 +265,7 @@ public class Avatar {
     public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {
-            Output.sugerencia("Error: el número sacado en una tirada no puede ser menor que 2.");
+            Output.sugerencia("El número sacado en una tirada no puede ser menor que 2.");
             return;
         }
 
@@ -273,12 +273,12 @@ public class Avatar {
         if (isEncarcelado()) {
 
             if (!dobles) {
-                Output.sugerencia("No se puede salir de la cárcel sin sacar dobles");
+                Output.sugerencia("No se puede salir de la cárcel sin sacar dobles.");
                 setTurnosEnCarcel(getTurnosEnCarcel() + 1);
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == 3) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos" );
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos." );
                     forzarSalirCarcel();
                 }
                 // En caso contrario, no se hace nada
@@ -301,55 +301,55 @@ public class Avatar {
 
             case suerte:
                 // acción asociada a la casilla de suerte
-                Output.respuesta("Has caído en una casilla de suerte");
+                Output.respuesta("Has caído en una casilla de suerte.");
                 break;
 
             case comunidad:
                 // acción asociada a la casilla de comunidad
-                Output.respuesta("Has caído en una casilla de comunidad");
+                Output.respuesta("Has caído en una casilla de comunidad.");
                 break;
 
             case impuesto1:
-                Output.respuesta("Has caído en la primera casilla de impuestos");
+                Output.respuesta("Has caído en la primera casilla de impuestos.");
                 caerEnImpuesto1();
                 break;
 
             case impuesto2:
-                Output.respuesta("Has caído en la segunda casilla de impuestos");
+                Output.respuesta("Has caído en la segunda casilla de impuestos.");
                 caerEnImpuesto2();
                 break;
 
             case transporte:
-                Output.respuesta("Has caído en una casilla de transporte");
+                Output.respuesta("Has caído en una casilla de transporte.");
                 caerEnTransporte();
                 break;
 
             case servicios:
-                Output.respuesta("Has caído en una casilla de servicio");
+                Output.respuesta("Has caído en una casilla de servicio.");
                 caerEnServicio(numeroCasillas);
                 break;
 
             case carcel:
                 // acción asociada a la casilla de cárcel
-                Output.respuesta("Has caído en la casilla de visita de la cárcel");
+                Output.respuesta("Has caído en la casilla de visita de la cárcel.");
                 break;
 
             case irCarcel:
-                Output.respuesta("Has caído en la casilla de ir a la cárcel");
+                Output.respuesta("Has caído en la casilla de ir a la cárcel.");
                 caerEnIrACarcel();
                 break;
 
             case parking:
-                Output.respuesta("Has caído en la casilla del parking");
+                Output.respuesta("Has caído en la casilla del parking.");
                 caerEnParking();
                 break;
 
             case salida:
-                Output.respuesta("Has caído en la casilla de salida");
+                Output.respuesta("Has caído en la casilla de salida.");
                 break;
 
             default:
-                Output.respuesta("Has caído en una casilla de un solar");
+                Output.respuesta("Has caído en una casilla de un solar.");
                 caerEnSolar();
 
         }
@@ -464,7 +464,7 @@ public class Avatar {
         // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
         if (!isHaEstadoCarcel()) {
             getJugador().setFortuna(getJugador().getFortuna() + Constantes.DINERO_SALIDA);
-            Output.respuesta("Has cobrado el importe de la casilla de salida");
+            Output.respuesta("Has cobrado el importe de la casilla de salida.");
         }
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);
