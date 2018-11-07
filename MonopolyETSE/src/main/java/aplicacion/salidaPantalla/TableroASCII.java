@@ -50,6 +50,11 @@ public class TableroASCII {
 
     /* Métodos */
 
+    /**
+     * Coge un tablero y devuelve su representación visual como un String
+     * @param tablero tablero a pintar
+     * @return String que representa el tablero a pintar
+     */
     public static String pintaTablero(Tablero tablero) {
 
         if (tablero == null) {
@@ -81,6 +86,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta en el tablero a pintar la fila superior o inferior de casillas
+     * @param superior si se debe insertar la fila superior o inferior de casillas
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param tablero tablero que contiene las casillas a pintar
+     */
     private static void insertarFila(boolean superior, StringBuilder stringBuilder, Tablero tablero) {
 
         int posicionIterada;    // Posición en el StringBuilder
@@ -134,6 +145,13 @@ public class TableroASCII {
 
     }
 
+
+    /**
+     * Se insertan en el tablero a pintar las columnas izquierda y derecha contenidas entre las filas superior e
+     * inferior
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param tablero tablero que contiene las casillas a pintar
+     */
     private static void insertarColumnas(StringBuilder stringBuilder, Tablero tablero) {
 
         // Se comienzan a insertar las columnas desde el límite que comparten con la fila superior (una casilla más un
@@ -170,11 +188,22 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta una casilla en el tablero a pintar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param tablero tablero que contiene la casilla
+     * @param casilla casilla a pintar
+     * @param posicion posición de la esquina superior izquierda de la casilla en el tablero a pintar
+     * @param superior si es de la fila superior
+     * @param inferior si es de la fila inferior
+     * @param izquierda si es del lado izquierdo
+     * @param derecha si es del lado derecho
+     */
     private static void insertarCasilla(StringBuilder stringBuilder, Tablero tablero, Casilla casilla, int posicion,
                                         boolean superior, boolean inferior, boolean izquierda, boolean derecha) {
 
         // Se pintan los límites de la casilla
-        insertarLimites(stringBuilder, posicion, superior, inferior, izquierda, derecha);
+        insertarLimites(stringBuilder, posicion );
 
         // Se inserta su nombre
         insertarNombre(stringBuilder, posicion, casilla.getNombre(), casilla.getGrupo().getTipo().getColor());
@@ -188,8 +217,12 @@ public class TableroASCII {
     }
 
 
-    private static void insertarLimites(StringBuilder stringBuilder, int posicion, boolean superior, boolean inferior,
-                                        boolean izquierda, boolean derecha) {
+    /**
+     * Se inserta el recuadro de la casilla en el tablero a pintar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición de la esquina superior izquierda del recuadro en el tablero a pintar
+     */
+    private static void insertarLimites(StringBuilder stringBuilder, int posicion ) {
 
         int iterante;    // Posición en el String
         int anchoTotal = anchoCasilla + 2;    // Incluyendo los separadores
@@ -228,6 +261,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta la esquina superior izquierda del recuadro en el tablero a pintar, "fusionando" el carácter que ya
+     * exista con la esquina a representar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     */
     private static void insertarEsquinaSuperiorIzquierda(StringBuilder stringBuilder, int posicion) {
 
         // Se comprueba si ya existe una carácter escrito por otra casilla
@@ -266,6 +305,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta la esquina superior derecha del recuadro en el tablero a pintar, "fusionando" el carácter que ya
+     * exista con la esquina a representar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     */
     private static void insertarEsquinaSuperiorDerecha(StringBuilder stringBuilder, int posicion) {
 
         // Se comprueba si ya existe una carácter escrito por otra casilla
@@ -304,6 +349,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta la esquina inferior izquierda del recuadro en el tablero a pintar, "fusionando" el carácter que ya
+     * exista con la esquina a representar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     */
     private static void insertarEsquinaInferiorIzquierda(StringBuilder stringBuilder, int posicion) {
 
         // Se comprueba si ya existe una carácter escrito por otra casilla
@@ -345,6 +396,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta la esquina inferior derecha del recuadro en el tablero a pintar, "fusionando" el carácter que ya
+     * exista con la esquina a representar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     */
     private static void insertarEsquinaInferiorDerecha(StringBuilder stringBuilder, int posicion) {
 
         // Se comprueba si ya existe una carácter escrito por otra casilla
@@ -383,6 +440,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta la parte superior/inferior de un recuadro en el tablero a pintar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param iterante posición en la que comenzar a insertar el límite en el tablero a representar
+     * @param tamano tamaño del límite a representar
+     */
     private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, int tamano) {
 
         for (int i = 0; i < tamano; i++)
@@ -390,6 +453,13 @@ public class TableroASCII {
 
     }
 
+
+    /**
+     * Se inserta la parte izquierda/derecha de un recuadro en el tablero a pintar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param iterante posición en la que comenzar a insertar el límite en el tablero a representar
+     * @param tamano tamaño del límite a representar
+     */
     private static void insertarLimiteVertical(StringBuilder stringBuilder, int iterante, int tamano) {
 
         for (int i = 0; i < tamano; i++) {
@@ -398,6 +468,7 @@ public class TableroASCII {
         }
 
     }
+
 
     private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre,
                                        TipoColor color) {

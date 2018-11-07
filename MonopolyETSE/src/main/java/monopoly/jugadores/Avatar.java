@@ -339,7 +339,9 @@ public class Avatar {
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
         getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
 
+        // Se calcula la posición nueva del avatar
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+        // Y se establece
         posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
 
         // Si ha pasado por la casilla de salida
