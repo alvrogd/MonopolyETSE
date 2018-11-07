@@ -470,6 +470,13 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se inserta una frase en el tablero a representar resaltada en un color dado
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que comenzar a insertar la frase en el tablero a representar
+     * @param nombre frase a representar
+     * @param color color de fondo de la frase a representar
+     */
     private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre,
                                        TipoColor color) {
 
@@ -515,6 +522,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se insertan los identificadores de unos avatares dados en el tablero a representar
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion posición en la que comenzar a insertar los identificadores en el tablero a representar
+     * @param avataresContenidos avatares cuyos
+     */
     private static void insertarJugadores(StringBuilder stringBuilder, int posicion, HashMap avataresContenidos) {
 
         int posicionEscritura;
@@ -541,6 +554,13 @@ public class TableroASCII {
     }
 
 
+    /**
+     *
+     * @param stringBuilder
+     * @param tablero
+     * @param posicion
+     * @param casilla
+     */
     private static void insertarPropietario(StringBuilder stringBuilder, Tablero tablero, int posicion, Casilla
             casilla) {
 

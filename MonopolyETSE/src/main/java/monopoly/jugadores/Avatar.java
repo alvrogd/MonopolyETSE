@@ -346,7 +346,7 @@ public class Avatar {
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
 
         // Y se establece
-        posicion = getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10);
+        setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
 
         // Si ha pasado por la casilla de salida
         if (posicionFinal >= 40)
