@@ -112,7 +112,7 @@ public class Avatar {
         Collection<Avatar> avatares = tablero.getAvataresContenidos().values();
 
         do {
-            identificadorAleatorio = (char) (random.nextInt(256 - 32) + 32);    // Carácter ASCII del 32 al 255
+            identificadorAleatorio = (char) (random.nextInt(127 - 32) + 32);    // Carácter ASCII del 32 al 126
             identificadorUnico = true;
             for (Avatar avatar : avatares) {
                 if (avatar.getIdentificador() == identificadorAleatorio)

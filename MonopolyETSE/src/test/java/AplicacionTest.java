@@ -24,7 +24,12 @@ public class AplicacionTest {
 
         aplicacion.getJuego().iniciarJuego();
 
-        System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
+        //System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
+
+        aplicacion.introducirComando("ver tablero");
+
+        aplicacion.introducirComando("lanzar dados");
+        aplicacion.introducirComando("comprar");
 
         aplicacion.introducirComando("ver tablero");
     }

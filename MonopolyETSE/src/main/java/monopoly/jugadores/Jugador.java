@@ -177,7 +177,6 @@ public class Jugador {
 
 
     public void comprar(Jugador vendedor, Casilla casilla) {
-        // todo un jugador también podría comprar una casilla si ha caído 2 veces o más en ella
 
         if (vendedor == null) {
             Output.sugerencia("Jugador no inicializado.");
