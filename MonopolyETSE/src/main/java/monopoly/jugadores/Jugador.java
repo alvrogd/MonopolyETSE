@@ -28,6 +28,12 @@ public class Jugador {
 
 
     /* Constructores */
+
+    /**
+     *
+     * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
+     * @param nombre el nombre de la Banca
+     */
     public Jugador(String nombre) {
 
         this.nombre = nombre;
@@ -40,6 +46,14 @@ public class Jugador {
 
     }
 
+
+    /**
+     * Constructor que crea el avatar de un jugador normal
+     * @param nombre nombre del jugador a crear
+     * @param tablero tablero del juego
+     * @param tipoAvatar tipo de avatar que crear para el jugador
+     * @param casillaInicial casilla en la que establecer inicialmente al avatar del jugador
+     */
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
         if (tablero == null) {
@@ -136,6 +150,12 @@ public class Jugador {
 
     /* Métodos */
 
+    /**
+     * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
+     * bancarrota y sus propiedades se transfieren al deudor
+     * @param receptor jugador al que pagar el importe
+     * @param importe cantidad a pagar
+     */
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
@@ -176,6 +196,12 @@ public class Jugador {
     }
 
 
+    /**
+     * Se compra una casilla a un jugador pagando el correspondiente importe, en caso de disponer de la suficiente
+     * liquidez (de momento, sólo es posible comprar casillas a la Banca)
+     * @param vendedor jugador al que comprar la casilla
+     * @param casilla casilla a comprar
+     */
     public void comprar(Jugador vendedor, Casilla casilla) {
 
         if (vendedor == null) {
@@ -238,6 +264,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Se hipoteca una casilla, no pudiendo cobrar alquiler por ella a partir de ahora, a cambio de obtener la mitad
+     * del importe pagado para adquirirla
+     * @param casilla casilla a hipotecar
+     */
     public void hipotecar(Casilla casilla) {
 
         if (casilla == null) {
@@ -263,6 +294,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Se deshipoteca una casilla, volviendo a poder cobrar alquiler por ella a partir de ahora, a cambio de pagar el
+     * el importe obtenido por la hipoteca e incrementado en un 10%
+     * @param casilla casilla a deshipotecar
+     */
     public void deshipotecar(Casilla casilla) {
 
         if (casilla == null) {
@@ -293,6 +329,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Se lanzan dos dados, y se mueve el avatar del jugador tantas casillas como sea la suma de los valores dados por
+     * los dados, además de indicarle si se han sacado dobles
+     * @param dado instancia del dado a tirar
+     */
     public void lanzarDados(Dado dado) {
 
         if (dado == null) {
@@ -313,6 +354,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Se comprueba si la fortuna del jugador quedaría negativa tras el pago de un importe dado
+     * @param importe cantidad con la que comprobar el balance
+     * @return si la fortuna restante sería negativa o no
+     */
     public boolean balanceNegativoTrasPago(int importe) {
 
         if (importe < 0.0) {
@@ -325,6 +371,12 @@ public class Jugador {
     }
 
 
+    /**
+     * Se transfiere una casilla dada de un jugador a otro
+     * @param emisor jugador que posee la casilla a transferir
+     * @param receptor jugador que va a obtener la casilla
+     * @param casilla casilla a transferir
+     */
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
@@ -353,6 +405,10 @@ public class Jugador {
     }
 
 
+    /**
+     * Se calcula el número de casillas de transporte obtenidas por el jugador
+     * @return número de casillas de transporte obtenidas
+     */
     public int numeroTransportesObtenidos() {
 
         int numero = 0;
