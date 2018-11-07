@@ -369,34 +369,25 @@ public class Output {
 
             //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
             if (casillas.get(i).isHipotecada()) {
-                //se añade el color de la casilla
-                propHipotecadas.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
 
                 //se añade el nombre de la casilla
                 propHipotecadas.append(casillas.get(i).getNombre());
-
-                propHipotecadas.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
                 if (i != numPropiedades - 1)
                     propHipotecadas.append(", ");
 
-                numProp++;
+                numHip++;
 
             } else {
-                //se añade el color de la casilla
-                prop.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
-
                 //se añade el nombre de la casilla
                 prop.append(casillas.get(i).getNombre());
-
-                prop.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
                 if (i != numPropiedades - 1)
                     prop.append(", ");
 
-                numHip++;
+                numProp++;
 
             }
 
