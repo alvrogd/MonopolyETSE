@@ -7,8 +7,18 @@ import java.util.Scanner;
 
 public class Menu {
 
+    Aplicacion app;
+
     public Menu(Aplicacion app){
 
+        if(app == null){
+            System.err.println("app referencia a null.");
+            return;
+        }
+            this.app = app;
+    }
+
+    public void iniciarAplicacion(){
         Scanner entrada = new Scanner(System.in);
 
         Output.mensaje("Bienvenido a MonopolyETSE", "",
@@ -33,7 +43,6 @@ public class Menu {
         while(true){
 
             if(app.getJuego().isIniciado()){
-                System.out.println(TableroASCII.pintaTablero(app.getJuego().getTablero()));
                 Output.imprimirCabeceraJugador(app.getJuego().getTurno());
             }
 
@@ -41,7 +50,6 @@ public class Menu {
             app.introducirComando(entrada.nextLine());
 
         }
-
     }
 
 }

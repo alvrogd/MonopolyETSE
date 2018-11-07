@@ -208,7 +208,7 @@ public class Output {
 
     public static void imprimirEntradaComando() {
 
-        System.out.print("\t\uD83D\uDC49 Acción: ");
+        System.out.print("\uD83D\uDC49 Acción: ");
 
     }
 
