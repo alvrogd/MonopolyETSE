@@ -177,6 +177,7 @@ public class Jugador {
 
 
     public void comprar(Jugador vendedor, Casilla casilla) {
+        // todo un jugador también podría comprar una casilla si ha caído 2 veces o más en ella
 
         if (vendedor == null) {
             Output.sugerencia("Jugador no inicializado.");
@@ -185,6 +186,12 @@ public class Jugador {
 
         if (casilla == null) {
             Output.sugerencia("Casilla no inicializada.");
+            return;
+        }
+
+        // Si el jugador no se encuentra en la casilla a comprar
+        if( getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero() ) {
+            Output.respuesta("El jugador no se encuentra en la casilla a comprar");
             return;
         }
 

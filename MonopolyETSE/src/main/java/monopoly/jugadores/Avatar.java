@@ -5,6 +5,7 @@ import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
@@ -29,6 +30,8 @@ public class Avatar {
     private int vueltas;
     // Casilla actual
     private Casilla posicion;
+    // Veces caídas en casa casilla
+    private ArrayList<Integer> vecesCaidasEnCasillas;
 
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
@@ -56,6 +59,7 @@ public class Avatar {
 
         vueltas = 0;
         posicion = null;
+        vecesCaidasEnCasillas = null;
 
         identificador = 'B';
 
@@ -97,6 +101,9 @@ public class Avatar {
 
         vueltas = 0;
         posicion = casillaInicial;
+        vecesCaidasEnCasillas = new ArrayList<>();
+        for (int i = 0; i < 40; i++)
+            vecesCaidasEnCasillas.add(0);
 
         // Identificador aleatorio y único
         Random random = new Random();
@@ -204,6 +211,19 @@ public class Avatar {
 
     }
 
+    public ArrayList<Integer> getVecesCaidasEnCasillas() {
+        return vecesCaidasEnCasillas;
+    }
+
+    public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
+
+        if (vecesCaidasEnCasillas == null) {
+            Output.sugerencia("ArrayList no inicializado.");
+            return;
+        }
+
+        this.vecesCaidasEnCasillas = vecesCaidasEnCasillas;
+    }
 
     public char getIdentificador() {
         return (identificador);
@@ -240,7 +260,7 @@ public class Avatar {
             return;
         }
 
-        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel." );
+        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -254,7 +274,7 @@ public class Avatar {
             return;
         }
 
-        Output.sugerencia( "Se pagará el importe correspondiente para salir de la cárcel." );
+        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -278,7 +298,7 @@ public class Avatar {
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == 3) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos." );
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
                     forzarSalirCarcel();
                 }
                 // En caso contrario, no se hace nada
@@ -293,8 +313,10 @@ public class Avatar {
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
         posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
         // Si ha pasado por la casilla de salida
-        if( posicionFinal >= 40 )
+        if (posicionFinal >= 40)
             pasarPorSalida();
+        // Se actualiza el número de veces que ha caído en la casilla
+        getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {
@@ -455,7 +477,6 @@ public class Avatar {
         parking.setAlquiler(0);
 
 
-
     }
 
 
@@ -468,7 +489,8 @@ public class Avatar {
         }
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);
-
+        setVueltas(getVueltas() + 1);
+        getTablero().getJuego().actualizarVueltas();
 
     }
 
