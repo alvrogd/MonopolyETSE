@@ -33,7 +33,8 @@ public class Grupo {
         //Comprobación de que las casillas no son null
         this.casillas = new ArrayList<>();
         Casilla aux;
-        for (ArrayList<Object> c : casillas) {
+
+        for(ArrayList<Object> c : casillas){
             if (c == null) {
                 System.err.println("Casilla incorrecta.");
                 System.exit(1);
@@ -43,12 +44,20 @@ public class Grupo {
                 System.exit(1);
             }
 
+            //Para que así casillas pueda determinar su alquiler sabiendo el número de estas que va a haber
+            this.casillas.add(null);
+        }
+
+        int contador = 0;
+
+        for (ArrayList<Object> c : casillas) {
+
             aux = new Casilla((String)c.get(2), this, comprable, 10*(int)c.get(0)+(int)c.get(1), tablero.getBanca());
 
             tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
             tablero.getCasillasTablero().put((String)c.get(2),aux);
 
-            this.casillas.add(aux);
+            this.casillas.set(contador, aux);
         }
     }
 

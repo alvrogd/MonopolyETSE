@@ -19,9 +19,9 @@ public enum TipoGrupo {
     impuesto2("impuesto",Constantes.IMPUESTO_2, TipoColor.resetAnsi),
     transporte("transporte",Constantes.DINERO_TRANSPORTES, TipoColor.resetAnsi),
     servicios("servicio",Constantes.DINERO_SERVICIOS, TipoColor.resetAnsi),
-    carcel("carcel",TipoColor.resetAnsi),
+    carcel("carcel",Constantes.DINERO_CARCEL,TipoColor.resetAnsi),
     parking("parking",0, TipoColor.resetAnsi),
-    salida("salida",TipoColor.resetAnsi),
+    salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi),
     irCarcel("ir a la cárcel",TipoColor.resetAnsi);
 
     private final int precioInicial;
@@ -29,7 +29,7 @@ public enum TipoGrupo {
     private final String tipoCasilla;
 
     private TipoGrupo(String tipocasilla,TipoColor color){
-        this.precioInicial = -1;
+        this.precioInicial = -10;
         this.color = color;
         this.tipoCasilla = tipocasilla;
     }

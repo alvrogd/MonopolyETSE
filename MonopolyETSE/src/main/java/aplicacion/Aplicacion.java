@@ -1,12 +1,15 @@
 package aplicacion;
 
 import aplicacion.salidaPantalla.Output;
+import aplicacion.salidaPantalla.TableroASCII;
 import aplicacion.salidaPantalla.TipoColor;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
+import monopoly.tablero.Casilla;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -220,7 +223,7 @@ public class Aplicacion {
                 break;
 
             case "comprar":
-                if (argc < 3) {
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -comprar- incorrecta.");
                     salida.add(null);
                     break;
@@ -482,7 +485,102 @@ public class Aplicacion {
 
         } else if((TipoComando) comando.get(0) == TipoComando.describirCasilla){
 
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
 
+            Casilla casilla = juego.getTablero().getCasillasTablero().get((String) comando.get(1));
+
+            if(casilla == null){
+                Output.errorComando("La casilla indicada no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.CasillatoArrayString(casilla));
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirJugador){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Jugador jugador = juego.getJugadores().get(comando.get(1));
+
+            if(jugador == null){
+                Output.errorComando("Ese jugador no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.JugadortoArrayString(jugador));
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirAvatar){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Avatar avatar = juego.getTablero().getAvataresContenidos().get(comando.get(1));
+
+            if(avatar == null){
+                Output.errorComando("Ese avatar no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.AvatartoArrayString(avatar));
+        } else if((TipoComando) comando.get(0) == TipoComando.comprarPropiedad){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Casilla casilla = juego.getTablero().getCasillasTablero().get((String)comando.get(1));
+
+            if(casilla == null){
+                Output.errorComando("Esa casilla no existe.");
+                return;
+            }
+
+            juego.getTurno().comprar(juego.getBanca(), casilla);
+        } else if ((TipoComando)comando.get(0) == TipoComando.listarVentas){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            ArrayList<String> respuesta = new ArrayList<>();
+
+            ArrayList<String> auxiliar;
+
+            int tamArray;
+
+            for(ArrayList<Casilla> fila: juego.getTablero().getCasillas()){
+                for(Casilla casilla: fila){
+                    if(casilla.isComprable()){
+                        auxiliar = Output.CasillatoArrayString(casilla);
+                        tamArray = auxiliar.size();
+                        respuesta.add("");
+                        for(int i = 0; i < tamArray; i++){
+                            respuesta.add(auxiliar.get(i));
+                        }
+                    }
+                }
+            }
+
+            Output.respuesta(respuesta);
+
+        } else if((TipoComando)comando.get(0) == TipoComando.verTablero){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
 
         }
     }
