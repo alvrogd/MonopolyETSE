@@ -30,6 +30,10 @@ public class Aplicacion {
         return juego;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
     public void introducirComando(String entrada) {
 
         String linea;
@@ -310,6 +314,11 @@ public class Aplicacion {
                 return;
             }
 
+            if(juego.getNombresJugadores().contains((String)comando.get(1))){
+                Output.errorComando("Ese jugador ya pertenece al juego.");
+                return;
+            }
+
             //Se recorre el array de caracteres
             for (int i = 0; i < tamArg; i++) {
 
@@ -366,6 +375,10 @@ public class Aplicacion {
 
             //Se añade el jugador al juego
             juego.addJugador(jugador);
+
+            Output.respuesta("¡Jugador creado!",
+                                         "        -> Nombre: "+jugador.getNombre(),
+                                         "        -> Avatar: "+jugador.getAvatar().getIdentificador());
 
 
         } else if((TipoComando) comando.get(0) == TipoComando.turno){
@@ -609,6 +622,9 @@ public class Aplicacion {
                 return;
             }
             ArrayList<String> aux = new ArrayList<>();
+
+            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+
             aux.add("¡Se ha iniciado el juego!");
             Output.imprimirRecuadro(aux, "Información: ", TipoColor.verdeANSI, 3, 1);
             juego.iniciarJuego();
