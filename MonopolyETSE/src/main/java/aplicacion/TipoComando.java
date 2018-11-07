@@ -4,6 +4,7 @@ public enum TipoComando {
 
     crear("crear"),
     crearJugador("crear jugador"),
+    iniciarJuego("iniciar"),
     turno("jugador"),
     listar("listar"),
     listarJugadores("listar jugadores"),
@@ -16,7 +17,8 @@ public enum TipoComando {
     describirAvatar("describir avatar"),
     comprarPropiedad("comprar"),
     listarVentas("listar enventa"),
-    verTablero("ver tablero");
+    verTablero("ver tablero"),
+    ayuda("ayuda");
 
 
     private final String comando;

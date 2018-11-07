@@ -1,5 +1,6 @@
 package monopoly.tablero;
 
+import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 
@@ -56,7 +57,7 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
-        this.alquiler = 0;
+        this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
 
         edificiosContenidos = new HashMap<>();
 

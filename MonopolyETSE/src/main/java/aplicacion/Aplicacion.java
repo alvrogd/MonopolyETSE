@@ -1,12 +1,15 @@
 package aplicacion;
 
 import aplicacion.salidaPantalla.Output;
+import aplicacion.salidaPantalla.TableroASCII;
 import aplicacion.salidaPantalla.TipoColor;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
+import monopoly.tablero.Casilla;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -14,10 +17,13 @@ import java.util.Scanner;
 public class Aplicacion {
 
     private Juego juego;
+    private Menu menu;
+    private boolean haLanzadoDados;
 
     public Aplicacion() {
 
         juego = new Juego();
+        menu = new Menu(this);
 
     }
 
@@ -25,32 +31,24 @@ public class Aplicacion {
         return juego;
     }
 
-    public void introducirComando() {
+    public Menu getMenu() {
+        return menu;
+    }
 
-        Scanner entrada = new Scanner(System.in);
+    public void introducirComando(String entrada) {
+
         String linea;
+        ArrayList<Object> toComando;
 
         if (juego.getTurno() == null) {
             System.err.println("Juego no iniciado.");
             return;
         }
 
-        interpretarComando(toComando("crear jugador Guapo sombrero"));
-
-        interpretarComando(toComando("crear jugador Alvaro sombrero"));
-        interpretarComando(toComando("jugador"));
-        juego.iniciarJuego();
-        interpretarComando(toComando("jugador"));
-        interpretarComando(toComando("listar avatares"));
-        Output.imprimirCabeceraJugador(juego.getTurno());
-        Output.imprimirEntradaComando();
-
-        ArrayList<String> mens = new ArrayList<>();
-
-        //linea = entrada.nextLine();
-
-        //System.out.println(juego.getJugadores().get("Francisco").getNombre());
-        //System.out.println(juego.getJugadores().get("Francisco").getAvatar().getTipo());
+        if((toComando = toComando(entrada)) == null){
+            return;
+        }
+        interpretarComando(toComando);
 
     }
 
@@ -232,7 +230,7 @@ public class Aplicacion {
                 break;
 
             case "comprar":
-                if (argc < 3) {
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -comprar- incorrecta.");
                     salida.add(null);
                     break;
@@ -246,7 +244,7 @@ public class Aplicacion {
                 break;
 
             case "ver":
-                if (argc < 3) {
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -ver- incorrecta.");
                     salida.add(null);
                     break;
@@ -262,6 +260,13 @@ public class Aplicacion {
                 }
                 break;
 
+            case "ayuda":
+                salida.add(TipoComando.ayuda);
+                break;
+
+            case "iniciar":
+                salida.add(TipoComando.iniciarJuego);
+                break;
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -277,6 +282,8 @@ public class Aplicacion {
     private void interpretarComando(ArrayList<Object> comando) {
 
         //comando -> posicion 0: TipoComando; posicion 1: String con los argumentos
+
+        //todo hacer subfunciones mas pequeñas en switch
 
         if(comando == null){
             System.err.println("Comando referencia a null.");
@@ -303,6 +310,11 @@ public class Aplicacion {
 
             }
 
+            if(juego.getNombresJugadores().size()==6){
+                Output.errorComando("Has alcanzado el número máximo de jugadores");
+                return;
+            }
+
             //Se recorre el array de caracteres
             for (int i = 0; i < tamArg; i++) {
 
@@ -325,6 +337,11 @@ public class Aplicacion {
 
                 //Se manda un mensaje de error y finaliza
                 Output.errorComando("Introduzca el avatar después del nombre en la opción «crear»");
+                return;
+            }
+
+            if(juego.getNombresJugadores().contains((String)argumentoSeparados.get(0))){
+                Output.errorComando("Ese jugador ya pertenece al juego.");
                 return;
             }
 
@@ -360,6 +377,10 @@ public class Aplicacion {
             //Se añade el jugador al juego
             juego.addJugador(jugador);
 
+            Output.respuesta("¡Jugador creado!",
+                                         "        -> Nombre: "+jugador.getNombre(),
+                                         "        -> Avatar: "+jugador.getAvatar().getIdentificador());
+
 
         } else if((TipoComando) comando.get(0) == TipoComando.turno){
 
@@ -368,12 +389,68 @@ public class Aplicacion {
                 return;
             }
 
-            Output.respuesta("El jugador que tiene el turno es: "+juego.getTurno().getNombre());
+            ArrayList<String> auxiliar = new ArrayList<>();
+            ArrayList<String> informacionEnviar = new ArrayList<>();
+
+            auxiliar = Output.JugadortoArrayString(juego.getTurno());
+
+            informacionEnviar.add("Información del jugador que tiene el turno.");
+
+            //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
+               for(int i = 0; i < 2; i++){
+                   informacionEnviar.add(auxiliar.get(i));
+               }
+
+            Output.respuesta(informacionEnviar);
 
         } else if((TipoComando) comando.get(0) == TipoComando.listarJugadores){
 
+            //Listar jugadores, en respuesta se añade la información que se pasará a output.
+            ArrayList<String> respuesta = new ArrayList<>();
+
+            //Se almacenan los nombres de los jugadores
+            ArrayList<String> jugadores;
+
+            //Array donde está la información recibida de JugadorToArrayString
+            ArrayList<String> infoEnviar;
+
+            //Se comprueba si el juego se ha iniciado o no
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            jugadores = juego.getNombresJugadores();
+
+            //1ª línea del mensaje
+            respuesta.add("Los jugadores que participan en el juego son, con su respectivo orden: ");
+
+            //Variable para guardar el tamaño del array recibido por JugadorToArrayString
+            int tam;
+
+            for(String jugador:jugadores){
+                //Se obtiene la información del jugador con la función JugadortoArrayString
+                infoEnviar = Output.JugadortoArrayString(juego.getJugador(jugador));
+
+                //Nueva línea
+                respuesta.add("");
+
+                //Se añade el nombre del jugador
+
+                tam = infoEnviar.size();
+
+                //Se imprime la información de infoEnviar, exceptuando el nombre del jugador, por eso j = 1.
+                for(int j = 0; j < tam; j++)
+                    respuesta.add(infoEnviar.get(j));
+            }
+
+            Output.respuesta(respuesta);
+
+        } else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+
             ArrayList<String> respuesta = new ArrayList<>();
             ArrayList<String> jugadores;
+            ArrayList<String> avatares;
 
             if(!juego.isIniciado()){
                 Output.errorComando("El juego no se ha iniciado.");
@@ -382,41 +459,183 @@ public class Aplicacion {
 
             jugadores = juego.getNombresJugadores();
 
-            respuesta.add("Los jugadores que participan en el juego son, con su respectivo orden: ");
+            int tam;
 
-            for(String jugador:jugadores){
-                respuesta.add("      -> "+jugador);
+            respuesta.add("Los avatares que hay en el tablero son los siguientes en su correspondiente orden:");
+
+            for(String jugador: jugadores){
+
+                avatares = Output.AvatartoArrayString(juego.getJugador(jugador).getAvatar());
+
+                respuesta.add("");
+
+                tam = avatares.size();
+                for(int i = 0; i < tam; i++){
+                    respuesta.add(avatares.get(i));
+                }
+
             }
 
             Output.respuesta(respuesta);
 
-        } else if((TipoComando) comando.get(0) == TipoComando.listarAvatares){
+        } else if((TipoComando) comando.get(0) == TipoComando.lanzarDados){
 
-            ArrayList<String> respuesta = new ArrayList<>();
-            ArrayList<String> nombresJugadores;
-            HashMap<String, Jugador> jugadores;
+
 
             if(!juego.isIniciado()){
                 Output.errorComando("El juego no se ha iniciado.");
                 return;
             }
 
-            jugadores = juego.getJugadores();
-            nombresJugadores = juego.getNombresJugadores();
+            if(juego.isHaLanzadoDados()){
+                Output.errorComando("Ya has lanzado los dados.");
+                return;
+            }
 
-            respuesta.add("Los jugadores que están en el tablero son, con su respectivo orden: ");
+            juego.getTurno().lanzarDados(juego.getTablero().getDado());
 
-            Avatar avatarAux;
-            for(String jugador:nombresJugadores){
-                avatarAux = jugadores.get(jugador).getAvatar();
-                respuesta.add("      -> ID: "+ avatarAux.getIdentificador());
+        } else if((TipoComando) comando.get(0) == TipoComando.finalizarTurno){
+
+            ArrayList<String> jugador = new ArrayList<>();
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            juego.finalizarTurno();
+
+            Output.respuesta("El jugador actual es "+juego.getTurno().getNombre());
+
+        } else if((TipoComando) comando.get(0) == TipoComando.salirCarcel){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            juego.getTurno().getAvatar().salirCarcel();
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirCasilla){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Casilla casilla = juego.getTablero().getCasillasTablero().get((String) comando.get(1));
+
+            if(casilla == null){
+                Output.errorComando("La casilla indicada no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.CasillatoArrayString(casilla));
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirJugador){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Jugador jugador = juego.getJugadores().get(comando.get(1));
+
+            if(jugador == null){
+                Output.errorComando("Ese jugador no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.JugadortoArrayString(jugador));
+
+        } else if((TipoComando) comando.get(0) == TipoComando.describirAvatar){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Avatar avatar = juego.getTablero().getAvataresContenidos().get((((String)comando.get(1)).charAt(0)));
+
+            if(avatar == null){
+                Output.errorComando("Ese avatar no existe.");
+                return;
+            }
+
+            Output.respuesta(Output.AvatartoArrayString(avatar));
+        } else if((TipoComando) comando.get(0) == TipoComando.comprarPropiedad){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            Casilla casilla = juego.getTablero().getCasillasTablero().get((String)comando.get(1));
+
+            if(casilla == null){
+                Output.errorComando("Esa casilla no existe.");
+                return;
+            }
+
+            juego.getTurno().comprar(juego.getBanca(), casilla);
+        } else if ((TipoComando)comando.get(0) == TipoComando.listarVentas){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            ArrayList<String> respuesta = new ArrayList<>();
+
+            ArrayList<String> auxiliar;
+
+            int tamArray;
+
+            for(ArrayList<Casilla> fila: juego.getTablero().getCasillas()){
+                for(Casilla casilla: fila){
+                    if(casilla.isComprable()){
+                        auxiliar = Output.CasillatoArrayString(casilla);
+                        tamArray = auxiliar.size();
+                        respuesta.add("");
+                        for(int i = 0; i < tamArray; i++){
+                            respuesta.add(auxiliar.get(i));
+                        }
+                    }
+                }
             }
 
             Output.respuesta(respuesta);
 
+        } else if((TipoComando)comando.get(0) == TipoComando.verTablero){
+
+            if(!juego.isIniciado()){
+                Output.errorComando("El juego no se ha iniciado.");
+                return;
+            }
+
+            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+
+        } else if((TipoComando)comando.get(0) == TipoComando.ayuda){
+            Output.imprimirAyuda();
+            return;
+        } else if((TipoComando)comando.get(0) == TipoComando.iniciarJuego){
+            if(juego.isIniciado()){
+               Output.errorComando("El juego ya está iniciado.");
+               return;
+            }
+            if(juego.getNombresJugadores().size() < 2){
+                Output.errorComando("No hay suficientes jugadores para empezar el juego");
+                return;
+            }
+            ArrayList<String> aux = new ArrayList<>();
+
+            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+
+            aux.add("¡Se ha iniciado el juego!");
+            Output.imprimirRecuadro(aux, "Información: ", TipoColor.verdeANSI, 3, 1);
+            juego.iniciarJuego();
         }
     }
-
 }
 
 

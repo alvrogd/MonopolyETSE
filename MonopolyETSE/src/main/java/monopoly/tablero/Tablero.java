@@ -1,5 +1,6 @@
 package monopoly.tablero;
 
+import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
 import monopoly.jugadores.Jugador;
@@ -13,6 +14,7 @@ public class Tablero {
     private Dado dado;
 
     private Jugador banca;
+    private Juego juego;
 
     private ArrayList<ArrayList<Casilla>> casillas;
     private HashMap<String, Casilla> casillasTablero;
@@ -22,16 +24,22 @@ public class Tablero {
 
 
     /* Constructores */
-    public Tablero(Jugador banca) {
+    public Tablero(Jugador banca, Juego juego) {
 
         if(banca == null){
             System.err.println("banca hace referencia a null");
             System.exit(1);
         }
 
+        if(juego == null){
+            System.err.println("juego hace referencia a null");
+            System.exit(1);
+        }
+
         dado = new Dado();
 
         this.banca = banca;
+        this.juego = juego;
 
         casillas = new ArrayList<>();
 
@@ -287,6 +295,10 @@ public class Tablero {
         return casillas;
     }
 
+    public Juego getJuego() {
+        return juego;
+    }
+
     public HashMap<Character, Avatar> getAvataresContenidos() {
         return avataresContenidos;
     }
@@ -297,6 +309,10 @@ public class Tablero {
 
     public Jugador getBanca(){
         return banca;
+    }
+
+    public Dado getDado(){
+        return dado;
     }
 
 }

@@ -33,6 +33,16 @@ public final class Constantes {
     public final static double COEF_PISCINA = 0.40;
     public final static double COEF_PISTADEPORTE = 1.25;
 
+    //Alquiler con edificios
+    public final static double COEF_ALQUILER = 0.10;
+    public final static int ALQ_UNACASA = 5;
+    public final static int ALQ_DOSCASA = 15;
+    public final static int ALQ_TRESCASA = 35;
+    public final static int ALQ_CUATROCASA = 50;
+    public final static int ALQ_HOTEL = 70;
+    public final static int ALQ_PISCINA = 25;
+    public final static int ALQ_PISTADEPORTE = 25;
+
     // Suma del precio de todos los solares
     public final static int SUMA_PRECIO_SOLARES = (int) (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
             PRECIO_INICIAL_GRUPO_2 + 3 * PRECIO_INICIAL_GRUPO_4 + 3 * PRECIO_INICIAL_GRUPO_5 + 3 *
@@ -57,5 +67,14 @@ public final class Constantes {
     // Posición de casillas clave
     public final static int POSICION_CARCEL = 10;
     public final static int POSICION_PARKING = 20;
+
+    // Precio de las casillas de transporte
+    public final static int DINERO_TRANSPORTES = DINERO_SALIDA;
+    // Precio de las casillas de servicio
+    public final static int DINERO_SERVICIOS = ( int ) ( DINERO_SALIDA / ( double ) DINERO_SALIDA );
+
+    // Máximo número de turnos en la cárcel
+    public final static int MAX_TURNOS_CARCEL = 3;
+
 
 }

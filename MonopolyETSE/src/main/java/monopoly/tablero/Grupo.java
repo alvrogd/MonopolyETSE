@@ -1,6 +1,7 @@
 package monopoly.tablero;
 
 
+import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 
 import java.util.ArrayList;
@@ -11,10 +12,9 @@ public class Grupo {
     private int precio;
     private final ArrayList<Casilla> casillas;
 
-    //Se le pasa un arrayList que contiene la tupla fila / posicion / nombreCasilla
     public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... casillas) {
 
-        //Comprobación del tipo de grupo
+        //Comprobación del tipo de grupoinfoEnviar.size();
         if (tipo == null) {
             System.err.println("Tipo referencia a null");
             System.exit(1);
@@ -34,7 +34,8 @@ public class Grupo {
         //Comprobación de que las casillas no son null
         this.casillas = new ArrayList<>();
         Casilla aux;
-        for (ArrayList<Object> c : casillas) {
+
+        for(ArrayList<Object> c : casillas){
             if (c == null) {
                 System.err.println("Casilla incorrecta.");
                 System.exit(1);
@@ -44,12 +45,20 @@ public class Grupo {
                 System.exit(1);
             }
 
+            //Para que así casillas pueda determinar su alquiler sabiendo el número de estas que va a haber
+            this.casillas.add(null);
+        }
+
+        int contador = 0;
+
+        for (ArrayList<Object> c : casillas) {
+
             aux = new Casilla((String)c.get(2), this, comprable, 10*(int)c.get(0)+(int)c.get(1), tablero.getBanca());
 
             tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
             tablero.getCasillasTablero().put((String)c.get(2),aux);
 
-            this.casillas.add(aux);
+            this.casillas.set(contador, aux);
         }
     }
 
@@ -63,6 +72,22 @@ public class Grupo {
 
     public ArrayList<Casilla> getCasillas() {
         return casillas;
+    }
+
+    public void setPrecio(int precio){
+
+        if(precio < 0){
+            System.err.println("El precio no puede ser negativo");
+            return;
+        }
+
+        this.precio = precio;
+
+        int nuevoAlquiler = (int) (Constantes.COEF_ALQUILER * (precio / (double) getCasillas().size()));
+
+        for(Casilla casilla:getCasillas()){
+            casilla.setAlquiler(nuevoAlquiler);
+        }
     }
 
 

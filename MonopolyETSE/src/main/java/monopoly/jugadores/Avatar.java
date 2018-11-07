@@ -5,6 +5,7 @@ import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
@@ -29,6 +30,8 @@ public class Avatar {
     private int vueltas;
     // Casilla actual
     private Casilla posicion;
+    // Veces caídas en casa casilla
+    private ArrayList<Integer> vecesCaidasEnCasillas;
 
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
@@ -39,9 +42,14 @@ public class Avatar {
     private boolean movimientoEstandar;
 
 
-
     /* Constructores */
-    public Avatar( Jugador jugador ) {
+
+    /**
+     * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
+     *
+     * @param jugador jugador que sea la Banca
+     */
+    public Avatar(Jugador jugador) {
 
         if (jugador == null) {
             Output.errorComando("Error: jugador no inicializado.");
@@ -57,6 +65,7 @@ public class Avatar {
 
         vueltas = 0;
         posicion = null;
+        vecesCaidasEnCasillas = null;
 
         identificador = 'B';
 
@@ -66,25 +75,34 @@ public class Avatar {
 
     } /* Fin del constructor para la banca */
 
+
+    /**
+     * Constructor que crea el avatar de un jugador normal
+     *
+     * @param jugador        jugador cuyo avatar se va a crear
+     * @param tablero        tablero del juego
+     * @param tipo           tipo de avatar a crear
+     * @param casillaInicial casilla en la que posicionar el avatar del jugador
+     */
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
-            Output.errorComando("Error: jugador no inicializado.");
+            Output.errorComando("Jugador no inicializado.");
             System.exit(1);
         }
 
         if (tablero == null) {
-            Output.errorComando("Error: tablero no inicializado.");
+            Output.errorComando("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipo == null) {
-            Output.errorComando("Error: tipo de avatar no inicializado.");
+            Output.errorComando("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            System.out.println("Error: casilla inicial no inicializada.");
+            System.out.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -98,6 +116,9 @@ public class Avatar {
 
         vueltas = 0;
         posicion = casillaInicial;
+        vecesCaidasEnCasillas = new ArrayList<>();
+        for (int i = 0; i < 40; i++)
+            vecesCaidasEnCasillas.add(0);
 
         // Identificador aleatorio y único
         Random random = new Random();
@@ -106,7 +127,7 @@ public class Avatar {
         Collection<Avatar> avatares = tablero.getAvataresContenidos().values();
 
         do {
-            identificadorAleatorio = (char) random.nextInt(256);    // Carácter ASCII del 0 al 255
+            identificadorAleatorio = (char) (random.nextInt(127 - 32) + 32);    // Carácter ASCII del 32 al 126
             identificadorUnico = true;
             for (Avatar avatar : avatares) {
                 if (avatar.getIdentificador() == identificadorAleatorio)
@@ -166,7 +187,7 @@ public class Avatar {
     public void setTurnosEnCarcel(int turnosEnCarcel) {
 
         if (turnosEnCarcel < 0) {
-            Output.sugerencia("Error: el número turnos en la cárcel de un avatar no puede ser menor a 0.");
+            Output.sugerencia("El número turnos en la cárcel de un avatar no puede ser menor a 0.");
             return;
         }
         this.turnosEnCarcel = turnosEnCarcel;
@@ -181,7 +202,7 @@ public class Avatar {
     public void setVueltas(int vueltas) {
 
         if (vueltas < 0) {
-            Output.sugerencia("Error: el número de vueltas de un avatar no puede ser menor a 0.");
+            Output.sugerencia("El número de vueltas de un avatar no puede ser menor a 0.");
             return;
         }
 
@@ -197,7 +218,7 @@ public class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            Output.sugerencia("Error: casilla no inicializada.");
+            Output.sugerencia("Casilla no inicializada.");
             return;
         }
 
@@ -205,6 +226,19 @@ public class Avatar {
 
     }
 
+    public ArrayList<Integer> getVecesCaidasEnCasillas() {
+        return vecesCaidasEnCasillas;
+    }
+
+    public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
+
+        if (vecesCaidasEnCasillas == null) {
+            Output.sugerencia("ArrayList no inicializado.");
+            return;
+        }
+
+        this.vecesCaidasEnCasillas = vecesCaidasEnCasillas;
+    }
 
     public char getIdentificador() {
         return (identificador);
@@ -229,96 +263,155 @@ public class Avatar {
 
     /* Métodos */
 
+    /**
+     * En caso de ser posible, el jugador del avatar paga el importe correspondiente y en desencarcelado
+     */
     public void salirCarcel() {
 
         if (!isEncarcelado()) {
-            Output.sugerencia("Error: el avatar no se encuentra en la cárcel.");
+            Output.sugerencia("El avatar no se encuentra en la cárcel.");
             return;
         }
+
+        if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
+            return;
+        }
+
+        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
+        getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
+
+        setEncarcelado(false);
+
+    }
+
+    /**
+     * Se fuerza la salida de la cárcel, incluso si no se dispone de suficiente liquidez, cayendo el jugador del avatar
+     * en la bancarrota en dicho caso
+     */
+    public void forzarSalirCarcel() {
+
+        if (!isEncarcelado()) {
+            Output.sugerencia("El avatar no se encuentra en la cárcel.");
+            return;
+        }
+
+        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
+        getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
 
     }
 
 
+    /**
+     * Mueve al jugador de un avatar, en caso de no estar encarcelado, o estarlo y sacar dobles; si se ha estado en la
+     * cárcel el número máximo de turnos permitidos, se fuerza su salida
+     *
+     * @param numeroCasillas cantidad de casillas a moverse
+     * @param dobles         si los dados han dado el mismo valor
+     */
     public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {
-            Output.sugerencia("Error: el número sacado en una tirada no puede ser menor que 2.");
+            Output.sugerencia("El número sacado en una tirada no puede ser menor que 2.");
             return;
         }
 
         // Si está en la cárcel y no ha sacado dobles
         if (isEncarcelado()) {
 
-            if( !dobles ) {
-                System.out.println("No se puede salir de la cárcel sin sacar dobles");
+            if (!dobles) {
+                Output.sugerencia("No se puede salir de la cárcel sin sacar dobles.");
                 setTurnosEnCarcel(getTurnosEnCarcel() + 1);
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
-                if (getTurnosEnCarcel() == 3) {
-                    System.out.println( "Has estado en la cárcel el número máximo de turnos permitidos" );
-                    getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
-                    setEncarcelado(false);
+                if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
+                    forzarSalirCarcel();
                 }
                 // En caso contrario, no se hace nada
                 else
                     return;
-            }
-            else
+            } else
                 setEncarcelado(false);
 
 
         }
 
+        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
+        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+
+        // Se calcula la posición nueva del avatar
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
-        posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
+
+        // Y se establece
+        setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
+
+        // Si ha pasado por la casilla de salida
+        if (posicionFinal >= 40)
+            pasarPorSalida();
+
+        // Se actualiza el número de veces que ha caído en la casilla
+        getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+        // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
+        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {
 
             case suerte:
                 // acción asociada a la casilla de suerte
+                Output.respuesta("Has caído en una casilla de suerte.");
                 break;
 
             case comunidad:
                 // acción asociada a la casilla de comunidad
+                Output.respuesta("Has caído en una casilla de comunidad.");
                 break;
 
             case impuesto1:
+                Output.respuesta("Has caído en la primera casilla de impuestos.");
                 caerEnImpuesto1();
                 break;
 
             case impuesto2:
+                Output.respuesta("Has caído en la segunda casilla de impuestos.");
                 caerEnImpuesto2();
                 break;
 
             case transporte:
-                caerEnCasillaObtenible();
+                Output.respuesta("Has caído en una casilla de transporte.");
+                caerEnTransporte();
                 break;
 
             case servicios:
-                caerEnCasillaObtenible();
+                Output.respuesta("Has caído en una casilla de servicio.");
+                caerEnServicio(numeroCasillas);
                 break;
 
             case carcel:
                 // acción asociada a la casilla de cárcel
+                Output.respuesta("Has caído en la casilla de visita de la cárcel.");
                 break;
 
             case irCarcel:
+                Output.respuesta("Has caído en la casilla de ir a la cárcel.");
                 caerEnIrACarcel();
                 break;
 
             case parking:
+                Output.respuesta("Has caído en la casilla del parking.");
                 caerEnParking();
                 break;
 
             case salida:
-                caerEnSalida();
+                Output.respuesta("Has caído en la casilla de salida.");
                 break;
 
             default:
-                caerEnCasillaObtenible();
+                Output.respuesta("Has caído en una casilla de un solar.");
+                caerEnSolar();
 
         }
 
@@ -346,7 +439,41 @@ public class Avatar {
     }
 
 
-    private void caerEnCasillaObtenible() {
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
+    private void caerEnTransporte() {
+
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
+        if (!getPosicion().isComprable()) {
+
+            getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
+                    getJugador().numeroTransportesObtenidos() * 0.25));
+
+        }
+
+    }
+
+
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
+    private void caerEnServicio(int numeroCasillas) {
+
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
+        if (!getPosicion().isComprable()) {
+
+            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO);
+
+        }
+
+    }
+
+
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
+    private void caerEnSolar() {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable()) {
@@ -358,6 +485,10 @@ public class Avatar {
     }
 
 
+    /**
+     * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
+     * avatar en el parking
+     */
     private void caerEnImpuesto1() {
 
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_1);
@@ -368,6 +499,11 @@ public class Avatar {
 
     }
 
+
+    /**
+     * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
+     * avatar en el parking
+     */
     private void caerEnImpuesto2() {
 
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_2);
@@ -378,34 +514,54 @@ public class Avatar {
 
     }
 
-    private void caerEnIrACarcel() {
+
+    /**
+     * Se mueve al avatar del jugador hasta la cárcel y se encarcela
+     */
+    public void caerEnIrACarcel() {
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
 
+        Output.sugerencia("¡Has sido encarcelado!");
     }
 
 
+    /**
+     * El jugador del avatar obtiene la cantidad acumulada en el parking por el pago de impuestos
+     */
     private void caerEnParking() {
 
         // Se añaden a la fortuna del jugador los impuestos recaudados
         final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
                 Constantes.POSICION_PARKING % 10);
         getJugador().setFortuna(getJugador().getFortuna() + parking.getAlquiler());
+
+        Output.respuesta("¡Has cobrado el valor acumulado por los impuestos!");
         // Y se resetea el valor del "alquiler" del parking
         parking.setAlquiler(0);
+
 
     }
 
 
-    private void caerEnSalida() {
+    /**
+     * Se suma al jugador del avatar la cantidad asociada al paso por la casilla de salida en caso de no haber sido
+     * encarcelado en la vuelta completada, se desencarcela al avatar y se resetea la cantidad de turnos pasados en la
+     * cárcel a 0, se incrementa en 1 el número de vueltas completadas, y se llama al tablero para actualizar las
+     * vueltas completadas por cada jugador
+     */
+    private void pasarPorSalida() {
 
         // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
-        if (!isHaEstadoCarcel())
+        if (!isHaEstadoCarcel()) {
             getJugador().setFortuna(getJugador().getFortuna() + Constantes.DINERO_SALIDA);
-
+            Output.respuesta("Has cobrado el importe de la casilla de salida.");
+        }
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);
+        setVueltas(getVueltas() + 1);
+        getTablero().getJuego().actualizarVueltas();
 
     }
 
