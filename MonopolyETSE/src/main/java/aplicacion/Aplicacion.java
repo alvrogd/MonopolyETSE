@@ -555,7 +555,7 @@ public class Aplicacion {
                 return;
             }
 
-            Avatar avatar = juego.getTablero().getAvataresContenidos().get(comando.get(1));
+            Avatar avatar = juego.getTablero().getAvataresContenidos().get((((String)comando.get(1)).charAt(0)));
 
             if(avatar == null){
                 Output.errorComando("Ese avatar no existe.");

@@ -118,6 +118,8 @@ public class Juego {
                 System.exit(1);
             }
 
+            getTurno().setTiradasEnTurno(0);
+
             if (iterador.hasNext())
                 turno = jugadores.get(iterador.next());
             else {
