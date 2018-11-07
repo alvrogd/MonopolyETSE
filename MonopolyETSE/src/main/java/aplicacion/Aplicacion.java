@@ -17,10 +17,12 @@ import java.util.Scanner;
 public class Aplicacion {
 
     private Juego juego;
+    private Menu menu;
 
     public Aplicacion() {
 
         juego = new Juego();
+        menu = new Menu(this);
 
     }
 
@@ -253,6 +255,13 @@ public class Aplicacion {
                 }
                 break;
 
+            case "ayuda":
+                salida.add(TipoComando.ayuda);
+                break;
+
+            case "iniciar":
+                salida.add(TipoComando.iniciarJuego);
+                break;
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -294,6 +303,11 @@ public class Aplicacion {
                 Output.errorComando("El juego ya está iniciado. No se pueden añadir más jugadores.");
                 return;
 
+            }
+
+            if(juego.getNombresJugadores().size()==6){
+                Output.errorComando("Has alcanzado el número máximo de jugadores");
+                return;
             }
 
             //Se recorre el array de caracteres
@@ -582,6 +596,22 @@ public class Aplicacion {
 
             System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
 
+        } else if((TipoComando)comando.get(0) == TipoComando.ayuda){
+            Output.imprimirAyuda();
+            return;
+        } else if((TipoComando)comando.get(0) == TipoComando.iniciarJuego){
+            if(juego.isIniciado()){
+               Output.errorComando("El juego ya está iniciado.");
+               return;
+            }
+            if(juego.getNombresJugadores().size() < 2){
+                Output.errorComando("No hay suficientes jugadores para empezar el juego");
+                return;
+            }
+            ArrayList<String> aux = new ArrayList<>();
+            aux.add("¡Se ha iniciado el juego!");
+            Output.imprimirRecuadro(aux, "Información: ", TipoColor.verdeANSI, 3, 1);
+            juego.iniciarJuego();
         }
     }
 
