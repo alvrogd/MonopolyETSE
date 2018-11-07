@@ -43,6 +43,11 @@ public class Avatar {
 
 
     /* Constructores */
+
+    /**
+     * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
+     * @param jugador jugador que sea la Banca
+     */
     public Avatar(Jugador jugador) {
 
         if (jugador == null) {
@@ -69,6 +74,14 @@ public class Avatar {
 
     } /* Fin del constructor para la banca */
 
+
+    /**
+     * Constructor que crea el avatar de un jugador normal
+     * @param jugador jugador cuyo avatar se va a crear
+     * @param tablero tablero del juego
+     * @param tipo tipo de avatar a crear
+     * @param casillaInicial casilla en la que posicionar el avatar del jugador
+     */
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
@@ -248,6 +261,9 @@ public class Avatar {
 
     /* Métodos */
 
+    /**
+     * En caso de ser posible, el jugador del avatar paga el importe correspondiente y en desencarcelado
+     */
     public void salirCarcel() {
 
         if (!isEncarcelado()) {
@@ -267,6 +283,10 @@ public class Avatar {
 
     }
 
+    /**
+     * Se fuerza la salida de la cárcel, incluso si no se dispone de suficiente liquidez, cayendo el jugador del avatar
+     * en la bancarrota en dicho caso
+     */
     public void forzarSalirCarcel() {
 
         if (!isEncarcelado()) {
@@ -282,6 +302,12 @@ public class Avatar {
     }
 
 
+    /**
+     * Mueve al jugador de un avatar, en caso de no estar encarcelado, o estarlo y sacar dobles; si se ha estado en la
+     * cárcel el número máximo de turnos permitidos, se fuerza su salida
+     * @param numeroCasillas cantidad de casillas a moverse
+     * @param dobles si los dados han dado el mismo valor
+     */
     public void mover(int numeroCasillas, boolean dobles) {
 
         if (numeroCasillas < 2) {
@@ -297,7 +323,7 @@ public class Avatar {
                 setTurnosEnCarcel(getTurnosEnCarcel() + 1);
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
-                if (getTurnosEnCarcel() == 3) {
+                if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
                     Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
                     forzarSalirCarcel();
                 }
@@ -400,6 +426,9 @@ public class Avatar {
     }
 
 
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
     private void caerEnTransporte() {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
@@ -413,6 +442,9 @@ public class Avatar {
     }
 
 
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
     private void caerEnServicio(int numeroCasillas) {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
@@ -425,6 +457,9 @@ public class Avatar {
     }
 
 
+    /**
+     * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
+     */
     private void caerEnSolar() {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
@@ -436,6 +471,11 @@ public class Avatar {
 
     }
 
+
+    /**
+     * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
+     * avatar en el parking
+     */
     private void caerEnImpuesto1() {
 
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_1);
@@ -446,6 +486,11 @@ public class Avatar {
 
     }
 
+
+    /**
+     * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
+     * avatar en el parking
+     */
     private void caerEnImpuesto2() {
 
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_2);
@@ -456,6 +501,10 @@ public class Avatar {
 
     }
 
+
+    /**
+     * Se mueve al avatar del jugador hasta la cárcel y se encarcela
+     */
     private void caerEnIrACarcel() {
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
@@ -465,6 +514,9 @@ public class Avatar {
     }
 
 
+    /**
+     * El jugador del avatar obtiene la cantidad acumulada en el parking por el pago de impuestos
+     */
     private void caerEnParking() {
 
         // Se añaden a la fortuna del jugador los impuestos recaudados
@@ -480,6 +532,12 @@ public class Avatar {
     }
 
 
+    /**
+     * Se suma al jugador del avatar la cantidad asociada al paso por la casilla de salida en caso de no haber sido
+     * encarcelado en la vuelta completada, se desencarcela al avatar y se resetea la cantidad de turnos pasados en la
+     * cárcel a 0, se incrementa en 1 el número de vueltas completadas, y se llama al tablero para actualizar las
+     * vueltas completadas por cada jugador
+     */
     private void pasarPorSalida() {
 
         // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
