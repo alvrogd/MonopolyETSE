@@ -19,27 +19,49 @@ public class Jugador {
     private final Avatar avatar;
 
     // Cantidad de dinero disponible
-    private Integer fortuna;
+    private int fortuna;
     // Si se encuentra en bancarrota o no
     private boolean estaBancarrota;
 
     // Propiedades en posesión
     private ArrayList<Casilla> propiedades;
 
+    // Veces que se han tirado los dados en un turno
+    private int tiradasEnTurno;
+
 
     /* Constructores */
+
+    /**
+     * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
+     *
+     * @param nombre el nombre de la Banca
+     */
     public Jugador(String nombre) {
 
         this.nombre = nombre;
 
         this.avatar = new Avatar(this);
 
-        this.fortuna = Integer.MAX_VALUE;
+        // Para evitar overflow cuando se pague a la banca
+        this.fortuna = Integer.MAX_VALUE / 2;
+        this.estaBancarrota = false;
 
         this.propiedades = new ArrayList<>();
 
+        this.tiradasEnTurno = 0;
+
     }
 
+
+    /**
+     * Constructor que crea el avatar de un jugador normal
+     *
+     * @param nombre         nombre del jugador a crear
+     * @param tablero        tablero del juego
+     * @param tipoAvatar     tipo de avatar que crear para el jugador
+     * @param casillaInicial casilla en la que establecer inicialmente al avatar del jugador
+     */
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
         if (tablero == null) {
@@ -62,8 +84,11 @@ public class Jugador {
         this.avatar = new Avatar(this, tablero, tipoAvatar, casillaInicial);
 
         this.fortuna = Constantes.DINERO_INICIAL;
+        this.estaBancarrota = false;
 
         this.propiedades = new ArrayList<>();
+
+        this.tiradasEnTurno = 0;
 
     }
 
@@ -133,9 +158,32 @@ public class Jugador {
     }
 
 
+    public int getTiradasEnTurno() {
+        return tiradasEnTurno;
+    }
+
+
+    public void setTiradasEnTurno(int tiradasEnTurno) {
+
+        if (tiradasEnTurno < 0) {
+            Output.sugerencia("El número de tiradas en un turno no puede ser menor a 0.");
+            return;
+        }
+
+        this.tiradasEnTurno = tiradasEnTurno;
+
+    }
+
 
     /* Métodos */
 
+    /**
+     * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
+     * bancarrota y sus propiedades se transfieren al deudor
+     *
+     * @param receptor jugador al que pagar el importe
+     * @param importe  cantidad a pagar
+     */
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
@@ -176,8 +224,14 @@ public class Jugador {
     }
 
 
+    /**
+     * Se compra una casilla a un jugador pagando el correspondiente importe, en caso de disponer de la suficiente
+     * liquidez (de momento, sólo es posible comprar casillas a la Banca)
+     *
+     * @param vendedor jugador al que comprar la casilla
+     * @param casilla  casilla a comprar
+     */
     public void comprar(Jugador vendedor, Casilla casilla) {
-        // todo un jugador también podría comprar una casilla si ha caído 2 veces o más en ella
 
         if (vendedor == null) {
             Output.sugerencia("Jugador no inicializado.");
@@ -190,7 +244,7 @@ public class Jugador {
         }
 
         // Si el jugador no se encuentra en la casilla a comprar
-        if( getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero() ) {
+        if (getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero()) {
             Output.respuesta("El jugador no se encuentra en la casilla a comprar");
             return;
         }
@@ -239,6 +293,12 @@ public class Jugador {
     }
 
 
+    /**
+     * Se hipoteca una casilla, no pudiendo cobrar alquiler por ella a partir de ahora, a cambio de obtener la mitad
+     * del importe pagado para adquirirla
+     *
+     * @param casilla casilla a hipotecar
+     */
     public void hipotecar(Casilla casilla) {
 
         if (casilla == null) {
@@ -264,6 +324,12 @@ public class Jugador {
     }
 
 
+    /**
+     * Se deshipoteca una casilla, volviendo a poder cobrar alquiler por ella a partir de ahora, a cambio de pagar el
+     * el importe obtenido por la hipoteca e incrementado en un 10%
+     *
+     * @param casilla casilla a deshipotecar
+     */
     public void deshipotecar(Casilla casilla) {
 
         if (casilla == null) {
@@ -294,6 +360,12 @@ public class Jugador {
     }
 
 
+    /**
+     * Se lanzan dos dados, y se mueve el avatar del jugador tantas casillas como sea la suma de los valores dados por
+     * los dados, además de indicarle si se han sacado dobles
+     *
+     * @param dado instancia del dado a tirar
+     */
     public void lanzarDados(Dado dado) {
 
         if (dado == null) {
@@ -307,13 +379,30 @@ public class Jugador {
 
         Output.respuesta("Se han tirado los dados:",
                 "        -> Primer dado: " + primeraTirada,
-                "        -> Segundo dado: " + segundaTirada);
+                "        -> Segundo dado: " + segundaTirada,
+                "        -> ¿Han sido dobles?: " + (dobles ? "sí" : "no")) ;
 
-        getAvatar().mover(primeraTirada + segundaTirada, dobles);
+        setTiradasEnTurno(getTiradasEnTurno() + 1);
+
+        // Si se han sacado tres dobles, el jugador es encarcelado
+        if( getTiradasEnTurno() == 3 && dobles )
+            getAvatar().caerEnIrACarcel();
+
+        // En caso contrario, se mueve normalmente
+        else{
+            getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
+            getAvatar().mover(primeraTirada + segundaTirada, dobles);
+        }
 
     }
 
 
+    /**
+     * Se comprueba si la fortuna del jugador quedaría negativa tras el pago de un importe dado
+     *
+     * @param importe cantidad con la que comprobar el balance
+     * @return si la fortuna restante sería negativa o no
+     */
     public boolean balanceNegativoTrasPago(int importe) {
 
         if (importe < 0.0) {
@@ -326,6 +415,13 @@ public class Jugador {
     }
 
 
+    /**
+     * Se transfiere una casilla dada de un jugador a otro
+     *
+     * @param emisor   jugador que posee la casilla a transferir
+     * @param receptor jugador que va a obtener la casilla
+     * @param casilla  casilla a transferir
+     */
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
@@ -354,6 +450,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Se calcula el número de casillas de transporte obtenidas por el jugador
+     *
+     * @return número de casillas de transporte obtenidas
+     */
     public int numeroTransportesObtenidos() {
 
         int numero = 0;

@@ -208,12 +208,12 @@ public class Output {
 
     public static void imprimirEntradaComando() {
 
-        System.out.println("\t\uD83D\uDC49 Acción: ");
+        System.out.print("\uD83D\uDC49 Acción: ");
 
     }
 
 
-    private static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
+    public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
         StringBuilder impresion = new StringBuilder();
 
         int lineas = mensaje.size();
@@ -252,6 +252,10 @@ public class Output {
             case "respuesta":
                 opcion = "[R] ";
                 break;
+
+            case "mensaje":
+                opcion = "";
+                break;
             default:
                 opcion = "[*] " + tipo;
                 break;
@@ -260,7 +264,7 @@ public class Output {
         caracteresContar += opcion.length();
 
         impresion.append(color.getLetra());
-        impresion.append("\n╔");
+        impresion.append("╔");
 
         for (int i = 0; i < max + 2 * ancho + caracteresContar; i++) {
             impresion.append("═");
@@ -288,9 +292,9 @@ public class Output {
                 impresion.append(color.getLetra());
                 impresion.append(TipoColor.Negrita.getLetra());
                 impresion.append(opcion);
+                impresion.append(mensaje.get(i));
                 impresion.append(TipoColor.resetAnsi.getLetra());
                 impresion.append(color.getLetra());
-                impresion.append(mensaje.get(i));
 
                 for (int j = 0; j < ancho + max - mensaje.get(i).length(); j++) {
                     impresion.append(" ");
@@ -323,7 +327,7 @@ public class Output {
             impresion.append("═");
         }
 
-        impresion.append("╝").append(TipoColor.resetAnsi.getLetra()).append("\n");
+        impresion.append("╝").append(TipoColor.resetAnsi.getLetra());
 
         System.out.println(impresion);
     }
@@ -365,34 +369,25 @@ public class Output {
 
             //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
             if (casillas.get(i).isHipotecada()) {
-                //se añade el color de la casilla
-                propHipotecadas.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
 
                 //se añade el nombre de la casilla
                 propHipotecadas.append(casillas.get(i).getNombre());
-
-                propHipotecadas.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
                 if (i != numPropiedades - 1)
                     propHipotecadas.append(", ");
 
-                numProp++;
+                numHip++;
 
             } else {
-                //se añade el color de la casilla
-                prop.append(casillas.get(i).getGrupo().getTipo().getColor().getLetra());
-
                 //se añade el nombre de la casilla
                 prop.append(casillas.get(i).getNombre());
-
-                prop.append(TipoColor.resetAnsi.getLetra());
 
                 //En caso de que sea la última propiedad del jugador no se añade la coma
                 if (i != numPropiedades - 1)
                     prop.append(", ");
 
-                numHip++;
+                numProp++;
 
             }
 
@@ -436,6 +431,8 @@ public class Output {
 
         informacion.add("(*) Casilla: " + casilla.getNombre());
 
+        //todo anda pásalo a un switch coñe
+
         if (casilla.getGrupo().getTipo() != TipoGrupo.carcel && casilla.getGrupo().getTipo() != TipoGrupo.parking &&
                 casilla.getGrupo().getTipo() != TipoGrupo.salida && casilla.getGrupo().getTipo() != TipoGrupo.irCarcel)
             informacion.add("        -> Tipo: " + casilla.getGrupo().getTipo().getTipoCasilla());
@@ -460,15 +457,9 @@ public class Output {
                 informacion.add("        -> A pagar: " + casilla.getGrupo().getPrecio());
 
 
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.parking
-                    || casilla.getGrupo().getTipo() == TipoGrupo.carcel) {
+            } else if (casilla.getGrupo().getTipo() == TipoGrupo.parking) {
 
-
-                if (casilla.getGrupo().getTipo() == TipoGrupo.carcel)
-                    informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
-
-                else
-                    informacion.add("        -> Bote: " + casilla.getGrupo().getPrecio());
+                informacion.add("        -> Bote: " + casilla.getGrupo().getPrecio());
 
                 StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: [");
 
@@ -480,20 +471,12 @@ public class Output {
 
                 for (String avatar : avatares) {
 
-                    if (!flag && casilla.getGrupo().getTipo() == TipoGrupo.carcel) {
-                        jugadoresContenidos.append(", [");
-                        flag = true;
-                    }
-
                     avatarAux = casilla.getAvataresContenidos().get(avatar);
 
                     jugadoresContenidos.append(avatarAux.getJugador().getNombre());
 
                     jugadoresContenidos.append(", ");
 
-                    if (casilla.getGrupo().getTipo() == TipoGrupo.carcel) {
-                        jugadoresContenidos.append(avatarAux.getTurnosEnCarcel()).append("]");
-                    }
                 }
 
                 int tam = jugadoresContenidos.toString().length();
@@ -501,6 +484,31 @@ public class Output {
                 jugadoresContenidos.replace(tam, tam, "]");
 
                 informacion.add(jugadoresContenidos.toString());
+
+            } else if(casilla.getGrupo().getTipo() == TipoGrupo.carcel){
+
+                informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
+                StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: [");
+
+                Set<String> avatares = casilla.getAvataresContenidos().keySet();
+
+                boolean flag = false;
+
+                for(String avatar: avatares) {
+
+                    if(flag) {
+                        jugadoresEncarcelados.append(" , [");
+                    }
+                    jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
+                    jugadoresEncarcelados.append(", ");
+                    jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
+                    jugadoresEncarcelados.append("]");
+                    flag = true;
+
+                }
+                
+
+                informacion.add(jugadoresEncarcelados.toString());
 
             } else if (casilla.getGrupo().getTipo() == TipoGrupo.salida) {
                 informacion.add("        -> Dinero a recibir: " + casilla.getGrupo().getPrecio() + "K €");
@@ -588,7 +596,7 @@ public class Output {
     }
 
     public static void sugerencia(ArrayList<String> sugerencia) {
-        imprimirRecuadro(sugerencia, "sugerencia", TipoColor.verdeANSI, 3, 1);
+        imprimirRecuadro(sugerencia, "sugerencia", TipoColor.verdeANSI, 2, 0);
     }
 
     public static void respuesta(String respuesta) {
@@ -610,6 +618,39 @@ public class Output {
     }
 
     public static void respuesta(ArrayList<String> respuestas) {
-        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 3, 1);
+        imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 2, 0);
+    }
+
+    public static void mensaje(String... mensajes) {
+
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for (String resp : mensajes) {
+            informacion.add(resp);
+        }
+
+        mensaje(informacion);
+
+    }
+
+    public static void mensaje(ArrayList<String> mensajes) {
+        imprimirRecuadro(mensajes, "mensaje", TipoColor.amarilloANSI, 2, 0);
+    }
+
+    public static void imprimirAyuda(){
+        ArrayList<String> ayuda = new ArrayList<>();
+        ayuda.add("Información sobre comandos.");
+        ayuda.add("");
+        ayuda.add(" -> crear jugador <nombre> <tipo_Avatar>");
+        ayuda.add("      (*) Crea un jugador con el nombre introducido y su tipo de avatar.");
+        ayuda.add("      (*) Tipos de avatares disponibles:");
+        ayuda.add("               - Coche");
+        ayuda.add("               - Esfinge");
+        ayuda.add("               - Sombrero");
+        ayuda.add("               - Pelota");
+        ayuda.add("");
+        ayuda.add(" -> jugador");
+        ayuda.add("      (*) Informa del jugador que tiene el turno.");
+        imprimirRecuadro(ayuda,"AYUDA: ", TipoColor.violetaANSI, 2, 1);
     }
 }

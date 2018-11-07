@@ -17,15 +17,22 @@ import java.util.Scanner;
 public class Aplicacion {
 
     private Juego juego;
+    private Menu menu;
+    private boolean haLanzadoDados;
 
     public Aplicacion() {
 
         juego = new Juego();
+        menu = new Menu(this);
 
     }
 
     public Juego getJuego(){
         return juego;
+    }
+
+    public Menu getMenu() {
+        return menu;
     }
 
     public void introducirComando(String entrada) {
@@ -253,6 +260,13 @@ public class Aplicacion {
                 }
                 break;
 
+            case "ayuda":
+                salida.add(TipoComando.ayuda);
+                break;
+
+            case "iniciar":
+                salida.add(TipoComando.iniciarJuego);
+                break;
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -296,6 +310,11 @@ public class Aplicacion {
 
             }
 
+            if(juego.getNombresJugadores().size()==6){
+                Output.errorComando("Has alcanzado el número máximo de jugadores");
+                return;
+            }
+
             //Se recorre el array de caracteres
             for (int i = 0; i < tamArg; i++) {
 
@@ -318,6 +337,11 @@ public class Aplicacion {
 
                 //Se manda un mensaje de error y finaliza
                 Output.errorComando("Introduzca el avatar después del nombre en la opción «crear»");
+                return;
+            }
+
+            if(juego.getNombresJugadores().contains((String)argumentoSeparados.get(0))){
+                Output.errorComando("Ese jugador ya pertenece al juego.");
                 return;
             }
 
@@ -353,6 +377,10 @@ public class Aplicacion {
             //Se añade el jugador al juego
             juego.addJugador(jugador);
 
+            Output.respuesta("¡Jugador creado!",
+                                         "        -> Nombre: "+jugador.getNombre(),
+                                         "        -> Avatar: "+jugador.getAvatar().getIdentificador());
+
 
         } else if((TipoComando) comando.get(0) == TipoComando.turno){
 
@@ -370,7 +398,7 @@ public class Aplicacion {
 
             //Elimino la información de propiedades y propiedades hipotecadas ya que no es necesaria
                for(int i = 0; i < 2; i++){
-                   informacionEnviar.add("    -> "+auxiliar.get(i));
+                   informacionEnviar.add(auxiliar.get(i));
                }
 
             Output.respuesta(informacionEnviar);
@@ -459,6 +487,11 @@ public class Aplicacion {
                 return;
             }
 
+            if(juego.isHaLanzadoDados()){
+                Output.errorComando("Ya has lanzado los dados.");
+                return;
+            }
+
             juego.getTurno().lanzarDados(juego.getTablero().getDado());
 
         } else if((TipoComando) comando.get(0) == TipoComando.finalizarTurno){
@@ -522,7 +555,7 @@ public class Aplicacion {
                 return;
             }
 
-            Avatar avatar = juego.getTablero().getAvataresContenidos().get(comando.get(1));
+            Avatar avatar = juego.getTablero().getAvataresContenidos().get((((String)comando.get(1)).charAt(0)));
 
             if(avatar == null){
                 Output.errorComando("Ese avatar no existe.");
@@ -582,9 +615,27 @@ public class Aplicacion {
 
             System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
 
+        } else if((TipoComando)comando.get(0) == TipoComando.ayuda){
+            Output.imprimirAyuda();
+            return;
+        } else if((TipoComando)comando.get(0) == TipoComando.iniciarJuego){
+            if(juego.isIniciado()){
+               Output.errorComando("El juego ya está iniciado.");
+               return;
+            }
+            if(juego.getNombresJugadores().size() < 2){
+                Output.errorComando("No hay suficientes jugadores para empezar el juego");
+                return;
+            }
+            ArrayList<String> aux = new ArrayList<>();
+
+            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+
+            aux.add("¡Se ha iniciado el juego!");
+            Output.imprimirRecuadro(aux, "Información: ", TipoColor.verdeANSI, 3, 1);
+            juego.iniciarJuego();
         }
     }
-
 }
 
 

@@ -11,7 +11,7 @@ public final class Constantes {
     // Porcentaje de incremento del valor de los solares sin vender cuando los jugadores completen
     // NUMERO_VUELTAS_INCREMENTO
     public final static double INCREMENTO_VUELTAS = 0.05;
-    public final static int NUMERO_VUELTAS_INCREMENTO = 4;    // todo añadir comprobación de vueltas
+    public final static int NUMERO_VUELTAS_INCREMENTO = 4;
 
     // Número de solares
     public final static int NUMERO_SOLARES = 25;
@@ -72,6 +72,9 @@ public final class Constantes {
     public final static int DINERO_TRANSPORTES = DINERO_SALIDA;
     // Precio de las casillas de servicio
     public final static int DINERO_SERVICIOS = ( int ) ( DINERO_SALIDA / ( double ) DINERO_SALIDA );
+
+    // Máximo número de turnos en la cárcel
+    public final static int MAX_TURNOS_CARCEL = 3;
 
 
 }
