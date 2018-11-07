@@ -26,7 +26,7 @@ public class Juego {
         turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
-        tablero = new Tablero(banca);
+        tablero = new Tablero(banca, this);
         iniciado = false;
 
     }
