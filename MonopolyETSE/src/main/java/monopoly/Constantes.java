@@ -33,6 +33,16 @@ public final class Constantes {
     public final static double COEF_PISCINA = 0.40;
     public final static double COEF_PISTADEPORTE = 1.25;
 
+    //Alquiler con edificios
+    public final static double COEF_ALQUILER = 0.10;
+    public final static int ALQ_UNACASA = 5;
+    public final static int ALQ_DOSCASA = 15;
+    public final static int ALQ_TRESCASA = 35;
+    public final static int ALQ_CUATROCASA = 50;
+    public final static int ALQ_HOTEL = 70;
+    public final static int ALQ_PISCINA = 25;
+    public final static int ALQ_PISTADEPORTE = 25;
+
     // Suma del precio de todos los solares
     public final static int SUMA_PRECIO_SOLARES = (int) (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
             PRECIO_INICIAL_GRUPO_2 + 3 * PRECIO_INICIAL_GRUPO_4 + 3 * PRECIO_INICIAL_GRUPO_5 + 3 *

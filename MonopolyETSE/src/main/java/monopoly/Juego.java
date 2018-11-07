@@ -1,12 +1,16 @@
 package monopoly;
 
+import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
+import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Juego {
 
@@ -17,7 +21,9 @@ public class Juego {
     private Jugador banca;
     private Tablero tablero;
     private Iterator iterador;
+    private int vueltasMin;
     private boolean iniciado;
+    private boolean seHaIncrementado;
 
     /* Constructores */
     public Juego() {
@@ -26,8 +32,10 @@ public class Juego {
         turno = banca;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
-        tablero = new Tablero(banca);
+        tablero = new Tablero(banca, this);
         iniciado = false;
+        vueltasMin = 0;
+        seHaIncrementado = false;
 
     }
 
@@ -44,8 +52,6 @@ public class Juego {
         return nombresJugadores;
     }
 
-
-    //todo esto se usa?
     public Jugador getJugador(String jugador) {
         return (jugadores.get(jugador));
     }
@@ -113,6 +119,60 @@ public class Juego {
 
             System.out.println("Juego no iniciado.");
             return;
+        }
+
+    }
+
+    public void actualizarVueltas(){
+
+        if(!iniciado){
+            System.err.println("Juego no iniciado.");
+            return;
+        }
+
+        ArrayList<String> jugadores = getNombresJugadores();
+
+        int min = getJugadores().get(jugadores.get(0)).getAvatar().getVueltas();
+        int auxVueltas;
+
+        for(String jugador:jugadores){
+
+            auxVueltas = getJugadores().get(jugador).getAvatar().getVueltas();
+
+            if(min > auxVueltas){
+
+                min = auxVueltas;
+
+            }
+
+        }
+
+        vueltasMin = min;
+
+        //En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado ya antes el precio
+        //de los solares
+
+        if(vueltasMin == 4 && !seHaIncrementado){
+
+            //Se miran todas las casillas del tablero y en caso de que sean comprables y no sean ni transportes ni
+            //servicios se incrementa el precio del grupo en Constantes.INCREMENTO_VUELTAS
+
+            for(ArrayList<Casilla> fila: tablero.getCasillas()){
+                for(Casilla casilla: fila){
+                    if(casilla.isComprable()){
+
+                        if(casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
+                                casilla.getGrupo().getTipo() != TipoGrupo.servicios){
+
+                            casilla.getGrupo().setPrecio(
+                                    (int)(1.0*Constantes.INCREMENTO_VUELTAS)*casilla.getGrupo().getPrecio()
+                            );
+
+                        }
+                    }
+                }
+            }
+
         }
 
     }
