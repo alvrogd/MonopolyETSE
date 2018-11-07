@@ -336,13 +336,20 @@ public class Avatar {
 
         }
 
+        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
+        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
         posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
+
         // Si ha pasado por la casilla de salida
         if (posicionFinal >= 40)
             pasarPorSalida();
+
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+        // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
+        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this );
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {
