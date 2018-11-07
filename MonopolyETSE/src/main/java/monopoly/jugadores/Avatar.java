@@ -340,7 +340,8 @@ public class Avatar {
         getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
 
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
-        posicion = getTablero().getCasillas().get(posicionFinal / 10).get(posicionFinal % 10);
+
+        posicion = getTablero().getCasillas().get((posicionFinal / 10)%4).get(posicionFinal % 10);
 
         // Si ha pasado por la casilla de salida
         if (posicionFinal >= 40)
