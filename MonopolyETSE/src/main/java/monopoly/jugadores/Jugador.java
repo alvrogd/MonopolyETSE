@@ -19,12 +19,15 @@ public class Jugador {
     private final Avatar avatar;
 
     // Cantidad de dinero disponible
-    private Integer fortuna;
+    private int fortuna;
     // Si se encuentra en bancarrota o no
     private boolean estaBancarrota;
 
     // Propiedades en posesión
     private ArrayList<Casilla> propiedades;
+
+    // Veces que se han tirado los dados en un turno
+    private int tiradasEnTurno;
 
 
     /* Constructores */
@@ -42,8 +45,11 @@ public class Jugador {
 
         // Para evitar overflow cuando se pague a la banca
         this.fortuna = Integer.MAX_VALUE / 2;
+        this.estaBancarrota = false;
 
         this.propiedades = new ArrayList<>();
+
+        this.tiradasEnTurno = 0;
 
     }
 
@@ -78,8 +84,11 @@ public class Jugador {
         this.avatar = new Avatar(this, tablero, tipoAvatar, casillaInicial);
 
         this.fortuna = Constantes.DINERO_INICIAL;
+        this.estaBancarrota = false;
 
         this.propiedades = new ArrayList<>();
+
+        this.tiradasEnTurno = 0;
 
     }
 
@@ -148,6 +157,22 @@ public class Jugador {
         this.propiedades = propiedades;
     }
 
+
+    public int getTiradasEnTurno() {
+        return tiradasEnTurno;
+    }
+
+
+    public void setTiradasEnTurno(int tiradasEnTurno) {
+
+        if (tiradasEnTurno < 0) {
+            Output.sugerencia("El número de tiradas en un turno no puede ser menor a 0.");
+            return;
+        }
+
+        this.tiradasEnTurno = tiradasEnTurno;
+
+    }
 
 
     /* Métodos */
@@ -354,10 +379,20 @@ public class Jugador {
 
         Output.respuesta("Se han tirado los dados:",
                 "        -> Primer dado: " + primeraTirada,
-                "        -> Segundo dado: " + segundaTirada);
+                "        -> Segundo dado: " + segundaTirada,
+                "        -> ¿Han sido dobles?: " + (dobles ? "sí" : "no")) ;
 
-        getAvatar().getTablero().getJuego().setHaLanzadoDados(true);
-        getAvatar().mover(primeraTirada + segundaTirada, dobles);
+        setTiradasEnTurno(getTiradasEnTurno() + 1);
+
+        // Si se han sacado tres dobles, el jugador es encarcelado
+        if( getTiradasEnTurno() == 3 && dobles )
+            getAvatar().caerEnIrACarcel();
+
+        // En caso contrario, se mueve normalmente
+        else{
+            getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
+            getAvatar().mover(primeraTirada + segundaTirada, dobles);
+        }
 
     }
 

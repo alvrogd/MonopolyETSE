@@ -518,7 +518,7 @@ public class Avatar {
     /**
      * Se mueve al avatar del jugador hasta la cárcel y se encarcela
      */
-    private void caerEnIrACarcel() {
+    public void caerEnIrACarcel() {
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
