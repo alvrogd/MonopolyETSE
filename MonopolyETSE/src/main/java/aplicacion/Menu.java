@@ -21,8 +21,10 @@ public class Menu {
     public void iniciarAplicacion(){
         Scanner entrada = new Scanner(System.in);
 
-        Output.mensaje("Bienvenido a MonopolyETSE", "",
+        Output.mensaje("Bienvenido a MonopolyETSE",
+                "",
                 "Unas reglas iniciales:",
+                "",
                 "    -> ¿Cómo crear los jugadores?",
                 "          (*) Comando: crear jugador <nombre> <tipo_Avatar>",
                 "          (*) De 2 a 6 jugadores.",

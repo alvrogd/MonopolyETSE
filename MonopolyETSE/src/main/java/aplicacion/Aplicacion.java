@@ -18,6 +18,7 @@ public class Aplicacion {
 
     private Juego juego;
     private Menu menu;
+    private boolean haLanzadoDados;
 
     public Aplicacion() {
 
@@ -630,7 +631,6 @@ public class Aplicacion {
             juego.iniciarJuego();
         }
     }
-
 }
 
 

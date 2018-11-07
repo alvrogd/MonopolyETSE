@@ -24,6 +24,7 @@ public class Juego {
     private int vueltasMin;
     private boolean iniciado;
     private boolean seHaIncrementado;
+    private boolean haLanzadoDados;
 
     /* Constructores */
     public Juego() {
@@ -36,6 +37,7 @@ public class Juego {
         iniciado = false;
         vueltasMin = 0;
         seHaIncrementado = false;
+        haLanzadoDados = false;
 
     }
 
@@ -62,6 +64,14 @@ public class Juego {
 
     public Jugador getTurno(){
         return turno;
+    }
+
+    public boolean isHaLanzadoDados() {
+        return haLanzadoDados;
+    }
+
+    public void setHaLanzadoDados(boolean haLanzadoDados) {
+        this.haLanzadoDados = haLanzadoDados;
     }
 
     public boolean isIniciado() {
@@ -114,6 +124,8 @@ public class Juego {
                 iterador = nombresJugadores.iterator();
                 turno = jugadores.get(iterador.next());
             }
+
+            haLanzadoDados = false;
 
         } else {
 
