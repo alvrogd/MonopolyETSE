@@ -471,9 +471,10 @@ public class TableroASCII {
 
 
     /**
-     * Se inserta una frase en el tablero a representar resaltada en un color dado
+     * Se inserta una frase en el tablero a representar, resaltada en un color dado y centrada en la parte superior de
+     * una casilla
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que comenzar a insertar la frase en el tablero a representar
+     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar la frase
      * @param nombre frase a representar
      * @param color color de fondo de la frase a representar
      */
@@ -523,9 +524,10 @@ public class TableroASCII {
 
 
     /**
-     * Se insertan los identificadores de unos avatares dados en el tablero a representar
+     * Se insertan los identificadores de unos avatares dados en el tablero a representar en la parte central de una
+     * casilla
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que comenzar a insertar los identificadores en el tablero a representar
+     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar los identificadores
      * @param avataresContenidos avatares cuyos
      */
     private static void insertarJugadores(StringBuilder stringBuilder, int posicion, HashMap avataresContenidos) {
@@ -555,11 +557,12 @@ public class TableroASCII {
 
 
     /**
-     *
-     * @param stringBuilder
-     * @param tablero
-     * @param posicion
-     * @param casilla
+     * Se inserta, en caso de ser obtenible, el propietario de una casilla en el tablero a pintar en la parte inferior
+     * de una casilla; de no haber sido comprada, se inserta su precio de compra
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param tablero tablero que contiene la casilla a pintar
+     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar el propietario
+     * @param casilla casilla cuyo propietario se va a representar
      */
     private static void insertarPropietario(StringBuilder stringBuilder, Tablero tablero, int posicion, Casilla
             casilla) {
@@ -605,6 +608,12 @@ public class TableroASCII {
     }
 
 
+    /**
+     * Se recorre el tablero a pintar, insertando en aquellas posiciones en las que se encuentren secuencias ANSI de
+     * colores los espacios faltantes, dado que estas ocupan espacio que se había creado para la representación del
+     * tablero
+     * @param stringBuilder tablero a pintar
+     */
     private static void corregirEspaciado(StringBuilder stringBuilder) {
 
         // Al ser tratado el tablero como un mapa de char, los colores establecidos toman parte de este espacio,

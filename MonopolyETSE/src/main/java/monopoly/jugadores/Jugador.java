@@ -40,6 +40,7 @@ public class Jugador {
 
         this.avatar = new Avatar(this);
 
+        // Para evitar overflow cuando se pague a la banca
         this.fortuna = Integer.MAX_VALUE / 2;
 
         this.propiedades = new ArrayList<>();
