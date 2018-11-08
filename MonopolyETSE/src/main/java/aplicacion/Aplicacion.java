@@ -65,6 +65,13 @@ public class Aplicacion {
 
     }
 
+    public void limpiarTablero() {
+
+        for( int i = 0; i < 50; i++ )
+            System.out.println();
+
+    }
+
     public void introducirComando(String entrada) {
 
         String linea;
