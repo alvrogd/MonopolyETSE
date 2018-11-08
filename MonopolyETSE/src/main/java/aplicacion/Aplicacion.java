@@ -42,13 +42,15 @@ public class Aplicacion {
 
     public void imprimirBuffer(){
 
-        if(Output.isImpresionTablero()){
-            TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer());
+        if(Output.isImpresionTablero() && getJuego().isIniciado()) {
+            System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer()));
             Output.vaciarBuffer();
+
         } else {
             int tam = Output.getBuffer().size();
 
-            TableroASCII.pintaTablero(getJuego().getTablero(), null);
+            if( getJuego().isIniciado() )
+                System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), null));
 
             for(int i = 0; i < tam; i++){
                 System.out.println(Output.getBuffer().get(i).get(0));

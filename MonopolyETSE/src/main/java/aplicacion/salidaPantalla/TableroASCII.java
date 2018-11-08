@@ -7,6 +7,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.tablero.TipoGrupo;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,15 +48,22 @@ public class TableroASCII {
     private final static char esquinaOES = '┬';
     private final static char esquinaES = '┌';
 
+    // Tamaño disponible para la información a imprimir en el centro
+    public final static int anchoDisponible = 9 * anchoCasilla + 8;
+    public final static int altoDisponible = 9 * altoCasilla + 8;
+
+
 
     /* Métodos */
 
     /**
      * Coge un tablero y devuelve su representación visual como un String
+     *
      * @param tablero tablero a pintar
+     * @param info    si es null, no es impesa ningún tipo de información adicional
      * @return String que representa el tablero a pintar
      */
-    public static String pintaTablero(Tablero tablero) {
+    public static String pintaTablero(Tablero tablero, ArrayList<ArrayList<Object>> info) {
 
         if (tablero == null) {
             Output.sugerencia("Error: tablero no inicializado");
@@ -79,6 +87,10 @@ public class TableroASCII {
         insertarFila(false, tableroPintado, tablero);
         insertarColumnas(tableroPintado, tablero);    // Las columnas contenidas entre las filas superior e inferior
 
+        // Se inserta la información a mostrar por pantalla
+        if (info != null)
+            insertarInfo(tableroPintado, info);
+
         corregirEspaciado(tableroPintado);
 
         return (tableroPintado.toString());
@@ -88,9 +100,10 @@ public class TableroASCII {
 
     /**
      * Se inserta en el tablero a pintar la fila superior o inferior de casillas
-     * @param superior si se debe insertar la fila superior o inferior de casillas
+     *
+     * @param superior      si se debe insertar la fila superior o inferior de casillas
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero tablero que contiene las casillas a pintar
+     * @param tablero       tablero que contiene las casillas a pintar
      */
     private static void insertarFila(boolean superior, StringBuilder stringBuilder, Tablero tablero) {
 
@@ -149,8 +162,9 @@ public class TableroASCII {
     /**
      * Se insertan en el tablero a pintar las columnas izquierda y derecha contenidas entre las filas superior e
      * inferior
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero tablero que contiene las casillas a pintar
+     * @param tablero       tablero que contiene las casillas a pintar
      */
     private static void insertarColumnas(StringBuilder stringBuilder, Tablero tablero) {
 
@@ -190,20 +204,21 @@ public class TableroASCII {
 
     /**
      * Se inserta una casilla en el tablero a pintar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero tablero que contiene la casilla
-     * @param casilla casilla a pintar
-     * @param posicion posición de la esquina superior izquierda de la casilla en el tablero a pintar
-     * @param superior si es de la fila superior
-     * @param inferior si es de la fila inferior
-     * @param izquierda si es del lado izquierdo
-     * @param derecha si es del lado derecho
+     * @param tablero       tablero que contiene la casilla
+     * @param casilla       casilla a pintar
+     * @param posicion      posición de la esquina superior izquierda de la casilla en el tablero a pintar
+     * @param superior      si es de la fila superior
+     * @param inferior      si es de la fila inferior
+     * @param izquierda     si es del lado izquierdo
+     * @param derecha       si es del lado derecho
      */
     private static void insertarCasilla(StringBuilder stringBuilder, Tablero tablero, Casilla casilla, int posicion,
                                         boolean superior, boolean inferior, boolean izquierda, boolean derecha) {
 
         // Se pintan los límites de la casilla
-        insertarLimites(stringBuilder, posicion );
+        insertarLimites(stringBuilder, posicion);
 
         // Se inserta su nombre
         insertarNombre(stringBuilder, posicion, casilla.getNombre(), casilla.getGrupo().getTipo().getColor());
@@ -219,10 +234,11 @@ public class TableroASCII {
 
     /**
      * Se inserta el recuadro de la casilla en el tablero a pintar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición de la esquina superior izquierda del recuadro en el tablero a pintar
+     * @param posicion      posición de la esquina superior izquierda del recuadro en el tablero a pintar
      */
-    private static void insertarLimites(StringBuilder stringBuilder, int posicion ) {
+    private static void insertarLimites(StringBuilder stringBuilder, int posicion) {
 
         int iterante;    // Posición en el String
         int anchoTotal = anchoCasilla + 2;    // Incluyendo los separadores
@@ -264,8 +280,9 @@ public class TableroASCII {
     /**
      * Se inserta la esquina superior izquierda del recuadro en el tablero a pintar, "fusionando" el carácter que ya
      * exista con la esquina a representar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     * @param posicion      posición en la que insertar la esquina en el tablero a pintar
      */
     private static void insertarEsquinaSuperiorIzquierda(StringBuilder stringBuilder, int posicion) {
 
@@ -308,8 +325,9 @@ public class TableroASCII {
     /**
      * Se inserta la esquina superior derecha del recuadro en el tablero a pintar, "fusionando" el carácter que ya
      * exista con la esquina a representar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     * @param posicion      posición en la que insertar la esquina en el tablero a pintar
      */
     private static void insertarEsquinaSuperiorDerecha(StringBuilder stringBuilder, int posicion) {
 
@@ -352,8 +370,9 @@ public class TableroASCII {
     /**
      * Se inserta la esquina inferior izquierda del recuadro en el tablero a pintar, "fusionando" el carácter que ya
      * exista con la esquina a representar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     * @param posicion      posición en la que insertar la esquina en el tablero a pintar
      */
     private static void insertarEsquinaInferiorIzquierda(StringBuilder stringBuilder, int posicion) {
 
@@ -399,8 +418,9 @@ public class TableroASCII {
     /**
      * Se inserta la esquina inferior derecha del recuadro en el tablero a pintar, "fusionando" el carácter que ya
      * exista con la esquina a representar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición en la que insertar la esquina en el tablero a pintar
+     * @param posicion      posición en la que insertar la esquina en el tablero a pintar
      */
     private static void insertarEsquinaInferiorDerecha(StringBuilder stringBuilder, int posicion) {
 
@@ -442,9 +462,10 @@ public class TableroASCII {
 
     /**
      * Se inserta la parte superior/inferior de un recuadro en el tablero a pintar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param iterante posición en la que comenzar a insertar el límite en el tablero a representar
-     * @param tamano tamaño del límite a representar
+     * @param iterante      posición en la que comenzar a insertar el límite en el tablero a representar
+     * @param tamano        tamaño del límite a representar
      */
     private static void insertarLimiteHorizontal(StringBuilder stringBuilder, int iterante, int tamano) {
 
@@ -456,9 +477,10 @@ public class TableroASCII {
 
     /**
      * Se inserta la parte izquierda/derecha de un recuadro en el tablero a pintar
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param iterante posición en la que comenzar a insertar el límite en el tablero a representar
-     * @param tamano tamaño del límite a representar
+     * @param iterante      posición en la que comenzar a insertar el límite en el tablero a representar
+     * @param tamano        tamaño del límite a representar
      */
     private static void insertarLimiteVertical(StringBuilder stringBuilder, int iterante, int tamano) {
 
@@ -473,10 +495,11 @@ public class TableroASCII {
     /**
      * Se inserta una frase en el tablero a representar, resaltada en un color dado y centrada en la parte superior de
      * una casilla
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar la frase
-     * @param nombre frase a representar
-     * @param color color de fondo de la frase a representar
+     * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar la frase
+     * @param nombre        frase a representar
+     * @param color         color de fondo de la frase a representar
      */
     private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre,
                                        TipoColor color) {
@@ -526,8 +549,9 @@ public class TableroASCII {
     /**
      * Se insertan los identificadores de unos avatares dados en el tablero a representar en la parte central de una
      * casilla
-     * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar los identificadores
+     *
+     * @param stringBuilder      stringBuilder en el que se está representando el tablero
+     * @param posicion           posición de la esquina superior izquierda de la casilla en la que insertar los identificadores
      * @param avataresContenidos avatares cuyos
      */
     private static void insertarJugadores(StringBuilder stringBuilder, int posicion, HashMap avataresContenidos) {
@@ -559,10 +583,11 @@ public class TableroASCII {
     /**
      * Se inserta, en caso de ser obtenible, el propietario de una casilla en el tablero a pintar en la parte inferior
      * de una casilla; de no haber sido comprada, se inserta su precio de compra
+     *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero tablero que contiene la casilla a pintar
-     * @param posicion posición de la esquina superior izquierda de la casilla en la que insertar el propietario
-     * @param casilla casilla cuyo propietario se va a representar
+     * @param tablero       tablero que contiene la casilla a pintar
+     * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar el propietario
+     * @param casilla       casilla cuyo propietario se va a representar
      */
     private static void insertarPropietario(StringBuilder stringBuilder, Tablero tablero, int posicion, Casilla
             casilla) {
@@ -577,7 +602,7 @@ public class TableroASCII {
 
             // Si es una casilla de servicios o de transporte, el precio no es repartido entre los integrantes del
             // grupo
-            if( casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
+            if (casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
                     TipoGrupo.transporte)
                 precio = casilla.getGrupo().getPrecio();
             else
@@ -608,10 +633,119 @@ public class TableroASCII {
     }
 
 
+    private static void insertarInfo(StringBuilder tableroPintado, ArrayList<ArrayList<Object>> info) {
+
+        // Tamaño del tablero en caracteres
+        int anchoTablero = caracteresPorLinea - 1;    // No se contabiliza el carácter de salto de línea
+        int altoTablero = numeroLineas;
+
+        // Número de recuadros de información a imprimir
+        int numeroInfo = info.size();
+
+        // Las dimensiones totales
+        int anchoTotal = 0;
+        int altoTotal = 0;
+        // Las dimensiones máximas de los recuadros a imprimir
+        int anchoMaximo = 0;
+        int altoMaximo = 0;
+
+        // Las líneas y columnas que quedarán libres tras imprimir los recuadros
+        int columnasLibres = 0;
+        int lineasLibres = 0;
+
+        // Las separaciones horizontal y vertical en función del número de recuadros a imprimir y el espacio libre
+        int separacionHorizontal = 0;
+        int separacionVertical = 0;
+
+        // La posición de escritura inicial
+        int posicionEscrituraInicial = 0;
+
+
+        // Se calculan las dimensiones totales y las máximas
+        for (ArrayList<Object> tupla : info) {
+
+            int anchoLeido = (Integer) tupla.get(1);
+            int altoLeido = (Integer) tupla.get(2);
+
+            anchoTotal += anchoLeido;
+            if (anchoLeido > anchoMaximo)
+                anchoMaximo = anchoLeido;
+
+            altoTotal += altoLeido;
+            if (altoLeido > altoMaximo)
+                altoMaximo = altoLeido;
+
+        }
+
+        // Se calculan las líneas y columnas que quedarán libres
+        columnasLibres = anchoDisponible - anchoTotal;
+        lineasLibres = altoDisponible - altoMaximo;
+
+
+        // Se calcula la posición de escritura inicial
+
+        // Se sitúa la posición de escritura inicial en la esquina superior izquierda del interior del tablero,
+        // avanzando primero en vertical y a continuación en horizontal
+        posicionEscrituraInicial = (altoCasilla + 2) * caracteresPorLinea;    // Casillas superiores y 2 separadores
+        posicionEscrituraInicial += anchoCasilla + 2;    // Casillas izquierdas y 2 separadores
+
+        // Se separarán los recuadros equitativamente, en función del tamaño disponible dejando, si es posible, espacio
+        // entre ellos y los límites interiores del tablero
+        separacionHorizontal = columnasLibres / (info.size() + 1);
+        separacionVertical = lineasLibres / 2;
+
+        posicionEscrituraInicial += separacionVertical * caracteresPorLinea;
+        posicionEscrituraInicial += separacionHorizontal;
+
+        // Se insertan los recuadros
+        for (int i = 0; i < info.size(); i++) {
+
+            // Información del recuadro a insertar
+            String informacion = (String) info.get(i).get(0);
+
+            // Número de caracteres insertados de la información
+            int numeroCaracteresInsertados = 0;
+
+            // Dimensiones del recuadro a insertar
+            int anchoIterado = (Integer) info.get(i).get(1);
+            int altoIterado = (Integer) info.get(i).get(2);
+
+            // Se calcula la posición de escritura del recuadro iterado a partir de la posición de escritura inicial
+            int posicionEscritura = posicionEscrituraInicial;
+
+            // El avance horizontal depende de los recuadros impresos anteriormente
+            for (int j = 0; j < i; j++)
+                posicionEscritura += (Integer) info.get(j).get(1) + separacionHorizontal;
+
+            // El avance vertical depende del alto del recuadro a imprimir
+            posicionEscritura += (altoMaximo - altoIterado) / 2 * caracteresPorLinea;
+
+            // Se inserta la información, evitando los saltos de línea
+            for (int j = 0; j < informacion.length(); j++) {
+
+                char caracterIterado = informacion.charAt(j);
+
+                // Si es un salto de línea, se retrocede y se va a la siguiente línea
+                if (caracterIterado == '\n') {
+                    posicionEscritura -= numeroCaracteresInsertados;
+                    numeroCaracteresInsertados = 0;
+                    posicionEscritura += caracteresPorLinea;
+                }
+
+                // En caso contrario, se inserta en el tablero a pintar
+                else
+                    tableroPintado.setCharAt(posicionEscritura++, caracterIterado);
+
+            }
+        }
+    }
+
+
     /**
      * Se recorre el tablero a pintar, insertando en aquellas posiciones en las que se encuentren secuencias ANSI de
      * colores los espacios faltantes, dado que estas ocupan espacio que se había creado para la representación del
      * tablero
+     *
      * @param stringBuilder tablero a pintar
      */
     private static void corregirEspaciado(StringBuilder stringBuilder) {

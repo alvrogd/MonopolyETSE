@@ -373,7 +373,7 @@ public class Output {
         Integer anchoTotal = max + 2 * ancho + caracteresContar + 2;
         Integer altoTotal = lineas + 2*alto + 2;
 
-        if(TableroASCII.getAnchoDisponible() < anchoTotal || TableroASCII.getAltoDisponible < altoTotal)
+        if(TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
             impresionTablero = false;
         else
             impresionTablero = true;

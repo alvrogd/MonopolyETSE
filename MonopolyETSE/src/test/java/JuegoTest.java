@@ -24,7 +24,7 @@ public class JuegoTest {
                 juego.getTablero().getCasillas().get(0).get(0)));
         juego.iniciarJuego();
 
-        System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+        System.out.println(TableroASCII.pintaTablero(juego.getTablero(), null));
     }
 
 }

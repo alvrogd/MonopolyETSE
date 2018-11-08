@@ -76,5 +76,4 @@ public final class Constantes {
     // Máximo número de turnos en la cárcel
     public final static int MAX_TURNOS_CARCEL = 3;
 
-
 }
