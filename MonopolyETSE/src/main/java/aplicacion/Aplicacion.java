@@ -48,6 +48,8 @@ public class Aplicacion {
         } else {
             int tam = Output.getBuffer().size();
 
+            TableroASCII.pintaTablero(getJuego().getTablero(), null);
+
             for(int i = 0; i < tam; i++){
                 System.out.println(Output.getBuffer().get(i).get(0));
             }
