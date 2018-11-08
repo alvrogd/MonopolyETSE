@@ -243,15 +243,15 @@ public class Jugador {
             return;
         }
 
-        // Si el jugador no se encuentra en la casilla a comprar
-        if (getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero()) {
-            Output.respuesta("El jugador no se encuentra en la casilla a comprar");
-            return;
-        }
-
         // Si la casilla no es comprable
         if (!getAvatar().getPosicion().isComprable()) {
             Output.respuesta("La casilla no es comprable");
+            return;
+        }
+
+        // Si el jugador no se encuentra en la casilla a comprar
+        if (getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero()) {
+            Output.respuesta("El jugador no se encuentra en la casilla a comprar");
             return;
         }
 
