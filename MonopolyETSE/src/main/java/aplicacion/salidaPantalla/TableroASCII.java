@@ -733,9 +733,10 @@ public class TableroASCII {
                 }
 
                 // En caso contrario, se inserta en el tablero a pintar
-                else
+                else {
                     tableroPintado.setCharAt(posicionEscritura++, caracterIterado);
-
+                    numeroCaracteresInsertados++;
+                }
             }
         }
     }
@@ -759,7 +760,7 @@ public class TableroASCII {
 
             if (stringBuilder.charAt(i) == '[') {
 
-                reseteoColor = !reseteoColor;
+                reseteoColor = stringBuilder.charAt(i + 1) == '0' && stringBuilder.charAt(i + 2) == '0';
 
                 // Si es la cadena para resetar el color, se añaden antes
                 if (!reseteoColor) {

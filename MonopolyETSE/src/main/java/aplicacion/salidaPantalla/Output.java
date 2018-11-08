@@ -283,22 +283,22 @@ public class Output {
 
         switch (tipo) {
             case "sugerencia":
-                opcion = "[S] SUGERENCIA: ";
+                opcion = "(S) SUGERENCIA: ";
                 break;
 
             case "error":
-                opcion = "[!] ERROR: ";
+                opcion = "(!) ERROR: ";
                 break;
 
             case "respuesta":
-                opcion = "[R] ";
+                opcion = "(R) ";
                 break;
 
             case "mensaje":
                 opcion = "";
                 break;
             default:
-                opcion = "[*] " + tipo;
+                opcion = "(*) " + tipo;
                 break;
         }
 
@@ -332,12 +332,12 @@ public class Output {
 
             if (i == 0) {
 
-                impresion.append(color.getLetra());
-                impresion.append(TipoColor.Negrita.getLetra());
+                //impresion.append(color.getLetra());
+                //impresion.append(TipoColor.Negrita.getLetra());
                 impresion.append(opcion);
                 impresion.append(mensaje.get(i));
-                impresion.append(TipoColor.resetAnsi.getLetra());
-                impresion.append(color.getLetra());
+                //impresion.append(TipoColor.resetAnsi.getLetra());
+                //impresion.append(color.getLetra());
 
                 for (int j = 0; j < ancho + max - mensaje.get(i).length(); j++) {
                     impresion.append(" ");
@@ -413,8 +413,8 @@ public class Output {
         StringBuilder propHipotecadas = new StringBuilder();
         int numHip = 0;
         ArrayList<Casilla> casillas;
-        prop.append("        -> Propiedades: [");
-        propHipotecadas.append("        -> Propiedades hipotecadas: [");
+        prop.append("        -> Propiedades: {");
+        propHipotecadas.append("        -> Propiedades hipotecadas: {");
 
         for (int i = 0; i < numPropiedades; i++) {
 
@@ -454,8 +454,8 @@ public class Output {
             propHipotecadas.append("Sin propiedades hipotecadas");
         }
 
-        prop.append("]");
-        propHipotecadas.append("]");
+        prop.append("}");
+        propHipotecadas.append("}");
 
         datos.add(prop.toString());
         datos.add(propHipotecadas.toString());
@@ -514,7 +514,7 @@ public class Output {
 
                 informacion.add("        -> Bote: " + casilla.getGrupo().getPrecio());
 
-                StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: [");
+                StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: {");
 
                 Set<String> avatares = casilla.getAvataresContenidos().keySet();
 
@@ -534,14 +534,14 @@ public class Output {
 
                 int tam = jugadoresContenidos.toString().length();
 
-                jugadoresContenidos.replace(tam, tam, "]");
+                jugadoresContenidos.replace(tam, tam, "}");
 
                 informacion.add(jugadoresContenidos.toString());
 
             } else if(casilla.getGrupo().getTipo() == TipoGrupo.carcel){
 
                 informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
-                StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: [");
+                StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: {");
 
                 Set<String> avatares = casilla.getAvataresContenidos().keySet();
 
@@ -550,12 +550,12 @@ public class Output {
                 for(String avatar: avatares) {
 
                     if(flag) {
-                        jugadoresEncarcelados.append(" , [");
+                        jugadoresEncarcelados.append(" , {");
                     }
                     jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
                     jugadoresEncarcelados.append(", ");
                     jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
-                    jugadoresEncarcelados.append("]");
+                    jugadoresEncarcelados.append("}");
                     flag = true;
 
                 }
@@ -571,34 +571,37 @@ public class Output {
                 informacion.add("");
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");
                 informacion.add("        -> Alquiler:                         " + alquiler + "K €");
-                informacion.add("");
-                aux = new Edificio(TipoEdificio.hotel, casilla.getGrupo().getTipo());
-                informacion.add("        -> Valor hotel:                      " + aux.getPrecioCompra() + "K €");
 
-                aux = new Edificio(TipoEdificio.casa, casilla.getGrupo().getTipo());
-                informacion.add("        -> Valor casa:                       " + aux.getPrecioCompra() + "K €");
+                if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
+                    informacion.add("");
+                    aux = new Edificio(TipoEdificio.hotel, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor hotel:                      " + aux.getPrecioCompra() + "K €");
 
-                aux = new Edificio(TipoEdificio.piscina, casilla.getGrupo().getTipo());
-                informacion.add("        -> Valor piscina:                    " + aux.getPrecioCompra() + "K €");
+                    aux = new Edificio(TipoEdificio.casa, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor casa:                       " + aux.getPrecioCompra() + "K €");
 
-                aux = new Edificio(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
-                informacion.add("        -> Valor pista de deporte:           " + aux.getPrecioCompra() + "K €");
+                    aux = new Edificio(TipoEdificio.piscina, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor piscina:                    " + aux.getPrecioCompra() + "K €");
 
-                informacion.add("");
-                informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * alquiler
-                        + "K €");
-                informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * alquiler
-                        + "K €");
+                    aux = new Edificio(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor pista de deporte:           " + aux.getPrecioCompra() + "K €");
+
+                    informacion.add("");
+                    informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * alquiler
+                            + "K €");
+                    informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * alquiler
+                            + "K €");
+                }
             }
 
         }

@@ -9,6 +9,7 @@ import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.Casilla;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -40,17 +41,20 @@ public class Aplicacion {
         return menu;
     }
 
-    public void imprimirBuffer(){
+    public void imprimirBuffer() {
 
         if(Output.isImpresionTablero() && getJuego().isIniciado()) {
+            System.out.print("\033[H\033[2J");
             System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer()));
             Output.vaciarBuffer();
 
         } else {
             int tam = Output.getBuffer().size();
 
-            if( getJuego().isIniciado() )
+            if( getJuego().isIniciado() ) {
+                System.out.print("\033[H\033[2J");
                 System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), null));
+            }
 
             for(int i = 0; i < tam; i++){
                 System.out.println(Output.getBuffer().get(i).get(0));
