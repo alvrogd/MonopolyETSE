@@ -14,6 +14,47 @@ import java.util.Set;
 
 public class Output {
 
+    private static ArrayList<ArrayList<Object>> buffer;
+    private static boolean impresionTablero;
+
+    public static ArrayList<ArrayList<Object>> getBuffer() {
+        return buffer;
+    }
+
+    public static void setBuffer(ArrayList<ArrayList<Object>> buffer) {
+        if(buffer == null){
+            System.out.println("Buffer referencia a null");
+            return;
+        }
+        Output.buffer = buffer;
+    }
+
+    public static void addBuffer(String impresion, Integer ancho, Integer alto){
+
+        ArrayList<Object> aux = new ArrayList<>();
+
+        if(buffer == null){
+            System.out.println("Buffer referencia a null en addBuffer.");
+            return;
+        }
+
+        aux.add(impresion);
+        aux.add(ancho);
+        aux.add(alto);
+
+        buffer.add(aux);
+    }
+
+    public static void vaciarBuffer(){
+        while(!buffer.isEmpty()){
+            buffer.remove(0);
+        }
+    }
+
+    public static boolean isImpresionTablero() {
+        return impresionTablero;
+    }
+
     private static void imprimirCabecera(ArrayList<String> mensajes, int ancho, int alto) {
 
         if (mensajes == null) {
@@ -216,6 +257,11 @@ public class Output {
     public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
         StringBuilder impresion = new StringBuilder();
 
+        if (mensaje == null) {
+            System.err.println("Mensajes no inicializados.");
+            return;
+        }
+
         int lineas = mensaje.size();
 
         int max = 0;
@@ -228,11 +274,6 @@ public class Output {
             ancho = 0;
         if (alto < 0)
             alto = 0;
-
-        if (mensaje == null) {
-            System.err.println("Mensajes no inicializados.");
-            return;
-        }
 
         for (int i = 0; i < lineas; i++) {
             int aux = mensaje.get(i).length();
@@ -329,7 +370,15 @@ public class Output {
 
         impresion.append("╝").append(TipoColor.resetAnsi.getLetra());
 
-        System.out.println(impresion);
+        Integer anchoTotal = max + 2 * ancho + caracteresContar + 2;
+        Integer altoTotal = lineas + 2*alto + 2;
+
+        if(TableroASCII.getAnchoDisponible() < anchoTotal || TableroASCII.getAltoDisponible < altoTotal)
+            impresionTablero = false;
+        else
+            impresionTablero = true;
+
+        addBuffer(impresion.toString(), anchoTotal, altoTotal);
     }
 
     //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
@@ -506,7 +555,7 @@ public class Output {
                     flag = true;
 
                 }
-                
+
 
                 informacion.add(jugadoresEncarcelados.toString());
 
