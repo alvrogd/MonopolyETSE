@@ -520,8 +520,14 @@ public class Avatar {
      */
     public void caerEnIrACarcel() {
 
+        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
+        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
+
+        // Y se añade el avatar al listado de avatares contenidos en la cárcel
+        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
 
         Output.sugerencia("¡Has sido encarcelado!");
     }
