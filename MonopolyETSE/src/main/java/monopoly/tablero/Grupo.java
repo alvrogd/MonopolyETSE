@@ -58,7 +58,7 @@ public class Grupo {
             tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
             tablero.getCasillasTablero().put((String)c.get(2),aux);
 
-            this.casillas.set(contador, aux);
+            this.casillas.set(contador++, aux);
         }
     }
 
