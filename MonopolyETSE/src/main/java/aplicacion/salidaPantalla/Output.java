@@ -311,18 +311,20 @@ public class Output {
             impresion.append("═");
         }
 
-        impresion.append("╗\n");
+        impresion.append("╗").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
         for (int i = 0; i < alto; i++) {
+            impresion.append(color.getLetra());
             impresion.append("║");
             for (int j = 0; j < max + 2 * ancho + caracteresContar; j++) {
                 impresion.append(" ");
             }
-            impresion.append("║\n");
+            impresion.append("║").append(TipoColor.resetAnsi.getLetra()).append("\n");
         }
 
         for (int i = 0; i < lineas; i++) {
 
+            impresion.append(color.getLetra());
             impresion.append("║");
 
             for (int j = 0; j < ancho; j++)
@@ -352,25 +354,27 @@ public class Output {
                 }
             }
 
-            impresion.append("║\n");
+            impresion.append("║").append(TipoColor.resetAnsi.getLetra()).append("\n");
         }
 
         for (int i = 0; i < alto; i++) {
+            impresion.append(color.getLetra());
             impresion.append("║");
             for (int j = 0; j < max + 2 * ancho + caracteresContar; j++) {
                 impresion.append(" ");
             }
-            impresion.append("║\n");
+            impresion.append("║").append(TipoColor.resetAnsi.getLetra()).append("\n");
         }
+        impresion.append(color.getLetra());
         impresion.append("╚");
 
         for (int i = 0; i < max + 2 * ancho + caracteresContar; i++) {
             impresion.append("═");
         }
 
-        impresion.append("╝").append(TipoColor.resetAnsi.getLetra());
+        impresion.append("╝").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
-        Integer anchoTotal = max + 2 * ancho + caracteresContar + 2;
+        Integer anchoTotal = max + 2 * ancho + caracteresContar + 2 + 10;
         Integer altoTotal = lineas + 2*alto + 2;
 
         if(TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
