@@ -60,7 +60,8 @@ public class TableroASCII {
      * Coge un tablero y devuelve su representación visual como un String
      *
      * @param tablero tablero a pintar
-     * @param info    si es null, no es impesa ningún tipo de información adicional
+     * @param info conjunto de información a representar en el interior del tablero; se considera si es distinto de
+     *             null
      * @return String que representa el tablero a pintar
      */
     public static String pintaTablero(Tablero tablero, ArrayList<ArrayList<Object>> info) {
@@ -633,7 +634,15 @@ public class TableroASCII {
     }
 
 
-    private static void insertarInfo(StringBuilder tableroPintado, ArrayList<ArrayList<Object>> info) {
+    /**
+     * Se inserta un conjunto de información en el tablero a pintar, aprovechando el espacio libre en el interior del
+     * tablero y de modo que quede centrada
+     *
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param info información a representar, conformada por tuplas que contienen, en orden, un String con la
+     *             información, un entero con el ancho total del String, y un entero con el alto total
+     */
+    private static void insertarInfo(StringBuilder stringBuilder, ArrayList<ArrayList<Object>> info) {
 
         // Tamaño del tablero en caracteres
         int anchoTablero = caracteresPorLinea - 1;    // No se contabiliza el carácter de salto de línea
@@ -734,7 +743,7 @@ public class TableroASCII {
 
                 // En caso contrario, se inserta en el tablero a pintar
                 else {
-                    tableroPintado.setCharAt(posicionEscritura++, caracterIterado);
+                    stringBuilder.setCharAt(posicionEscritura++, caracterIterado);
                     numeroCaracteresInsertados++;
                 }
             }
