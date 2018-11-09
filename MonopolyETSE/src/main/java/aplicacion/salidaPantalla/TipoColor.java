@@ -12,7 +12,7 @@ public enum TipoColor {
     violetaANSI( "\u001B[45m", "\u001B[35m" ),
     cianANSI( "\u001B[46m", "\u001B[36m" ),
     blancoANSI( "\u001B[47m", "\u001B[37m" ),
-    Negrita("\u001B[1m", "\u001B[1m");
+    Negrita("\u001B[01m", "\u001B[01m");
 
     private final String fondo;
     private final String letra;
