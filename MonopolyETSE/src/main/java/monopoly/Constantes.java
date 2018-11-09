@@ -44,25 +44,25 @@ public final class Constantes {
     public final static int ALQ_PISTADEPORTE = 25;
 
     // Suma del precio de todos los solares
-    public final static int SUMA_PRECIO_SOLARES = (int) (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
+    public final static int SUMA_PRECIO_SOLARES = (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
             PRECIO_INICIAL_GRUPO_2 + 3 * PRECIO_INICIAL_GRUPO_4 + 3 * PRECIO_INICIAL_GRUPO_5 + 3 *
             PRECIO_INICIAL_GRUPO_6 + 3 * PRECIO_INICIAL_GRUPO_7);
 
     // Dinero inicial para cada jugador
-    public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / 3);
+    public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / (double) 3);
 
     // Dinero de la casilla de salida
-    public final static int DINERO_SALIDA = (int) (SUMA_PRECIO_SOLARES / NUMERO_SOLARES);
+    public final static int DINERO_SALIDA = (int) (SUMA_PRECIO_SOLARES / (double) NUMERO_SOLARES);
 
     // Factor con el que determinar el precio de una casilla de servicio
-    public final static int FACTOR_SERVICIO = (int) (DINERO_SALIDA / 200);
+    public final static int FACTOR_SERVICIO = (int) (DINERO_SALIDA / (double) 200);
 
     // Importe a pagar para salir de la cárcel
-    public final static int DINERO_CARCEL = (int) (DINERO_SALIDA / 4);
+    public final static int DINERO_CARCEL = (int) (DINERO_SALIDA / (double) 4);
 
     // Importe de las casillas de impuestos
     public final static int IMPUESTO_1 = DINERO_SALIDA;
-    public final static int IMPUESTO_2 = (int) (DINERO_SALIDA / 2);
+    public final static int IMPUESTO_2 = (int) (DINERO_SALIDA / (double) 2);
 
     // Posición de casillas clave
     public final static int POSICION_CARCEL = 10;
@@ -71,10 +71,9 @@ public final class Constantes {
     // Precio de las casillas de transporte
     public final static int DINERO_TRANSPORTES = DINERO_SALIDA;
     // Precio de las casillas de servicio
-    public final static int DINERO_SERVICIOS = ( int ) ( DINERO_SALIDA / ( double ) DINERO_SALIDA );
+    public final static int DINERO_SERVICIOS = (int) (DINERO_SALIDA * 0.75);
 
     // Máximo número de turnos en la cárcel
     public final static int MAX_TURNOS_CARCEL = 3;
-
 
 }

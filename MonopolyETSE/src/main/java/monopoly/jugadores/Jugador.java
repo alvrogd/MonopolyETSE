@@ -243,6 +243,12 @@ public class Jugador {
             return;
         }
 
+        // Si la casilla no es comprable
+        if (!getAvatar().getPosicion().isComprable()) {
+            Output.respuesta("La casilla no es comprable");
+            return;
+        }
+
         // Si el jugador no se encuentra en la casilla a comprar
         if (getAvatar().getPosicion().getPosicionEnTablero() != casilla.getPosicionEnTablero()) {
             Output.respuesta("El jugador no se encuentra en la casilla a comprar");
@@ -380,16 +386,16 @@ public class Jugador {
         Output.respuesta("Se han tirado los dados:",
                 "        -> Primer dado: " + primeraTirada,
                 "        -> Segundo dado: " + segundaTirada,
-                "        -> ¿Han sido dobles?: " + (dobles ? "sí" : "no")) ;
+                "        -> ¿Han sido dobles?: " + (dobles ? "sí" : "no"));
 
         setTiradasEnTurno(getTiradasEnTurno() + 1);
 
         // Si se han sacado tres dobles, el jugador es encarcelado
-        if( getTiradasEnTurno() == 3 && dobles )
+        if (getTiradasEnTurno() == 3 && dobles)
             getAvatar().caerEnIrACarcel();
 
-        // En caso contrario, se mueve normalmente
-        else{
+            // En caso contrario, se mueve normalmente
+        else {
             getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
             getAvatar().mover(primeraTirada + segundaTirada, dobles);
         }

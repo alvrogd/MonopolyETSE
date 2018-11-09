@@ -39,6 +39,8 @@ public class Menu {
                 "",
                 "    -> Para obtener información de los comandos introduzca: ayuda");
 
+        app.imprimirBuffer();
+
         Output.imprimirEntradaComando();
         app.introducirComando(entrada.nextLine());
 

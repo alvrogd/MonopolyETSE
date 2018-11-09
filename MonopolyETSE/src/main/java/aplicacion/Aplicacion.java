@@ -9,7 +9,9 @@ import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.Casilla;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -18,12 +20,16 @@ public class Aplicacion {
 
     private Juego juego;
     private Menu menu;
+    private ArrayList<ArrayList<Object>> buffer;
     private boolean haLanzadoDados;
 
     public Aplicacion() {
 
         juego = new Juego();
         menu = new Menu(this);
+        buffer = new ArrayList<>();
+
+        Output.setBuffer(buffer);
 
     }
 
@@ -33,6 +39,37 @@ public class Aplicacion {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public void imprimirBuffer() {
+
+        if(Output.isImpresionTablero() && getJuego().isIniciado()) {
+            System.out.print("\033[H\033[2J");
+            System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer()));
+            Output.vaciarBuffer();
+
+        } else {
+            int tam = Output.getBuffer().size();
+
+            if( getJuego().isIniciado() ) {
+                System.out.print("\033[H\033[2J");
+                System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), null));
+            }
+
+            for(int i = 0; i < tam; i++){
+                System.out.println(Output.getBuffer().get(i).get(0));
+            }
+
+            Output.vaciarBuffer();
+        }
+
+    }
+
+    public void limpiarTablero() {
+
+        for( int i = 0; i < 50; i++ )
+            System.out.println();
+
     }
 
     public void introducirComando(String entrada) {
@@ -49,6 +86,8 @@ public class Aplicacion {
             return;
         }
         interpretarComando(toComando);
+
+        imprimirBuffer();
 
     }
 
@@ -613,7 +652,6 @@ public class Aplicacion {
                 return;
             }
 
-            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
 
         } else if((TipoComando)comando.get(0) == TipoComando.ayuda){
             Output.imprimirAyuda();
@@ -628,8 +666,6 @@ public class Aplicacion {
                 return;
             }
             ArrayList<String> aux = new ArrayList<>();
-
-            System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
 
             aux.add("¡Se ha iniciado el juego!");
             Output.imprimirRecuadro(aux, "Información: ", TipoColor.verdeANSI, 3, 1);

@@ -25,7 +25,7 @@ public class PintadoTableroTest {
     @Test
     public void imprimirTablero()
     {
-        System.out.println(TableroASCII.pintaTablero(juego.getTablero()));
+        System.out.println(TableroASCII.pintaTablero(juego.getTablero(), null));
     }
 
 

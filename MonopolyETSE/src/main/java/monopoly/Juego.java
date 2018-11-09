@@ -62,7 +62,7 @@ public class Juego {
         return banca;
     }
 
-    public Jugador getTurno(){
+    public Jugador getTurno() {
         return turno;
     }
 
@@ -95,7 +95,7 @@ public class Juego {
     /* Métodos */
 
     public void iniciarJuego() {
-        if(jugadores.isEmpty()){
+        if (jugadores.isEmpty()) {
             System.err.println("No ha introducido ningún jugador");
             return;
         }
@@ -137,9 +137,9 @@ public class Juego {
 
     }
 
-    public void actualizarVueltas(){
+    public void actualizarVueltas() {
 
-        if(!iniciado){
+        if (!iniciado) {
             System.err.println("Juego no iniciado.");
             return;
         }
@@ -147,40 +147,39 @@ public class Juego {
         ArrayList<String> jugadores = getNombresJugadores();
 
         int min = getJugadores().get(jugadores.get(0)).getAvatar().getVueltas();
-        int auxVueltas;
+        int vueltasIteradas;
 
-        for(String jugador:jugadores){
+        for (String jugador : jugadores) {
 
-            auxVueltas = getJugadores().get(jugador).getAvatar().getVueltas();
+            vueltasIteradas = getJugadores().get(jugador).getAvatar().getVueltas();
 
-            if(min > auxVueltas){
-
-                min = auxVueltas;
-
-            }
+            if (min > vueltasIteradas)
+                min = vueltasIteradas;
 
         }
 
+        // Si el jugador con menos vueltas ha dado una nueva vuelta completa
+        if( vueltasMin != min )
+            seHaIncrementado = false;
+
         vueltasMin = min;
 
-        //En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado ya antes el precio
-        //de los solares
-
-        if(vueltasMin == 4 && !seHaIncrementado){
+        // En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado ya antes el precio
+        // de los solares
+        if (vueltasMin == 4 && !seHaIncrementado) {
 
             //Se miran todas las casillas del tablero y en caso de que sean comprables y no sean ni transportes ni
             //servicios se incrementa el precio del grupo en Constantes.INCREMENTO_VUELTAS
 
-            for(ArrayList<Casilla> fila: tablero.getCasillas()){
-                for(Casilla casilla: fila){
-                    if(casilla.isComprable()){
+            for (ArrayList<Casilla> fila : tablero.getCasillas()) {
+                for (Casilla casilla : fila) {
+                    if (casilla.isComprable()) {
 
-                        if(casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
-                                casilla.getGrupo().getTipo() != TipoGrupo.servicios){
+                        if (casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
+                                casilla.getGrupo().getTipo() != TipoGrupo.servicios) {
 
                             casilla.getGrupo().setPrecio(
-                                    (int)(1.0*Constantes.INCREMENTO_VUELTAS)*casilla.getGrupo().getPrecio()
-                            );
+                                    (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * casilla.getGrupo().getPrecio()));
 
                         }
                     }
