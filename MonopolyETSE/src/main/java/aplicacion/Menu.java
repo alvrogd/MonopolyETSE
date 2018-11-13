@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    Aplicacion app;
+    private Aplicacion app;
 
     public Menu(Aplicacion app){
 

@@ -53,6 +53,7 @@ public class Grupo {
 
         //Se comprueba que las casillas no sean null y que contengan la información adecuada.
         for(ArrayList<Object> c : casillas){
+
             if (c == null) {
                 System.err.println("Casilla incorrecta.");
                 System.exit(1);

@@ -5,6 +5,7 @@ import monopoly.Constantes;
 
 public enum TipoGrupo {
 
+    /*Tipos de enumeraciones*/
     negro("solar",Constantes.PRECIO_INICIAL_GRUPO_0, TipoColor.negroANSI),
     cyan("solar",Constantes.PRECIO_INICIAL_GRUPO_1, TipoColor.cianANSI),
     rosa("solar",Constantes.PRECIO_INICIAL_GRUPO_2, TipoColor.violetaANSI),
@@ -23,6 +24,8 @@ public enum TipoGrupo {
     parking("parking",0, TipoColor.resetAnsi),
     salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi),
     irCarcel("ir a la cárcel",TipoColor.resetAnsi);
+
+    /*Atributos*/
 
     //Precio inicial del grupo
     private final int precioInicial;

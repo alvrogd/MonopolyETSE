@@ -618,15 +618,21 @@ public class Output {
 
                 for(String avatar: avatares) {
 
-                    if(flag) {
-                        jugadoresEncarcelados.append(" , {");
+                    if(casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
+                        if (flag) {
+                            jugadoresEncarcelados.append(" , {");
+                        }
+                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
+                        jugadoresEncarcelados.append(", ");
+                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
+                        jugadoresEncarcelados.append("}");
+                        flag = true;
                     }
-                    jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
-                    jugadoresEncarcelados.append(", ");
-                    jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
-                    jugadoresEncarcelados.append("}");
-                    flag = true;
 
+                }
+
+                if(!flag){
+                    jugadoresEncarcelados.append("no hay jugadores encarcelados :-)}");
                 }
 
 

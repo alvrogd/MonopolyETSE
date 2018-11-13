@@ -7,31 +7,57 @@ import monopoly.jugadores.TipoAvatar;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AplicacionTest {
 
     @Test
     public void crearAplicacion() {
 
+        Scanner entrada = new Scanner(System.in);
         Aplicacion aplicacion = new Aplicacion();
 
         aplicacion.getJuego().addJugador(new Jugador("Fran", aplicacion.getJuego().getTablero(), TipoAvatar.coche,
                 aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
         aplicacion.getJuego().addJugador(new Jugador("Alvaro", aplicacion.getJuego().getTablero(), TipoAvatar.coche,
                 aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
-        aplicacion.getJuego().addJugador(new Jugador("Perico", aplicacion.getJuego().getTablero(), TipoAvatar.esfinge,
-                aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
 
         aplicacion.getJuego().iniciarJuego();
+        aplicacion.getJuego().getJugadores().get("Fran").setFortuna(0);
 
         //System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
 
-        aplicacion.introducirComando("ver tablero");
+            System.out.println("Mover: ");
+
+            aplicacion.getJuego().getTurno().getAvatar().mover(30, true);
+
+            aplicacion.introducirComando("describir carcel");
+
+
+            aplicacion.introducirComando("acabar turno")
+            ;
+        aplicacion.introducirComando("lanzar dados");
+            aplicacion.introducirComando("acabar turno");
 
         aplicacion.introducirComando("lanzar dados");
-        aplicacion.introducirComando("comprar");
+            aplicacion.introducirComando("acabar turno");
 
-        aplicacion.introducirComando("ver tablero");
+        aplicacion.introducirComando("lanzar dados");
+        aplicacion.introducirComando("acabar turno");
+
+        aplicacion.introducirComando("lanzar dados");
+        aplicacion.introducirComando("acabar turno");
+
+        aplicacion.introducirComando("lanzar dados");
+        aplicacion.introducirComando("acabar turno");
+
+        aplicacion.introducirComando("lanzar dados");
+        aplicacion.introducirComando("acabar turno");
+
+        aplicacion.introducirComando("describir jugador Fran");
+
+
+
     }
 
 }

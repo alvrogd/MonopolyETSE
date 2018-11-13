@@ -32,15 +32,21 @@ public class Juego {
     private Tablero tablero;
 
     //Iterador que se utilizará para los turnos
+    //No se crea un getter para iterador ya que no tiene sentido que el usuario pueda tener acceso a él, ya que si se
+    //quiere obtener información se puede llamar a getTurno, ya que el turno va en función del iterator.
     private Iterator iterador;
 
     //Atributo para calcular el mínimo de las vueltas recorrido por los usuarios en módulo 4
+    //No hay getter para vueltasMin ya que es un atributo interno para realizar operaciones de incremento del precio de
+    //los grupos.
     private int vueltasMin;
 
     //Booleano que indica si el juego ya está iniciado o no
     private boolean iniciado;
 
     //Booleano para establecer si se ha incrementado el valor de las casillas de grupo
+    //No se crea getter para seHaIncrementado debido a que es un atributo interno para realizar operaciones en el
+    //incremento del precio de los grupos y no afecta en nada al entendimiento del usuario de la clase.
     private boolean seHaIncrementado;
 
     //Booleano para saber si el usuario puede volver a tirar los dados
@@ -50,7 +56,7 @@ public class Juego {
 
     /**
      * Se genera el juego, creando la banca y asignándole el turno. Se crean las estructuras de datos HashMap y
-     * ArrayList además del tablero.
+     * ArrayList además del tablero. Constructor sin argumentos teniendo la posibilidad de añadir jugadores
      * Inicialmente vueltasMin = 0, iniciado = false, seHaIncremento = false y haLanzadoDados = false
      */
     public Juego() {
@@ -64,6 +70,32 @@ public class Juego {
         vueltasMin = 0;
         seHaIncrementado = false;
         haLanzadoDados = false;
+
+    }
+
+    /**
+     * Constructor para iniciar un Juego con unos jugadores predeterminados, se podrían añadir más
+     * @param jugadores
+     */
+    public Juego(ArrayList<Jugador> jugadores){
+
+        this();
+
+        if(jugadores == null){
+            System.err.println("Jugador referencia a null");
+            System.exit(1);
+        }
+
+        for(Jugador jugador: jugadores){
+
+            if(jugador == null){
+                System.err.println("Jugador referencia a null");
+                System.exit(1);
+            }
+
+            addJugador(jugador);
+
+        }
 
     }
 
@@ -186,6 +218,29 @@ public class Juego {
             System.out.println("Juego no iniciado.");
             return;
         }
+
+    }
+
+    public void jugadorEnBancarrota(Jugador jugador){
+
+        if(jugador == null){
+            System.err.println("jugador referencia a null");
+            return;
+        }
+        if(!jugador.isEstaBancarrota()){
+            System.err.println("El jugador no está en bancarrota");
+            return;
+        }
+
+        Avatar avatarJugador = jugador.getAvatar();
+
+        getJugadores().remove(jugador.getNombre());
+        getNombresJugadores().remove(jugador.getNombre());
+
+        getTablero().getAvataresContenidos().remove(avatarJugador.getIdentificador());
+        avatarJugador.getPosicion().getAvataresContenidos().remove((Character)avatarJugador.getIdentificador());
+
+        finalizarTurno();
 
     }
 

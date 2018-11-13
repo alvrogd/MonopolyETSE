@@ -37,6 +37,8 @@ public class Aplicacion {
 
     }
 
+    //todo tirar dados antes de pasar turno
+
     /*Getters*/
     public Juego getJuego(){
         return juego;
@@ -709,6 +711,9 @@ public class Aplicacion {
                 juego.iniciarJuego();
                 break;
 
+            case ayuda:
+                Output.imprimirAyuda();
+                break;
         }
     }
 }
