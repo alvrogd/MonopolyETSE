@@ -18,7 +18,7 @@ public class Casilla {
     private Jugador propietario;
     private boolean hipotecada;
 
-    private HashMap<String, Avatar> avataresContenidos;
+    private HashMap<Character, Avatar> avataresContenidos;
 
     private int alquiler;
     private boolean comprable;
