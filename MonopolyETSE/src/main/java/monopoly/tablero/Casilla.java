@@ -110,7 +110,7 @@ public class Casilla {
         return avataresContenidos;
     }
 
-    public void setAvataresContenidos(HashMap<String, Avatar> avataresContenidos) {
+    public void setAvataresContenidos(HashMap<Character, Avatar> avataresContenidos) {
         if(avataresContenidos == null){
             System.err.println("Avatares referencia a null");
             return;
