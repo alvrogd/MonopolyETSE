@@ -137,7 +137,7 @@ public class Avatar {
 
         identificador = identificadorAleatorio;
 
-        casillaInicial.getAvataresContenidos().put(jugador.getNombre(), this);
+        casillaInicial.getAvataresContenidos().put(identificador, this);
 
         this.tipo = tipo;
 
@@ -341,6 +341,13 @@ public class Avatar {
                 if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
                     Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
                     forzarSalirCarcel();
+
+                    // Si el jugador ha caído en bancarrota tras el pago, debe notificarse y no se realiza ninguna
+                    // acción más
+                    if( getJugador().isEstaBancarrota() ) {
+                        getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+                        return;
+                    }
                 }
                 // En caso contrario, no se hace nada
                 else
@@ -352,7 +359,7 @@ public class Avatar {
         }
 
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+        getPosicion().getAvataresContenidos().remove(getIdentificador());
 
         // Se calcula la posición nueva del avatar
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
@@ -367,7 +374,7 @@ public class Avatar {
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
-        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
+        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {
@@ -462,6 +469,10 @@ public class Avatar {
             getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
                     getJugador().numeroTransportesObtenidos() * 0.25));
 
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if( getJugador().isEstaBancarrota() )
+                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+
         }
 
     }
@@ -477,6 +488,10 @@ public class Avatar {
 
             getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO);
 
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if( getJugador().isEstaBancarrota() )
+                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+
         }
 
     }
@@ -491,6 +506,10 @@ public class Avatar {
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
             getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if( getJugador().isEstaBancarrota() )
+                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
 
         }
 
@@ -509,6 +528,10 @@ public class Avatar {
                 Constantes.POSICION_PARKING % 10);
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_1);
 
+        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+        if( getJugador().isEstaBancarrota() )
+            getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+
     }
 
 
@@ -523,6 +546,10 @@ public class Avatar {
         final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
                 Constantes.POSICION_PARKING % 10);
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_2);
+
+        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+        if( getJugador().isEstaBancarrota() )
+            getTablero().getJuego().jugadorEnBancarrota( getJugador() );
 
     }
 

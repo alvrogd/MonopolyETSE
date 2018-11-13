@@ -226,15 +226,15 @@ public class Jugador {
         // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
         if (balanceNegativoTrasPago(importe)) {
 
+            Output.respuesta("¡El jugador ha caído en bancarrota!",
+                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
+
             ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
 
             for (Casilla casilla : propiedadesEndeudado)
                 transferirCasilla(this, receptor, casilla);
 
             setEstaBancarrota(true);
-
-            Output.respuesta("¡El jugador ha caído en bancarrota!",
-                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
 
         }
 
