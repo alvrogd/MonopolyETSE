@@ -275,10 +275,10 @@ public class Output {
         if (alto < 0)
             alto = 0;
 
-        for (int i = 0; i < lineas; i++) {
-            int aux = mensaje.get(i).length();
+        for (String aMensaje : mensaje) {
+            int aux = aMensaje.length();
             if (max < aux)
-                max = mensaje.get(i).length();
+                max = aMensaje.length();
         }
 
         switch (tipo) {
