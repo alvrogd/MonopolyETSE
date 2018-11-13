@@ -585,13 +585,13 @@ public class Output {
 
                 StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: {");
 
-                Set<String> avatares = casilla.getAvataresContenidos().keySet();
+                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
 
                 Avatar avatarAux;
 
                 boolean flag = false;
 
-                for (String avatar : avatares) {
+                for (Character avatar : avatares) {
 
                     avatarAux = casilla.getAvataresContenidos().get(avatar);
 
@@ -612,11 +612,11 @@ public class Output {
                 informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
                 StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: {");
 
-                Set<String> avatares = casilla.getAvataresContenidos().keySet();
+                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
 
                 boolean flag = false;
 
-                for(String avatar: avatares) {
+                for(Character avatar: avatares) {
 
                     if(casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
                         if (flag) {
