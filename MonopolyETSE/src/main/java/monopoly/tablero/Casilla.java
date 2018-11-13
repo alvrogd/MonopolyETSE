@@ -106,7 +106,7 @@ public class Casilla {
         this.hipotecada = hipotecada;
     }
 
-    public HashMap<String, Avatar> getAvataresContenidos() {
+    public HashMap<Character, Avatar> getAvataresContenidos() {
         return avataresContenidos;
     }
 
