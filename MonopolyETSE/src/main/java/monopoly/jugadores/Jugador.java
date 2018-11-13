@@ -39,6 +39,11 @@ public class Jugador {
      */
     public Jugador(String nombre) {
 
+        if (nombre == null) {
+            System.err.println("Nombre no inicializado.");
+            System.exit(1);
+        }
+
         this.nombre = nombre;
 
         this.avatar = new Avatar(this);
@@ -63,6 +68,11 @@ public class Jugador {
      * @param casillaInicial casilla en la que establecer inicialmente al avatar del jugador
      */
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
+
+        if (nombre == null) {
+            System.err.println("Nombre no inicializado.");
+            System.exit(1);
+        }
 
         if (tablero == null) {
             System.err.println("Tablero no inicializado.");
@@ -101,9 +111,15 @@ public class Jugador {
     }
 
 
+    /* No se implementa el setter de nombre dado que es una constante */
+
+
     public Avatar getAvatar() {
         return (avatar);
     }
+
+
+    /* No se implementa el setter de avatar dado que es una constante */
 
 
     public int getFortuna() {
@@ -178,11 +194,22 @@ public class Jugador {
     /* Métodos */
 
     /**
+     * Se redirige un pago a un jugador con una cantidad en punto flotante a la función que gestiona el pago con un
+     * número entero
+     * @param receptor jugador al que pagar el importe
+     * @param importe cantidad a pagar
+     */
+    public void pagar(Jugador receptor, double importe) {
+        pagar(receptor, ( int ) importe );
+    }
+
+
+    /**
      * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
      * bancarrota y sus propiedades se transfieren al deudor
      *
      * @param receptor jugador al que pagar el importe
-     * @param importe  cantidad a pagar
+     * @param importe cantidad a pagar
      */
     public void pagar(Jugador receptor, int importe) {
 

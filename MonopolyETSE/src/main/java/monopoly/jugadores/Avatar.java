@@ -154,9 +154,15 @@ public class Avatar {
     }
 
 
+    /* No se implementa el setter de jugador dado que es una constante */
+
+
     public Tablero getTablero() {
         return tablero;
     }
+
+
+    /* No se implementa el setter de tablero dado que es una constante */
 
 
     public boolean isHaEstadoCarcel() {
@@ -245,9 +251,15 @@ public class Avatar {
     }
 
 
+    /* No se implementa el setter de identificador dado que es una constante */
+
+
     public TipoAvatar getTipo() {
         return (tipo);
     }
+
+
+    /* No se implementa el setter de tipo dado que es una constante */
 
 
     public boolean isMovimientoEstandar() {
@@ -274,7 +286,7 @@ public class Avatar {
         }
 
         if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
-            Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para salir de la cárcel.");
             return;
         }
 

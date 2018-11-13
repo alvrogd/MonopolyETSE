@@ -53,6 +53,11 @@ public class TableroASCII {
     public final static int altoDisponible = 9 * altoCasilla + 8;
 
 
+    /* No se implementan los getters de los atributos dado que sólo son relevantes para las funciones que conciernen
+     * al pintado del tablero. En el caso de los dos últimos atributos, tampoco se implementam igualmente dado que
+     * puede accederse directamente a ellos
+     */
+
 
     /* Métodos */
 
