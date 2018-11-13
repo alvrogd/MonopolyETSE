@@ -65,17 +65,17 @@ public class Jugador {
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
         if (tablero == null) {
-            Output.errorComando("Tablero no inicializado.");
+            System.err.println("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipoAvatar == null) {
-            Output.errorComando("Tipo de avatar no inicializado.");
+            System.err.println("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            Output.errorComando("Casilla inicial no inicializada.");
+            System.err.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -141,14 +141,14 @@ public class Jugador {
     public void setPropiedades(ArrayList<Casilla> propiedades) {
 
         if (propiedades == null) {
-            Output.sugerencia("Propiedades no inicializadas.");
+            System.err.println("Propiedades no inicializadas.");
             return;
         }
 
         for (Casilla casilla : propiedades) {
 
             if (casilla == null) {
-                Output.sugerencia("Casilla no inicializada.");
+                System.err.println("Casilla no inicializada.");
                 return;
             }
 
@@ -187,7 +187,7 @@ public class Jugador {
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
-            Output.sugerencia("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             return;
         }
 
@@ -234,12 +234,12 @@ public class Jugador {
     public void comprar(Jugador vendedor, Casilla casilla) {
 
         if (vendedor == null) {
-            Output.sugerencia("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -308,7 +308,7 @@ public class Jugador {
     public void hipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -339,7 +339,7 @@ public class Jugador {
     public void deshipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            Output.sugerencia("Error: casilla no inicializada.");
+            System.err.println("Error: casilla no inicializada.");
             return;
         }
 
@@ -375,7 +375,7 @@ public class Jugador {
     public void lanzarDados(Dado dado) {
 
         if (dado == null) {
-            Output.sugerencia("Dado no inicializado.");
+            System.err.println("Dado no inicializado.");
             return;
         }
 
@@ -431,17 +431,17 @@ public class Jugador {
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
-            Output.sugerencia("Emisor no inicializado.");
+            System.err.println("Emisor no inicializado.");
             return;
         }
 
         if (receptor == null) {
-            Output.sugerencia("Receptor no inicializado.");
+            System.err.println("Receptor no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 

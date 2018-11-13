@@ -52,7 +52,7 @@ public class Avatar {
     public Avatar(Jugador jugador) {
 
         if (jugador == null) {
-            Output.errorComando("Error: jugador no inicializado.");
+            System.err.println("Error: jugador no inicializado.");
             System.exit(1);
         }
 
@@ -87,22 +87,22 @@ public class Avatar {
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
-            Output.errorComando("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             System.exit(1);
         }
 
         if (tablero == null) {
-            Output.errorComando("Tablero no inicializado.");
+            System.err.println("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipo == null) {
-            Output.errorComando("Tipo de avatar no inicializado.");
+            System.err.println("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            System.out.println("Casilla inicial no inicializada.");
+            System.err.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -218,7 +218,7 @@ public class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -233,7 +233,7 @@ public class Avatar {
     public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
 
         if (vecesCaidasEnCasillas == null) {
-            Output.sugerencia("ArrayList no inicializado.");
+            System.err.println("ArrayList no inicializado.");
             return;
         }
 
