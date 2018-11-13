@@ -44,9 +44,9 @@ public final class Constantes {
     public final static int ALQ_PISTADEPORTE = 25;
 
     // Suma del precio de todos los solares
-    public final static int SUMA_PRECIO_SOLARES = (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
-            PRECIO_INICIAL_GRUPO_2 + 3 * PRECIO_INICIAL_GRUPO_4 + 3 * PRECIO_INICIAL_GRUPO_5 + 3 *
-            PRECIO_INICIAL_GRUPO_6 + 3 * PRECIO_INICIAL_GRUPO_7);
+    public final static int SUMA_PRECIO_SOLARES = (PRECIO_INICIAL_GRUPO_0 + PRECIO_INICIAL_GRUPO_1 +
+            PRECIO_INICIAL_GRUPO_2 + PRECIO_INICIAL_GRUPO_4 +PRECIO_INICIAL_GRUPO_5 +
+            PRECIO_INICIAL_GRUPO_6 + PRECIO_INICIAL_GRUPO_7);
 
     // Dinero inicial para cada jugador
     public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / (double) 3);
