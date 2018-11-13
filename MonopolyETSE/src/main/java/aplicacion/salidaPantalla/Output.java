@@ -14,11 +14,20 @@ import java.util.Set;
 
 public class Output {
 
+    //Buffer en el que se almacerán ArrayList de object, los cuales almacenan la tupla String - alto - ancho
+    //El buffer se vacía cuando se imprime por pantalla
     private static ArrayList<ArrayList<Object>> buffer;
+
+    //Booleano para indicar si el buffer se imprimirá en el tablero.
     private static boolean impresionTablero;
 
+    /*Getters*/
     public static ArrayList<ArrayList<Object>> getBuffer() {
         return buffer;
+    }
+
+    public static boolean isImpresionTablero() {
+        return impresionTablero;
     }
 
     public static void setBuffer(ArrayList<ArrayList<Object>> buffer) {
@@ -29,11 +38,20 @@ public class Output {
         Output.buffer = buffer;
     }
 
+    /**
+     * Función para añadir un mensaje al buffer
+     *
+     * @param impresion mensaje a imprimir
+     * @param ancho ancho ocupado por el mensaje
+     * @param alto alto ocupado por el mensaje
+     */
     public static void addBuffer(String impresion, Integer ancho, Integer alto){
+
+        //Variable auxiliar para enviar al buffer la información
 
         ArrayList<Object> aux = new ArrayList<>();
 
-        if(buffer == null){
+        if(getBuffer() == null){
             System.out.println("Buffer referencia a null en addBuffer.");
             return;
         }
@@ -42,19 +60,25 @@ public class Output {
         aux.add(ancho);
         aux.add(alto);
 
-        buffer.add(aux);
+        getBuffer().add(aux);
     }
 
+    /**
+     * Función para eliminar la información del buffer
+     */
     public static void vaciarBuffer(){
         while(!buffer.isEmpty()){
             buffer.remove(0);
         }
     }
 
-    public static boolean isImpresionTablero() {
-        return impresionTablero;
-    }
-
+    /**
+     * Función para crear e imprimir la cabecera del usuario. La cabecera se creará en función del ArrayList de los
+     * mensajes, cada elemento del ArrayList se imprime en una columna distinta
+     * @param mensajes ArrayList con los mensajes a imprimir
+     * @param ancho ancho entre el recuadro y el mensaje
+     * @param alto alto entre el recuadro y el mensaje
+     */
     private static void imprimirCabecera(ArrayList<String> mensajes, int ancho, int alto) {
 
         if (mensajes == null) {
@@ -68,8 +92,10 @@ public class Output {
         if (alto < 0)
             alto = 0;
 
+        //Variable para guardar el recuadro
         StringBuilder impresion = new StringBuilder();
 
+        //Se calcula el número de mensajes que hay
         int numMensajes = mensajes.size();
 
         //La suma de la longitud de los mensajes
@@ -227,8 +253,11 @@ public class Output {
         System.out.println(impresion);
     }
 
-    //Imprimir cabecera de un jugador
 
+    /**
+     * Función que llama a imprimirCabecera para imprimir la cabecera del jugador
+     * @param jugador jugador del que se imprimirá la cabecera
+     */
     public static void imprimirCabeceraJugador(Jugador jugador) {
         ArrayList<String> informacion = new ArrayList<>();
         StringBuilder aux = new StringBuilder();
@@ -247,14 +276,29 @@ public class Output {
         imprimirCabecera(informacion, 1, 0);
     }
 
+    /**
+     * Función para imprimir la entrada para introucir el comando.
+     */
     public static void imprimirEntradaComando() {
 
         System.out.print("\uD83D\uDC49 Acción: ");
 
     }
 
-
+    /**
+     * Función para crear y guardar en el buffer un recuadro con la información pasada en el ArrayList de mensajes.
+     * La cabecera se creará en función del ArrayList de los mensajes, cada elemento del ArrayList se imprime en una
+     * línea distinta
+     * @param mensaje ArrayList en el que se almacenan los mensajes por líneas a imprimir
+     * @param tipo se le envía el tipo de recuadro que se quiere imprimir, en caso de que el tipo no exista se utiliza
+     *             el introducido por el usuario
+     * @param color color con el que se desea que se imprima el recuadro
+     * @param ancho ancho entre el recuadro y el mensaje
+     * @param alto alto entre el recuadro y el mensaje
+     */
     public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
+
+        //Variable en la que se guarda el mensaje a mandar al buffer
         StringBuilder impresion = new StringBuilder();
 
         if (mensaje == null) {
@@ -262,25 +306,30 @@ public class Output {
             return;
         }
 
+        //Se calcula el número de líneas a imprimir
         int lineas = mensaje.size();
 
         int max = 0;
 
         int caracteresContar = 0;
 
+        //String en el que se guardará lo que se imprimirá en función de la opción.
         String opcion;
 
         if (ancho < 0)
             ancho = 0;
+
         if (alto < 0)
             alto = 0;
 
+        //Se calcula la longitud de los mensajes del ArrayList y se calcula el máximo
         for (String aMensaje : mensaje) {
             int aux = aMensaje.length();
             if (max < aux)
                 max = aMensaje.length();
         }
 
+        //Se escoge el mensaje a imprimir en función del tipo
         switch (tipo) {
             case "sugerencia":
                 opcion = "(S) SUGERENCIA: ";
@@ -302,17 +351,23 @@ public class Output {
                 break;
         }
 
+        //En caracteresContar se añade los caracteres que se imprimen a mayores que no forman parte del ArrayList
+        //mensaje, o sea, el tamaño de la opcion
         caracteresContar += opcion.length();
 
+        //Se añade el color que ha introducido el usuario
         impresion.append(color.getLetra());
         impresion.append("╔");
 
+        //El ancho del recuadro será el máximo calculado sumado al doble del ancho más los caracteres que se imprimen
+        //a mayores
         for (int i = 0; i < max + 2 * ancho + caracteresContar; i++) {
             impresion.append("═");
         }
 
         impresion.append("╗").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
+        //Se imprimen tantas líneas con caracteres en blanco como alto introducido
         for (int i = 0; i < alto; i++) {
             impresion.append(color.getLetra());
             impresion.append("║");
@@ -322,6 +377,7 @@ public class Output {
             impresion.append("║").append(TipoColor.resetAnsi.getLetra()).append("\n");
         }
 
+        //Se imprimen los mensajes introducidos en el ArrayList
         for (int i = 0; i < lineas; i++) {
 
             impresion.append(color.getLetra());
@@ -330,14 +386,11 @@ public class Output {
             for (int j = 0; j < ancho; j++)
                 impresion.append(" ");
 
+            //En caso de que sea el primer mensaje que se imprime, también se imprime la opción seleccionada
             if (i == 0) {
 
-                //impresion.append(color.getLetra());
-                //impresion.append(TipoColor.Negrita.getLetra());
                 impresion.append(opcion);
                 impresion.append(mensaje.get(i));
-                //impresion.append(TipoColor.resetAnsi.getLetra());
-                //impresion.append(color.getLetra());
 
                 for (int j = 0; j < ancho + max - mensaje.get(i).length(); j++) {
                     impresion.append(" ");
@@ -374,19 +427,27 @@ public class Output {
 
         impresion.append("╝").append(TipoColor.resetAnsi.getLetra()).append("\n");
 
+        //El ancho total es lo que se imprime más 2 de los bordes y más 10 del color
         Integer anchoTotal = max + 2 * ancho + caracteresContar + 2 + 10;
         Integer altoTotal = lineas + 2*alto + 2;
 
+        //Se comprueba si el mensaje entraría dentro del tablero, en caso de que sí se pone impresionTablero a true
         if(TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
             impresionTablero = false;
         else
             impresionTablero = true;
 
         addBuffer(impresion.toString(), anchoTotal, altoTotal);
+
     }
 
     //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
     //imprimir recuadro
+
+    /**
+     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del jugador
+     * @param jugador jugador del que se guarda la información
+     */
     public static ArrayList<String> JugadortoArrayString(Jugador jugador) {
         if (jugador == null) {
             System.err.println("Jugador referencia a null.");
@@ -463,6 +524,10 @@ public class Output {
         return datos;
     }
 
+    /**
+     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del avatar
+     * @param avatar avatar del que se guarda la información
+     */
     public static ArrayList<String> AvatartoArrayString(Avatar avatar) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -475,6 +540,10 @@ public class Output {
         return informacion;
     }
 
+    /**
+     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos de la casilla
+     * @param casilla casilla del que se guarda la información
+     */
     public static ArrayList<String> CasillatoArrayString(Casilla casilla) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -610,12 +679,11 @@ public class Output {
 
     }
 
-    public static void errorComando(String error) {
-        ArrayList<String> errores = new ArrayList<>();
-        errores.add(error);
-        errorComando(errores);
-    }
 
+    /**
+     * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo error
+     * @param errores mensajes a mandar al recuadro
+     */
     public static void errorComando(String... errores) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -628,17 +696,18 @@ public class Output {
 
     }
 
+    /**
+     * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo error
+     * @param error mensajes a mandar al recuadro
+     */
     public static void errorComando(ArrayList<String> error) {
         imprimirRecuadro(error, "error", TipoColor.rojoANSI, 3, 1);
     }
 
-    //todo sacar los String individuales
-    public static void sugerencia(String sugerencia) {
-        ArrayList<String> sugerencias = new ArrayList<>();
-        sugerencias.add(sugerencia);
-        sugerencia(sugerencias);
-    }
-
+    /**
+     * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo sugerencia
+     * @param sugerencias mensajes a mandar al recuadro
+     */
     public static void sugerencia(String... sugerencias) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -651,16 +720,18 @@ public class Output {
 
     }
 
+    /**
+     * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo sugerencia
+     * @param sugerencia mensajes a mandar al recuadro
+     */
     public static void sugerencia(ArrayList<String> sugerencia) {
         imprimirRecuadro(sugerencia, "sugerencia", TipoColor.verdeANSI, 2, 0);
     }
 
-    public static void respuesta(String respuesta) {
-        ArrayList<String> respuestas = new ArrayList<>();
-        respuestas.add(respuesta);
-        respuesta(respuestas);
-    }
-
+    /**
+     * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo respuesta
+     * @param respuestas mensajes a mandar al recuadro
+     */
     public static void respuesta(String... respuestas) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -673,10 +744,18 @@ public class Output {
 
     }
 
+    /**
+     * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo respuesta
+     * @param respuestas mensajes a mandar al recuadro
+     */
     public static void respuesta(ArrayList<String> respuestas) {
         imprimirRecuadro(respuestas, "respuesta", TipoColor.cianANSI, 2, 0);
     }
 
+    /**
+     * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     * @param mensajes mensajes a mandar al recuadro
+     */
     public static void mensaje(String... mensajes) {
 
         ArrayList<String> informacion = new ArrayList<>();
@@ -689,10 +768,17 @@ public class Output {
 
     }
 
+    /**
+     * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     * @param mensajes mensajes a mandar al recuadro
+     */
     public static void mensaje(ArrayList<String> mensajes) {
         imprimirRecuadro(mensajes, "mensaje", TipoColor.amarilloANSI, 2, 0);
     }
 
+    /**
+     * Función que manda al buffer la Ayuda
+     */
     public static void imprimirAyuda(){
         ArrayList<String> ayuda = new ArrayList<>();
         ayuda.add("Información sobre comandos.");
