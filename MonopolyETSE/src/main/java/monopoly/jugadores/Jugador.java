@@ -4,6 +4,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.Casilla;
+import monopoly.tablero.Grupo;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 
@@ -485,17 +486,18 @@ public class Jugador {
 
 
     /**
-     * Se calcula el número de casillas de transporte obtenidas por el jugador
+     * Se calcula el número de casillas de un determinado grupo obtenidas por el jugador
      *
-     * @return número de casillas de transporte obtenidas
+     * @param grupo tipo del grupo a comprobar
+     * @return número de casillas obtenidas del grupo dado
      */
-    public int numeroTransportesObtenidos() {
+    public int numeroCasillasObtenidas( TipoGrupo grupo ) {
 
         int numero = 0;
 
         for (Casilla casilla : getPropiedades()) {
 
-            if (casilla.getGrupo().getTipo() == TipoGrupo.transporte)
+            if (casilla.getGrupo().getTipo() == grupo)
                 numero++;
 
         }
@@ -506,22 +508,14 @@ public class Jugador {
 
 
     /**
-     * Se calcula el número de casillas de servicio obtenidas por el jugador
+     * Se comprueba si el jugador ha obtenido todas los solares de un determinado grupo
      *
-     * @return número de casillas de servicio obtenidas
+     * @param grupo tipo del grupo a comprobar
+     * @return si ha obtenido todas las casillas del grupo dado
      */
-    public int numeroServiciosObtenidos() {
+    public boolean haObtenidoSolaresGrupo( Grupo grupo) {
 
-        int numero = 0;
-
-        for (Casilla casilla : getPropiedades()) {
-
-            if (casilla.getGrupo().getTipo() == TipoGrupo.servicios)
-                numero++;
-
-        }
-
-        return (numero);
+        return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getCasillas().size());
 
     }
 

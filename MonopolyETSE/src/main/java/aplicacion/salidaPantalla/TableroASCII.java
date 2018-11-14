@@ -5,6 +5,7 @@ import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,8 +19,8 @@ public class TableroASCII {
     private final static int caracteresPorUnidad = 1;
 
     // Tamaño de las casillas
-    private final static int anchoCasilla = 28 * caracteresPorUnidad;
-    private final static int altoCasilla = 3 * caracteresPorUnidad;
+    private final static int anchoCasilla = 23 * caracteresPorUnidad;
+    private final static int altoCasilla = 4 * caracteresPorUnidad;
 
     // Número de casillas por cada fila (4 filas con 40 casillas en total, comezando desde la casilla de Salida)
     private final static int casillasPorFila = 10;
@@ -493,47 +494,124 @@ public class TableroASCII {
      * @param nombre        frase a representar
      * @param color         color de fondo de la frase a representar
      */
-    private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre,
-                                       TipoColor color) {
+    private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre, TipoColor color) {
 
+        // Posición de escritura en la que comenzar a insertar el nombre
+        int posicionEscrituraInicial;
+
+        // Array con el nombre separado en palabras
+        String[] nombreSeparado = nombre.split(" ");
+
+        // Doble ArrayList para separar las palabras en una línea inferior y otra superior
+        ArrayList<ArrayList<String>> palabras = new ArrayList<>();
+        palabras.add(new ArrayList<>());
+        palabras.add(new ArrayList<>());
+
+
+        // Si el nombre cabe en una única línea (hay que considerar el espacio ocupado por los códigos ANSI de color
+        if (anchoCasilla - nombre.length() - color.getFondo().length() - TipoColor.resetAnsi.getFondo().length() >= 0) {
+
+            // Se añaden todas las palabras a la primera línea
+            for (String string : nombreSeparado)
+                palabras.get(0).add(string);
+
+        }
+
+        // En caso contrario, se separan las palabras en dos líneas
+        else {
+
+            for (int i = 0; i < nombreSeparado.length; i++)
+
+                // Si la palabra es de la primera mitad, va en la línea superior
+                if (i < nombreSeparado.length / 2 || i == 0)
+                    palabras.get(0).add(nombreSeparado[i]);
+
+                    // O sino va en la línea inferior
+                else
+                    palabras.get(1).add(nombreSeparado[i]);
+
+        }
+
+        // Se sitúa en la esquina superior izquierda de la casilla (no en el separador)
+        posicionEscrituraInicial = posicion + 1 + caracteresPorLinea;
+
+        // Se inserta la primera línea
+        insertarString(stringBuilder, posicionEscrituraInicial, palabras.get(0), color);
+
+        // Y, si hay una segunda línea a insertar
+        if (palabras.get(1).size() > 0) {
+
+            // Se avanza una línea
+            posicionEscrituraInicial += caracteresPorLinea;
+
+            // Y se inserta dicha segunda línea
+            insertarString(stringBuilder, posicionEscrituraInicial, palabras.get(1), color);
+
+        }
+
+    }
+
+
+    /**
+     * Se inserta un conjunto de Strings en el tablero a representar, resaltadas en un color dado y centradas en la
+     * parte superior de una casilla
+     *
+     * @param stringBuilder stringBuilder en el que se está representando el tablero
+     * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar la frase
+     * @param strings       strings a representar
+     * @param color         color de fondo de la frase a representar
+     */
+    public static void insertarString(StringBuilder stringBuilder, int posicion, ArrayList<String> strings, TipoColor color) {
+
+        // Posición de escritura en la que comenzar a insertar el String
         int posicionEscritura;
+
+        // Caracteres que quedarán libres tras insertar el String junto con la información de los colores
         int charLibres;
-        StringBuilder nombreConColor = new StringBuilder();
+
+        // String en el que juntar los Strings dados como array
+        StringBuilder stringJunto = new StringBuilder();
+
+        // String en el que insertar los Strings junto con el color
+        StringBuilder stringConColor = new StringBuilder();
+
+
+        // Se juntan los Strings, separados por un espacio
+        for (String string : strings)
+            stringJunto.append(string).append(' ');
+
+        // Y se reduce el tamaño para evitar el espacio innecesario al final
+        stringJunto.deleteCharAt(stringJunto.length() - 1);
 
         // Cantidad de huecos que quedarán libres en el String, los cuales se emplearán para añadir espacios (debe
         // tenerse en cuenta el espacio ocupado por los códigos de color)
-        charLibres = anchoCasilla - nombre.length() - color.getFondo().length() -
+        charLibres = anchoCasilla - stringJunto.length() - color.getFondo().length() -
                 TipoColor.resetAnsi.getFondo().length();
 
         // Se inserta el color de fondo
-        nombreConColor.append(color.getFondo());
+        stringConColor.append(color.getFondo());
 
         // Se añaden los espacios libres al inicio del nombre (en caso de un total de espacios impar, se añade el
         // sobrante después del nombre)
         for (int i = 0; i < charLibres / 2; i++)
-            nombreConColor.append(' ');
+            stringConColor.append(' ');
 
         // El nombre de la casilla
-        nombreConColor.append(nombre);
+        stringConColor.append(stringJunto);
 
         // Se añaden los espacios libres al final del nombre
         for (int i = 0; i < charLibres / 2 + charLibres % 2; i++)
-            nombreConColor.append(' ');
+            stringConColor.append(' ');
 
         // Se quita el color de fondo
-        nombreConColor.append(TipoColor.resetAnsi.getFondo());
+        stringConColor.append(TipoColor.resetAnsi.getFondo());
 
-        // Se sitúa en la esquina superior izquierda de la casilla (no en el separador)
-        posicionEscritura = posicion + 1 + caracteresPorLinea;
         // Ahora se desplaza de modo que el texto quede centrado (dejando más espacios libres a la derecha que a la
         // izquierda si se da el caso)
-        posicionEscritura += (anchoCasilla - nombreConColor.length()) / 2;
-        // Se copian uno a uno los caracteres de la String creada, por lo que debe comprobarse si es menor la longitud
-        // de esta o el espacio disponible
-        int menor = (nombreConColor.length() <= anchoCasilla) ? nombreConColor.length() : anchoCasilla;
+        posicionEscritura = posicion + (anchoCasilla - stringConColor.length()) / 2;
 
-        for (int i = 0; i < menor; i++)
-            stringBuilder.setCharAt(posicionEscritura++, nombreConColor.charAt(i));
+        for (int i = 0; i < stringConColor.length(); i++)
+            stringBuilder.setCharAt(posicionEscritura++, stringConColor.charAt(i));
 
     }
 
@@ -548,10 +626,16 @@ public class TableroASCII {
      */
     private static void insertarJugadores(StringBuilder stringBuilder, int posicion, HashMap avataresContenidos) {
 
+        // Posición de escritura en la que comenzar a insertar los jugadores
         int posicionEscritura;
+
+        // Avatares contenidos e iterador para ellos
         Collection valores = avataresContenidos.values();
         Iterator iterador = valores.iterator();
+
+        // String en el que insertar las representaciones de los avatares
         StringBuilder avatares = new StringBuilder();
+
 
         // Se añaden los avatares
         while (iterador.hasNext()) {
@@ -559,8 +643,8 @@ public class TableroASCII {
             avatares.append(avatarIterado.getIdentificador()).append(' ');
         }
 
-        // Se sitúa en la primera columna libre (no en el separador) de la mitad de la casilla pintada
-        posicionEscritura = posicion + 1 + caracteresPorLinea * (altoCasilla / 2 + altoCasilla % 2);
+        // Se sitúa en la primera columna libre (no en el separador) de la mitad de la casilla pintada, hacia el inferior
+        posicionEscritura = posicion + 1 + caracteresPorLinea * (altoCasilla / 2 + 1);
 
         // Se copian uno a uno los caracteres de la String creada, por lo que debe comprobarse si es menor la longitud
         // de esta o el espacio disponible

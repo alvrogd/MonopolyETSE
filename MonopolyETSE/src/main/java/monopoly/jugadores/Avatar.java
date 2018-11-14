@@ -4,6 +4,7 @@ import monopoly.Constantes;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
+import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -468,7 +469,7 @@ public class Avatar {
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
             getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
-                    getPosicion().getPropietario().numeroTransportesObtenidos() * 0.25));
+                    getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25));
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
             if (getJugador().isEstaBancarrota())
@@ -487,7 +488,7 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
-            int multiplicador = (getPosicion().getPropietario().numeroServiciosObtenidos() == 1) ? 4 : 10;
+            int multiplicador = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
 
             getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO *
                     multiplicador);
@@ -509,7 +510,9 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
-            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+            int multiplicador = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
+
+            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler() * multiplicador);
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
             if (getJugador().isEstaBancarrota())

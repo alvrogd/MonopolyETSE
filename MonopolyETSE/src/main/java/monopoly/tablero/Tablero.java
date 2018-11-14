@@ -211,7 +211,7 @@ public class Tablero {
         //Salida
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(0); aux.add("malloc(newGame)");
+        aux.add(0); aux.add(0); aux.add("malloc(game)");
 
         Grupo salida = new Grupo(TipoGrupo.salida, this, false, aux);
         this.grupos.put(TipoGrupo.salida, salida);
