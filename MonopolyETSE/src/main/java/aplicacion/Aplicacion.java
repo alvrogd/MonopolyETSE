@@ -37,8 +37,6 @@ public class Aplicacion {
 
     }
 
-    //todo tirar dados antes de pasar turno
-
     /*Getters*/
     public Juego getJuego(){
         return juego;
@@ -344,6 +342,11 @@ public class Aplicacion {
             case "iniciar":
                 salida.add(TipoComando.iniciarJuego);
                 break;
+
+            case "mover":
+                getJuego().getTurno().getAvatar().mover(Integer.parseInt((String) comando.get(1)), true);
+                salida.add(null);
+                break;
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -580,6 +583,10 @@ public class Aplicacion {
 
                 if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
+                if(!juego.isHaLanzadoDados()){
+                    Output.errorComando("¡No ha lanzado los dados!");
                     return;
                 }
 

@@ -23,36 +23,15 @@ public class AplicacionTest {
                 aplicacion.getJuego().getTablero().getCasillas().get(0).get(0)));
 
         aplicacion.getJuego().iniciarJuego();
-        aplicacion.getJuego().getJugadores().get("Fran").setFortuna(0);
+        aplicacion.getJuego().getJugadores().get("Fran").setFortuna(1000);
 
         //System.out.println(TableroASCII.pintaTablero(aplicacion.getJuego().getTablero()));
 
             System.out.println("Mover: ");
 
-            aplicacion.getJuego().getTurno().getAvatar().mover(30, true);
-
-            aplicacion.introducirComando("describir carcel");
-
-
-            aplicacion.introducirComando("acabar turno")
-            ;
-        aplicacion.introducirComando("lanzar dados");
-            aplicacion.introducirComando("acabar turno");
-
-        aplicacion.introducirComando("lanzar dados");
-            aplicacion.introducirComando("acabar turno");
-
-        aplicacion.introducirComando("lanzar dados");
-        aplicacion.introducirComando("acabar turno");
-
-        aplicacion.introducirComando("lanzar dados");
-        aplicacion.introducirComando("acabar turno");
-
-        aplicacion.introducirComando("lanzar dados");
-        aplicacion.introducirComando("acabar turno");
-
-        aplicacion.introducirComando("lanzar dados");
-        aplicacion.introducirComando("acabar turno");
+            aplicacion.getJuego().getTurno().getAvatar().mover(2, true);
+        aplicacion.introducirComando("describir parking");
+        aplicacion.getJuego().getTurno().getAvatar().mover(18, true);
 
         aplicacion.introducirComando("describir jugador Fran");
 
