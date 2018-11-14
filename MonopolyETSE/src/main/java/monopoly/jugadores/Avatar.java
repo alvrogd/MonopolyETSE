@@ -308,7 +308,6 @@ public class Avatar {
             return;
         }
 
-        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -339,13 +338,15 @@ public class Avatar {
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.",
+                            "Se pagará el importe correspondiente para salir de la cárcel.");
+
                     forzarSalirCarcel();
 
                     // Si el jugador ha caído en bancarrota tras el pago, debe notificarse y no se realiza ninguna
                     // acción más
-                    if( getJugador().isEstaBancarrota() ) {
-                        getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+                    if (getJugador().isEstaBancarrota()) {
+                        getTablero().getJuego().jugadorEnBancarrota(getJugador());
                         return;
                     }
                 }
@@ -467,11 +468,11 @@ public class Avatar {
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
             getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
-                    getJugador().numeroTransportesObtenidos() * 0.25));
+                    getPosicion().getPropietario().numeroTransportesObtenidos() * 0.25));
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if( getJugador().isEstaBancarrota() )
-                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -486,11 +487,14 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
-            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO);
+            int multiplicador = (getPosicion().getPropietario().numeroServiciosObtenidos() == 1) ? 4 : 10;
+
+            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO *
+                    multiplicador);
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if( getJugador().isEstaBancarrota() )
-                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -508,8 +512,8 @@ public class Avatar {
             getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if( getJugador().isEstaBancarrota() )
-                getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -529,8 +533,8 @@ public class Avatar {
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_1);
 
         // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-        if( getJugador().isEstaBancarrota() )
-            getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+        if (getJugador().isEstaBancarrota())
+            getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
     }
 
@@ -548,8 +552,8 @@ public class Avatar {
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_2);
 
         // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-        if( getJugador().isEstaBancarrota() )
-            getTablero().getJuego().jugadorEnBancarrota( getJugador() );
+        if (getJugador().isEstaBancarrota())
+            getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
     }
 
@@ -564,6 +568,7 @@ public class Avatar {
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
+        setHaEstadoCarcel(true);
 
         // Y se añade el avatar al listado de avatares contenidos en la cárcel
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);

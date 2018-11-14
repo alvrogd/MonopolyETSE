@@ -196,11 +196,12 @@ public class Jugador {
     /**
      * Se redirige un pago a un jugador con una cantidad en punto flotante a la función que gestiona el pago con un
      * número entero
+     *
      * @param receptor jugador al que pagar el importe
-     * @param importe cantidad a pagar
+     * @param importe  cantidad a pagar
      */
     public void pagar(Jugador receptor, double importe) {
-        pagar(receptor, ( int ) importe );
+        pagar(receptor, (int) importe);
     }
 
 
@@ -209,7 +210,7 @@ public class Jugador {
      * bancarrota y sus propiedades se transfieren al deudor
      *
      * @param receptor jugador al que pagar el importe
-     * @param importe cantidad a pagar
+     * @param importe  cantidad a pagar
      */
     public void pagar(Jugador receptor, int importe) {
 
@@ -291,11 +292,10 @@ public class Jugador {
         // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
         if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
-            return;
 
         } else {
 
-            int importe = 0;
+            int importe;
             // Si no es un solar, el alquiler es el precio del grupo
             if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
                     getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
@@ -344,7 +344,7 @@ public class Jugador {
             return;
         }
 
-        int importe = 0;
+        int importe;
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original; el alquiler es un 10% del
         // importe de compra
         importe = 5 * casilla.getAlquiler();
@@ -378,9 +378,10 @@ public class Jugador {
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
         int importe = (int) (casilla.getAlquiler() * 5 * 1.10);
+
         if (balanceNegativoTrasPago(importe)) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
-            return;
+
         } else {
             setFortuna(getFortuna() - importe);
             casilla.setHipotecada(false);
@@ -501,6 +502,26 @@ public class Jugador {
 
         return (numero);
 
+    }
+
+
+    /**
+     * Se calcula el número de casillas de servicio obtenidas por el jugador
+     *
+     * @return número de casillas de servicio obtenidas
+     */
+    public int numeroServiciosObtenidos() {
+
+        int numero = 0;
+
+        for (Casilla casilla : getPropiedades()) {
+
+            if (casilla.getGrupo().getTipo() == TipoGrupo.servicios)
+                numero++;
+
+        }
+
+        return (numero);
 
     }
 
@@ -522,10 +543,7 @@ public class Jugador {
         final Jugador otro = (Jugador) obj;
 
         // Si los identificadores de sus avatares son el mismo
-        if (this.getAvatar().getIdentificador() != otro.getAvatar().getIdentificador()) return (false);
-
-        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
-        return (true);
+        return (this.getAvatar().getIdentificador() == otro.getAvatar().getIdentificador());
 
     } /* Fin del método equals */
 
