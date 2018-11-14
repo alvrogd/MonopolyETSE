@@ -286,6 +286,11 @@ public class Avatar {
             return;
         }
 
+        if( getTablero().getJuego().isHaLanzadoDados() ) {
+            Output.sugerencia("No se puede salir de la cárcel después de haber lanzado los dados");
+            return;
+        }
+
         if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para salir de la cárcel.");
             return;
@@ -344,12 +349,12 @@ public class Avatar {
 
                     forzarSalirCarcel();
 
-                    // Si el jugador ha caído en bancarrota tras el pago, debe notificarse y no se realiza ninguna
-                    // acción más
-                    if (getJugador().isEstaBancarrota()) {
+                    // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+                    if (getJugador().isEstaBancarrota())
                         getTablero().getJuego().jugadorEnBancarrota(getJugador());
-                        return;
-                    }
+
+                    // No se debe mover en el turno actual dado que acaba de pagar el importe para salir de la cárcel
+                    return;
                 }
                 // En caso contrario, no se hace nada
                 else
