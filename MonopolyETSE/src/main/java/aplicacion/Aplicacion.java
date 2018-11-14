@@ -316,7 +316,7 @@ public class Aplicacion {
                 switch (comando.get(1)) {
                     default:
                         salida.add(TipoComando.comprarPropiedad);
-                        salida.add(comando.get(1));
+                        salida.add(comando.get(1) + " " + comando.get(2));
                         break;
                 }
                 break;

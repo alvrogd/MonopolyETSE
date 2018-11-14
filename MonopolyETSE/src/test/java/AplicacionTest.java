@@ -29,8 +29,8 @@ public class AplicacionTest {
 
             System.out.println("Mover: ");
 
-            aplicacion.getJuego().getTurno().getAvatar().mover(2, true);
-        aplicacion.introducirComando("describir parking");
+            //aplicacion.getJuego().getTurno().getAvatar().mover(2, true);
+        aplicacion.introducirComando("describir cyan3");
         aplicacion.getJuego().getTurno().getAvatar().mover(18, true);
 
         aplicacion.introducirComando("describir jugador Fran");

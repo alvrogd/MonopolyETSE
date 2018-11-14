@@ -18,7 +18,7 @@ public class TableroASCII {
     private final static int caracteresPorUnidad = 1;
 
     // Tamaño de las casillas
-    private final static int anchoCasilla = 22 * caracteresPorUnidad;
+    private final static int anchoCasilla = 28 * caracteresPorUnidad;
     private final static int altoCasilla = 3 * caracteresPorUnidad;
 
     // Número de casillas por cada fila (4 filas con 40 casillas en total, comezando desde la casilla de Salida)
@@ -720,7 +720,7 @@ public class TableroASCII {
         // Si sólo hay una tupla de información, no se tiene en cuenta la necesidad de la separación vertical, dado que
         // la función que inserta la línea de información se encarga de centrarla
         if (info.size() == 1)
-            altoDisponibleSuperior = altoDisponible - altoMaximoSuperior;
+            altoDisponibleSuperior = altoDisponible;
         else
             altoDisponibleSuperior = altoDisponible - altoMaximoInferior - separacionVertical - separacionVertical / 2;
 
