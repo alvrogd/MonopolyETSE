@@ -581,7 +581,18 @@ public class Avatar {
         // Y se añade el avatar al listado de avatares contenidos en la cárcel
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 
-        Output.sugerencia("¡Has sido encarcelado!");
+        Output.mensaje(
+                "          ,",
+                " __  _.-\"` `'-." ,
+                "/||\\'._ __{}_(" ,
+                "||||  |'--.__\\" ,
+                "|  L.(   ^_\\^     ¡Has sido encarcelado!" ,
+                "\\ .-' |   _ |" ,
+                "| |   )\\___/" ,
+                "|  \\-'`:._]" ,
+                "\\__/;      '-.", ""
+        );
+
     }
 
 

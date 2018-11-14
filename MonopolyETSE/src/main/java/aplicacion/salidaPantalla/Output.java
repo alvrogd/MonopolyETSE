@@ -794,63 +794,92 @@ public class Output {
      */
 
 
+    public static void ayuda(String... ayuda){
+        ArrayList<String> informacion = new ArrayList<>();
+
+        for (String resp : ayuda) {
+            informacion.add(resp);
+        }
+
+        imprimirRecuadro(informacion,"mensaje", TipoColor.violetaANSI, 2, 1);
+    }
+
     public static void imprimirAyuda(){
         ArrayList<String> ayuda = new ArrayList<>();
-        ayuda.add("Información sobre comandos.");
-        ayuda.add("");
-        ayuda.add(" -> crear jugador <nombre> <tipo_Avatar>");
-        ayuda.add("      (*) Crea un jugador con el nombre introducido y su tipo de avatar.");
-        ayuda.add("      (*) Tipos de avatares disponibles:");
-        ayuda.add("               - Coche");
-        ayuda.add("               - Esfinge");
-        ayuda.add("               - Sombrero");
-        ayuda.add("               - Pelota");
-        ayuda.add("");
-        ayuda.add(" -> jugador");
-        ayuda.add("      (*) Informa del jugador que tiene el turno.");
-        ayuda.add("");
-        ayuda.add(" -> iniciar");
-        ayuda.add("      (*) Inicia el juego si hay dos o más jugadores.");
-        ayuda.add("      (!) No se pueden añadir más jugadores una vez iniciado el juego.");
-        ayuda.add("");
-        ayuda.add(" -> listar jugadores");
-        ayuda.add("      (*) Imprime información sobre todos los jugadores del juego.");
-        ayuda.add("");
-        ayuda.add(" -> listar avatares");
-        ayuda.add("      (*) Imprime información sobre todos los avatares del tablero.");
-        ayuda.add("");
-        ayuda.add(" -> listar enventa");
-        ayuda.add("      (*) Imprime información sobre todas las casillas que están en venta.");
-        ayuda.add("");
-        ayuda.add(" -> lanzar dados");
-        ayuda.add("      (*) Se lanzan los dos dados del juego y se avanza el número de casillas");
-        ayuda.add("          correspondiente a la suma de los dos.");
-        ayuda.add("");
-        ayuda.add(" -> acabar turno");
-        ayuda.add("      (*) Finaliza el turno actual y pasa al siguiente jugador.");
-        ayuda.add("      (!) No se puede pasar el turno sin haber tirado los dados.");
-        ayuda.add("");
-        ayuda.add(" -> salir carcel");
-        ayuda.add("      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel.");
-        ayuda.add("      (!) Asegúrate de estar encarcelado.");
-        ayuda.add("");
-        ayuda.add(" -> describir jugador <nombre>");
-        ayuda.add("      (*) Se describe el jugador con el nombre introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> describir avatar <id>");
-        ayuda.add("      (*) Se describe el avatar con el ID introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> describir <casilla>");
-        ayuda.add("      (*) Se describe la casilla con el nombre introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> comprar <casilla>");
-        ayuda.add("      (*) Se compra la casilla indicada en el comando.");
-        ayuda.add("      (!) Solo puedes comprar una casilla si tu avatar está situado en ella.");
-        ayuda.add("      (!) Asegúrate de tener suficiente liquidez.");
-        ayuda.add("");
-        ayuda.add(" -> ver tablero");
-        ayuda.add("      (*) Muestra al jugador el tablero.");
 
-        imprimirRecuadro(ayuda,"AYUDA: ", TipoColor.violetaANSI, 2, 1);
+        Output.ayuda("",
+        "                                _.--,-```-.    " ,
+        "                               /    /      '.  " ,
+        "                              /  ../         ; " ,
+        "                              \\  ``\\  .``-    '" ,
+        "                               \\ ___\\/    \\   :" ,
+        "                                     \\    :   |" ,
+        "                                     |    ;  . " ,
+        "                                    ;   ;   :  " ,
+        "                                   /   :   :   " ,
+        "                                   `---'.  |   " ,
+        "                                    `--..`;    " ,
+        "                                   .--,_        " ,
+        "                                  |    |`.     " ,
+        "                                  `-- -`, ;    " ,
+        "                                    '---`\"     " ,
+        "                                              "
+
+        ,"Información sobre comandos."
+        ,""
+        ," -> crear jugador <nombre> <tipo_Avatar>"
+        ,"      (*) Crea un jugador con el nombre introducido y su tipo de avatar."
+        ,"      (*) Tipos de avatares disponibles:"
+        ,"               - Coche"
+        ,"               - Esfinge"
+        ,"               - Sombrero"
+        ,"               - Pelota"
+        ,""
+        ," -> jugador"
+        ,"      (*) Informa del jugador que tiene el turno."
+        ,""
+        ," -> iniciar"
+        ,"      (*) Inicia el juego si hay dos o más jugadores."
+        ,"      (!) No se pueden añadir más jugadores una vez iniciado el juego."
+        ,""
+        ," -> listar jugadores"
+        ,"      (*) Imprime información sobre todos los jugadores del juego."
+        ,""
+        ," -> listar avatares"
+        ,"      (*) Imprime información sobre todos los avatares del tablero."
+        ,""
+        ," -> listar enventa"
+        ,"      (*) Imprime información sobre todas las casillas que están en venta."
+        ,""
+        ," -> lanzar dados"
+        ,"      (*) Se lanzan los dos dados del juego y se avanza el número de casillas"
+        ,"          correspondiente a la suma de los dos."
+        ,""
+        ," -> acabar turno"
+        ,"      (*) Finaliza el turno actual y pasa al siguiente jugador."
+        ,"      (!) No se puede pasar el turno sin haber tirado los dados."
+        ,""
+        ," -> salir carcel"
+        ,"      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel."
+        ,"      (!) Asegúrate de estar encarcelado."
+        ,""
+        ," -> describir jugador <nombre>"
+        ,"      (*) Se describe el jugador con el nombre introducido (si existe)."
+        ,""
+        ," -> describir avatar <id>"
+        ,"      (*) Se describe el avatar con el ID introducido (si existe)."
+        ,""
+        ," -> describir <casilla>"
+        ,"      (*) Se describe la casilla con el nombre introducido (si existe)."
+        ,""
+        ," -> comprar <casilla>"
+        ,"      (*) Se compra la casilla indicada en el comando."
+        ,"      (!) Solo puedes comprar una casilla si tu avatar está situado en ella."
+        ,"      (!) Asegúrate de tener suficiente liquidez."
+        ,""
+        ," -> ver tablero"
+        ,"      (*) Muestra al jugador el tablero.");
+
+
     }
 }
