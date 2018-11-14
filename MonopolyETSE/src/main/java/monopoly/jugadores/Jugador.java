@@ -4,6 +4,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.Casilla;
+import monopoly.tablero.Grupo;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 
@@ -39,6 +40,11 @@ public class Jugador {
      */
     public Jugador(String nombre) {
 
+        if (nombre == null) {
+            System.err.println("Nombre no inicializado.");
+            System.exit(1);
+        }
+
         this.nombre = nombre;
 
         this.avatar = new Avatar(this);
@@ -64,18 +70,23 @@ public class Jugador {
      */
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
+        if (nombre == null) {
+            System.err.println("Nombre no inicializado.");
+            System.exit(1);
+        }
+
         if (tablero == null) {
-            Output.errorComando("Tablero no inicializado.");
+            System.err.println("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipoAvatar == null) {
-            Output.errorComando("Tipo de avatar no inicializado.");
+            System.err.println("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            Output.errorComando("Casilla inicial no inicializada.");
+            System.err.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -101,9 +112,15 @@ public class Jugador {
     }
 
 
+    /* No se implementa el setter de nombre dado que es una constante */
+
+
     public Avatar getAvatar() {
         return (avatar);
     }
+
+
+    /* No se implementa el setter de avatar dado que es una constante */
 
 
     public int getFortuna() {
@@ -141,14 +158,14 @@ public class Jugador {
     public void setPropiedades(ArrayList<Casilla> propiedades) {
 
         if (propiedades == null) {
-            Output.sugerencia("Propiedades no inicializadas.");
+            System.err.println("Propiedades no inicializadas.");
             return;
         }
 
         for (Casilla casilla : propiedades) {
 
             if (casilla == null) {
-                Output.sugerencia("Casilla no inicializada.");
+                System.err.println("Casilla no inicializada.");
                 return;
             }
 
@@ -178,6 +195,18 @@ public class Jugador {
     /* Métodos */
 
     /**
+     * Se redirige un pago a un jugador con una cantidad en punto flotante a la función que gestiona el pago con un
+     * número entero
+     *
+     * @param receptor jugador al que pagar el importe
+     * @param importe  cantidad a pagar
+     */
+    public void pagar(Jugador receptor, double importe) {
+        pagar(receptor, (int) importe);
+    }
+
+
+    /**
      * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
      * bancarrota y sus propiedades se transfieren al deudor
      *
@@ -187,7 +216,7 @@ public class Jugador {
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
-            Output.sugerencia("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             return;
         }
 
@@ -199,15 +228,15 @@ public class Jugador {
         // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
         if (balanceNegativoTrasPago(importe)) {
 
+            Output.respuesta("¡El jugador ha caído en bancarrota!",
+                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
+
             ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
 
             for (Casilla casilla : propiedadesEndeudado)
                 transferirCasilla(this, receptor, casilla);
 
             setEstaBancarrota(true);
-
-            Output.respuesta("¡El jugador ha caído en bancarrota!",
-                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
 
         }
 
@@ -234,12 +263,12 @@ public class Jugador {
     public void comprar(Jugador vendedor, Casilla casilla) {
 
         if (vendedor == null) {
-            Output.sugerencia("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -264,11 +293,10 @@ public class Jugador {
         // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
         if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
-            return;
 
         } else {
 
-            int importe = 0;
+            int importe;
             // Si no es un solar, el alquiler es el precio del grupo
             if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
                     getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
@@ -308,7 +336,7 @@ public class Jugador {
     public void hipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -317,7 +345,7 @@ public class Jugador {
             return;
         }
 
-        int importe = 0;
+        int importe;
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original; el alquiler es un 10% del
         // importe de compra
         importe = 5 * casilla.getAlquiler();
@@ -339,7 +367,7 @@ public class Jugador {
     public void deshipotecar(Casilla casilla) {
 
         if (casilla == null) {
-            Output.sugerencia("Error: casilla no inicializada.");
+            System.err.println("Error: casilla no inicializada.");
             return;
         }
 
@@ -351,9 +379,10 @@ public class Jugador {
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
         int importe = (int) (casilla.getAlquiler() * 5 * 1.10);
+
         if (balanceNegativoTrasPago(importe)) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
-            return;
+
         } else {
             setFortuna(getFortuna() - importe);
             casilla.setHipotecada(false);
@@ -375,7 +404,7 @@ public class Jugador {
     public void lanzarDados(Dado dado) {
 
         if (dado == null) {
-            Output.sugerencia("Dado no inicializado.");
+            System.err.println("Dado no inicializado.");
             return;
         }
 
@@ -431,17 +460,17 @@ public class Jugador {
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
-            Output.sugerencia("Emisor no inicializado.");
+            System.err.println("Emisor no inicializado.");
             return;
         }
 
         if (receptor == null) {
-            Output.sugerencia("Receptor no inicializado.");
+            System.err.println("Receptor no inicializado.");
             return;
         }
 
         if (casilla == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -457,23 +486,36 @@ public class Jugador {
 
 
     /**
-     * Se calcula el número de casillas de transporte obtenidas por el jugador
+     * Se calcula el número de casillas de un determinado grupo obtenidas por el jugador
      *
-     * @return número de casillas de transporte obtenidas
+     * @param grupo tipo del grupo a comprobar
+     * @return número de casillas obtenidas del grupo dado
      */
-    public int numeroTransportesObtenidos() {
+    public int numeroCasillasObtenidas( TipoGrupo grupo ) {
 
         int numero = 0;
 
         for (Casilla casilla : getPropiedades()) {
 
-            if (casilla.getGrupo().getTipo() == TipoGrupo.transporte)
+            if (casilla.getGrupo().getTipo() == grupo)
                 numero++;
 
         }
 
         return (numero);
 
+    }
+
+
+    /**
+     * Se comprueba si el jugador ha obtenido todas los solares de un determinado grupo
+     *
+     * @param grupo tipo del grupo a comprobar
+     * @return si ha obtenido todas las casillas del grupo dado
+     */
+    public boolean haObtenidoSolaresGrupo( Grupo grupo) {
+
+        return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getCasillas().size());
 
     }
 
@@ -495,10 +537,7 @@ public class Jugador {
         final Jugador otro = (Jugador) obj;
 
         // Si los identificadores de sus avatares son el mismo
-        if (this.getAvatar().getIdentificador() != otro.getAvatar().getIdentificador()) return (false);
-
-        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
-        return (true);
+        return (this.getAvatar().getIdentificador() == otro.getAvatar().getIdentificador());
 
     } /* Fin del método equals */
 

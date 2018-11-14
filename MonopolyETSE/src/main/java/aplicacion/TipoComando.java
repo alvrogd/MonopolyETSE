@@ -2,6 +2,7 @@ package aplicacion;
 
 public enum TipoComando {
 
+    /*Tipos de enumeraciones*/
     crear("crear"),
     crearJugador("crear jugador"),
     iniciarJuego("iniciar"),
@@ -20,13 +21,15 @@ public enum TipoComando {
     verTablero("ver tablero"),
     ayuda("ayuda");
 
-
+    /*Atributos*/
     private final String comando;
 
+    /*Constructores*/
     private TipoComando(String comando){
         this.comando = comando;
     }
 
+    /*Métodos*/
     public String getComando(){
         return(comando);
     }

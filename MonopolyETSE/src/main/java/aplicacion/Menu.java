@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    Aplicacion app;
+    private Aplicacion app;
 
     public Menu(Aplicacion app){
 
@@ -21,23 +21,33 @@ public class Menu {
     public void iniciarAplicacion(){
         Scanner entrada = new Scanner(System.in);
 
-        Output.mensaje("Bienvenido a MonopolyETSE",
+
+        Output.mensaje(        "",
+                "___  ___                              _         _____ _____ _____ _____ " ,
+                "|  \\/  |                             | |       |  ___|_   _/  ___|  ___|" ,
+                "| .  . | ___  _ __   ___  _ __   ___ | |_   _  | |__   | | \\ `--.| |__  " ,
+                "| |\\/| |/ _ \\| '_ \\ / _ \\| '_ \\ / _ \\| | | | | |  __|  | |  `--. \\  __| " ,
+                "| |  | | (_) | | | | (_) | |_) | (_) | | |_| | | |___  | | /\\__/ / |___ " ,
+                "\\_|  |_/\\___/|_| |_|\\___/| .__/ \\___/|_|\\__, | \\____/  \\_/ \\____/\\____/ " ,
+                "                         | |             __/ |                          " ,
+                "                         |_|            |___/     ",
+                "     _________                                           " ,
+                "    / ======= \\      (!) Unas reglas iniciales:                                 " ,
+                "   / __________\\                                                                " ,
+                "  | ___________ |         -> ¿Cómo crear los jugadores?                          " ,
+                "  | | -       | |               (*) Comando: crear jugador <nombre> <tipo_Avatar>" ,
+                "  | |         | |               (*) De 2 a 6 jugadores.                          " ,
+                "  | |_________| |               (*) Tipos de avatares disponibles:               " ,
+                "  \\=____________/                   - Coche                                     " ,
+                "  / \"\"\"\"\"\"\"\"\"\"\" \\                   - Esfinge                                   " ,
+                " / ::::::::::::: \\                  - Sombrero                                  " ,
+                "(_________________)                 - Pelota                                    " ,
                 "",
-                "Unas reglas iniciales:",
                 "",
-                "    -> ¿Cómo crear los jugadores?",
-                "          (*) Comando: crear jugador <nombre> <tipo_Avatar>",
-                "          (*) De 2 a 6 jugadores.",
-                "          (*) Tipos de avatares disponibles:",
-                "               - Coche",
-                "               - Esfinge",
-                "               - Sombrero",
-                "               - Pelota",
-                "",
-                "    -> ¿Cómo empezar a jugar?",
+                "-> ¿Cómo empezar a jugar?",
                 "          (*) Comando: iniciar juego",
                 "",
-                "    -> Para obtener información de los comandos introduzca: ayuda");
+                "-> Para obtener información de los comandos introduzca: ayuda");
 
         app.imprimirBuffer();
 

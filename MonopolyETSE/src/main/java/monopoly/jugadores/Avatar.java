@@ -4,6 +4,7 @@ import monopoly.Constantes;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
+import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +53,7 @@ public class Avatar {
     public Avatar(Jugador jugador) {
 
         if (jugador == null) {
-            Output.errorComando("Error: jugador no inicializado.");
+            System.err.println("Error: jugador no inicializado.");
             System.exit(1);
         }
 
@@ -87,22 +88,22 @@ public class Avatar {
     public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
 
         if (jugador == null) {
-            Output.errorComando("Jugador no inicializado.");
+            System.err.println("Jugador no inicializado.");
             System.exit(1);
         }
 
         if (tablero == null) {
-            Output.errorComando("Tablero no inicializado.");
+            System.err.println("Tablero no inicializado.");
             System.exit(1);
         }
 
         if (tipo == null) {
-            Output.errorComando("Tipo de avatar no inicializado.");
+            System.err.println("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
         if (casillaInicial == null) {
-            System.out.println("Casilla inicial no inicializada.");
+            System.err.println("Casilla inicial no inicializada.");
             System.exit(1);
         }
 
@@ -137,7 +138,7 @@ public class Avatar {
 
         identificador = identificadorAleatorio;
 
-        casillaInicial.getAvataresContenidos().put(jugador.getNombre(), this);
+        casillaInicial.getAvataresContenidos().put(identificador, this);
 
         this.tipo = tipo;
 
@@ -154,9 +155,15 @@ public class Avatar {
     }
 
 
+    /* No se implementa el setter de jugador dado que es una constante */
+
+
     public Tablero getTablero() {
         return tablero;
     }
+
+
+    /* No se implementa el setter de tablero dado que es una constante */
 
 
     public boolean isHaEstadoCarcel() {
@@ -218,7 +225,7 @@ public class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            Output.sugerencia("Casilla no inicializada.");
+            System.err.println("Casilla no inicializada.");
             return;
         }
 
@@ -233,7 +240,7 @@ public class Avatar {
     public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
 
         if (vecesCaidasEnCasillas == null) {
-            Output.sugerencia("ArrayList no inicializado.");
+            System.err.println("ArrayList no inicializado.");
             return;
         }
 
@@ -245,9 +252,15 @@ public class Avatar {
     }
 
 
+    /* No se implementa el setter de identificador dado que es una constante */
+
+
     public TipoAvatar getTipo() {
         return (tipo);
     }
+
+
+    /* No se implementa el setter de tipo dado que es una constante */
 
 
     public boolean isMovimientoEstandar() {
@@ -273,8 +286,13 @@ public class Avatar {
             return;
         }
 
+        if( getTablero().getJuego().isHaLanzadoDados() ) {
+            Output.sugerencia("No se puede salir de la cárcel después de haber lanzado los dados");
+            return;
+        }
+
         if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
-            Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para salir de la cárcel.");
             return;
         }
 
@@ -296,7 +314,6 @@ public class Avatar {
             return;
         }
 
-        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
@@ -327,8 +344,17 @@ public class Avatar {
 
                 // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
                 if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.");
+                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.",
+                            "Se pagará el importe correspondiente para salir de la cárcel.");
+
                     forzarSalirCarcel();
+
+                    // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+                    if (getJugador().isEstaBancarrota())
+                        getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
+                    // No se debe mover en el turno actual dado que acaba de pagar el importe para salir de la cárcel
+                    return;
                 }
                 // En caso contrario, no se hace nada
                 else
@@ -340,7 +366,7 @@ public class Avatar {
         }
 
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+        getPosicion().getAvataresContenidos().remove(getIdentificador());
 
         // Se calcula la posición nueva del avatar
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
@@ -355,7 +381,7 @@ public class Avatar {
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
-        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
+        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 
         // En función del tipo de casilla
         switch (posicion.getGrupo().getTipo()) {
@@ -448,7 +474,11 @@ public class Avatar {
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
             getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
-                    getJugador().numeroTransportesObtenidos() * 0.25));
+                    getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25));
+
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -463,7 +493,14 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
-            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO);
+            int multiplicador = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
+
+            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO *
+                    multiplicador);
+
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -478,7 +515,13 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
 
-            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler());
+            int multiplicador = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
+
+            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler() * multiplicador);
+
+            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+            if (getJugador().isEstaBancarrota())
+                getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         }
 
@@ -497,6 +540,10 @@ public class Avatar {
                 Constantes.POSICION_PARKING % 10);
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_1);
 
+        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+        if (getJugador().isEstaBancarrota())
+            getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
     }
 
 
@@ -512,6 +559,10 @@ public class Avatar {
                 Constantes.POSICION_PARKING % 10);
         parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_2);
 
+        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+        if (getJugador().isEstaBancarrota())
+            getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
     }
 
 
@@ -521,13 +572,14 @@ public class Avatar {
     public void caerEnIrACarcel() {
 
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-        getPosicion().getAvataresContenidos().remove(getJugador().getNombre());
+        getPosicion().getAvataresContenidos().remove(getIdentificador());
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         setEncarcelado(true);
+        setHaEstadoCarcel(true);
 
         // Y se añade el avatar al listado de avatares contenidos en la cárcel
-        getPosicion().getAvataresContenidos().put(getJugador().getNombre(), this);
+        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 
         Output.sugerencia("¡Has sido encarcelado!");
     }

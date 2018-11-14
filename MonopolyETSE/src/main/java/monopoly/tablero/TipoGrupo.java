@@ -5,6 +5,7 @@ import monopoly.Constantes;
 
 public enum TipoGrupo {
 
+    /*Tipos de enumeraciones*/
     negro("solar",Constantes.PRECIO_INICIAL_GRUPO_0, TipoColor.negroANSI),
     cyan("solar",Constantes.PRECIO_INICIAL_GRUPO_1, TipoColor.cianANSI),
     rosa("solar",Constantes.PRECIO_INICIAL_GRUPO_2, TipoColor.violetaANSI),
@@ -24,16 +25,34 @@ public enum TipoGrupo {
     salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi),
     irCarcel("ir a la cárcel",TipoColor.resetAnsi);
 
+    /*Atributos*/
+
+    //Precio inicial del grupo
     private final int precioInicial;
+
+    //El color con el que se imprimirá el grupo
     private final TipoColor color;
+
+    //String con el tipo de casilla que llevará.
     private final String tipoCasilla;
 
+    /**
+     * Constructor paa grupos que no tengan un importe relacionado, el cual se establece a -10
+     * @param tipocasilla se establece el tipo de casilla
+     * @param color el color del grupo
+     */
     private TipoGrupo(String tipocasilla,TipoColor color){
         this.precioInicial = -10;
         this.color = color;
         this.tipoCasilla = tipocasilla;
     }
 
+    /**
+     * Constructor para grupos que tengan un importe relacionado
+     * @param tipocasilla se establece el tipo de casilla
+     * @param precioInicial importe a establecer para el grupo
+     * @param color color del grupo
+     */
     private TipoGrupo(String tipocasilla, int precioInicial, TipoColor color) {
 
         this.tipoCasilla = tipocasilla;
@@ -42,6 +61,7 @@ public enum TipoGrupo {
 
     }
 
+    /*Getters y Setters*/
     public int getPrecioInicial() {
 
         return precioInicial;

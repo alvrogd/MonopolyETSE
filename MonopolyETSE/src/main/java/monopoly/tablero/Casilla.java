@@ -4,6 +4,7 @@ import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +18,7 @@ public class Casilla {
     private Jugador propietario;
     private boolean hipotecada;
 
-    private HashMap<String, Avatar> avataresContenidos;
+    private HashMap<Character, Avatar> avataresContenidos;
 
     private int alquiler;
     private boolean comprable;
@@ -82,6 +83,10 @@ public class Casilla {
     }
 
     public void setPropietario(Jugador propietario) {
+        if(propietario == null){
+            System.err.println("El propietario referencia a null");
+            return;
+        }
         this.propietario = propietario;
     }
 
@@ -101,11 +106,15 @@ public class Casilla {
         this.hipotecada = hipotecada;
     }
 
-    public HashMap<String, Avatar> getAvataresContenidos() {
+    public HashMap<Character, Avatar> getAvataresContenidos() {
         return avataresContenidos;
     }
 
-    public void setAvataresContenidos(HashMap<String, Avatar> avataresContenidos) {
+    public void setAvataresContenidos(HashMap<Character, Avatar> avataresContenidos) {
+        if(avataresContenidos == null){
+            System.err.println("Avatares referencia a null");
+            return;
+        }
         this.avataresContenidos = avataresContenidos;
     }
 
@@ -122,6 +131,10 @@ public class Casilla {
     }
 
     public void setEdificiosContenidos(HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos) {
+        if(edificiosContenidos == null){
+            System.err.println("Edificios contenidos referencia a null");
+            return;
+        }
         this.edificiosContenidos = edificiosContenidos;
     }
 
