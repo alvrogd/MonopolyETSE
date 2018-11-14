@@ -553,7 +553,6 @@ public class Output {
 
         informacion.add("(*) Casilla: " + casilla.getNombre());
 
-        //todo anda pásalo a un switch coñe
 
         if (casilla.getGrupo().getTipo() != TipoGrupo.carcel && casilla.getGrupo().getTipo() != TipoGrupo.parking &&
                 casilla.getGrupo().getTipo() != TipoGrupo.salida && casilla.getGrupo().getTipo() != TipoGrupo.irCarcel)
@@ -581,7 +580,7 @@ public class Output {
 
             } else if (casilla.getGrupo().getTipo() == TipoGrupo.parking) {
 
-                informacion.add("        -> Bote: " + casilla.getGrupo().getPrecio());
+                informacion.add("        -> Bote: " + casilla.getGrupo().getCasillas().get(0).getAlquiler());
 
                 StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: {");
 
@@ -645,7 +644,15 @@ public class Output {
                 informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
                 informacion.add("");
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");
-                informacion.add("        -> Alquiler:                         " + alquiler + "K €");
+
+                if(casilla.getGrupo().getTipo() == TipoGrupo.transporte){
+                    informacion.add("        -> Alquiler con 1 transporte:        " + (int)valorCasilla*0.25 + "K €");
+                    informacion.add("        -> Alquiler con 2 transportes:       " + (int)valorCasilla*0.5 + "K €");
+                    informacion.add("        -> Alquiler con 3 transportes:       " + (int)valorCasilla*0.75 + "K €");
+                    informacion.add("        -> Alquiler con 4 transportes:       " + (int)valorCasilla + "K €");
+                } else {
+                    informacion.add("        -> Alquiler:                         " + alquiler + "K €");
+                }
 
                 if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
                     informacion.add("");
@@ -785,6 +792,8 @@ public class Output {
     /**
      * Función que manda al buffer la Ayuda
      */
+
+
     public static void imprimirAyuda(){
         ArrayList<String> ayuda = new ArrayList<>();
         ayuda.add("Información sobre comandos.");
@@ -799,6 +808,49 @@ public class Output {
         ayuda.add("");
         ayuda.add(" -> jugador");
         ayuda.add("      (*) Informa del jugador que tiene el turno.");
+        ayuda.add("");
+        ayuda.add(" -> iniciar");
+        ayuda.add("      (*) Inicia el juego si hay dos o más jugadores.");
+        ayuda.add("      (!) No se pueden añadir más jugadores una vez iniciado el juego.");
+        ayuda.add("");
+        ayuda.add(" -> listar jugadores");
+        ayuda.add("      (*) Imprime información sobre todos los jugadores del juego.");
+        ayuda.add("");
+        ayuda.add(" -> listar avatares");
+        ayuda.add("      (*) Imprime información sobre todos los avatares del tablero.");
+        ayuda.add("");
+        ayuda.add(" -> listar enventa");
+        ayuda.add("      (*) Imprime información sobre todas las casillas que están en venta.");
+        ayuda.add("");
+        ayuda.add(" -> lanzar dados");
+        ayuda.add("      (*) Se lanzan los dos dados del juego y se avanza el número de casillas");
+        ayuda.add("          correspondiente a la suma de los dos.");
+        ayuda.add("");
+        ayuda.add(" -> acabar turno");
+        ayuda.add("      (*) Finaliza el turno actual y pasa al siguiente jugador.");
+        ayuda.add("      (!) No se puede pasar el turno sin haber tirado los dados.");
+        ayuda.add("");
+        ayuda.add(" -> salir carcel");
+        ayuda.add("      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel.");
+        ayuda.add("      (!) Asegúrate de estar encarcelado.");
+        ayuda.add("");
+        ayuda.add(" -> describir jugador <nombre>");
+        ayuda.add("      (*) Se describe el jugador con el nombre introducido (si existe).");
+        ayuda.add("");
+        ayuda.add(" -> describir avatar <id>");
+        ayuda.add("      (*) Se describe el avatar con el ID introducido (si existe).");
+        ayuda.add("");
+        ayuda.add(" -> describir <casilla>");
+        ayuda.add("      (*) Se describe la casilla con el nombre introducido (si existe).");
+        ayuda.add("");
+        ayuda.add(" -> comprar <casilla>");
+        ayuda.add("      (*) Se compra la casilla indicada en el comando.");
+        ayuda.add("      (!) Solo puedes comprar una casilla si tu avatar está situado en ella.");
+        ayuda.add("      (!) Asegúrate de tener suficiente liquidez.");
+        ayuda.add("");
+        ayuda.add(" -> ver tablero");
+        ayuda.add("      (*) Muestra al jugador el tablero.");
+
         imprimirRecuadro(ayuda,"AYUDA: ", TipoColor.violetaANSI, 2, 1);
     }
 }
