@@ -15,11 +15,11 @@ public class TableroASCII {
     /* Atributos */
 
     // Número de caracteres de una unidad
-    private final static int caracteresPorUnidad = 3;
+    private final static int caracteresPorUnidad = 1;
 
     // Tamaño de las casillas
-    private final static int anchoCasilla = 7 * caracteresPorUnidad;
-    private final static int altoCasilla = caracteresPorUnidad;
+    private final static int anchoCasilla = 22 * caracteresPorUnidad;
+    private final static int altoCasilla = 3 * caracteresPorUnidad;
 
     // Número de casillas por cada fila (4 filas con 40 casillas en total, comezando desde la casilla de Salida)
     private final static int casillasPorFila = 10;
@@ -670,7 +670,7 @@ public class TableroASCII {
         for (int i = 0; i < numeroTuplas; i++) {
 
             // Si pertenece a la mitad superior
-            if (i < numeroTuplas / 2 )
+            if (i < numeroTuplas / 2 || i == 0)
                 infoSuperior.add(info.get(i));
 
                 // En caso contrario, pertenece a la mitad inferior

@@ -117,6 +117,9 @@ public class Aplicacion {
 
         imprimirBuffer();
 
+        if(getJuego().isFinalizado())
+            System.exit(0);
+
     }
 
     //Función que devuelve la tupla (TipoComando, String Argumentos), si se le pasa una línea devuelve la información
@@ -347,6 +350,10 @@ public class Aplicacion {
                 getJuego().getTurno().getAvatar().mover(Integer.parseInt((String) comando.get(1)), true);
                 salida.add(null);
                 break;
+
+            case "pagar":
+                getJuego().getTurno().pagar(getJuego().getBanca(), Integer.parseInt((String) comando.get(1)));
+                salida.add(null);
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);

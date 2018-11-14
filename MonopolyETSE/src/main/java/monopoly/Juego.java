@@ -1,5 +1,6 @@
 package monopoly;
 
+import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
@@ -44,6 +45,9 @@ public class Juego {
     //Booleano que indica si el juego ya está iniciado o no
     private boolean iniciado;
 
+    //Atributo para indicar si el juego ha finalizado.
+    private boolean finalizado;
+
     //Booleano para establecer si se ha incrementado el valor de las casillas de grupo
     //No se crea getter para seHaIncrementado debido a que es un atributo interno para realizar operaciones en el
     //incremento del precio de los grupos y no afecta en nada al entendimiento del usuario de la clase.
@@ -69,6 +73,7 @@ public class Juego {
         iniciado = false;
         vueltasMin = 0;
         seHaIncrementado = false;
+        finalizado = false;
         haLanzadoDados = false;
 
     }
@@ -136,6 +141,10 @@ public class Juego {
         return iniciado;
     }
 
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+
     /* Setters */
 
     /**
@@ -188,7 +197,7 @@ public class Juego {
     public void finalizarTurno() {
 
         //Para poder pasar el turno el juego debe haberse iniciado.
-        if (isIniciado()) {
+        if (isIniciado() && !isFinalizado()) {
 
             if (this.iterador == null) {
                 System.out.println("No se ha añadido ningún jugador.");
@@ -242,6 +251,12 @@ public class Juego {
 
         finalizarTurno();
 
+        if(getNombresJugadores().size() == 1){
+            Output.mensaje("¡" + getTurno().getNombre()+ " ha ganado el juego!");
+            this.finalizado = true;
+        }
+
+
     }
 
     /**
@@ -253,6 +268,11 @@ public class Juego {
         //Se comprueba si el juego está inicializado
         if (!iniciado) {
             System.err.println("Juego no iniciado.");
+            return;
+        }
+
+        if(isFinalizado()){
+            System.err.println("Juego acabado.");
             return;
         }
 
