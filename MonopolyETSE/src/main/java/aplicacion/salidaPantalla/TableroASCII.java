@@ -670,7 +670,7 @@ public class TableroASCII {
         for (int i = 0; i < numeroTuplas; i++) {
 
             // Si pertenece a la mitad superior
-            if (i < numeroTuplas / 2 + numeroTuplas % 2)
+            if (i < numeroTuplas / 2 )
                 infoSuperior.add(info.get(i));
 
                 // En caso contrario, pertenece a la mitad inferior
