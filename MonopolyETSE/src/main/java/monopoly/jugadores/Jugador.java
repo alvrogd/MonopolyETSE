@@ -290,41 +290,51 @@ public class Jugador {
             return;
         }
 
-        // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
-        if (balanceNegativoTrasPago(casilla.getGrupo().getPrecio())) {
-            Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
+        int importe;
 
-        } else {
+        // Si no es un solar, el alquiler es el precio del grupo
+        if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
+                getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
 
-            int importe;
-            // Si no es un solar, el alquiler es el precio del grupo
-            if (getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.servicios ||
-                    getAvatar().getPosicion().getGrupo().getTipo() == TipoGrupo.transporte) {
+            importe = casilla.getGrupo().getPrecio();
 
-                importe = casilla.getGrupo().getPrecio();
-                setFortuna(getFortuna() - importe);
-                casilla.setComprable(false);
-                casilla.setAlquiler(importe);
-                transferirCasilla(vendedor, this, casilla);
-
-            }
-            // Si es un solar, el alquiler es proporcional al número de casillas del grupo
-            else {
-
-                importe = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
-                setFortuna(getFortuna() - importe);
-                casilla.setComprable(false);
-                casilla.setAlquiler((int) (0.1 * importe));
-                transferirCasilla(vendedor, this, casilla);
-
+            // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
+            if (balanceNegativoTrasPago(importe)) {
+                Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
+                return;
             }
 
-            Output.respuesta("Se ha efectuado un pago:",
-                    "        -> Receptor: " + vendedor.getNombre(),
-                    "        -> Importe: " + importe);
+            setFortuna(getFortuna() - importe);
+            casilla.setComprable(false);
+            casilla.setAlquiler(importe);
+            transferirCasilla(vendedor, this, casilla);
 
         }
+        // Si es un solar, el alquiler es proporcional al número de casillas del grupo
+        else {
+
+            importe = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
+
+            // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
+            if (balanceNegativoTrasPago(importe)) {
+                Output.respuesta("El jugador no dispone de suficiente liquidez como para realiza la compra.");
+                return;
+            }
+
+            setFortuna(getFortuna() - importe);
+            casilla.setComprable(false);
+            casilla.setAlquiler((int) (0.1 * importe));
+            transferirCasilla(vendedor, this, casilla);
+
+        }
+
+        Output.respuesta("Se ha efectuado un pago:",
+                "        -> Receptor: " + vendedor.getNombre(),
+                "        -> Importe: " + importe);
+
     }
+
+}
 
 
     /**
@@ -491,7 +501,7 @@ public class Jugador {
      * @param grupo tipo del grupo a comprobar
      * @return número de casillas obtenidas del grupo dado
      */
-    public int numeroCasillasObtenidas( TipoGrupo grupo ) {
+    public int numeroCasillasObtenidas(TipoGrupo grupo) {
 
         int numero = 0;
 
@@ -513,7 +523,7 @@ public class Jugador {
      * @param grupo tipo del grupo a comprobar
      * @return si ha obtenido todas las casillas del grupo dado
      */
-    public boolean haObtenidoSolaresGrupo( Grupo grupo) {
+    public boolean haObtenidoSolaresGrupo(Grupo grupo) {
 
         return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getCasillas().size());
 
