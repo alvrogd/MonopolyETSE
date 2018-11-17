@@ -18,6 +18,12 @@ public class Menu {
             this.app = app;
     }
 
+
+    public Aplicacion getApp() {
+        return app;
+    }
+
+
     public void iniciarAplicacion(){
         Scanner entrada = new Scanner(System.in);
 

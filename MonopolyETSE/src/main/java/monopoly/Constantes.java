@@ -76,4 +76,8 @@ public final class Constantes {
     // Máximo número de turnos en la cárcel
     public final static int MAX_TURNOS_CARCEL = 3;
 
+    /* No se implementan los getters de los atributos aquí declarados dado que es una clase de uso exclusivo para
+     * constantes del programa y, por lo tanto, todos pueden ser accedidos directamente desde fuera
+     */
+
 }

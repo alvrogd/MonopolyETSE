@@ -46,6 +46,14 @@ public class Aplicacion {
         return menu;
     }
 
+    public ArrayList<ArrayList<Object>> getBuffer() {
+        return buffer;
+    }
+
+    public boolean isHaLanzadoDados() {
+        return haLanzadoDados;
+    }
+
     /*Métodos*/
 
     /**
@@ -354,6 +362,8 @@ public class Aplicacion {
             case "pagar":
                 getJuego().getTurno().pagar(getJuego().getBanca(), Integer.parseInt((String) comando.get(1)));
                 salida.add(null);
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
