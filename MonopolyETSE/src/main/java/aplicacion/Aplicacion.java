@@ -324,7 +324,13 @@ public class Aplicacion {
                 switch (comando.get(1)) {
                     default:
                         salida.add(TipoComando.comprarPropiedad);
-                        salida.add(comando.get(1) + " " + comando.get(2));
+
+                        if(argc < 3){
+                            salida.add(comando.get(1));
+                        } else {
+                            salida.add(comando.get(1) + " " + comando.get(2));
+                        }
+
                         break;
                 }
                 break;
