@@ -334,8 +334,6 @@ public class Jugador {
 
     }
 
-}
-
 
     /**
      * Se hipoteca una casilla, no pudiendo cobrar alquiler por ella a partir de ahora, a cambio de obtener la mitad
