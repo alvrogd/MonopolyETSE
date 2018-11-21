@@ -286,7 +286,7 @@ public class Avatar {
             return;
         }
 
-        if( getTablero().getJuego().isHaLanzadoDados() ) {
+        if (getTablero().getJuego().isHaLanzadoDados()) {
             Output.sugerencia("No se puede salir de la cárcel después de haber lanzado los dados");
             return;
         }
@@ -322,6 +322,98 @@ public class Avatar {
 
 
     /**
+     * En función del valor obtenido en una tirada, se comprueba si el jugador puede moverse en el actual turno;
+     * en caso de que no sea así, se actualiza el número de turnos pasados en la cárcel, y se fuerza la salida de ella
+     * si se ha alcanzado el máximo de turnos permitidos
+     *
+     * @param dobles si los dados han dado el mismo valor
+     * @return si el avatar puede moverse o no en la actual tirada
+     */
+    public boolean actualizarEncarcelamiento(boolean dobles) {
+
+        // Si no ha sacado dobles
+        if (!dobles) {
+
+            Output.sugerencia("No se puede salir de la cárcel sin sacar dobles.");
+            setTurnosEnCarcel(getTurnosEnCarcel() + 1);
+
+            // Y, si ya ha estado tres turnos en la cárcel, se fuerza su salida
+            if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
+                Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.",
+                        "Se pagará el importe correspondiente para salir de la cárcel.");
+
+                forzarSalirCarcel();
+
+                // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
+                if (getJugador().isEstaBancarrota())
+                    getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
+            }
+
+            // Se indica que el avatar no debe moverse
+            return( false );
+
+        } else
+
+            setEncarcelado(false);
+            return( true );
+
+    }
+
+
+    /**
+     * Se actualiza la posición del avatar, dado el número de casillas que se deben avanzar; el funcionamiento depende
+     * del modo de movimiento establecido actualmente
+     *
+     * @param numeroCasillas cantidad de casillas a avanzar
+     */
+    public void actualizarPosicion( int numeroCasillas ) {
+
+        int posicionFinal;
+
+        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
+        getPosicion().getAvataresContenidos().remove(getIdentificador());
+
+
+        // Se calcula la posición nueva del avatar
+
+        // Si el jugador se encuentra en movimiento estándar, se avanza con normalidad
+        if( isMovimientoEstandar() )
+            posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+
+        else {
+
+
+        }
+
+        // Se establece la nueva posición
+        setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
+
+        // Si ha pasado por la casilla de salida
+        if (posicionFinal >= 40)
+            pasarPorSalida();
+
+        // Se actualiza el número de veces que ha caído en la casilla
+        getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+        // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
+        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
+
+    }
+
+
+    /**
+     * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
+     */
+    public void switchMovimiento() {
+
+        setMovimientoEstandar(!isMovimientoEstandar());
+
+        Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "personalizado"));
+
+    }
+
+
+    /**
      * Mueve al jugador de un avatar, en caso de no estar encarcelado, o estarlo y sacar dobles; si se ha estado en la
      * cárcel el número máximo de turnos permitidos, se fuerza su salida
      *
@@ -335,56 +427,19 @@ public class Avatar {
             return;
         }
 
-        // Si está en la cárcel y no ha sacado dobles
+        // Si está en la cárcel, se comprueba si el avatar se moverá o no
         if (isEncarcelado()) {
 
-            if (!dobles) {
-                Output.sugerencia("No se puede salir de la cárcel sin sacar dobles.");
-                setTurnosEnCarcel(getTurnosEnCarcel() + 1);
+            boolean puedeMoverse = actualizarEncarcelamiento(dobles);
 
-                // Si ya ha estado tres turnos en la cárcel, se fuerza su salida
-                if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
-                    Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.",
-                            "Se pagará el importe correspondiente para salir de la cárcel.");
-
-                    forzarSalirCarcel();
-
-                    // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-                    if (getJugador().isEstaBancarrota())
-                        getTablero().getJuego().jugadorEnBancarrota(getJugador());
-
-                    // No se debe mover en el turno actual dado que acaba de pagar el importe para salir de la cárcel
-                    return;
-                }
-                // En caso contrario, no se hace nada
-                else
-                    return;
-            } else
-                setEncarcelado(false);
-
+            // Si no puede moverse en el turno actual
+            if( !puedeMoverse )
+                return;
 
         }
 
-        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-        getPosicion().getAvataresContenidos().remove(getIdentificador());
-
-        // Se calcula la posición nueva del avatar
-        int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
-
-        // Y se establece
-        setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
-
-        // Si ha pasado por la casilla de salida
-        if (posicionFinal >= 40)
-            pasarPorSalida();
-
-        // Se actualiza el número de veces que ha caído en la casilla
-        getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
-        // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
-        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
-
-        // En función del tipo de casilla
-        switch (posicion.getGrupo().getTipo()) {
+        // En función del tipo de casilla en la que se ha caído
+        switch (getPosicion().getGrupo().getTipo()) {
 
             case suerte:
                 // acción asociada a la casilla de suerte
@@ -438,9 +493,7 @@ public class Avatar {
             default:
                 Output.respuesta("Has caído en una casilla de un solar.");
                 caerEnSolar();
-
         }
-
     }
 
 
@@ -583,13 +636,13 @@ public class Avatar {
 
         Output.mensaje(
                 "          ,",
-                " __  _.-\"` `'-." ,
-                "/||\\'._ __{}_(" ,
-                "||||  |'--.__\\" ,
-                "|  L.(   ^_\\^     ¡Has sido encarcelado!" ,
-                "\\ .-' |   _ |" ,
-                "| |   )\\___/" ,
-                "|  \\-'`:._]" ,
+                " __  _.-\"` `'-.",
+                "/||\\'._ __{}_(",
+                "||||  |'--.__\\",
+                "|  L.(   ^_\\^     ¡Has sido encarcelado!",
+                "\\ .-' |   _ |",
+                "| |   )\\___/",
+                "|  \\-'`:._]",
                 "\\__/;      '-.", ""
         );
 
