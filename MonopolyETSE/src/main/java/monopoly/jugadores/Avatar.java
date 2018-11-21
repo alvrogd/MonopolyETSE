@@ -381,9 +381,36 @@ public class Avatar {
         if( isMovimientoEstandar() )
             posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
 
+        // En caso contrario, en función del tipo de avatar
         else {
 
+            switch( getTipo() ) {
 
+                case coche:
+
+                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    break;
+
+                case esfinge:
+
+                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    break;
+
+                case pelota:
+
+                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    break;
+
+                case sombrero:
+
+                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    break;
+
+                default:
+
+                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    break;
+            }
         }
 
         // Se establece la nueva posición
