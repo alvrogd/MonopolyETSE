@@ -370,6 +370,39 @@ public class Aplicacion {
                 salida.add(null);
                 break;
 
+            case "edificar":
+                if(argc < 2){
+                    Output.errorComando("Opción del comando -edificar- incorrecta.");
+                    salida.add(null);
+                    break;
+                }
+                switch(comando.get(1)){
+                    case "casa":
+                        salida.add(TipoComando.edificarCasa);
+                        break;
+
+                    case "hotel":
+                        salida.add(TipoComando.edificarHotel);
+                        break;
+
+                    case "piscina":
+                        salida.add(TipoComando.edificarPiscina);
+                        break;
+
+                    case "pista":
+                        salida.add(TipoComando.edificarPD);
+                        break;
+
+                    default:
+                        Output.errorComando("Opción del comando -edificar- incorrecta.");
+                        Output.sugerencia("Edificios que se pueden construir: ",
+                                            "     -> Casa",
+                                            "     -> Hotel",
+                                            "     -> Piscina",
+                                            "     -> Pista de deporte");
+                        salida.add(null);
+
+                }
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);

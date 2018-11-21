@@ -20,6 +20,7 @@ public class Casilla {
 
     private HashMap<Character, Avatar> avataresContenidos;
 
+    private int importeCompra;
     private int alquiler;
     private boolean comprable;
 
@@ -58,6 +59,7 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
+        this.importeCompra = 0;
         this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
 
         edificiosContenidos = new HashMap<>();
@@ -136,6 +138,46 @@ public class Casilla {
             return;
         }
         this.edificiosContenidos = edificiosContenidos;
+    }
+
+    public int getImporteCompra() {
+        return importeCompra;
+    }
+
+    public void setImporteCompra(int importeCompra) {
+        if(importeCompra < 0){
+            System.err.println("Importe de compra no puede ser negativo.");
+            return;
+        }
+        this.importeCompra = importeCompra;
+    }
+
+    /*Métodos*/
+
+    /**
+     * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
+     * @param tipoEdificio tipo del edificio a edificar
+     * @param comprador jugador que compra el edificio
+     */
+    public void edificar(Jugador comprador, TipoEdificio tipoEdificio){
+
+        if(comprador == null){
+            System.err.println("El comprador referencia a null");
+            return;
+        }
+
+        if(tipoEdificio == null){
+            System.err.println("El tipo de edificio referencia a null");
+            return;
+        }
+
+        switch(tipoEdificio){
+
+            case casa:
+
+
+        }
+
     }
 
 
