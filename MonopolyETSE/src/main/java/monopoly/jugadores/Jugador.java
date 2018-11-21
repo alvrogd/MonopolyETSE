@@ -3,10 +3,7 @@ package monopoly.jugadores;
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
-import monopoly.tablero.Casilla;
-import monopoly.tablero.Grupo;
-import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.*;
 
 import java.util.ArrayList;
 
@@ -233,8 +230,12 @@ public class Jugador {
 
             ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
 
-            for (Casilla casilla : propiedadesEndeudado)
+            while (!propiedadesEndeudado.isEmpty()) {
+
+                Casilla casilla = propiedadesEndeudado.get(0);
                 transferirCasilla(this, receptor, casilla);
+
+            }
 
             setEstaBancarrota(true);
 
@@ -307,6 +308,7 @@ public class Jugador {
             setFortuna(getFortuna() - importe);
             casilla.setComprable(false);
             casilla.setAlquiler(importe);
+            casilla.setImporteCompra(importe);
             transferirCasilla(vendedor, this, casilla);
 
         }
@@ -324,6 +326,7 @@ public class Jugador {
             setFortuna(getFortuna() - importe);
             casilla.setComprable(false);
             casilla.setAlquiler((int) (0.1 * importe));
+            casilla.setImporteCompra(importe);
             transferirCasilla(vendedor, this, casilla);
 
         }
@@ -348,15 +351,23 @@ public class Jugador {
             return;
         }
 
+        if (!casilla.getPropietario().equals(this)) {
+            Output.sugerencia("La casilla no es de su propiedad");
+            return;
+        }
+
         if (casilla.isHipotecada()) {
             Output.sugerencia("La casilla ya se encuentra hipotecada.");
             return;
         }
 
-        int importe;
-        // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original; el alquiler es un 10% del
-        // importe de compra
-        importe = 5 * casilla.getAlquiler();
+        if (!casilla.getEdificiosContenidos().isEmpty()) {
+            Output.sugerencia("No se puede hipotecar una casilla mientras esta contenga edificios");
+        }
+
+        // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original
+        int importe = (int) ((double) casilla.getImporteCompra() * 0.5);
+
         setFortuna(getFortuna() + importe);
         casilla.setHipotecada(true);
 
@@ -379,14 +390,19 @@ public class Jugador {
             return;
         }
 
+        if (!casilla.getPropietario().equals(this)) {
+            Output.sugerencia("La casilla no es de su propiedad");
+            return;
+        }
+
         if (!casilla.isHipotecada()) {
-            Output.sugerencia("Error: la casilla no se encuentra hipotecada.");
+            Output.sugerencia("La casilla no se encuentra hipotecada.");
             return;
         }
 
         // Si el jugador no dispone de la suficiente liquidez para deshipotecar la casilla; debe pagarse un 10% a
         // mayores del valor obtenido al hipotecarla
-        int importe = (int) (casilla.getAlquiler() * 5 * 1.10);
+        int importe = (int) ((double) casilla.getImporteCompra() * 0.5 * 1.10);
 
         if (balanceNegativoTrasPago(importe)) {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la casilla.");
@@ -398,7 +414,6 @@ public class Jugador {
             Output.respuesta("Se ha deshipotecado la casilla:",
                     "        -> Importe pagado: " + importe);
         }
-
 
     }
 
@@ -465,6 +480,7 @@ public class Jugador {
      * @param receptor jugador que va a obtener la casilla
      * @param casilla  casilla a transferir
      */
+    // todo método con una casilla y ArrayList
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
@@ -524,6 +540,89 @@ public class Jugador {
     public boolean haObtenidoSolaresGrupo(Grupo grupo) {
 
         return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getCasillas().size());
+
+    }
+
+
+    /**
+     * Se edifica en la casilla actual un tipo de edificio dado
+     *
+     * @param tipoEdificio tipo de edificio a edificar
+     */
+    public void crearEdificio(TipoEdificio tipoEdificio) {
+
+        if (tipoEdificio == null) {
+            System.err.println("Tipo de edificio no inicializado");
+            return;
+        }
+
+        final Casilla casilla = getAvatar().getPosicion();
+
+        if (!casilla.getPropietario().equals(this)) {
+            Output.sugerencia("La casilla no es de su propiedad");
+            return;
+        }
+
+        if (casilla.isHipotecada()) {
+            Output.sugerencia("La casilla se encuentra hipotecada.");
+            return;
+        }
+
+        // El usuario debe, o bien haber caído más de dos veces en la casilla para edificar, o bien poseer todos los
+        // solares del grupo
+        if (getAvatar().getVecesCaidasEnCasillas().get(casilla.getPosicionEnTablero()) > 2 ||
+                haObtenidoSolaresGrupo(casilla.getGrupo()))
+
+            casilla.edificar(this, tipoEdificio);
+
+        else
+            Output.respuesta("Para edificar en una casilla, debe haber cumplido uno de los siguientes requisitos:",
+                    "        -> Poseer todos los solares del grupo de la casilla",
+                    "        -> Haber caído más de dos veces en el solar");
+
+    }
+
+
+    /**
+     * Se vende, de una casilla dada, un número de edificios de un tipo dado
+     *
+     * @param tipoEdificio tipo de edificio a edificar
+     * @param cantidad cantidad de edificios a vender
+     * @param casilla casilla cuyos edificios se van a vender
+     */
+    public void venderEdificio(TipoEdificio tipoEdificio, int cantidad, Casilla casilla) {
+
+        if (tipoEdificio == null) {
+            System.err.println("Tipo de edificio no inicializado");
+            return;
+        }
+
+        if( casilla == null ) {
+            System.err.println("Casilla no inicializada");
+            return;
+        }
+
+        if (!casilla.getPropietario().equals(this)) {
+            Output.sugerencia("La casilla no es de su propiedad");
+            return;
+        }
+
+        if (casilla.isHipotecada()) {
+            Output.sugerencia("La casilla se encuentra hipotecada.");
+            return;
+        }
+
+        if (casilla.getEdificiosContenidos().isEmpty()) {
+            Output.sugerencia("No existen edificios en la casilla dada");
+            return;
+        }
+
+        if( cantidad < 1 ) {
+            Output.sugerencia("Debe venderse al menos un edificio");
+            return;
+        }
+
+        casilla.venderEdificio( this, tipoEdificio, cantidad );
 
     }
 
