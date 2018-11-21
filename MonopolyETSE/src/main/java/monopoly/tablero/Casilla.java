@@ -61,6 +61,10 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
+        for(TipoEdificio aux: TipoEdificio.values()){
+            edificiosContenidos.put(aux, new ArrayList<>());
+        }
+
         this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
         this.importeCompra = 0;
         this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
@@ -199,6 +203,15 @@ public class Casilla {
             return;
 
         }
+        if(comprador.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(tipoEdificio,
+                comprador.getAvatar().getPosicion().getGrupo().getTipo()))){
+
+            Output.respuesta("El jugador no dispone de suficiente liquidez como para realizar la " +
+                    "compra.");
+
+            return;
+
+        }
 
         precio = (int) tipoEdificio.getCompra() * getPrecioInicial();
 
@@ -206,36 +219,51 @@ public class Casilla {
 
             case casa:
                 if(numCasas == 4){
-                    Output.errorComando("No se pueden construir más casas en esta casilla.");
+                    Output.respuesta("No se pueden construir más casas en esta casilla.");
                     return;
                 }
 
-
-
-                if(comprador.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(tipoEdificio,
-                        comprador.getAvatar().getPosicion().getGrupo().getTipo()))){
-
-                    Output.respuesta("El jugador no dispone de suficiente liquidez como para realizar la " +
-                            "compra.");
-
-                    return;
-
-                }
-
-                edificacion = new Edificio(getGrupo().getTablero(), tipoEdificio, getGrupo().getTipo());
-                //todo acabar esta maravilla
                 break;
 
             case hotel:
+
+                if(numCasas != 4){
+                    Output.respuesta("Se necesitan cuatro casas para poder construir un hotel.");
+                    return;
+                }
+
+                destruirEdificio(TipoEdificio.casa, 4);
+
                 break;
 
             case piscina:
+                if(numHoteles == 1 && numCasas == 2){
+                    Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
+                    return;
+                }
                 break;
 
             case pistaDeporte:
+                if(numHoteles == 2){
+                    Output.respuesta("Para construir una pista de deporte se necesitan al menos dos hoteles.");
+                    return;
+                }
                 break;
 
         }
+
+        edificacion = new Edificio(getGrupo().getTablero(), tipoEdificio, getGrupo().getTipo());
+
+        comprador.pagar(getGrupo().getTablero().getBanca(), edificacion.getPrecioCompra());
+
+        getEdificiosContenidos().get(tipoEdificio).add(edificacion);
+
+    }
+
+    public void destruirEdificio(TipoEdificio tipoEdificio, int cantidad){
+
+        for(int i = 0; i < cantidad; i++)
+            getEdificiosContenidos().get(tipoEdificio).size();
 
     }
 

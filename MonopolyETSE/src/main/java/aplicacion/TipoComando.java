@@ -1,4 +1,4 @@
-package aplicacion;iniciarJuego
+package aplicacion;
 
 public enum TipoComando {
 
