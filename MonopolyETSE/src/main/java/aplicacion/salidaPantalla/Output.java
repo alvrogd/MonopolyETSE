@@ -547,7 +547,7 @@ public class Output {
     public static ArrayList<String> CasillatoArrayString(Casilla casilla) {
 
         ArrayList<String> informacion = new ArrayList<>();
-        Edificio aux;
+        Integer aux;
 
         int valorCasilla;
 
@@ -656,17 +656,17 @@ public class Output {
 
                 if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
                     informacion.add("");
-                    aux = new Edificio(TipoEdificio.hotel, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor hotel:                      " + aux.getPrecioCompra() + "K €");
+                    aux = Edificio.calcularPrecioCompra(TipoEdificio.hotel, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor hotel:                      " + aux + "K €");
 
-                    aux = new Edificio(TipoEdificio.casa, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor casa:                       " + aux.getPrecioCompra() + "K €");
+                    aux = Edificio.calcularPrecioCompra(TipoEdificio.casa, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor casa:                       " + aux + "K €");
 
-                    aux = new Edificio(TipoEdificio.piscina, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor piscina:                    " + aux.getPrecioCompra() + "K €");
+                    aux = Edificio.calcularPrecioCompra(TipoEdificio.piscina, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor piscina:                    " + aux + "K €");
 
-                    aux = new Edificio(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor pista de deporte:           " + aux.getPrecioCompra() + "K €");
+                    aux = Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
+                    informacion.add("        -> Valor pista de deporte:           " + aux + "K €");
 
                     informacion.add("");
                     informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * alquiler

@@ -1,5 +1,6 @@
 package monopoly.tablero;
 
+import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
@@ -20,6 +21,7 @@ public class Casilla {
 
     private HashMap<Character, Avatar> avataresContenidos;
 
+    private final int precioInicial;
     private int importeCompra;
     private int alquiler;
     private boolean comprable;
@@ -59,6 +61,7 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
+        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
         this.importeCompra = 0;
         this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
 
@@ -152,6 +155,10 @@ public class Casilla {
         this.importeCompra = importeCompra;
     }
 
+    public int getPrecioInicial() {
+        return precioInicial;
+    }
+
     /*Métodos*/
 
     /**
@@ -160,6 +167,11 @@ public class Casilla {
      * @param comprador jugador que compra el edificio
      */
     public void edificar(Jugador comprador, TipoEdificio tipoEdificio){
+
+        Edificio edificacion;
+        int precio;
+        int numHoteles, numCasas, numPiscinas, numPistas, numCasillasGrupo;
+        boolean maximo;
 
         if(comprador == null){
             System.err.println("El comprador referencia a null");
@@ -171,12 +183,63 @@ public class Casilla {
             return;
         }
 
+        edificacion = new Edificio(getGrupo().getTablero(),tipoEdificio, getGrupo().getTipo());
+
+        numCasillasGrupo = getGrupo().getCasillas().size();
+
+        numHoteles = getEdificiosContenidos().get(TipoEdificio.hotel).size();
+        numCasas = getEdificiosContenidos().get(TipoEdificio.casa).size();
+        numPiscinas = getEdificiosContenidos().get(TipoEdificio.piscina).size();
+        numPistas = getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
+
+        if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
+                numPistas == numCasillasGrupo){
+
+            Output.errorComando("No se pueden realizar más edificaciones en esta casilla.");
+            return;
+
+        }
+
+        precio = (int) tipoEdificio.getCompra() * getPrecioInicial();
+
         switch(tipoEdificio){
 
             case casa:
+                if(numCasas == 4){
+                    Output.errorComando("No se pueden construir más casas en esta casilla.");
+                    return;
+                }
 
+
+
+                if(comprador.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(tipoEdificio,
+                        comprador.getAvatar().getPosicion().getGrupo().getTipo()))){
+
+                    Output.respuesta("El jugador no dispone de suficiente liquidez como para realizar la " +
+                            "compra.");
+
+                    return;
+
+                }
+
+                edificacion = new Edificio(getGrupo().getTablero(), tipoEdificio, getGrupo().getTipo());
+                //todo acabar esta maravilla
+                break;
+
+            case hotel:
+                break;
+
+            case piscina:
+                break;
+
+            case pistaDeporte:
+                break;
 
         }
+
+    }
+
+    public void venderEdificio(Jugador jugador, TipoEdificio tipoEdificio, int cantidad){
 
     }
 

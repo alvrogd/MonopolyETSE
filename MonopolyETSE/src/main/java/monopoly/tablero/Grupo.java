@@ -17,6 +17,8 @@ public class Grupo {
     //ArrayList con las casillas que contiene el grupo
     private final ArrayList<Casilla> casillas;
 
+    private Tablero tablero;
+
 
     /*Constructores*/
 
@@ -69,6 +71,8 @@ public class Grupo {
 
         int contador = 0;
 
+        this.tablero = tablero;
+
         for (ArrayList<Object> c : casillas) {
 
             //Se crea la nueva casilla con el tercer elemento del Array (el nombre), el grupo, si es comprable y su
@@ -98,6 +102,10 @@ public class Grupo {
 
     public ArrayList<Casilla> getCasillas() {
         return casillas;
+    }
+
+    public Tablero getTablero() {
+        return tablero;
     }
 
     public void setPrecio(int precio){

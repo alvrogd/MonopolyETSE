@@ -5,18 +5,20 @@ import monopoly.Constantes;
 public enum TipoEdificio {
 
     /*Tipo de enumeración*/
-    casa(Constantes.COEF_CASA),
-    hotel(Constantes.COEF_HOTEL),
-    piscina(Constantes.COEF_PISCINA),
-    pistaDeporte(Constantes.COEF_PISTADEPORTE);
+    casa("casa", Constantes.COEF_CASA),
+    hotel("hotel", Constantes.COEF_HOTEL),
+    piscina("piscina", Constantes.COEF_PISCINA),
+    pistaDeporte("pista", Constantes.COEF_PISTADEPORTE);
 
     /*Atributos*/
     private final double compra;
+    private final String nombre;
 
     /*Constructores*/
-    private TipoEdificio(double compra) {
+    private TipoEdificio(String nombre, double compra) {
 
         this.compra = compra;
+        this.nombre = nombre;
 
     }
 
@@ -25,5 +27,9 @@ public enum TipoEdificio {
 
         return compra;
 
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 }

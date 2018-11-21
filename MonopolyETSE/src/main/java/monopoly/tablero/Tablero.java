@@ -31,6 +31,11 @@ public class Tablero {
     //HashMap con los avatares que contiene el tablero
     private HashMap<Character, Avatar> avataresContenidos;
 
+    //HashMap que contiene el numero de edificios que contiene el tablero de un mismo tipo
+    private HashMap<TipoEdificio, Integer> numEdificios;
+
+
+
 
     /* Constructores */
 
@@ -77,6 +82,8 @@ public class Tablero {
 
         grupos = new HashMap<>();
 
+        numEdificios = new HashMap<>();
+
         //La función crearGrupos crea los correspondientes grupos y sus correspondientes casillas.
         crearGrupos();
 
@@ -84,6 +91,9 @@ public class Tablero {
 
     }
 
+    public HashMap<TipoEdificio, Integer> getNumEdificios() {
+        return numEdificios;
+    }
 
     /**
      * Función llamada por el constructor del tablero que lo que hace es inicializar cada grupo y las respectivas
