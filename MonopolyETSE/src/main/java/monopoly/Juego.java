@@ -56,6 +56,9 @@ public class Juego {
     //Booleano para saber si el usuario puede volver a tirar los dados
     private boolean haLanzadoDados;
 
+    //Booleano para saber si el usuario ha acabado el movimiento actual.
+    private boolean haAcabadoMovimiento;
+
     /* Constructores */
 
     /**
@@ -143,6 +146,14 @@ public class Juego {
 
     public boolean isFinalizado() {
         return finalizado;
+    }
+
+    public boolean isHaAcabadoMovimiento() {
+        return haAcabadoMovimiento;
+    }
+
+    public void setHaAcabadoMovimiento(boolean haAcabadoMovimiento) {
+        this.haAcabadoMovimiento = haAcabadoMovimiento;
     }
 
     /* Setters */
