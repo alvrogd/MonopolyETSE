@@ -61,15 +61,18 @@ public class Casilla {
 
         avataresContenidos = new HashMap<>();
 
+        ArrayList<Edificio> auxEdificio;
+
+        edificiosContenidos = new HashMap<>();
+
         for(TipoEdificio aux: TipoEdificio.values()){
-            edificiosContenidos.put(aux, new ArrayList<>());
+            auxEdificio = new ArrayList<>();
+            edificiosContenidos.put(aux, auxEdificio);
         }
 
         this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
         this.importeCompra = 0;
         this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
-
-        edificiosContenidos = new HashMap<>();
 
     }
 

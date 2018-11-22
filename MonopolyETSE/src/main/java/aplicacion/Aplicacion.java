@@ -8,6 +8,7 @@ import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.Casilla;
+import monopoly.tablero.TipoEdificio;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -378,19 +379,23 @@ public class Aplicacion {
                 }
                 switch(comando.get(1)){
                     case "casa":
-                        salida.add(TipoComando.edificarCasa);
+                        salida.add(TipoComando.edificar);
+                        salida.add(TipoEdificio.valueOf("casa"));
                         break;
 
                     case "hotel":
-                        salida.add(TipoComando.edificarHotel);
+                        salida.add(TipoComando.edificar);
+                        salida.add(TipoEdificio.valueOf("hotel"));
                         break;
 
                     case "piscina":
-                        salida.add(TipoComando.edificarPiscina);
+                        salida.add(TipoComando.edificar);
+                        salida.add(TipoEdificio.valueOf("piscina"));
                         break;
 
                     case "pista":
-                        salida.add(TipoComando.edificarPD);
+                        salida.add(TipoComando.edificar);
+                        salida.add(TipoEdificio.valueOf("pista"));
                         break;
 
                     default:
@@ -776,6 +781,15 @@ public class Aplicacion {
 
             case ayuda:
                 Output.imprimirAyuda();
+                break;
+
+            case edificar:
+                if(juego.isIniciado()){
+                    Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
+
+                getJuego().getTurno().crearEdificio((TipoEdificio)comando.get(1));
                 break;
         }
     }

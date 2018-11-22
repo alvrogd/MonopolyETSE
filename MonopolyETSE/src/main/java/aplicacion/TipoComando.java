@@ -19,10 +19,7 @@ public enum TipoComando {
     comprarPropiedad("comprar"),
     listarVentas("listar enventa"),
     verTablero("ver tablero"),
-    edificarCasa("edificar casa"),
-    edificarHotel("edificar hotel"),
-    edificarPiscina("edificar piscina"),
-    edificarPD("edificar pista"),
+    edificar("edificar"),
     ayuda("ayuda");
 
     /*Atributos*/
