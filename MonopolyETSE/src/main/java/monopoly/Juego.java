@@ -59,6 +59,9 @@ public class Juego {
     //Booleano para saber si el usuario ha acabado el movimiento actual.
     private boolean haAcabadoMovimiento;
 
+    // Si ha comprado una propiedad en el turno (por el avatar coche)
+    private boolean haCompradoPropiedad;
+
     /* Constructores */
 
     /**
@@ -78,6 +81,8 @@ public class Juego {
         seHaIncrementado = false;
         finalizado = false;
         haLanzadoDados = false;
+        haAcabadoMovimiento = false;
+        haCompradoPropiedad = false;
 
     }
 
@@ -156,6 +161,14 @@ public class Juego {
         this.haAcabadoMovimiento = haAcabadoMovimiento;
     }
 
+    public boolean isHaCompradoPropiedad() {
+        return haCompradoPropiedad;
+    }
+
+    public void setHaCompradoPropiedad(boolean haCompradoPropiedad) {
+        this.haCompradoPropiedad = haCompradoPropiedad;
+    }
+
     /* Setters */
 
     /**
@@ -230,8 +243,14 @@ public class Juego {
                 this.turno = getJugadores().get(this.iterador.next());
             }
 
+            // todo al cambiar de jugador, deben reducirse los turnos de penalización del anterior en 1 en caso de que no estuviese a 0
+
             //Se establece el booleano de se han lanzado los dados a false.
             this.haLanzadoDados = false;
+            // Y el indicador de haber comprado una propiedad
+            // todo el juego debe encargarse de que un jugador con avatar coche no pueda comprar más de una vez en el mismo turno;
+            // todo es un caso similar al de lanzar dados varias veces, es más una norma del juego que un aspecto del avatar o del jugador
+            setHaCompradoPropiedad(false);
 
         } else {
 

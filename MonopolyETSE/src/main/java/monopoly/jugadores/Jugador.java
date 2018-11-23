@@ -26,6 +26,8 @@ public class Jugador {
 
     // Veces que se han tirado los dados en un turno
     private int tiradasEnTurno;
+    // Cantidad de turnos penalizado sin poder tirar los dados
+    private int turnosPenalizado;
 
 
     /* Constructores */
@@ -53,6 +55,8 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
 
         this.tiradasEnTurno = 0;
+
+        this.turnosPenalizado = 0;
 
     }
 
@@ -97,6 +101,8 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
 
         this.tiradasEnTurno = 0;
+
+        this.turnosPenalizado = 0;
 
     }
 
@@ -188,6 +194,21 @@ public class Jugador {
 
     }
 
+
+    public int getTurnosPenalizado() {
+        return turnosPenalizado;
+    }
+
+
+    public void setTurnosPenalizado(int turnosPenalizado) {
+
+        if( turnosPenalizado < 0 ) {
+            Output.sugerencia("El número de turnos penalizados no puede ser menor a 0.");
+            return;
+        }
+
+        this.turnosPenalizado = turnosPenalizado;
+    }
 
     /* Métodos */
 
@@ -310,6 +331,7 @@ public class Jugador {
             casilla.setAlquiler(importe);
             casilla.setImporteCompra(importe);
             transferirCasilla(vendedor, this, casilla);
+            getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
 
         }
         // Si es un solar, el alquiler es proporcional al número de casillas del grupo
@@ -328,6 +350,7 @@ public class Jugador {
             casilla.setAlquiler((int) (0.1 * importe));
             casilla.setImporteCompra(importe);
             transferirCasilla(vendedor, this, casilla);
+            getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
 
         }
 
@@ -431,6 +454,12 @@ public class Jugador {
             return;
         }
 
+        if( getTurnosPenalizado() > 0 ) {
+            Output.sugerencia("El jugador se encuentra penalizado durante " + getTurnosPenalizado() +
+                    " turno(s).");
+            return;
+        }
+
         int primeraTirada = dado.lanzarDado();
         int segundaTirada = dado.lanzarDado();
         boolean dobles = primeraTirada == segundaTirada;
@@ -442,13 +471,27 @@ public class Jugador {
 
         setTiradasEnTurno(getTiradasEnTurno() + 1);
 
-        // Si se han sacado tres dobles, el jugador es encarcelado
-        if (getTiradasEnTurno() == 3 && dobles)
+        // Si se han sacado tres dobles y no se trata de un avatar coche en movimiento avanzado, el jugador es
+        // encarcelado
+        if (getTiradasEnTurno() == 3 && dobles && (!getAvatar().getTipo().equals(TipoAvatar.coche) &&
+                !getAvatar().isMovimientoEstandar()))
+
             getAvatar().caerEnIrACarcel();
 
-            // En caso contrario, se mueve normalmente
+        // En caso contrario, se mueve normalmente
         else {
-            getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
+
+            // Si es un avatar coche, puede volver a lanzar hasta 4 veces si se encuentra en modo avanzado y saca un
+            // valor mayor o igual a 4
+            if( getAvatar().getTipo().equals(TipoAvatar.coche) && getTiradasEnTurno() < 4 &&
+                    ( primeraTirada + segundaTirada ) >= 4 && !getAvatar().isMovimientoEstandar() )
+
+                getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
+
+            // Sino, depende de si se han sacado dobles
+            else
+                getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
+
             getAvatar().mover(primeraTirada + segundaTirada, dobles);
         }
 
@@ -587,8 +630,8 @@ public class Jugador {
      * Se vende, de una casilla dada, un número de edificios de un tipo dado
      *
      * @param tipoEdificio tipo de edificio a edificar
-     * @param cantidad cantidad de edificios a vender
-     * @param casilla casilla cuyos edificios se van a vender
+     * @param cantidad     cantidad de edificios a vender
+     * @param casilla      casilla cuyos edificios se van a vender
      */
     public void venderEdificio(TipoEdificio tipoEdificio, int cantidad, Casilla casilla) {
 
@@ -597,7 +640,7 @@ public class Jugador {
             return;
         }
 
-        if( casilla == null ) {
+        if (casilla == null) {
             System.err.println("Casilla no inicializada");
             return;
         }
@@ -617,12 +660,12 @@ public class Jugador {
             return;
         }
 
-        if( cantidad < 1 ) {
+        if (cantidad < 1) {
             Output.sugerencia("Debe venderse al menos un edificio");
             return;
         }
 
-        casilla.venderEdificio( this, tipoEdificio, cantidad );
+        casilla.venderEdificio(this, tipoEdificio, cantidad);
 
     }
 

@@ -476,7 +476,7 @@ public class Avatar {
 
                 case coche:
 
-                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
+                    posicionFinal = actualizarPosicionCoche(numeroCasillas);
                     break;
 
                 case esfinge:
@@ -489,9 +489,9 @@ public class Avatar {
                     // Se avanza si ya se ha movido cuatro casillas (indicativo de haber avanzado en una iteración
                     // anterior) o si el número de casillas a moverse es mayor o igual a 4 (por el caso inicial)
                     if (isHaMovido4Casillas() || numeroCasillas >= 4)
-                        posicionFinal = actualizarPosicionCoche(numeroCasillas, true);
+                        posicionFinal = actualizarPosicionPelota(numeroCasillas, true);
                     else
-                        posicionFinal = actualizarPosicionCoche(numeroCasillas, false);
+                        posicionFinal = actualizarPosicionPelota(numeroCasillas, false);
 
                     break;
 
@@ -537,11 +537,46 @@ public class Avatar {
 
     }
 
-    private int actualizarPosicionCoche(int numeroCasillas, boolean avanzar) {
 
-        
+    private int actualizarPosicionCoche(int numeroCasillas) {
+
+        // Se asigna inicialmente el número de casilla inicial
+        int posicionFinal = getPosicion().getPosicionEnTablero();
+
+
+        if (numeroCasillas >= 4) {
+
+            posicionFinal += numeroCasillas;
+
+            // Si ha pasado por la casilla de salida
+            if (posicionFinal >= 40)
+                setHaPasadoSalida(true);
+
+        }
+
+        else {
+
+            posicionFinal -= numeroCasillas;
+
+            // Si ha pasado por la casilla de salida (debe considerarse que ahora se mueve hacia atrás)
+            if (posicionFinal < 0) {
+                setHaPasadoSalida(true);
+
+                // Y se corrige además el número de casilla al que el avatar debe ir
+                posicionFinal = 40 + posicionFinal;
+            }
+
+            // Se indica que el jugador no puede volver a lanzar los dados ni en este turno ni en los dos siguientes
+            getTablero().getJuego().setHaLanzadoDados(true);
+            getJugador().setTurnosPenalizado(2);
+
+        }
+
+        setCasillasRestantesPorMoverse(0);
+        return(posicionFinal % 40);
 
     }
+
 
     private int actualizarPosicionPelota(int numeroCasillas, boolean avanzar) {
 
