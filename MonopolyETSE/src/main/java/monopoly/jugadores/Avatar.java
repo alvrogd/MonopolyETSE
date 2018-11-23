@@ -29,6 +29,8 @@ public class Avatar {
 
     // Vueltas completadas en el tablero
     private int vueltas;
+    // Si ha pasado por la casilla de salida
+    private boolean haPasadoSalida;
     // Casilla actual
     private Casilla posicion;
     // Veces caídas en casa casilla
@@ -41,6 +43,15 @@ public class Avatar {
 
     // Moverse de casilla en casilla o empleando el movimiento especial del tipo de avatar
     private boolean movimientoEstandar;
+    // Si se ha movido el total de casillas correspondientes a la tirada
+    private boolean haMovidoCasillasTirada;
+    // Cantidad de casillas que faltan por moverse
+    private int casillasRestantesPorMoverse;
+    
+    // Si la pelota se ha movido sus 4 casillas iniciales
+    private boolean haMovido4Casillas;
+    // Si la pelota se ha movida hacia atrás por primera vez
+    private boolean haMovidoAtras;
 
 
     /* Constructores */
@@ -65,6 +76,7 @@ public class Avatar {
         turnosEnCarcel = 0;
 
         vueltas = 0;
+        haPasadoSalida = false;
         posicion = null;
         vecesCaidasEnCasillas = null;
 
@@ -73,6 +85,12 @@ public class Avatar {
         tipo = TipoAvatar.banca;
 
         movimientoEstandar = true;
+        haMovidoCasillasTirada = false;
+        casillasRestantesPorMoverse = 0;
+
+        haMovido4Casillas = false;
+        haMovidoAtras = false;
+
 
     } /* Fin del constructor para la banca */
 
@@ -116,6 +134,7 @@ public class Avatar {
         turnosEnCarcel = 0;
 
         vueltas = 0;
+        haPasadoSalida = false;
         posicion = casillaInicial;
         vecesCaidasEnCasillas = new ArrayList<>();
         for (int i = 0; i < 40; i++)
@@ -143,6 +162,11 @@ public class Avatar {
         this.tipo = tipo;
 
         movimientoEstandar = true;
+        haMovidoCasillasTirada = false;
+        casillasRestantesPorMoverse = 0;
+
+        haMovido4Casillas = false;
+        haMovidoAtras = false;
 
     }
 
@@ -273,6 +297,70 @@ public class Avatar {
     }
 
 
+    public boolean ishaMovidoCasillasTirada() {
+        return haMovidoCasillasTirada;
+    }
+
+
+    public void sethaMovidoCasillasTirada(boolean haMovidoCasillasTirada) {
+        this.haMovidoCasillasTirada = haMovidoCasillasTirada;
+    }
+
+
+    public int getCasillasRestantesPorMoverse() {
+        return casillasRestantesPorMoverse;
+    }
+
+
+    public void setCasillasRestantesPorMoverse(int casillasRestantesPorMoverse) {
+
+        if (casillasRestantesPorMoverse < 0) {
+            Output.sugerencia("El número de casillas restantes por moverse no puede ser menor a 0.");
+            return;
+        }
+        this.casillasRestantesPorMoverse = casillasRestantesPorMoverse;
+    }
+
+
+    public boolean isHaPasadoSalida() {
+        return haPasadoSalida;
+    }
+
+
+    public void setHaPasadoSalida(boolean haPasadoSalida) {
+        this.haPasadoSalida = haPasadoSalida;
+    }
+
+
+    public boolean isHaMovidoCasillasTirada() {
+        return haMovidoCasillasTirada;
+    }
+
+
+    public void setHaMovidoCasillasTirada(boolean haMovidoCasillasTirada) {
+        this.haMovidoCasillasTirada = haMovidoCasillasTirada;
+    }
+
+
+    public boolean isHaMovido4Casillas() {
+        return haMovido4Casillas;
+    }
+
+
+    public void setHaMovido4Casillas(boolean haMovido4Casillas) {
+        this.haMovido4Casillas = haMovido4Casillas;
+    }
+
+
+    public boolean isHaMovidoAtras() {
+        return haMovidoAtras;
+    }
+
+
+    public void setHaMovidoAtras(boolean haMovidoAtras) {
+        this.haMovidoAtras = haMovidoAtras;
+    }
+
 
     /* Métodos */
 
@@ -351,12 +439,12 @@ public class Avatar {
             }
 
             // Se indica que el avatar no debe moverse
-            return( false );
+            return (false);
 
         } else
 
             setEncarcelado(false);
-            return( true );
+        return (true);
 
     }
 
@@ -367,7 +455,7 @@ public class Avatar {
      *
      * @param numeroCasillas cantidad de casillas a avanzar
      */
-    public void actualizarPosicion( int numeroCasillas ) {
+    public void actualizarPosicion(int numeroCasillas) {
 
         int posicionFinal;
 
@@ -378,37 +466,43 @@ public class Avatar {
         // Se calcula la posición nueva del avatar
 
         // Si el jugador se encuentra en movimiento estándar, se avanza con normalidad
-        if( isMovimientoEstandar() )
-            posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+        if (isMovimientoEstandar())
+            posicionFinal = actualizarPosicionNormal(numeroCasillas);
 
-        // En caso contrario, en función del tipo de avatar
+            // En caso contrario, en función del tipo de avatar
         else {
 
-            switch( getTipo() ) {
+            switch (getTipo()) {
 
                 case coche:
 
-                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
                     break;
 
                 case esfinge:
 
-                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
                     break;
 
                 case pelota:
 
-                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    // Se avanza si ya se ha movido cuatro casillas (indicativo de haber avanzado en una iteración
+                    // anterior) o si el número de casillas a moverse es mayor o igual a 4 (por el caso inicial)
+                    if (isHaMovido4Casillas() || numeroCasillas >= 4)
+                        posicionFinal = actualizarPosicionCoche(numeroCasillas, true);
+                    else
+                        posicionFinal = actualizarPosicionCoche(numeroCasillas, false);
+
                     break;
 
                 case sombrero:
 
-                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
                     break;
 
                 default:
 
-                    posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
                     break;
             }
         }
@@ -417,7 +511,7 @@ public class Avatar {
         setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
 
         // Si ha pasado por la casilla de salida
-        if (posicionFinal >= 40)
+        if (isHaPasadoSalida())
             pasarPorSalida();
 
         // Se actualiza el número de veces que ha caído en la casilla
@@ -428,10 +522,128 @@ public class Avatar {
     }
 
 
+    private int actualizarPosicionNormal(int numeroCasillas) {
+
+        int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
+
+        // Si ha pasado por la casilla de salida
+        if (posicionFinal >= 40)
+            setHaPasadoSalida(true);
+
+        setCasillasRestantesPorMoverse(0);
+        sethaMovidoCasillasTirada(true);
+
+        return (posicionFinal % 40);
+
+    }
+
+    private int actualizarPosicionCoche(int numeroCasillas, boolean avanzar) {
+
+        
+
+    }
+
+    private int actualizarPosicionPelota(int numeroCasillas, boolean avanzar) {
+
+        // Se asigna inicialmente el número de casilla inicial
+        int posicionFinal = getPosicion().getPosicionEnTablero();
+
+
+        if (avanzar) {
+
+            // Si aún no se ha movido las 4 casillas iniciales
+            if( !isHaMovido4Casillas() ) {
+                numeroCasillas -= 4;
+                posicionFinal += 4;
+                setHaMovido4Casillas(true);
+
+                // Si aún se puede mover más el avatar, se avanza hasta la 5ª casilla dado que será donde deba parar
+                if( numeroCasillas > 0 ) {
+                    numeroCasillas--;
+                    posicionFinal++;
+                }
+            }
+
+            // Si ya se han avanzado las 4 casillas iniciales y se ha vuelto a llamar a esta función, la tirada del
+            // jugador fue de al menos 6 casillas
+            else {
+
+                // Por lo tanto, o bien se va a la siguiente casilla de tirada impar
+                if( numeroCasillas > 1 ) {
+                    numeroCasillas -= 2;
+                    posicionFinal += 2;
+                }
+
+                // O bien se avanza a la siguiente casilla dado que el avatar sólo puede moverse una más
+                else {
+                    numeroCasillas--;
+                    posicionFinal++;
+                }
+
+            }
+
+            // Si ha pasado por la casilla de salida
+            if (posicionFinal >= 40)
+                setHaPasadoSalida(true);
+
+        }
+
+        else {
+
+            // Si aún no se ha movido hacia atrás, se retrocede una casilla dado que debe parar en ella
+            if( !isHaMovidoAtras() ) {
+                numeroCasillas--;
+                posicionFinal--;
+                setHaMovidoAtras(true);
+
+            }
+
+            // Si ya se ha avanzado hacia atrás y se ha vuelto a llamar a esta función, la tirada del jugador fue de
+            // de una suma total de 2 o 3
+            else {
+
+                // Por lo tanto, o bien se va a la siguiente casilla de tirada impar
+                if( numeroCasillas > 1 ) {
+                    numeroCasillas -= 2;
+                    posicionFinal -= 2;
+                }
+
+                // O bien se avanza a la casilla anterior dado que el avatar sólo puede moverse una más
+                else {
+                    numeroCasillas--;
+                    posicionFinal--;
+                }
+
+            }
+
+            // Si ha pasado por la casilla de salida (debe considerarse que ahora se mueve hacia atrás)
+            if (posicionFinal < 0) {
+                setHaPasadoSalida(true);
+
+                // Y se corrige además el número de casilla al que el avatar debe ir
+                posicionFinal = 40 + posicionFinal;
+            }
+
+
+        }
+
+        setCasillasRestantesPorMoverse(numeroCasillas);
+        return(posicionFinal % 40);
+
+    }
+
+
     /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      */
     public void switchMovimiento() {
+
+        // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
+        // movimiento
+        if (!ishaMovidoCasillasTirada()) {
+            Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
+            return;
+        }
 
         setMovimientoEstandar(!isMovimientoEstandar());
 
@@ -460,10 +672,40 @@ public class Avatar {
             boolean puedeMoverse = actualizarEncarcelamiento(dobles);
 
             // Si no puede moverse en el turno actual
-            if( !puedeMoverse )
+            if (!puedeMoverse)
                 return;
 
         }
+
+        // Se indica que aún no se ha movido las casillas correspondientes a la tirada
+        sethaMovidoCasillasTirada(false);
+        // Se indica el número de casillas restantes por moverse
+        setCasillasRestantesPorMoverse(numeroCasillas);
+        // Se indica (por si es la pelota) que aún no se ha movido las 4 casillas iniciales
+        setHaMovido4Casillas(false);
+        // Se indica (por si es la pelota) que aún no se ha movido hacia atrás
+        setHaMovidoAtras(false);
+
+        // Y se avanza
+        avanzar(numeroCasillas);
+
+    }
+
+
+    public void avanzar(int numeroCasillas) {
+
+        if (ishaMovidoCasillasTirada()) {
+            Output.sugerencia("Ya se ha movido todas las casillas correspondientes a la tirada");
+            return;
+        }
+
+        if (numeroCasillas <= 0) {
+            Output.sugerencia("No se puede avanzar menos de una casilla.");
+            return;
+        }
+
+        // Se mueve el avatar
+        actualizarPosicion(numeroCasillas);
 
         // En función del tipo de casilla en la que se ha caído
         switch (getPosicion().getGrupo().getTipo()) {
@@ -521,6 +763,10 @@ public class Avatar {
                 Output.respuesta("Has caído en una casilla de un solar.");
                 caerEnSolar();
         }
+
+        // Si es un avatar de pelota, aún pueden quedar posiciones por moverse
+        if( getCasillasRestantesPorMoverse() > 0 )
+            avanzar(numeroCasillas);
     }
 
 
@@ -655,6 +901,8 @@ public class Avatar {
         getPosicion().getAvataresContenidos().remove(getIdentificador());
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
+        sethaMovidoCasillasTirada(true);
+        setCasillasRestantesPorMoverse(0);
         setEncarcelado(true);
         setHaEstadoCarcel(true);
 
@@ -709,6 +957,7 @@ public class Avatar {
         }
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);
+        setHaPasadoSalida(false);
         setVueltas(getVueltas() + 1);
         getTablero().getJuego().actualizarVueltas();
 
