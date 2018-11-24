@@ -84,6 +84,10 @@ public class Tablero {
 
         numEdificios = new HashMap<>();
 
+        for(TipoEdificio aux : TipoEdificio.values()){
+            numEdificios.put(aux, 0);
+        }
+
         //La función crearGrupos crea los correspondientes grupos y sus correspondientes casillas.
         crearGrupos();
 

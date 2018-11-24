@@ -395,7 +395,7 @@ public class Aplicacion {
 
                     case "pista":
                         salida.add(TipoComando.edificar);
-                        salida.add(TipoEdificio.valueOf("pista"));
+                        salida.add(TipoEdificio.valueOf("pistaDeporte"));
                         break;
 
                     default:
@@ -408,6 +408,8 @@ public class Aplicacion {
                         salida.add(null);
 
                 }
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -637,6 +639,9 @@ public class Aplicacion {
                     return;
                 }
 
+                if(juego.getTurno().getAvatar().getTipo() != TipoAvatar.coche)
+                    getJuego().setHaCompradoPropiedad(false);
+
                 juego.getTurno().lanzarDados(juego.getTablero().getDado());
                 break;
 
@@ -789,7 +794,7 @@ public class Aplicacion {
                 break;
 
             case edificar:
-                if(juego.isIniciado()){
+                if(!juego.isIniciado()){
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }

@@ -62,6 +62,10 @@ public class Edificio {
         return precioCompra;
     }
 
+    public String getId() {
+        return id;
+    }
+
     /**
      * Método estático para poder calcular el precio de compra de un edificio en concreto sin necesidad de instanciarlo.
      * @param tipoEdificio tipo del edificio del que se quiere calcular el precio

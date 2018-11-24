@@ -261,12 +261,16 @@ public class Casilla {
 
         getEdificiosContenidos().get(tipoEdificio).add(edificacion);
 
+        Output.respuesta("Has creado tu edificio con id " + edificacion.getId());
+
     }
 
     public void destruirEdificio(TipoEdificio tipoEdificio, int cantidad){
 
-        for(int i = 0; i < cantidad; i++)
-            getEdificiosContenidos().get(tipoEdificio).size();
+        int size = getEdificiosContenidos().get(tipoEdificio).size();
+
+        for(int i = 0; i < cantidad && i < size; i++)
+            getEdificiosContenidos().get(tipoEdificio).remove(i);
 
     }
 

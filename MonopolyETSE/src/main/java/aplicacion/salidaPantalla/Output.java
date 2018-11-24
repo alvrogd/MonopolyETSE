@@ -640,9 +640,43 @@ public class Output {
             } else if (casilla.getGrupo().getTipo() == TipoGrupo.salida) {
                 informacion.add("        -> Dinero a recibir: " + casilla.getGrupo().getPrecio() + "K €");
             } else {
+
                 informacion.add("        -> Grupo: " + casilla.getGrupo().getTipo());
                 informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
                 informacion.add("");
+
+                informacion.add("        -> Edificios:");
+
+                Set<TipoEdificio> keyEdificios = casilla.getEdificiosContenidos().keySet();
+
+                for(TipoEdificio auxEdificio : keyEdificios){
+
+                    StringBuilder linea = new StringBuilder();
+                    ArrayList<Edificio> edificaciones = casilla.getEdificiosContenidos().get(auxEdificio);
+                    int size = edificaciones.size();
+
+                    linea.append("           (*) "+auxEdificio.getNombre()+" {");
+
+                    for(int i = 0; i < size; i++){
+
+                        linea.append(edificaciones.get(i).getId());
+
+                        if(i != size - 1)
+                            linea.append(", ");
+
+                    }
+
+                    if(size == 0){
+                        linea.append("No hay edificaciones tipo "+auxEdificio.getNombre());
+                    }
+                    linea.append("}");
+
+                    informacion.add(linea.toString());
+
+                }
+
+                informacion.add("");
+
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");
 
                 if(casilla.getGrupo().getTipo() == TipoGrupo.transporte){
