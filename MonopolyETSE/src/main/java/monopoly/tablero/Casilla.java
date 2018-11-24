@@ -223,6 +223,10 @@ public class Casilla {
                     Output.respuesta("No se pueden construir más casas en esta casilla.");
                     return;
                 }
+                if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo){
+                    Output.respuesta("No se pueden construir más casas en esta casilla.");
+                    return;
+                }
 
                 break;
 
@@ -246,6 +250,7 @@ public class Casilla {
                     Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
                     return;
                 }
+
                 if(numPiscinas == numCasillasGrupo){
                     Output.respuesta("No se pueden edificar más piscinas en esta casilla.");
                     return;
