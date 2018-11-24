@@ -723,7 +723,8 @@ public class Aplicacion {
                     return;
                 }
 
-                if(juego.isHaCompradoPropiedad()){
+                if(juego.isHaCompradoPropiedad() && getJuego().getTurno().getAvatar().getTipo().equals(TipoAvatar.coche) &&
+                    !getJuego().getTurno().getAvatar().isMovimientoEstandar()){
                     Output.sugerencia("Ya has comprado una casilla en este turno.");
                     return;
                 }

@@ -7,7 +7,7 @@ public enum TipoMovimiento {
     moverCaceres( true, "Endor", 0, true, 1 ),
     moverCarcel( true, "Azkaban", 0, false, 1 ),
     moverLeganes( true, "Braavos", 0, true, 1 ),
-    moverTrafico( false, "", -3, true, 1 ),
+    moverTrafico( false, "", -3, false, 1 ),
     moverTransporte( true, "transporte", 0, true, 2 ),
     moverSalida( true, "malloc(game)", 0, true, 1 ),
     moverValencia( true, "Platform 9 3/4", 0, false, 1 ),

@@ -745,22 +745,23 @@ public class Jugador {
      */
     private void moverCarta(TipoMovimiento tipoMovimiento) {
 
+        // Nombre de la casilla de destino
+        final String nombreDestino = tipoMovimiento.getNombreCasillaDestino();
+
+        // Posición actual
+        int posicionActual = getAvatar().getPosicion().getPosicionEnTablero();
+        // Posición de destino
+        int posicionDestino;
+
+        // Número de casillas a moverse
+        int numeroCasillas;
+
+        // Si el movimiento actual del avatar es el avanzado
+        boolean movimientoEstandar = getAvatar().isMovimientoEstandar();
+
+
         // Si el movimiento se efectúa directamente a una casilla dada
         if (tipoMovimiento.isMoverseDirectamente()) {
-
-            // Nombre de la casilla de destino
-            final String nombreDestino = tipoMovimiento.getNombreCasillaDestino();
-
-            // Posición actual
-            int posicionActual = getAvatar().getPosicion().getPosicionEnTablero();
-            // Posición de destino
-            int posicionDestino;
-
-            // Número de casillas a moverse
-            int numeroCasillas;
-
-            // Si el movimiento actual del avatar es el avanzado
-            boolean movimientoEstandar = getAvatar().isMovimientoEstandar();
 
             switch (nombreDestino) {
 
@@ -786,27 +787,31 @@ public class Jugador {
                     posicionDestino = destino.getPosicionEnTablero();
                     break;
             }
-
-            // Se calcula el número de casillas a avanzar (el valor de posicionDestino es incrementado en una vuelta
-            // para realizar después el módulo y evitar así resultados negativos)
-            numeroCasillas = (posicionDestino + 40 - posicionActual) % 40;
-
-            // Se indica que aún no se ha movido las casillas correspondientes a la tirada
-            getAvatar().sethaMovidoCasillasTirada(false);
-            // Se indica el número de casillas restantes por moverse
-            getAvatar().setCasillasRestantesPorMoverse(numeroCasillas);
-
-            // Si el movimiento no es el estándar, se cambia
-            if (!movimientoEstandar)
-                getAvatar().switchMovimiento();
-
-            // Se avanzan las casillas dadas
-            getAvatar().avanzar(numeroCasillas);
-
-            // Y se devuelve el modo de movimiento a su estado original si fue modificado
-            if (!movimientoEstandar)
-                getAvatar().switchMovimiento();
         }
+
+        // O sino, es el caso de la carta en la que se retroceden tres casillas
+        else
+            posicionDestino = posicionActual + tipoMovimiento.getCasillasDesplazarse();
+
+        // Se calcula el número de casillas a avanzar (el valor de posicionDestino es incrementado en una vuelta
+        // para realizar después el módulo y evitar así resultados negativos)
+        numeroCasillas = (posicionDestino + 40 - posicionActual) % 40;
+
+        // Se indica que aún no se ha movido las casillas correspondientes a la tirada
+        getAvatar().sethaMovidoCasillasTirada(false);
+        // Se indica el número de casillas restantes por moverse
+        getAvatar().setCasillasRestantesPorMoverse(numeroCasillas);
+
+        // Si el movimiento no es el estándar, se cambia
+        if (!movimientoEstandar)
+            getAvatar().switchMovimiento();
+
+        // Se avanzan las casillas dadas
+        getAvatar().avanzar(numeroCasillas, tipoMovimiento.isCobrarCasillaSalida(), false, tipoMovimiento.getMultiplicadorPago() );
+
+        // Y se devuelve el modo de movimiento a su estado original si fue modificado
+        if (!movimientoEstandar)
+            getAvatar().switchMovimiento();
     }
 
 
