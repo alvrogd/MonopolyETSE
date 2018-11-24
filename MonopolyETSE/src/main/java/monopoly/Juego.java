@@ -243,13 +243,19 @@ public class Juego {
                 this.turno = getJugadores().get(this.iterador.next());
             }
 
-            // todo al cambiar de jugador, deben reducirse los turnos de penalización del anterior en 1 en caso de que no estuviese a 0
+            //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
+            if(getTurno().getTurnosPenalizado() != 0)
+                getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
+
+            // todo el setter no debería llevar una condición de que turnos penalizados no sea negativo?
+            // todo creo que tienes que poner en que cuando se sacan dados dobles se puedan comprar igualmente las
+            // casillas, ya que como se establece que al comprar una casilla ya no se pueden comprar más por el
+            // tema del coche, si salen dobles si que se podría con un avatar normal por ejemplo.
 
             //Se establece el booleano de se han lanzado los dados a false.
             this.haLanzadoDados = false;
+
             // Y el indicador de haber comprado una propiedad
-            // todo el juego debe encargarse de que un jugador con avatar coche no pueda comprar más de una vez en el mismo turno;
-            // todo es un caso similar al de lanzar dados varias veces, es más una norma del juego que un aspecto del avatar o del jugador
             setHaCompradoPropiedad(false);
 
         } else {

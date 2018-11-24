@@ -718,6 +718,11 @@ public class Aplicacion {
                     return;
                 }
 
+                if(juego.isHaCompradoPropiedad()){
+                    Output.sugerencia("Ya has comprado una casilla en este turno.");
+                    return;
+                }
+
                 Casilla casilla1 = juego.getTablero().getCasillasTablero().get((String) comando.get(1));
 
                 if (casilla1 == null) {
