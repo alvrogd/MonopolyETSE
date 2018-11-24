@@ -46,8 +46,8 @@ public class Edificio {
         this.id = newId.toString();
 
         tipo = tipoEdificio;
-
-        tablero.getNumEdificios().put(tipoEdificio, ++numEdificio);
+        numEdificio++;
+        tablero.getNumEdificios().put(tipoEdificio, numEdificio);
 
         precioCompra = (int) (grupo.getPrecioInicial() * tipoEdificio.getCompra());
 

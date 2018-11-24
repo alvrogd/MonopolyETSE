@@ -190,8 +190,6 @@ public class Casilla {
             return;
         }
 
-        edificacion = new Edificio(getGrupo().getTablero(),tipoEdificio, getGrupo().getTipo());
-
         numCasillasGrupo = getGrupo().getCasillas().size();
 
         numHoteles = getEdificiosContenidos().get(TipoEdificio.hotel).size();
@@ -202,7 +200,7 @@ public class Casilla {
         if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
                 numPistas == numCasillasGrupo){
 
-            Output.errorComando("No se pueden realizar más edificaciones en esta casilla.");
+            Output.respuesta("No se pueden realizar más edificaciones en esta casilla.");
             return;
 
         }
@@ -225,6 +223,10 @@ public class Casilla {
                     Output.respuesta("No se pueden construir más casas en esta casilla.");
                     return;
                 }
+                if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo){
+                    Output.respuesta("No se pueden construir más casas en esta casilla.");
+                    return;
+                }
 
                 break;
 
@@ -234,21 +236,36 @@ public class Casilla {
                     Output.respuesta("Se necesitan cuatro casas para poder construir un hotel.");
                     return;
                 }
+                if(numHoteles == numCasillasGrupo){
+                    Output.respuesta("No se pueden edificar más hoteles en esta casilla.");
+                    return;
+                }
 
                 destruirEdificio(TipoEdificio.casa, 4);
 
                 break;
 
             case piscina:
-                if(numHoteles == 1 && numCasas == 2){
+                if(numHoteles < 1 || numCasas < 2){
                     Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
                     return;
                 }
+
+                if(numPiscinas == numCasillasGrupo){
+                    Output.respuesta("No se pueden edificar más piscinas en esta casilla.");
+                    return;
+                }
+
+
                 break;
 
             case pistaDeporte:
-                if(numHoteles == 2){
+                if(numHoteles < 2){
                     Output.respuesta("Para construir una pista de deporte se necesitan al menos dos hoteles.");
+                    return;
+                }
+                if(numPistas == numCasillasGrupo){
+                    Output.respuesta("No se pueden edificar más pistas de deporte en esta casilla.");
                     return;
                 }
                 break;
@@ -267,10 +284,21 @@ public class Casilla {
 
     public void destruirEdificio(TipoEdificio tipoEdificio, int cantidad){
 
-        int size = getEdificiosContenidos().get(tipoEdificio).size();
+        if(tipoEdificio == null){
+            System.err.println("tipoEdificio referencia a null.");
+            return;
+        }
 
-        for(int i = 0; i < cantidad && i < size; i++)
-            getEdificiosContenidos().get(tipoEdificio).remove(i);
+        ArrayList<Edificio> edificios = getEdificiosContenidos().get(tipoEdificio);
+        int size = edificios.size();
+        int numEdificios = getGrupo().getTablero().getNumEdificios().get(tipoEdificio);
+
+        for(int i = 0; i < cantidad && i < size; i++) {
+            edificios.remove(0);
+            numEdificios--;
+        }
+
+        getGrupo().getTablero().getNumEdificios().put(tipoEdificio, numEdificios);
 
     }
 
