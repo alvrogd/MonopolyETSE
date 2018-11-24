@@ -4,8 +4,11 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.*;
+import monopoly.tablero.cartas.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class Jugador {
 
@@ -202,7 +205,7 @@ public class Jugador {
 
     public void setTurnosPenalizado(int turnosPenalizado) {
 
-        if( turnosPenalizado < 0 ) {
+        if (turnosPenalizado < 0) {
             Output.sugerencia("El número de turnos penalizados no puede ser menor a 0.");
             return;
         }
@@ -231,6 +234,7 @@ public class Jugador {
      * @param receptor jugador al que pagar el importe
      * @param importe  cantidad a pagar
      */
+    // todo método para pagar a varios jugadores
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
@@ -454,7 +458,7 @@ public class Jugador {
             return;
         }
 
-        if( getTurnosPenalizado() > 0 ) {
+        if (getTurnosPenalizado() > 0) {
             Output.sugerencia("El jugador se encuentra penalizado durante " + getTurnosPenalizado() +
                     " turno(s).");
             return;
@@ -478,17 +482,17 @@ public class Jugador {
 
             getAvatar().caerEnIrACarcel();
 
-        // En caso contrario, se mueve normalmente
+            // En caso contrario, se mueve normalmente
         else {
 
             // Si es un avatar coche, puede volver a lanzar hasta 4 veces si se encuentra en modo avanzado y saca un
             // valor mayor o igual a 4
-            if( getAvatar().getTipo().equals(TipoAvatar.coche) && getTiradasEnTurno() < 4 &&
-                    ( primeraTirada + segundaTirada ) >= 4 && !getAvatar().isMovimientoEstandar() )
+            if (getAvatar().getTipo().equals(TipoAvatar.coche) && getTiradasEnTurno() < 4 &&
+                    (primeraTirada + segundaTirada) >= 4 && !getAvatar().isMovimientoEstandar())
 
                 getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
 
-            // Sino, depende de si se han sacado dobles
+                // Sino, depende de si se han sacado dobles
             else
                 getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
 
@@ -667,6 +671,177 @@ public class Jugador {
 
         casilla.venderEdificio(this, tipoEdificio, cantidad);
 
+    }
+
+
+    /**
+     * Se procesa un tipo de cobro dado
+     *
+     * @param tipoCobro tipo de cobro a procesar
+     */
+    private void cobrarCarta(TipoCobro tipoCobro) {
+
+        setFortuna(getFortuna() + tipoCobro.getImporte());
+        Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
+
+    }
+
+
+    /**
+     * Se procesa un tipo de pago dado
+     *
+     * @param tipoPago tipo de pago a procesar
+     */
+    private void pagarCarta(TipoPago tipoPago) {
+
+        final String receptor = tipoPago.getNombreReceptor();
+
+        int importe = 0;
+
+        // Si el importe debe ser calculado, se trata de la casilla de pago de impuesto por bienes inmuebles
+        if (tipoPago.isImporteCalculado()) {
+
+            // Se obtienen las propiedades del jugador
+            ArrayList<Casilla> propiedades = getPropiedades();
+
+            // Se recorren los edificios de cada casilla sumando el correspiente importe
+            for (Casilla casilla : propiedades) {
+
+                importe += casilla.getEdificiosContenidos().get(TipoEdificio.casa).size() * 400;
+                importe += casilla.getEdificiosContenidos().get(TipoEdificio.hotel).size() * 1150;
+                importe += casilla.getEdificiosContenidos().get(TipoEdificio.piscina).size() * 200;
+                importe += casilla.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size() * 750;
+
+            }
+        }
+
+        // En caso contrario, el importe se obtiene directamente del tipo de pago
+        else
+            importe = tipoPago.getImporte();
+
+        // Ahora se puede, o bien pagar a la banca
+        if (receptor.equals("banca"))
+            pagar(getAvatar().getTablero().getJuego().getBanca(), importe);
+
+            // O bien pagar a todos los jugadores, en el caso de las cartas de pago de un alquiler en Cannes o pago por ser
+            // escodigo presidente de la junta directiva
+        else {
+
+            final Collection<Jugador> jugadores = getAvatar().getTablero().getJuego().getJugadores().values();
+
+            for (Jugador jugador : jugadores) {
+
+                pagar(jugador, importe);
+
+            }
+        }
+    }
+
+
+    /**
+     * Se procesa un tipo de movimiento dado
+     *
+     * @param tipoMovimiento tipo de movimiento a procesar
+     */
+    private void moverCarta(TipoMovimiento tipoMovimiento) {
+
+        // Si el movimiento se efectúa directamente a una casilla dada
+        if (tipoMovimiento.isMoverseDirectamente()) {
+
+            // Nombre de la casilla de destino
+            final String nombreDestino = tipoMovimiento.getNombreCasillaDestino();
+
+            // Posición actual
+            int posicionActual = getAvatar().getPosicion().getPosicionEnTablero();
+            // Posición de destino
+            int posicionDestino;
+
+            // Número de casillas a moverse
+            int numeroCasillas;
+
+            // Si el movimiento actual del avatar es el avanzado
+            boolean movimientoEstandar = getAvatar().isMovimientoEstandar();
+
+            switch (nombreDestino) {
+
+                // Si el destino es la cárcel, simplemente se encarcela al avatar del jugador
+                case "Azkaban":
+                    getAvatar().caerEnIrACarcel();
+                    return;
+
+                // Si el destino es la próxima casilla de transporte (los transportes se encuentran en las posiciones
+                // 5, 15, 25 y 35
+                case "transporte":
+
+                    // La siguiente casilla de transporte puede estar como mucho a 10 casillas de la actual
+                    posicionDestino = posicionActual + 10;
+                    posicionDestino -= (posicionDestino - 5) % 10;
+
+                    posicionDestino %= 40;
+                    break;
+
+                // En caso contrario, se obtiene la posición de destino directamente
+                default:
+                    final Casilla destino = getAvatar().getTablero().getCasillasTablero().get(nombreDestino);
+                    posicionDestino = destino.getPosicionEnTablero();
+                    break;
+            }
+
+            // Se calcula el número de casillas a avanzar (el valor de posicionDestino es incrementado en una vuelta
+            // para realizar después el módulo y evitar así resultados negativos)
+            numeroCasillas = (posicionDestino + 40 - posicionActual) % 40;
+
+            // Se indica que aún no se ha movido las casillas correspondientes a la tirada
+            getAvatar().sethaMovidoCasillasTirada(false);
+            // Se indica el número de casillas restantes por moverse
+            getAvatar().setCasillasRestantesPorMoverse(numeroCasillas);
+
+            // Si el movimiento no es el estándar, se cambia
+            if (!movimientoEstandar)
+                getAvatar().switchMovimiento();
+
+            // Se avanzan las casillas dadas
+            getAvatar().avanzar(numeroCasillas);
+
+            // Y se devuelve el modo de movimiento a su estado original si fue modificado
+            if (!movimientoEstandar)
+                getAvatar().switchMovimiento();
+        }
+    }
+
+
+    /**
+     * Se actúa en función de lo que indica una carta dada
+     *
+     * @param carta carta en función de cual actuar
+     */
+    public void leerCarta(Carta carta) {
+
+        if (carta == null) {
+            System.err.println("Carta no inicializada");
+            return;
+        }
+
+        //Carta miCarta = new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio);
+
+        final TipoAccion tipoAccion = carta.getTipoAccion();
+
+        switch (tipoAccion) {
+
+            case cobro:
+                final TipoCobro tipoCobro = (TipoCobro) carta.getAccion();
+                cobrarCarta(tipoCobro);
+                break;
+
+            case movimiento:
+
+            case pago:
+                final TipoPago tipoPago = (TipoPago) carta.getAccion();
+                pagarCarta(tipoPago);
+                break;
+
+
+        }
     }
 
 

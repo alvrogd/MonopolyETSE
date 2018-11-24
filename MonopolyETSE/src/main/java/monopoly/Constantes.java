@@ -53,6 +53,8 @@ public final class Constantes {
 
     // Dinero de la casilla de salida
     public final static int DINERO_SALIDA = (int) (SUMA_PRECIO_SOLARES / (double) NUMERO_SOLARES);
+    // Dinero de la casilla de salida en caso de moverse por una carta
+    public final static int DINERO_SALIDA_CARTA = 2000;
 
     // Factor con el que determinar el precio de una casilla de servicio
     public final static int FACTOR_SERVICIO = (int) (DINERO_SALIDA / (double) 200);

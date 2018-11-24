@@ -671,6 +671,7 @@ public class Avatar {
     /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      */
+    // todo cuándo se debería poder cambiar el tipo de movimiento?
     public void switchMovimiento() {
 
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
@@ -983,6 +984,7 @@ public class Avatar {
      * cárcel a 0, se incrementa en 1 el número de vueltas completadas, y se llama al tablero para actualizar las
      * vueltas completadas por cada jugador
      */
+    // todo manejar pago en función de si se mueve por una carta o no
     private void pasarPorSalida() {
 
         // Si no ha estado en la carcel, se le suma el correspondiente importe a su fortuna
