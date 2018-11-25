@@ -291,6 +291,15 @@ public class Output {
     }
 
     /**
+     * Función para imprimir la entrada para introucir el comando.
+     */
+    public static void imprimirEntradaComando(String accion) {
+
+        System.out.print("\uD83D\uDC49 "+accion+":");
+
+    }
+
+    /**
      * Función para crear y guardar en el buffer un recuadro con la información pasada en el ArrayList de mensajes.
      * La cabecera se creará en función del ArrayList de los mensajes, cada elemento del ArrayList se imprime en una
      * línea distinta

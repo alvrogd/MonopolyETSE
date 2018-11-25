@@ -158,17 +158,25 @@ public class Juego {
         }
     }
 
-    public Carta barajarSuerte(){
+    public Carta barajarSuerte(int numCarta){
 
+        if(numCarta < 1 || numCarta >= Constantes.NUM_CARTAS_SUERTE){
+            Output.errorComando("Ha introducido un número incorrecto.");
+            return null;
+        }
         barajarCarta("suerte");
-        return getCartasSuerte().get(0);
+        return getCartasSuerte().get(numCarta);
 
     }
 
-    public Carta barajarComunidad(){
+    public Carta barajarComunidad(int numCarta){
 
+        if(numCarta < 1 || numCarta >= Constantes.NUM_CARTAS_SUERTE){
+            Output.errorComando("Ha introducido un número incorrecto.");
+            return null;
+        }
         barajarCarta("comunidad");
-        return getCartasComunidad().get(0);
+        return getCartasComunidad().get(numCarta);
 
     }
     /* Getters */
