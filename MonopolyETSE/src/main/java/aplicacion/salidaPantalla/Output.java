@@ -449,6 +449,34 @@ public class Output {
     //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
     //imprimir recuadro
 
+
+    /**
+     * Función para devolver a la función JugadortoArrayString la información de los edificios que tiene que el jugador.
+     * El ArrayList tendrá un tamaño de 4, el primero para las casas, el segundo para los hoteles, el tercero para las
+     * piscinas y el cuarto para las pistas de deporte.
+     *
+     * @param jugador jugador del cual se quiere obtener los edificios que ha comprado.
+     */
+    private static HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador(Jugador jugador){
+
+        HashMap<TipoEdificio, ArrayList<Edificio>> salida = new HashMap<>();
+
+        for(TipoEdificio tipoEdificio: TipoEdificio.values()){
+            salida.put(tipoEdificio, new ArrayList<>());
+        }
+
+        for(Casilla propiedad : jugador.getPropiedades()){
+
+            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+                ArrayList<Edificio> edificiosContenidos = propiedad.getEdificiosContenidos().get(tipoEdificio);
+                salida.get(tipoEdificio).addAll(edificiosContenidos);
+            }
+
+        }
+
+        return salida;
+    }
+
     /**
      * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del jugador
      * @param jugador jugador del que se guarda la información
@@ -525,6 +553,35 @@ public class Output {
 
         datos.add(prop.toString());
         datos.add(propHipotecadas.toString());
+
+        HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador = edificiosJugador(jugador);
+
+        datos.add("        -> Edificios:");
+
+        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+            StringBuilder edificios = new StringBuilder();
+
+            ArrayList<Edificio> aux = edificiosJugador.get(tipoEdificio);
+
+            int size = aux.size();
+            int count = 1;
+
+            edificios.append("            (*) "+tipoEdificio.getNombre()+": {");
+
+            for(Edificio edificio : aux){
+
+                edificios.append(edificio.getId());
+
+                if(count != size)
+                    edificios.append(", ");
+
+                count++;
+            }
+
+            edificios.append("}");
+            datos.add(edificios.toString());
+        }
 
         return datos;
     }
@@ -651,50 +708,50 @@ public class Output {
                 informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
                 informacion.add("");
 
-                informacion.add("        -> Edificios:");
-
-                Set<TipoEdificio> keyEdificios = casilla.getEdificiosContenidos().keySet();
-
-                for(TipoEdificio auxEdificio : keyEdificios){
-
-                    StringBuilder linea = new StringBuilder();
-                    ArrayList<Edificio> edificaciones = casilla.getEdificiosContenidos().get(auxEdificio);
-                    int size = edificaciones.size();
-
-                    linea.append("           (*) "+auxEdificio.getNombre()+" {");
-
-                    for(int i = 0; i < size; i++){
-
-                        linea.append(edificaciones.get(i).getId());
-
-                        if(i != size - 1)
-                            linea.append(", ");
-
-                    }
-
-                    if(size == 0){
-                        linea.append("No hay edificaciones tipo "+auxEdificio.getNombre());
-                    }
-                    linea.append("}");
-
-                    informacion.add(linea.toString());
-
-                }
-
-                informacion.add("");
-
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");
 
                 if(casilla.getGrupo().getTipo() == TipoGrupo.transporte){
-                    informacion.add("        -> Alquiler con 1 transporte:        " + (int)valorCasilla*0.25 + "K €");
-                    informacion.add("        -> Alquiler con 2 transportes:       " + (int)valorCasilla*0.5 + "K €");
-                    informacion.add("        -> Alquiler con 3 transportes:       " + (int)valorCasilla*0.75 + "K €");
-                    informacion.add("        -> Alquiler con 4 transportes:       " + (int)valorCasilla + "K €");
+                    informacion.add("        -> Alquiler con 1 transporte:        " + (int)(valorCasilla*0.25) + "K €");
+                    informacion.add("        -> Alquiler con 2 transportes:       " + (int)(valorCasilla*0.5) + "K €");
+                    informacion.add("        -> Alquiler con 3 transportes:       " + (int)(valorCasilla*0.75) + "K €");
+                    informacion.add("        -> Alquiler con 4 transportes:       " + (int)(valorCasilla) + "K €");
                 } else {
                     informacion.add("        -> Alquiler:                         " + alquiler + "K €");
                 }
 
                 if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
+
+                    informacion.add("");
+
+                    informacion.add("        -> Edificios:");
+                    Set<TipoEdificio> keyEdificios = casilla.getEdificiosContenidos().keySet();
+
+                    for(TipoEdificio auxEdificio : keyEdificios){
+
+                        StringBuilder linea = new StringBuilder();
+                        ArrayList<Edificio> edificaciones = casilla.getEdificiosContenidos().get(auxEdificio);
+                        int size = edificaciones.size();
+
+                        linea.append("           (*) "+auxEdificio.getNombre()+" {");
+
+                        for(int i = 0; i < size; i++){
+
+                            linea.append(edificaciones.get(i).getId());
+
+                            if(i != size - 1)
+                                linea.append(", ");
+
+                        }
+
+                        if(size == 0){
+                            linea.append("No hay edificaciones tipo "+auxEdificio.getNombre());
+                        }
+                        linea.append("}");
+
+                        informacion.add(linea.toString());
+
+                    }
+
                     informacion.add("");
                     aux = Edificio.calcularPrecioCompra(TipoEdificio.hotel, casilla.getGrupo().getTipo());
                     informacion.add("        -> Valor hotel:                      " + aux + "K €");

@@ -836,10 +836,10 @@ public class Aplicacion {
 
                 if(isEstandar)
                     Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
-                            " mueve en modo avanzado.");
+                            " se mueve en modo avanzado.");
                 else
                     Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
-                            " mueve en modo estándar.");
+                            " se mueve en modo estándar.");
                 break;
         }
     }
