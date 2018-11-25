@@ -7,11 +7,9 @@ import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.cartas.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class Juego {
 
@@ -62,6 +60,10 @@ public class Juego {
     // Si ha comprado una propiedad en el turno (por el avatar coche)
     private boolean haCompradoPropiedad;
 
+    private ArrayList<Carta> cartasSuerte;
+
+    private ArrayList<Carta> cartasComunidad;
+
     /* Constructores */
 
     /**
@@ -83,6 +85,7 @@ public class Juego {
         haLanzadoDados = false;
         haAcabadoMovimiento = false;
         haCompradoPropiedad = false;
+        anadirCartas();
 
     }
 
@@ -109,9 +112,65 @@ public class Juego {
             addJugador(jugador);
 
         }
+    }
+
+    private void anadirCartas(){
+
+        cartasComunidad = new ArrayList<>();
+        cartasSuerte = new ArrayList<>();
+
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCadiz));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCaceres));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarLoteria));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarBienesInmuebles));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverLeganes));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarPresidente));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTrafico));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMovil));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarAcciones));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTransporte));
+
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarBalneario));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverSalida));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarInternet));
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarViajeLeon));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarHacienda));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverValencia));
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarAlquilerCannes));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarJet));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverPamplona));
 
     }
 
+    private void barajarCarta(String tipo){
+
+        switch(tipo){
+            case "suerte":
+                Collections.shuffle(getCartasSuerte());
+
+            case "comunidad":
+                Collections.shuffle(getCartasComunidad());
+        }
+    }
+
+    public Carta barajarSuerte(){
+
+        barajarCarta("suerte");
+        return getCartasSuerte().get(0);
+
+    }
+
+    public Carta barajarComunidad(){
+
+        barajarCarta("comunidad");
+        return getCartasComunidad().get(0);
+
+    }
     /* Getters */
     public HashMap<String, Jugador> getJugadores() {
         return jugadores;
@@ -167,6 +226,22 @@ public class Juego {
 
     public void setHaCompradoPropiedad(boolean haCompradoPropiedad) {
         this.haCompradoPropiedad = haCompradoPropiedad;
+    }
+
+    public ArrayList<Carta> getCartasSuerte() {
+        return cartasSuerte;
+    }
+
+    public void setCartasSuerte(ArrayList<Carta> cartasSuerte) {
+        this.cartasSuerte = cartasSuerte;
+    }
+
+    public ArrayList<Carta> getCartasComunidad() {
+        return cartasComunidad;
+    }
+
+    public void setCartasComunidad(ArrayList<Carta> cartasComunidad) {
+        this.cartasComunidad = cartasComunidad;
     }
 
     /* Setters */

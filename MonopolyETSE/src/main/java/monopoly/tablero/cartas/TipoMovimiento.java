@@ -42,7 +42,6 @@ public enum TipoMovimiento {
         this.casillasDesplazarse = casillasDesplazarse;
         this.cobrarCasillaSalida = cobrarCasillaSalida;
         this.multiplicadorPago = multiplicadorPago;
-
     }
 
 
