@@ -9,6 +9,7 @@ import monopoly.tablero.TipoGrupo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Avatar {
 
@@ -751,13 +752,13 @@ public class Avatar {
         switch (getPosicion().getGrupo().getTipo()) {
 
             case suerte:
-                // acción asociada a la casilla de suerte
                 Output.respuesta("Has caído en una casilla de suerte.");
+                caerEnSuerte();
                 break;
 
             case comunidad:
-                // acción asociada a la casilla de comunidad
                 Output.respuesta("Has caído en una casilla de comunidad.");
+                caerEnComunidad();
                 break;
 
             case impuesto1:
@@ -831,6 +832,40 @@ public class Avatar {
 
     }
 
+
+    private void caerEnSuerte() {
+
+        Scanner scanner = new Scanner(System.in);
+        int numeroCarta;
+
+        // Se pide el número de carta
+        Output.imprimirEntradaComando("Carta de suerte! Introduzca un número del 1 al " +
+                Constantes.NUM_CARTAS_SUERTE);
+
+        do {
+            numeroCarta = scanner.nextInt();
+        } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_SUERTE);
+
+        getJugador().leerCarta(getTablero().getJuego().barajarSuerte(numeroCarta));
+    }
+
+
+    private void caerEnComunidad() {
+
+        Scanner scanner = new Scanner(System.in);
+        int numeroCarta;
+
+        // Se pide el número de carta
+        Output.imprimirEntradaComando("Carta de comunidad! Introduzca un número del 1 al " +
+                Constantes.NUM_CARTAS_COMUNIDAD);
+
+        do {
+            numeroCarta = scanner.nextInt();
+        } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_COMUNIDAD);
+
+        getJugador().leerCarta(getTablero().getJuego().barajarComunidad(numeroCarta));
+
+    }
 
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe

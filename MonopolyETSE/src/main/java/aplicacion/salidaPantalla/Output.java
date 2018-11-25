@@ -295,7 +295,7 @@ public class Output {
      */
     public static void imprimirEntradaComando(String accion) {
 
-        System.out.print("\uD83D\uDC49 "+accion+":");
+        System.out.print("\uD83D\uDC49 "+accion+": ");
 
     }
 

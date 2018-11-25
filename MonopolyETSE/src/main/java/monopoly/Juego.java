@@ -91,20 +91,21 @@ public class Juego {
 
     /**
      * Constructor para iniciar un Juego con unos jugadores predeterminados, se podrían añadir más
+     *
      * @param jugadores
      */
-    public Juego(ArrayList<Jugador> jugadores){
+    public Juego(ArrayList<Jugador> jugadores) {
 
         this();
 
-        if(jugadores == null){
+        if (jugadores == null) {
             System.err.println("Jugador referencia a null");
             System.exit(1);
         }
 
-        for(Jugador jugador: jugadores){
+        for (Jugador jugador : jugadores) {
 
-            if(jugador == null){
+            if (jugador == null) {
                 System.err.println("Jugador referencia a null");
                 System.exit(1);
             }
@@ -114,7 +115,7 @@ public class Juego {
         }
     }
 
-    private void anadirCartas(){
+    private void anadirCartas() {
 
         cartasComunidad = new ArrayList<>();
         cartasSuerte = new ArrayList<>();
@@ -147,9 +148,9 @@ public class Juego {
 
     }
 
-    private void barajarCarta(String tipo){
+    private void barajarCarta(String tipo) {
 
-        switch(tipo){
+        switch (tipo) {
             case "suerte":
                 Collections.shuffle(getCartasSuerte());
 
@@ -158,27 +159,30 @@ public class Juego {
         }
     }
 
-    public Carta barajarSuerte(int numCarta){
+    public Carta barajarSuerte(int numCarta) {
 
-        if(numCarta < 1 || numCarta >= Constantes.NUM_CARTAS_SUERTE){
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
             Output.errorComando("Ha introducido un número incorrecto.");
             return null;
         }
         barajarCarta("suerte");
-        return getCartasSuerte().get(numCarta);
+
+        return (getCartasSuerte().get(numCarta - 1));
 
     }
 
-    public Carta barajarComunidad(int numCarta){
+    public Carta barajarComunidad(int numCarta) {
 
-        if(numCarta < 1 || numCarta >= Constantes.NUM_CARTAS_SUERTE){
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
             Output.errorComando("Ha introducido un número incorrecto.");
             return null;
         }
         barajarCarta("comunidad");
-        return getCartasComunidad().get(numCarta);
+
+        return (getCartasComunidad().get(numCarta - 1));
 
     }
+
     /* Getters */
     public HashMap<String, Jugador> getJugadores() {
         return jugadores;
@@ -256,6 +260,7 @@ public class Juego {
 
     /**
      * Función para añadir un jugador al juego.
+     *
      * @param jugador jugador que se desea añadir al juego.
      */
     public void addJugador(Jugador jugador) {
@@ -319,15 +324,15 @@ public class Juego {
             if (this.iterador.hasNext())
                 this.turno = getJugadores().get(this.iterador.next());
 
-            //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
-            //jugador.
+                //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
+                //jugador.
             else {
                 this.iterador = getNombresJugadores().iterator();
                 this.turno = getJugadores().get(this.iterador.next());
             }
 
             //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
-            if(getTurno().getTurnosPenalizado() != 0)
+            if (getTurno().getTurnosPenalizado() != 0)
                 getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
 
             // todo el setter no debería llevar una condición de que turnos penalizados no sea negativo?
@@ -349,13 +354,13 @@ public class Juego {
 
     }
 
-    public void jugadorEnBancarrota(Jugador jugador){
+    public void jugadorEnBancarrota(Jugador jugador) {
 
-        if(jugador == null){
+        if (jugador == null) {
             System.err.println("jugador referencia a null");
             return;
         }
-        if(!jugador.isEstaBancarrota()){
+        if (!jugador.isEstaBancarrota()) {
             System.err.println("El jugador no está en bancarrota");
             return;
         }
@@ -366,12 +371,12 @@ public class Juego {
         getNombresJugadores().remove(jugador.getNombre());
 
         getTablero().getAvataresContenidos().remove(avatarJugador.getIdentificador());
-        avatarJugador.getPosicion().getAvataresContenidos().remove((Character)avatarJugador.getIdentificador());
+        avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());
 
         finalizarTurno();
 
-        if(getNombresJugadores().size() == 1){
-            Output.mensaje("¡" + getTurno().getNombre()+ " ha ganado el juego!");
+        if (getNombresJugadores().size() == 1) {
+            Output.mensaje("¡" + getTurno().getNombre() + " ha ganado el juego!");
             this.finalizado = true;
         }
 
@@ -390,7 +395,7 @@ public class Juego {
             return;
         }
 
-        if(isFinalizado()){
+        if (isFinalizado()) {
             System.err.println("Juego acabado.");
             return;
         }
@@ -425,7 +430,7 @@ public class Juego {
 
         // En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado antes el precio
         // de los solares
-        if (this.vueltasMin%4 == 0 && !this.seHaIncrementado && this.vueltasMin != 0) {
+        if (this.vueltasMin % 4 == 0 && !this.seHaIncrementado && this.vueltasMin != 0) {
 
             //Se miran todas las casillas del tablero y en caso de que sean comprables y no sean ni transportes ni
             //servicios se incrementa el precio del grupo en Constantes.INCREMENTO_VUELTAS

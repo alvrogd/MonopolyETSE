@@ -736,7 +736,9 @@ public class Jugador {
 
             for (Jugador jugador : jugadores) {
 
-                pagar(jugador, importe);
+                // Si no es el propio jugador
+                if(!jugador.equals(this))
+                    pagar(jugador, importe);
 
             }
         }
@@ -840,17 +842,21 @@ public class Jugador {
 
             case cobro:
                 final TipoCobro tipoCobro = (TipoCobro) carta.getAccion();
+                Output.respuesta(tipoCobro.toString());
                 cobrarCarta(tipoCobro);
                 break;
 
             case movimiento:
+                final TipoMovimiento tipoMovimiento = (TipoMovimiento) carta.getAccion();
+                Output.respuesta(tipoMovimiento.toString());
+                moverCarta(tipoMovimiento);
+                break;
 
             case pago:
                 final TipoPago tipoPago = (TipoPago) carta.getAccion();
+                Output.respuesta(tipoPago.toString());
                 pagarCarta(tipoPago);
                 break;
-
-
         }
     }
 
