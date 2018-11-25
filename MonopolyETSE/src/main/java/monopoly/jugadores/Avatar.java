@@ -566,7 +566,9 @@ public class Avatar {
 
             // Se indica que el jugador no puede volver a lanzar los dados ni en este turno ni en los dos siguientes
             getTablero().getJuego().setHaLanzadoDados(true);
-            getJugador().setTurnosPenalizado(2);
+            // Se establecen 3 turnos dado que, al finalizar este, el juego le restará un turno de penalización al
+            // jugador
+            getJugador().setTurnosPenalizado(3);
 
         }
 
