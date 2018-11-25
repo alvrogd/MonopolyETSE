@@ -610,6 +610,11 @@ public class Jugador {
             return;
         }
 
+        if(!casilla.getGrupo().getTipo().getTipoCasilla().equals("solar")){
+            Output.respuesta("La casilla no es un solar");
+            return;
+        }
+
         if (casilla.isHipotecada()) {
             Output.sugerencia("La casilla se encuentra hipotecada.");
             return;

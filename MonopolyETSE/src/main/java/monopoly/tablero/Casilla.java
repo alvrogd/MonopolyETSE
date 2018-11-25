@@ -286,6 +286,9 @@ public class Casilla {
 
     }
 
+    /**
+     * Función para recalcular el alquiler de la casilla, debería usarse cada vez que se construye / vende un edificio.
+     */
     private void actualizarAlquiler(){
 
         int alquilerNuevo = 0;
@@ -335,28 +338,82 @@ public class Casilla {
 
     }
 
-    public void destruirEdificio(TipoEdificio tipoEdificio, int cantidad){
+    /**
+     * Función que destruye el número de edificios indicados.
+     * @param tipoEdificio tipo de edificio que se quiere destruir
+     * @param cantidad cantidad de edificios a destruir del tipo indicado en tipoEdificio
+     */
+    public int destruirEdificio(TipoEdificio tipoEdificio, int cantidad){
 
         if(tipoEdificio == null){
             System.err.println("tipoEdificio referencia a null.");
-            return;
+            return 0;
         }
-
+        //Se obtiene los edificios tipoEdificio que tiene la casilla y se calcula el número que hay.
         ArrayList<Edificio> edificios = getEdificiosContenidos().get(tipoEdificio);
         int size = edificios.size();
+
+        //Se calcula el número de edificios totales que hay en el tablero para poder reducir este número.
         int numEdificios = getGrupo().getTablero().getNumEdificios().get(tipoEdificio);
 
-        for(int i = 0; i < cantidad && i < size; i++) {
+        int i;
+        for(i = 0; i < cantidad && i < size; i++) {
             edificios.remove(0);
             numEdificios--;
         }
 
+        //Se actualiza el alquiler y el número de edificios totales.
         getGrupo().getTablero().getNumEdificios().put(tipoEdificio, numEdificios);
+        actualizarAlquiler();
 
+        //Devuelve el número de casillas que ha eliminado
+        return i;
     }
 
+    /**
+     * Método para que el propietario de la casilla venda tantos edificios como se indica
+     * @param jugador propietario de la casilla
+     * @param tipoEdificio tipo de edificio a vender
+     * @param cantidad número de edificios para vender
+     */
     public void venderEdificio(Jugador jugador, TipoEdificio tipoEdificio, int cantidad){
 
+        if(cantidad < 1){
+            System.err.println("No se puede vender un número negativo de edificios.");
+            return;
+        }
+        if(jugador == null){
+            System.err.println("jugador referencia a null");
+            return;
+        }
+        if(tipoEdificio == null){
+            System.err.println("tipoEdificio referencia a null");
+            return;
+        }
+        if(!jugador.equals(getPropietario())){
+            Output.mensaje("No puedes vender edificios de una casilla que no es tuya.");
+        }
+
+        int eliminados = destruirEdificio(tipoEdificio, cantidad);
+
+        int pago =(eliminados *
+                Edificio.calcularPrecioCompra(tipoEdificio, getGrupo().getTipo()))/2;
+
+        jugador.setFortuna(jugador.getFortuna() + pago);
+
+        if(eliminados == 0){
+
+            Output.respuesta("No hay edificios de tipo "+tipoEdificio.getNombre()+" en la casilla "+getNombre());
+            return;
+
+        }
+
+        if(eliminados != cantidad){
+            Output.respuesta("Solo se han podido vender "+eliminados+" edificios de tipo " + tipoEdificio.getNombre() + ".");
+        }
+
+        Output.respuesta("El jugador " + jugador.getNombre() +" ha vendido "+eliminados+" edificios de tipo " +
+                tipoEdificio.getNombre() + " por un valor de "+pago+" K €.");
     }
 
 

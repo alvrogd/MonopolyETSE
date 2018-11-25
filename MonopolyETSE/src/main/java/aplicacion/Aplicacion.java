@@ -428,6 +428,84 @@ public class Aplicacion {
                 }
                 break;
 
+            case "vender":
+                if(argc < 3){
+                    Output.errorComando("Opción del comando -vender- incorrecta.");
+                    salida.add(null);
+                    break;
+                }
+
+                int length = comando.get(2).length();
+                char[] argv = comando.get(2).toCharArray();
+                String auxiliar = "";
+
+                int count = 0;
+                for (i = 0; i < length; i++) {
+
+                    if (argv[i] == ' ' && count == 0) {
+                        comando.add(auxiliar);
+                        auxiliar = "";
+                        count++;
+                    } else {
+                        auxiliar += argv[i];
+                    }
+
+                }
+                comando.add(auxiliar);
+
+                switch(comando.get(1)){
+                    case "casas":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.casa);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "hoteles":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.hotel);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "piscina":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.piscina);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "pista":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.pistaDeporte);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "piscinas":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.piscina);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "hotel":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.hotel);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "casa":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.casa);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                    case "pistas":
+                        salida.add(TipoComando.vender);
+                        salida.add(TipoEdificio.pistaDeporte);
+                        salida.add(Integer.parseInt(comando.get(3)));
+                        salida.add(comando.get(4));
+                        break;
+                }
+
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -840,6 +918,31 @@ public class Aplicacion {
                 else
                     Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
                             " se mueve en modo estándar.");
+                break;
+
+            case vender:
+
+                if(!juego.isIniciado()){
+                    Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
+
+                if(comando.get(2) == null){
+                    System.err.println("Introducción comando vender incorrecta");
+                    return;
+                }
+
+                if(comando.get(3) == null){
+                    System.err.println("Introducción comando vender incorrecta");
+                    return;
+                }
+
+                TipoEdificio edificio = (TipoEdificio)comando.get(1);
+                Casilla casillaV = getJuego().getTablero().getCasillasTablero().get(comando.get(3).toString());
+                int cantidad = (Integer)comando.get(2);
+
+                getJuego().getTurno().venderEdificio(edificio, cantidad, casillaV);
+
                 break;
         }
     }

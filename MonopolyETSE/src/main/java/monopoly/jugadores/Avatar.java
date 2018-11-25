@@ -804,7 +804,7 @@ public class Avatar {
 
         // Si es un avatar de pelota, aún pueden quedar posiciones por moverse
         if (getCasillasRestantesPorMoverse() > 0)
-            avanzar(numeroCasillas);
+            avanzar(numeroCasillas, cobrarSalida, importeSalidaEstandar, multiplicador);
     }
 
 
