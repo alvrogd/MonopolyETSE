@@ -951,6 +951,11 @@ public class Aplicacion {
 
             case avanzar:
                 int casillasPorMoverse = getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
+
+                if(!getJuego().isIniciado()){
+                    Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
                 if(casillasPorMoverse <= 0){
                     Output.mensaje("No te quedan casillas por moverte, vuelve a tirar los dados.");
                     return;
