@@ -802,9 +802,10 @@ public class Avatar {
                 caerEnSolar(multiplicador);
         }
 
+        /*
         // Si es un avatar de pelota, aún pueden quedar posiciones por moverse
         if (getCasillasRestantesPorMoverse() > 0)
-            avanzar(numeroCasillas, cobrarSalida, importeSalidaEstandar, multiplicador);
+            avanzar(getCasillasRestantesPorMoverse(), cobrarSalida, importeSalidaEstandar, multiplicador);*/
     }
 
 
