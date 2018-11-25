@@ -271,6 +271,11 @@ public class Output {
         informacion.add(aux.toString());
 
         informacion.add(jugador.getAvatar().getPosicion().getNombre());
+
+        if(jugador.getAvatar().isMovimientoEstandar())
+            informacion.add("Estándar");
+        else
+            informacion.add("Avanzado");
         informacion.add("");
 
         imprimirCabecera(informacion, 1, 0);

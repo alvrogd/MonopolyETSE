@@ -410,6 +410,24 @@ public class Aplicacion {
                 }
                 break;
 
+            case "cambiar":
+                if(argc < 2){
+                    Output.errorComando("Opción del comando -cambiar- incorrecta.");
+                    salida.add(null);
+                    break;
+                }
+                switch(comando.get(1)){
+                    case "modo":
+                        salida.add(TipoComando.cambiarModo);
+                        break;
+
+                    default:
+                        Output.errorComando("Opción del comando -cambiar- incorrecta.");
+                        salida.add(null);
+                        break;
+                }
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -801,6 +819,27 @@ public class Aplicacion {
                 }
 
                 getJuego().getTurno().crearEdificio((TipoEdificio)comando.get(1));
+                break;
+
+            case cambiarModo:
+
+                boolean isEstandar;
+
+                if(!juego.isIniciado()){
+                    Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
+
+                isEstandar = getJuego().getTurno().getAvatar().isMovimientoEstandar();
+
+                getJuego().getTurno().getAvatar().setMovimientoEstandar(!isEstandar);
+
+                if(isEstandar)
+                    Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
+                            " mueve en modo avanzado.");
+                else
+                    Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
+                            " mueve en modo estándar.");
                 break;
         }
     }

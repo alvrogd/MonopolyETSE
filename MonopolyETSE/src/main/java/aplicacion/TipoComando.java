@@ -20,6 +20,7 @@ public enum TipoComando {
     listarVentas("listar enventa"),
     verTablero("ver tablero"),
     edificar("edificar"),
+    cambiarModo("cambiar modo"),
     ayuda("ayuda");
 
     /*Atributos*/
