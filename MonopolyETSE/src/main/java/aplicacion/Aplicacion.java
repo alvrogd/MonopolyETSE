@@ -506,6 +506,10 @@ public class Aplicacion {
 
                 break;
 
+            case "avanzar":
+                salida.add(TipoComando.avanzar);
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -943,6 +947,16 @@ public class Aplicacion {
 
                 getJuego().getTurno().venderEdificio(edificio, cantidad, casillaV);
 
+                break;
+
+            case avanzar:
+                int casillasPorMoverse = getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
+                if(casillasPorMoverse <= 0){
+                    Output.mensaje("No te quedan casillas por moverte, vuelve a tirar los dados.");
+                    return;
+                }
+
+                getJuego().getTurno().getAvatar().avanzar(casillasPorMoverse);
                 break;
         }
     }
