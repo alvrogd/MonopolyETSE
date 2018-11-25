@@ -570,6 +570,7 @@ public class Output {
         if (valorCasilla >= 0) {
 
             int alquiler = casilla.getAlquiler();
+            int importe = casilla.getImporteCompra()/10;
 
             if (casilla.getGrupo().getTipo() == TipoGrupo.impuesto1 ||
                     casilla.getGrupo().getTipo() == TipoGrupo.impuesto2) {
@@ -703,19 +704,19 @@ public class Output {
                     informacion.add("        -> Valor pista de deporte:           " + aux + "K €");
 
                     informacion.add("");
-                    informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * alquiler
+                    informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * alquiler
+                    informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * alquiler
+                    informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * alquiler
+                    informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * alquiler
+                    informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * alquiler
+                    informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * importe
                             + "K €");
-                    informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * alquiler
+                    informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * importe
                             + "K €");
                 }
             }

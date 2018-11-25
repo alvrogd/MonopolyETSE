@@ -342,7 +342,7 @@ public class Juego {
 
         // En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado antes el precio
         // de los solares
-        if (this.vueltasMin == 4 && !this.seHaIncrementado) {
+        if (this.vueltasMin%4 == 0 && !this.seHaIncrementado && this.vueltasMin != 0) {
 
             //Se miran todas las casillas del tablero y en caso de que sean comprables y no sean ni transportes ni
             //servicios se incrementa el precio del grupo en Constantes.INCREMENTO_VUELTAS
@@ -360,7 +360,7 @@ public class Juego {
                         if (casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
                                 casilla.getGrupo().getTipo() != TipoGrupo.servicios) {
 
-                            //Se establece el nuevo precio.
+                            //Se establece el nuevo precio en caso de que no se haya comprado la casilla.
                             casilla.getGrupo().setPrecio(
                                     (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * casilla.getGrupo().getPrecio()));
 

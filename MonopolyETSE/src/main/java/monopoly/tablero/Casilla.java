@@ -278,7 +278,60 @@ public class Casilla {
 
         getEdificiosContenidos().get(tipoEdificio).add(edificacion);
 
+        setAlquiler(getAlquiler());
+
         Output.respuesta("Has creado tu edificio con id " + edificacion.getId());
+
+        actualizarAlquiler();
+
+    }
+
+    private void actualizarAlquiler(){
+
+        int alquilerNuevo = 0;
+        int importe = getImporteCompra()/10;
+
+        for(TipoEdificio aux : TipoEdificio.values()){
+
+            ArrayList<Edificio> edificios = getEdificiosContenidos().get(aux);
+            int size = edificios.size();
+
+            switch(aux){
+
+                case casa:
+                    switch(size){
+                        case 1:
+                            alquilerNuevo += (importe*Constantes.ALQ_UNACASA);
+                            break;
+                        case 2:
+                            alquilerNuevo += (importe*Constantes.ALQ_DOSCASA);
+                            break;
+                        case 3:
+                            alquilerNuevo += (importe*Constantes.ALQ_TRESCASA);
+                            break;
+                        case 4:
+                            alquilerNuevo += (importe*Constantes.ALQ_CUATROCASA);
+                            break;
+                    }
+                    break;
+
+                case hotel:
+                    alquilerNuevo += size*importe*Constantes.ALQ_HOTEL;
+                    break;
+
+                case piscina:
+                    alquilerNuevo += size*importe*Constantes.ALQ_PISCINA;
+                    break;
+
+                case pistaDeporte:
+                    alquilerNuevo += size*importe*Constantes.ALQ_PISTADEPORTE;
+                    break;
+
+            }
+
+        }
+
+        setAlquiler(alquilerNuevo);
 
     }
 
