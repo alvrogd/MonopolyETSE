@@ -357,7 +357,7 @@ public class Casilla {
         for(i = 0; i < cantidad && i < size; i++) {
             edificios.remove(0);
         }
-        
+
         actualizarAlquiler();
 
         //Devuelve el número de casillas que ha eliminado
