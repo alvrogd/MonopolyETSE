@@ -216,25 +216,12 @@ public class Jugador {
     /* Métodos */
 
     /**
-     * Se redirige un pago a un jugador con una cantidad en punto flotante a la función que gestiona el pago con un
-     * número entero
-     *
-     * @param receptor jugador al que pagar el importe
-     * @param importe  cantidad a pagar
-     */
-    public void pagar(Jugador receptor, double importe) {
-        pagar(receptor, (int) importe);
-    }
-
-
-    /**
      * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
      * bancarrota y sus propiedades se transfieren al deudor
      *
      * @param receptor jugador al que pagar el importe
      * @param importe  cantidad a pagar
      */
-    // todo método para pagar a varios jugadores
     public void pagar(Jugador receptor, int importe) {
 
         if (receptor == null) {
@@ -248,23 +235,8 @@ public class Jugador {
         }
 
         // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
-        if (balanceNegativoTrasPago(importe)) {
-
-            Output.respuesta("¡El jugador ha caído en bancarrota!",
-                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
-
-            ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
-
-            while (!propiedadesEndeudado.isEmpty()) {
-
-                Casilla casilla = propiedadesEndeudado.get(0);
-                transferirCasilla(this, receptor, casilla);
-
-            }
-
-            setEstaBancarrota(true);
-
-        }
+        if (balanceNegativoTrasPago(importe))
+            caerEnBancarrota(this, receptor);
 
         // En caso contrario, dispone de la suficiente liquidez como para pagar
         else {
@@ -279,27 +251,25 @@ public class Jugador {
     }
 
     /**
-     * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
+     * Se paga a varios jugadores una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
      * bancarrota y sus propiedades se transfieren al deudor
      *
      * @param jugadores jugadores a los que pagar el importe
-     * @param importe  cantidad a pagar
+     * @param importe   cantidad a pagar
      */
-    // todo método para pagar a varios jugadores
     public void pagar(ArrayList<Jugador> jugadores, int importe) {
 
         if (jugadores == null) {
-            System.err.println("Jugador no inicializado.");
+            System.err.println("Jugadores no inicializados.");
             return;
         }
 
-        for( Jugador jugador : jugadores ) {
+        for (Jugador jugador : jugadores) {
 
-            if (jugadores == null) {
+            if (jugador == null) {
                 System.err.println("Jugador no inicializado.");
                 return;
             }
-            
         }
 
         if (importe < 0) {
@@ -307,34 +277,29 @@ public class Jugador {
             return;
         }
 
-        // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
-        if (balanceNegativoTrasPago(importe)) {
+        StringBuilder receptores = new StringBuilder();
 
-            Output.respuesta("¡El jugador ha caído en bancarrota!",
-                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
+        for (Jugador jugador : jugadores) {
 
-            ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
+            // Si no es el propio jugador y no ha caido en bancarrota
+            if (!jugador.equals(this) && !isEstaBancarrota()) {
 
-            while (!propiedadesEndeudado.isEmpty()) {
+                // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
+                if (balanceNegativoTrasPago(importe))
+                    caerEnBancarrota(this, jugador);
 
-                Casilla casilla = propiedadesEndeudado.get(0);
-                transferirCasilla(this, receptor, casilla);
-
+                // En caso contrario, dispone de la suficiente liquidez como para pagar
+                else {
+                    setFortuna(getFortuna() - importe);
+                    receptores.append(jugador.getNombre()).append("\t");
+                    jugador.setFortuna(jugador.getFortuna() + importe);
+                }
             }
-
-            setEstaBancarrota(true);
-
         }
 
-        // En caso contrario, dispone de la suficiente liquidez como para pagar
-        else {
-            setFortuna(getFortuna() - importe);
-
-            Output.respuesta("Se ha efectuado un pago:",
-                    "        -> Receptor: " + receptor.getNombre(),
-                    "        -> Importe: " + importe);
-            receptor.setFortuna(receptor.getFortuna() + importe);
-        }
+        Output.respuesta("Se han efectuado los siguientes pagos:",
+                "        -> Receptores: " + receptores.toString(),
+                "        -> Importe: " + importe);
 
     }
 
@@ -580,6 +545,29 @@ public class Jugador {
     }
 
 
+    private void caerEnBancarrota( Jugador endeudado, Jugador deudor ) {
+
+        if( endeudado == null ) {
+            System.err.println( "Endeudado no inicializado" );
+            return;
+        }
+
+        if( deudor == null ) {
+            System.err.println("Deudor no inicializado");
+            return;
+        }
+
+        if( isEstaBancarrota() )
+            return;
+
+        Output.respuesta("¡El jugador ha caído en bancarrota!",
+                "Transfiriendo todas las propiedades al jugador " + deudor.getNombre());
+
+        transferirCasilla(endeudado, deudor, endeudado.getPropiedades());
+        setEstaBancarrota(true);
+    }
+
+
     /**
      * Se transfiere una casilla dada de un jugador a otro
      *
@@ -587,7 +575,6 @@ public class Jugador {
      * @param receptor jugador que va a obtener la casilla
      * @param casilla  casilla a transferir
      */
-    // todo método con una casilla y ArrayList
     private void transferirCasilla(Jugador emisor, Jugador receptor, Casilla casilla) {
 
         if (emisor == null) {
@@ -612,6 +599,50 @@ public class Jugador {
         Output.respuesta("Se ha transferido la casilla:",
                 "        -> Receptor: " + receptor.getNombre(),
                 "        -> Casilla: " + casilla.getNombre());
+
+    }
+
+
+    private void transferirCasilla(Jugador emisor, Jugador receptor, ArrayList<Casilla> casillas) {
+
+        if (emisor == null) {
+            System.err.println("Emisor no inicializado.");
+            return;
+        }
+
+        if (receptor == null) {
+            System.err.println("Receptor no inicializado.");
+            return;
+        }
+
+        if (casillas == null) {
+            System.err.println("Casillas no inicializadas.");
+            return;
+        }
+
+        for( Casilla casilla : casillas ) {
+
+            if( casilla == null ) {
+                System.err.println("Casilla no inicializada");
+                return;
+            }
+        }
+
+        StringBuilder transferidas = new StringBuilder();
+
+        while (!casillas.isEmpty()) {
+
+            Casilla casilla = casillas.get(0);
+            casilla.setPropietario(receptor);
+            receptor.getPropiedades().add(casilla);
+            emisor.getPropiedades().remove(casilla);
+            transferidas.append(casilla.getNombre()).append('\t');
+
+        }
+
+        Output.respuesta("Se han transferido las casillas:",
+                "        -> Receptor: " + receptor.getNombre(),
+                "        -> Casillas: " + transferidas.toString());
 
     }
 
@@ -670,7 +701,7 @@ public class Jugador {
             return;
         }
 
-        if(!casilla.getGrupo().getTipo().getTipoCasilla().equals("solar")){
+        if (!casilla.getGrupo().getTipo().getTipoCasilla().equals("solar")) {
             Output.respuesta("La casilla no es un solar");
             return;
         }
@@ -794,13 +825,7 @@ public class Jugador {
 
             final Collection<Jugador> jugadores = getAvatar().getTablero().getJuego().getJugadores().values();
 
-            for (Jugador jugador : jugadores) {
-
-                // Si no es el propio jugador
-                if(!jugador.equals(this))
-                    pagar(jugador, importe);
-
-            }
+            pagar(new ArrayList<>(jugadores), importe);
         }
     }
 
@@ -874,7 +899,7 @@ public class Jugador {
             getAvatar().switchMovimiento();
 
         // Se avanzan las casillas dadas
-        getAvatar().avanzar(numeroCasillas, tipoMovimiento.isCobrarCasillaSalida(), false, tipoMovimiento.getMultiplicadorPago() );
+        getAvatar().avanzar(numeroCasillas, tipoMovimiento.isCobrarCasillaSalida(), false, tipoMovimiento.getMultiplicadorPago());
 
         // Y se devuelve el modo de movimiento a su estado original si fue modificado
         if (!movimientoEstandar)
