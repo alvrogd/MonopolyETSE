@@ -9,10 +9,11 @@ public class Edificio {
     private final TipoEdificio tipo;
     private final int precioCompra;
     private final String id;
+    private final Casilla posicion;
 
     /* Constructor */
 
-    public Edificio(Tablero tablero, TipoEdificio tipoEdificio, TipoGrupo grupo) {
+    public Edificio(Casilla posicion, TipoEdificio tipoEdificio, TipoGrupo grupo) {
 
         StringBuilder newId = new StringBuilder();
         Integer numEdificio;
@@ -28,10 +29,12 @@ public class Edificio {
             System.exit(1);
         }
 
-        if (tablero == null) {
-            System.out.println("Tablero referencia a null");
+        if (posicion == null) {
+            System.out.println("Casilla referencia a null");
             System.exit(1);
         }
+
+        Tablero tablero = posicion.getGrupo().getTablero();
 
         numEdificio = tablero.getNumEdificios().get(tipoEdificio);
 
@@ -51,6 +54,8 @@ public class Edificio {
 
         precioCompra = (int) (grupo.getPrecioInicial() * tipoEdificio.getCompra());
 
+        this.posicion = posicion;
+
     }
 
     /* Getters */
@@ -64,6 +69,10 @@ public class Edificio {
 
     public String getId() {
         return id;
+    }
+
+    public Casilla getPosicion() {
+        return posicion;
     }
 
     /**

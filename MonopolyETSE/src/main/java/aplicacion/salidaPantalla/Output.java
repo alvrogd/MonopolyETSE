@@ -798,6 +798,28 @@ public class Output {
 
     }
 
+    /**
+     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del edificio.
+     * @param edificio edificio del que se guarda la información.
+     */
+    public static ArrayList<String> EdificiotoArrayString(Edificio edificio){
+
+        ArrayList<String> info = new ArrayList<>();
+
+        info.add("(*) Edificio id: "+edificio.getId());
+
+        info.add("      -> Propietario: " + edificio.getPosicion().getPropietario().getNombre());
+
+        info.add("      -> Casilla    : " +edificio.getPosicion().getNombre());
+
+        info.add("      -> Grupo      : " +edificio.getPosicion().getGrupo().getTipo().toString());
+
+        info.add("      -> Coste      : " +edificio.getPrecioCompra());
+
+        return info;
+
+    }
+
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo error

@@ -7,8 +7,7 @@ import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
-import monopoly.tablero.Casilla;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -215,6 +214,12 @@ public class Aplicacion {
 
                     case "enventa":
                         salida.add(TipoComando.listarVentas);
+                        break;
+
+                    case "edificios":
+                        salida.add(TipoComando.listarEdificios);
+                        if(argc >= 3)
+                            salida.add(comando.get(2));
                         break;
 
                     default:
@@ -728,6 +733,98 @@ public class Aplicacion {
                 Output.respuesta(resp);
                 break;
 
+            case listarEdificios:
+
+                ArrayList<String> res = new ArrayList<>();
+                Grupo grupo = null;
+
+                if(comando.size() == 2){
+
+                    TipoGrupo tipoGrupo;
+                    switch(comando.get(1).toString()){
+
+                        case "negro":
+                            tipoGrupo = TipoGrupo.negro;
+                            break;
+
+                        case "cyan":
+                            tipoGrupo = TipoGrupo.cyan;
+                            break;
+
+                        case "rosa":
+                            tipoGrupo = TipoGrupo.rosa;
+                            break;
+
+                        case "naranja":
+                            tipoGrupo = TipoGrupo.naranja;
+                            break;
+
+                        case "rojo":
+                            tipoGrupo = TipoGrupo.rojo;
+                            break;
+
+                        case "marron":
+                            tipoGrupo = TipoGrupo.marron;
+                            break;
+
+                        case "verde":
+                            tipoGrupo = TipoGrupo.verde;
+                            break;
+
+                        case "azul":
+                            tipoGrupo = TipoGrupo.azul;
+                            break;
+
+                        default:
+                            Output.respuesta("Ese grupo no existe.");
+                            return;
+                    }
+
+                    grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
+
+                    res.add("Los edificios del grupo "+tipoGrupo.toString()+" son los siguientes.");
+
+                    for(Casilla casilla : grupo.getCasillas()){
+
+                        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+                            for(Edificio edificio : casilla.getEdificiosContenidos().get(tipoEdificio)){
+
+                                res.addAll(Output.EdificiotoArrayString(edificio));
+                                res.add(" ");
+
+                            }
+
+                        }
+
+                    }
+
+                } else {
+
+                    res.add("Los edificios del tablero son los siguientes.");
+
+                    for(TipoGrupo tipoGrupo : TipoGrupo.values()){
+
+                        grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
+
+                        for(Casilla casilla : grupo.getCasillas()){
+
+                            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+                                for(Edificio edificio : casilla.getEdificiosContenidos().get(tipoEdificio)){
+
+                                    res.addAll(Output.EdificiotoArrayString(edificio));
+                                    res.add(" ");
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Output.respuesta(res);
+                break;
+
             case lanzarDados:
                 if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
@@ -912,16 +1009,8 @@ public class Aplicacion {
                     return;
                 }
 
-                isEstandar = getJuego().getTurno().getAvatar().isMovimientoEstandar();
+                getJuego().getTurno().getAvatar().switchMovimiento();
 
-                getJuego().getTurno().getAvatar().setMovimientoEstandar(!isEstandar);
-
-                if(isEstandar)
-                    Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
-                            " se mueve en modo avanzado.");
-                else
-                    Output.respuesta("Ahora el avatar "+getJuego().getTurno().getAvatar().getIdentificador()+
-                            " se mueve en modo estándar.");
                 break;
 
             case vender:
@@ -965,6 +1054,8 @@ public class Aplicacion {
                 break;
         }
     }
+
+
 }
 
 
