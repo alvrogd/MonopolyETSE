@@ -291,7 +291,7 @@ public class Jugador {
                 // En caso contrario, dispone de la suficiente liquidez como para pagar
                 else {
                     setFortuna(getFortuna() - importe);
-                    receptores.append(jugador.getNombre()).append("\t");
+                    receptores.append(jugador.getNombre()).append("  ");
                     jugador.setFortuna(jugador.getFortuna() + importe);
                 }
             }
@@ -547,6 +547,11 @@ public class Jugador {
     }
 
 
+    /**
+     * Un jugador dado cae en bancarrota, transfiriendo todas sus propiedades al deudor
+     * @param endeudado jugador que cae en bancarrota
+     * @param deudor deudor del jugador que cae en bancarrota
+     */
     private void caerEnBancarrota( Jugador endeudado, Jugador deudor ) {
 
         if( endeudado == null ) {
@@ -605,6 +610,13 @@ public class Jugador {
     }
 
 
+    /**
+     * Se transfiere un conjunto de casillas dadas de un jugador a otro
+     *
+     * @param emisor   jugador que posee la casilla a transferir
+     * @param receptor jugador que va a obtener la casilla
+     * @param casillas casillas a transferir
+     */
     private void transferirCasilla(Jugador emisor, Jugador receptor, ArrayList<Casilla> casillas) {
 
         if (emisor == null) {
@@ -638,7 +650,7 @@ public class Jugador {
             casilla.setPropietario(receptor);
             receptor.getPropiedades().add(casilla);
             emisor.getPropiedades().remove(casilla);
-            transferidas.append(casilla.getNombre()).append('\t');
+            transferidas.append(casilla.getNombre()).append("  ");
 
         }
 

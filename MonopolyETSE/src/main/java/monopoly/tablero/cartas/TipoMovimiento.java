@@ -2,16 +2,16 @@ package monopoly.tablero.cartas;
 
 public enum TipoMovimiento {
 
-    moverAeropuerto( true, "Imperial Destroyer", 0, true, 1 ),
-    moverCadiz( true, "Hogwarts", 0, true, 1 ),
-    moverCaceres( true, "Endor", 0, true, 1 ),
-    moverCarcel( true, "Azkaban", 0, false, 1 ),
-    moverLeganes( true, "Braavos", 0, true, 1 ),
-    moverTrafico( false, "", -3, false, 1 ),
-    moverTransporte( true, "transporte", 0, true, 2 ),
-    moverSalida( true, "malloc(game)", 0, true, 1 ),
-    moverValencia( true, "Platform 9 3/4", 0, false, 1 ),
-    moverPamplona( true, "Moria", 0, true, 1 );
+    moverAeropuerto( true, "Imperial Destroyer", 0, true, 1, "" ),
+    moverCadiz( true, "Hogwarts", 0, true, 1, "" ),
+    moverCaceres( true, "Endor", 0, true, 1, "" ),
+    moverCarcel( true, "Azkaban", 0, false, 1, "" ),
+    moverLeganes( true, "Braavos", 0, true, 1, "" ),
+    moverTrafico( false, "", -3, false, 1, "" ),
+    moverTransporte( true, "transporte", 0, true, 2, "" ),
+    moverSalida( true, "malloc(game)", 0, true, 1, "" ),
+    moverValencia( true, "Platform 9 3/4", 0, false, 1, "" ),
+    moverPamplona( true, "Moria", 0, true, 1, "" );
 
 
 
@@ -31,17 +31,21 @@ public enum TipoMovimiento {
     // Multiplicador de pago de alquiler
     private final int multiplicadorPago;
 
+    // Descripción de la carta
+    private final String descripcion;
+
 
 
     /* Constructor */
     private TipoMovimiento( boolean moverseDirectamente, String nombreCasillaDestino, int casillasDesplazarse, boolean
-            cobrarCasillaSalida, int multiplicadorPago ) {
+            cobrarCasillaSalida, int multiplicadorPago, String descripcion ) {
 
         this.moverseDirectamente = moverseDirectamente;
         this.nombreCasillaDestino = nombreCasillaDestino;
         this.casillasDesplazarse = casillasDesplazarse;
         this.cobrarCasillaSalida = cobrarCasillaSalida;
         this.multiplicadorPago = multiplicadorPago;
+        this.descripcion = descripcion;
     }
 
 
@@ -67,4 +71,9 @@ public enum TipoMovimiento {
     public int getMultiplicadorPago() {
         return multiplicadorPago;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
 }

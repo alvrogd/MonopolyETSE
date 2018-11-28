@@ -523,6 +523,12 @@ public class Avatar {
     }
 
 
+    /**
+     * Se actualiza la posición del avatar empleando el movimiento estándar
+     *
+     * @param numeroCasillas número de casillas a moverse
+     * @return posición de la casilla en el tablero a la que el avatar se ha movido
+     */
     private int actualizarPosicionNormal(int numeroCasillas) {
 
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
@@ -539,6 +545,12 @@ public class Avatar {
     }
 
 
+    /**
+     * Se actualiza la posición del avatar empleando el movimiento avanzado de un coche
+     *
+     * @param numeroCasillas número de casillas a moverse
+     * @return posición de la casilla en el tablero a la que el avatar se ha movido
+     */
     private int actualizarPosicionCoche(int numeroCasillas) {
 
         // Se asigna inicialmente el número de casilla inicial
@@ -579,6 +591,12 @@ public class Avatar {
     }
 
 
+    /**
+     * Se actualiza la posición del avatar empleando el movimiento avanzado de una pelota
+     *
+     * @param numeroCasillas número de casillas a moverse
+     * @return posición de la casilla en el tablero a la que el avatar se ha movido
+     */
     private int actualizarPosicionPelota(int numeroCasillas, boolean avanzar) {
 
         // Se asigna inicialmente el número de casilla inicial
@@ -732,12 +750,27 @@ public class Avatar {
     }
 
 
+    /**
+     * El avatar se mueve en el tablero un número de casillas dado
+     *
+     * @param numeroCasillas número de casillas a moverse
+     */
     public void avanzar(int numeroCasillas) {
 
         avanzar(numeroCasillas, true, true, 1);
     }
 
 
+    /**
+     * El avatar se mueve en el tablero, sujeto a condiciones en función de si es un movimiento resultado de una tirada
+     * o si es resultado de haber sacado una carta de suerte o de comunidad
+     *
+     * @param numeroCasillas número de casillas a moverse
+     * @param cobrarSalida si se debe cobrar el importe correspondiente en caso de pasar por la casilla de salida
+     * @param importeSalidaEstandar si el importe a cobrar si se pasa por la casilla de salida es el estándar o el
+     *                              establecido al escoger una carta de movimiento
+     * @param multiplicador multiplicador del pago a realizar en caso de caer en una propiedad de otro jugador
+     */
     public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador) {
 
         if (ishaMovidoCasillasTirada()) {
@@ -838,6 +871,9 @@ public class Avatar {
     }
 
 
+    /**
+     * Se escoge una carta de suerte
+     */
     private void caerEnSuerte() {
 
         Scanner scanner = new Scanner(System.in);
@@ -855,6 +891,9 @@ public class Avatar {
     }
 
 
+    /**
+     * Se escoge una carta de comunidad
+     */
     private void caerEnComunidad() {
 
         Scanner scanner = new Scanner(System.in);
