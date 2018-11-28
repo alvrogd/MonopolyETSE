@@ -335,11 +335,6 @@ public class Juego {
             if (getTurno().getTurnosPenalizado() != 0)
                 getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
 
-            // todo el setter no debería llevar una condición de que turnos penalizados no sea negativo?
-            // todo creo que tienes que poner en que cuando se sacan dados dobles se puedan comprar igualmente las
-            // casillas, ya que como se establece que al comprar una casilla ya no se pueden comprar más por el
-            // tema del coche, si salen dobles si que se podría con un avatar normal por ejemplo.
-
             //Se establece el booleano de se han lanzado los dados a false.
             this.haLanzadoDados = false;
 

@@ -278,6 +278,66 @@ public class Jugador {
 
     }
 
+    /**
+     * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
+     * bancarrota y sus propiedades se transfieren al deudor
+     *
+     * @param jugadores jugadores a los que pagar el importe
+     * @param importe  cantidad a pagar
+     */
+    // todo método para pagar a varios jugadores
+    public void pagar(ArrayList<Jugador> jugadores, int importe) {
+
+        if (jugadores == null) {
+            System.err.println("Jugador no inicializado.");
+            return;
+        }
+
+        for( Jugador jugador : jugadores ) {
+
+            if (jugadores == null) {
+                System.err.println("Jugador no inicializado.");
+                return;
+            }
+            
+        }
+
+        if (importe < 0) {
+            Output.sugerencia("No se puede pagar a un jugador una cantidad menor a 0.");
+            return;
+        }
+
+        // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
+        if (balanceNegativoTrasPago(importe)) {
+
+            Output.respuesta("¡El jugador ha caído en bancarrota!",
+                    "Transfiriendo todas las propiedades al jugador " + receptor.getNombre());
+
+            ArrayList<Casilla> propiedadesEndeudado = getPropiedades();
+
+            while (!propiedadesEndeudado.isEmpty()) {
+
+                Casilla casilla = propiedadesEndeudado.get(0);
+                transferirCasilla(this, receptor, casilla);
+
+            }
+
+            setEstaBancarrota(true);
+
+        }
+
+        // En caso contrario, dispone de la suficiente liquidez como para pagar
+        else {
+            setFortuna(getFortuna() - importe);
+
+            Output.respuesta("Se ha efectuado un pago:",
+                    "        -> Receptor: " + receptor.getNombre(),
+                    "        -> Importe: " + importe);
+            receptor.setFortuna(receptor.getFortuna() + importe);
+        }
+
+    }
+
 
     /**
      * Se compra una casilla a un jugador pagando el correspondiente importe, en caso de disponer de la suficiente
