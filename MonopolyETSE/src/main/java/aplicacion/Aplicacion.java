@@ -584,7 +584,7 @@ public class Aplicacion {
                         idEdificios.append("No hay ").append(tipoEdificio.getPlural()).append("}");
                     } else {
                         int length = idEdificios.length();
-                        idEdificios.replace(length, length, "}");
+                        idEdificios.replace(length-1, length-1, "}");
                     }
 
                     if (tipoEdificio.equals(TipoEdificio.casa) &&
@@ -595,8 +595,7 @@ public class Aplicacion {
                         construcciones = numCasillas - numEdificio;
                     }
 
-                    idEdificios.append(tipoEdificio.getEspacios());
-
+                    //todo ponlo bonito
                     if(construcciones == 0){
                         idEdificios.append(" | No se pueden construir más ").append(tipoEdificio.getPlural());
                     }
@@ -614,7 +613,7 @@ public class Aplicacion {
 
         if(!flagGrupo){
 
-            res.add("[!] No hay edificios en este grupo.");
+            res.add("(!) No hay edificios en este grupo.");
 
         }
 
@@ -905,7 +904,7 @@ public class Aplicacion {
 
                     if(!flag){
 
-                        res.add("[!] No hay edificios en el tablero.");
+                        res.add("(!) No hay edificios en el tablero.");
 
                     }
 
