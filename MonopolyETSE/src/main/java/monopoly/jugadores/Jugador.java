@@ -500,6 +500,8 @@ public class Jugador {
 
         setTiradasEnTurno(getTiradasEnTurno() + 1);
 
+        getAvatar().getTablero().getJuego().setHaHechoUnaTirada(true);
+
         // Si se han sacado tres dobles y no se trata de un avatar coche en movimiento avanzado, el jugador es
         // encarcelado
         if (getTiradasEnTurno() == 3 && dobles && (!getAvatar().getTipo().equals(TipoAvatar.coche) &&
@@ -507,7 +509,7 @@ public class Jugador {
 
             getAvatar().caerEnIrACarcel();
 
-            // En caso contrario, se mueve normalmente
+        // En caso contrario, se mueve normalmente
         else {
 
             // Si es un avatar coche, puede volver a lanzar hasta 4 veces si se encuentra en modo avanzado y saca un
@@ -517,7 +519,7 @@ public class Jugador {
 
                 getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
 
-                // Sino, depende de si se han sacado dobles
+            // Sino, depende de si se han sacado dobles
             else
                 getAvatar().getTablero().getJuego().setHaLanzadoDados(!dobles);
 

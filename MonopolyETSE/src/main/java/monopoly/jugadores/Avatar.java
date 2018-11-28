@@ -670,13 +670,18 @@ public class Avatar {
     /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      */
-    // todo cuándo se debería poder cambiar el tipo de movimiento?
     public void switchMovimiento() {
 
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
         // movimiento
         if (!ishaMovidoCasillasTirada()) {
             Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
+            return;
+        }
+
+        // Si es un coche y se ha movido ya
+        if (getTipo().equals(TipoAvatar.coche) && getTablero().getJuego().isHaHechoUnaTirada()) {
+            Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
             return;
         }
 
@@ -1024,7 +1029,6 @@ public class Avatar {
      * cárcel a 0, se incrementa en 1 el número de vueltas completadas, y se llama al tablero para actualizar las
      * vueltas completadas por cada jugador
      */
-    // todo manejar pago en función de si se mueve por una carta o no
     private void pasarPorSalida(boolean cobrarSalida, boolean importeSalidaEstandar) {
 
         // Si no ha estado en la carcel y se permite, se le suma el correspondiente importe a su fortuna

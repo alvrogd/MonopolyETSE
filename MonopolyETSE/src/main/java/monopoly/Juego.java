@@ -53,6 +53,8 @@ public class Juego {
 
     //Booleano para saber si el usuario puede volver a tirar los dados
     private boolean haLanzadoDados;
+    // Si ha realizado ya una tirada
+    private boolean haHechoUnaTirada;
 
     //Booleano para saber si el usuario ha acabado el movimiento actual.
     private boolean haAcabadoMovimiento;
@@ -83,6 +85,7 @@ public class Juego {
         seHaIncrementado = false;
         finalizado = false;
         haLanzadoDados = false;
+        haHechoUnaTirada = false;
         haAcabadoMovimiento = false;
         haCompradoPropiedad = false;
         anadirCartas();
@@ -216,6 +219,14 @@ public class Juego {
         this.haLanzadoDados = haLanzadoDados;
     }
 
+    public boolean isHaHechoUnaTirada() {
+        return haHechoUnaTirada;
+    }
+
+    public void setHaHechoUnaTirada(boolean haHechoUnaTirada) {
+        this.haHechoUnaTirada = haHechoUnaTirada;
+    }
+
     public boolean isIniciado() {
         return iniciado;
     }
@@ -337,6 +348,9 @@ public class Juego {
 
             //Se establece el booleano de se han lanzado los dados a false.
             this.haLanzadoDados = false;
+
+            // Al igual que el indicador de haber realizado una tirada
+            setHaHechoUnaTirada(false);
 
             // Y el indicador de haber comprado una propiedad
             setHaCompradoPropiedad(false);
