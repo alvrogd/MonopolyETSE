@@ -727,7 +727,7 @@ public class Jugador {
 
         // El usuario debe, o bien haber caído más de dos veces en la casilla para edificar, o bien poseer todos los
         // solares del grupo
-        if (getAvatar().getVecesCaidasEnCasillas().get(casilla.getPosicionEnTablero()) > 2 ||
+        if (getAvatar().getVecesCaidasEnPropiedades().get(casilla.getPosicionEnTablero()) > 2 ||
                 haObtenidoSolaresGrupo(casilla.getGrupo()))
 
             casilla.edificar(this, tipoEdificio);

@@ -36,6 +36,8 @@ public class Avatar {
     private Casilla posicion;
     // Veces caídas en casa casilla
     private ArrayList<Integer> vecesCaidasEnCasillas;
+    // Veces caídas en cada propiedad
+    private ArrayList<Integer> vecesCaidasEnPropiedades;
 
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
@@ -80,6 +82,7 @@ public class Avatar {
         haPasadoSalida = false;
         posicion = null;
         vecesCaidasEnCasillas = null;
+        vecesCaidasEnPropiedades = null;
 
         identificador = 'B';
 
@@ -138,8 +141,11 @@ public class Avatar {
         haPasadoSalida = false;
         posicion = casillaInicial;
         vecesCaidasEnCasillas = new ArrayList<>();
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < Constantes.NUMERO_CASILLAS; i++)
             vecesCaidasEnCasillas.add(0);
+        vecesCaidasEnPropiedades = new ArrayList<>();
+        for (int i = 0; i < Constantes.NUMERO_CASILLAS; i++)
+            vecesCaidasEnPropiedades.add(0);
 
         // Identificador aleatorio y único
         Random random = new Random();
@@ -258,9 +264,11 @@ public class Avatar {
 
     }
 
+
     public ArrayList<Integer> getVecesCaidasEnCasillas() {
         return vecesCaidasEnCasillas;
     }
+
 
     public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
 
@@ -271,6 +279,23 @@ public class Avatar {
 
         this.vecesCaidasEnCasillas = vecesCaidasEnCasillas;
     }
+
+
+    public ArrayList<Integer> getVecesCaidasEnPropiedades() {
+        return vecesCaidasEnPropiedades;
+    }
+
+
+    public void setVecesCaidasEnPropiedades(ArrayList<Integer> vecesCaidasEnPropiedades) {
+
+        if (vecesCaidasEnPropiedades == null) {
+            System.err.println("ArrayList no inicializado.");
+            return;
+        }
+
+        this.vecesCaidasEnPropiedades = vecesCaidasEnPropiedades;
+    }
+
 
     public char getIdentificador() {
         return (identificador);
@@ -517,6 +542,10 @@ public class Avatar {
 
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+        // También se actualiza en caso de que sea propiedad del propio jugador
+        if( getPosicion().getPropietario().equals(getJugador()))
+            getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 

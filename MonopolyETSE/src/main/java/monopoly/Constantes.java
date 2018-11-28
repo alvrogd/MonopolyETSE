@@ -13,6 +13,8 @@ public final class Constantes {
     public final static double INCREMENTO_VUELTAS = 0.05;
     public final static int NUMERO_VUELTAS_INCREMENTO = 4;
 
+    // Número de casillas
+    public final static int NUMERO_CASILLAS = 40;
     // Número de solares
     public final static int NUMERO_SOLARES = 25;
     // Incremento del precio de un grupo de solares respecto al grupo previo
