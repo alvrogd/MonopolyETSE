@@ -272,7 +272,7 @@ public class Casilla {
 
         }
 
-        edificacion = new Edificio(getGrupo().getTablero(), tipoEdificio, getGrupo().getTipo());
+        edificacion = new Edificio(this, tipoEdificio, getGrupo().getTipo());
 
         comprador.pagar(getGrupo().getTablero().getBanca(), edificacion.getPrecioCompra());
 

@@ -10,6 +10,7 @@ public enum TipoComando {
     listar("listar"),
     listarJugadores("listar jugadores"),
     listarAvatares("listar avatares"),
+    listarEdificios("listar edificios"),
     lanzarDados("lanzar dados"),
     finalizarTurno("acabar turno"),
     salirCarcel("salir carcel"),
