@@ -24,6 +24,7 @@ public class Aplicacion {
     private boolean haLanzadoDados;
 
     /*Constructores*/
+
     /**
      * Constructor que crea el juego, el menú y el buffer.
      */
@@ -38,7 +39,7 @@ public class Aplicacion {
     }
 
     /*Getters*/
-    public Juego getJuego(){
+    public Juego getJuego() {
         return juego;
     }
 
@@ -62,7 +63,7 @@ public class Aplicacion {
     public void imprimirBuffer() {
 
         //En caso de que el buffer se vaya a imprimir en el trablero y el juego esté iniciado
-        if(Output.isImpresionTablero() && getJuego().isIniciado()) {
+        if (Output.isImpresionTablero() && getJuego().isIniciado()) {
             System.out.print("\033[H\033[2J"); //se limpia la consola
 
             //Se imprime el tablero junto el buffer
@@ -73,14 +74,14 @@ public class Aplicacion {
             //En caso contrario se comprueba si el juego está iniciado
             int tam = Output.getBuffer().size();
 
-            if( getJuego().isIniciado() ) {
+            if (getJuego().isIniciado()) {
                 System.out.print("\033[H\033[2J");
                 //Si está iniciado se imprime el tablero sin nada en su interior
                 System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), null));
             }
 
             //Se imprime el buffer
-            for(int i = 0; i < tam; i++){
+            for (int i = 0; i < tam; i++) {
                 System.out.println(Output.getBuffer().get(i).get(0));
             }
 
@@ -95,13 +96,14 @@ public class Aplicacion {
      */
     public void limpiarTablero() {
 
-        for( int i = 0; i < 50; i++ )
+        for (int i = 0; i < 50; i++)
             System.out.println();
 
     }
 
     /**
      * Función para introducir el comando y que realiza su acción específica
+     *
      * @param entrada se le pasa el comando entero en un String
      */
     public void introducirComando(String entrada) {
@@ -114,10 +116,10 @@ public class Aplicacion {
             return;
         }
 
-        if((toComando = toComando(entrada)) == null){
+        if ((toComando = toComando(entrada)) == null) {
             imprimirBuffer();
             return;
-        } else if(toComando.get(0) == null){
+        } else if (toComando.get(0) == null) {
             imprimirBuffer();
             return;
         }
@@ -125,7 +127,7 @@ public class Aplicacion {
 
         imprimirBuffer();
 
-        if(getJuego().isFinalizado())
+        if (getJuego().isFinalizado())
             System.exit(0);
 
     }
@@ -136,6 +138,7 @@ public class Aplicacion {
     /**
      * Función que devuelve la tupla (TipoComando, String Argumentos), si se le pasa una línea devuelve la información
      * separada en el comando y en sus correspondientes argumentos.
+     *
      * @param linea comando a introducir
      */
     private ArrayList<Object> toComando(String linea) {
@@ -218,7 +221,7 @@ public class Aplicacion {
 
                     case "edificios":
                         salida.add(TipoComando.listarEdificios);
-                        if(argc >= 3)
+                        if (argc >= 3)
                             salida.add(comando.get(2));
                         break;
 
@@ -331,7 +334,7 @@ public class Aplicacion {
                     default:
                         salida.add(TipoComando.comprarPropiedad);
 
-                        if(argc < 3){
+                        if (argc < 3) {
                             salida.add(comando.get(1));
                         } else {
                             salida.add(comando.get(1) + " " + comando.get(2));
@@ -377,12 +380,12 @@ public class Aplicacion {
                 break;
 
             case "edificar":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -edificar- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "casa":
                         salida.add(TipoComando.edificar);
                         salida.add(TipoEdificio.valueOf("casa"));
@@ -406,22 +409,22 @@ public class Aplicacion {
                     default:
                         Output.errorComando("Opción del comando -edificar- incorrecta.");
                         Output.sugerencia("Edificios que se pueden construir: ",
-                                            "     -> Casa",
-                                            "     -> Hotel",
-                                            "     -> Piscina",
-                                            "     -> Pista de deporte");
+                                "     -> Casa",
+                                "     -> Hotel",
+                                "     -> Piscina",
+                                "     -> Pista de deporte");
                         salida.add(null);
 
                 }
                 break;
 
             case "cambiar":
-                if(argc < 2){
+                if (argc < 2) {
                     Output.errorComando("Opción del comando -cambiar- incorrecta.");
                     salida.add(null);
                     break;
                 }
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "modo":
                         salida.add(TipoComando.cambiarModo);
                         break;
@@ -434,7 +437,7 @@ public class Aplicacion {
                 break;
 
             case "vender":
-                if(argc < 3){
+                if (argc < 3) {
                     Output.errorComando("Opción del comando -vender- incorrecta.");
                     salida.add(null);
                     break;
@@ -458,7 +461,7 @@ public class Aplicacion {
                 }
                 comando.add(auxiliar);
 
-                switch(comando.get(1)){
+                switch (comando.get(1)) {
                     case "casas":
                         salida.add(TipoComando.vender);
                         salida.add(TipoEdificio.casa);
@@ -525,10 +528,103 @@ public class Aplicacion {
         return salida;
     }
 
-    //Función que interpreta la tupla devuelta por toComando realizando las acciones específicas del comando.
+    private void listarEdificiosGrupo(TipoGrupo tipoGrupo) {
+
+        Grupo grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
+
+        //ArrayList de String donde se almacenará la respuesta.
+        ArrayList<String> res = new ArrayList<>();
+
+        //ArrayList auxiliar para almacenar un ArrayList de edificios obtenido a partir de un HashMap
+        ArrayList<Edificio> auxEdificios;
+
+        //StringBuilder que se utiliza para ir generando el mensaje para cada edificio
+        StringBuilder idEdificios;
+
+        //Número de casillas que tiene el grupo
+        int numCasillas = grupo.getCasillas().size();
+
+        res.add("Los edificios del grupo " + tipoGrupo.toString() + " son los siguientes.");
+
+        boolean flagGrupo = false;
+
+        for (Casilla casilla : grupo.getCasillas()) {
+
+            if(!casilla.isComprable()){
+
+                flagGrupo = true;
+
+                res.add("(*) Propiedad: " + casilla.getNombre());
+
+                for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
+                    //Variable para contar número de edificios que hay en cada casilla
+                    int numEdificio = 0;
+
+                    //Variable donde se almacenará el número de edificios del tipo actual que se pueden construir
+                    int construcciones;
+
+                    idEdificios = new StringBuilder();
+
+                    idEdificios.append("    -> ").append(tipoEdificio.getPlural()).append(tipoEdificio.getEspacios()).append(": {");
+
+                    //Se obtienen los edificios contenido del tipo actual.
+                    auxEdificios = casilla.getEdificiosContenidos().get(tipoEdificio);
+
+                    for (Edificio edificio : auxEdificios) {
+
+                        idEdificios.append(edificio.getId());
+                        idEdificios.append(",");
+
+                        numEdificio++;
+
+                    } // Fin del for de edificios
+
+                    if (numEdificio == 0) {
+                        idEdificios.append("No hay ").append(tipoEdificio.getPlural()).append("}");
+                    } else {
+                        int length = idEdificios.length();
+                        idEdificios.replace(length, length, "}");
+                    }
+
+                    if (tipoEdificio.equals(TipoEdificio.casa) &&
+                            (casilla.getEdificiosContenidos().get(TipoEdificio.hotel).size() != numCasillas)){
+                        construcciones = 4 - numEdificio;
+
+                    } else {
+                        construcciones = numCasillas - numEdificio;
+                    }
+
+                    idEdificios.append(tipoEdificio.getEspacios());
+
+                    if(construcciones == 0){
+                        idEdificios.append(" | No se pueden construir más ").append(tipoEdificio.getPlural());
+                    }
+                    idEdificios.append(" | Se pueden construir ").append(construcciones).append(" ").append(tipoEdificio.getPlural());
+
+                    res.add(idEdificios.toString());
+
+                } // Fin del for de tipoEdificio
+
+                res.add("    -> Alquiler: " + casilla.getAlquiler());
+                res.add(" ");
+            } // Fin del if para ver si es comprable
+
+        } // Fin del bucle de casillas
+
+        if(!flagGrupo){
+
+            res.add("[!] No hay edificios en este grupo.");
+
+        }
+
+        Output.respuesta(res);
+
+    }
 
     /**
      * Función que interpreta la tupla devuelta por toComando realizando las acciones específicas del comando.
+     *
      * @param comando tupla devuelta por toComando
      */
     private void interpretarComando(ArrayList<Object> comando) {
@@ -540,7 +636,7 @@ public class Aplicacion {
             return;
         }
 
-        if(comando.get(0) == null){
+        if (comando.get(0) == null) {
             System.err.println("No existe el comando.");
         }
 
@@ -738,10 +834,10 @@ public class Aplicacion {
                 ArrayList<String> res = new ArrayList<>();
                 Grupo grupo = null;
 
-                if(comando.size() == 2){
+                if (comando.size() == 2) {
 
                     TipoGrupo tipoGrupo;
-                    switch(comando.get(1).toString()){
+                    switch (comando.get(1).toString()) {
 
                         case "negro":
                             tipoGrupo = TipoGrupo.negro;
@@ -780,39 +876,25 @@ public class Aplicacion {
                             return;
                     }
 
-                    grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
-
-                    res.add("Los edificios del grupo "+tipoGrupo.toString()+" son los siguientes.");
-
-                    for(Casilla casilla : grupo.getCasillas()){
-
-                        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
-
-                            for(Edificio edificio : casilla.getEdificiosContenidos().get(tipoEdificio)){
-
-                                res.addAll(Output.EdificiotoArrayString(edificio));
-                                res.add(" ");
-
-                            }
-
-                        }
-
-                    }
+                    listarEdificiosGrupo(tipoGrupo);
 
                 } else {
 
+                    boolean flag = false;
+
                     res.add("Los edificios del tablero son los siguientes.");
 
-                    for(TipoGrupo tipoGrupo : TipoGrupo.values()){
+                    for (TipoGrupo tipoGrupo : TipoGrupo.values()) {
 
                         grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
 
-                        for(Casilla casilla : grupo.getCasillas()){
+                        for (Casilla casilla : grupo.getCasillas()) {
 
-                            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+                            for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
 
-                                for(Edificio edificio : casilla.getEdificiosContenidos().get(tipoEdificio)){
+                                for (Edificio edificio : casilla.getEdificiosContenidos().get(tipoEdificio)) {
 
+                                    flag = true;
                                     res.addAll(Output.EdificiotoArrayString(edificio));
                                     res.add(" ");
 
@@ -820,9 +902,18 @@ public class Aplicacion {
                             }
                         }
                     }
+
+                    if(!flag){
+
+                        res.add("[!] No hay edificios en el tablero.");
+
+                    }
+
+                    Output.respuesta(res);
+
                 }
 
-                Output.respuesta(res);
+
                 break;
 
             case lanzarDados:
@@ -836,7 +927,7 @@ public class Aplicacion {
                     return;
                 }
 
-                if(juego.getTurno().getAvatar().getTipo() != TipoAvatar.coche)
+                if (juego.getTurno().getAvatar().getTipo() != TipoAvatar.coche)
                     getJuego().setHaCompradoPropiedad(false);
 
                 juego.getTurno().lanzarDados(juego.getTablero().getDado());
@@ -848,7 +939,7 @@ public class Aplicacion {
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }
-                if(!juego.isHaLanzadoDados()){
+                if (!juego.isHaLanzadoDados()) {
                     Output.errorComando("¡No ha lanzado los dados!");
                     return;
                 }
@@ -920,8 +1011,8 @@ public class Aplicacion {
                     return;
                 }
 
-                if(juego.isHaCompradoPropiedad() && getJuego().getTurno().getAvatar().getTipo().equals(TipoAvatar.coche) &&
-                    !getJuego().getTurno().getAvatar().isMovimientoEstandar()){
+                if (juego.isHaCompradoPropiedad() && getJuego().getTurno().getAvatar().getTipo().equals(TipoAvatar.coche) &&
+                        !getJuego().getTurno().getAvatar().isMovimientoEstandar()) {
                     Output.sugerencia("Ya has comprado una casilla en este turno.");
                     return;
                 }
@@ -992,19 +1083,19 @@ public class Aplicacion {
                 break;
 
             case edificar:
-                if(!juego.isIniciado()){
+                if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }
 
-                getJuego().getTurno().crearEdificio((TipoEdificio)comando.get(1));
+                getJuego().getTurno().crearEdificio((TipoEdificio) comando.get(1));
                 break;
 
             case cambiarModo:
 
                 boolean isEstandar;
 
-                if(!juego.isIniciado()){
+                if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }
@@ -1015,24 +1106,24 @@ public class Aplicacion {
 
             case vender:
 
-                if(!juego.isIniciado()){
+                if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }
 
-                if(comando.get(2) == null){
+                if (comando.get(2) == null) {
                     System.err.println("Introducción comando vender incorrecta");
                     return;
                 }
 
-                if(comando.get(3) == null){
+                if (comando.get(3) == null) {
                     System.err.println("Introducción comando vender incorrecta");
                     return;
                 }
 
-                TipoEdificio edificio = (TipoEdificio)comando.get(1);
+                TipoEdificio edificio = (TipoEdificio) comando.get(1);
                 Casilla casillaV = getJuego().getTablero().getCasillasTablero().get(comando.get(3).toString());
-                int cantidad = (Integer)comando.get(2);
+                int cantidad = (Integer) comando.get(2);
 
                 getJuego().getTurno().venderEdificio(edificio, cantidad, casillaV);
 
@@ -1041,11 +1132,11 @@ public class Aplicacion {
             case avanzar:
                 int casillasPorMoverse = getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
 
-                if(!getJuego().isIniciado()){
+                if (!getJuego().isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
                     return;
                 }
-                if(casillasPorMoverse <= 0){
+                if (casillasPorMoverse <= 0) {
                     Output.mensaje("No te quedan casillas por moverte, vuelve a tirar los dados.");
                     return;
                 }
