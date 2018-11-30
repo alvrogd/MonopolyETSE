@@ -353,17 +353,11 @@ public class Casilla {
         ArrayList<Edificio> edificios = getEdificiosContenidos().get(tipoEdificio);
         int size = edificios.size();
 
-        //Se calcula el número de edificios totales que hay en el tablero para poder reducir este número.
-        int numEdificios = getGrupo().getTablero().getNumEdificios().get(tipoEdificio);
-
         int i;
         for(i = 0; i < cantidad && i < size; i++) {
             edificios.remove(0);
-            numEdificios--;
         }
 
-        //Se actualiza el alquiler y el número de edificios totales.
-        getGrupo().getTablero().getNumEdificios().put(tipoEdificio, numEdificios);
         actualizarAlquiler();
 
         //Devuelve el número de casillas que ha eliminado
