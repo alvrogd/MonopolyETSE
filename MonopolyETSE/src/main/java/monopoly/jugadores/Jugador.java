@@ -415,6 +415,7 @@ public class Jugador {
 
         if (!casilla.getEdificiosContenidos().isEmpty()) {
             Output.sugerencia("No se puede hipotecar una casilla mientras esta contenga edificios");
+            return;
         }
 
         // Al hipotecar una casilla, tan sólo se recupera la mitad de su valor original
