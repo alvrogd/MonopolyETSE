@@ -413,7 +413,7 @@ public class Jugador {
             return;
         }
 
-        if (!casilla.getEdificiosContenidos().isEmpty()) {
+        if (casilla.tieneEdificios()) {
             Output.sugerencia("No se puede hipotecar una casilla mientras esta contenga edificios");
             return;
         }

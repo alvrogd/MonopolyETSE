@@ -410,6 +410,27 @@ public class Casilla {
                 tipoEdificio.getNombre() + " por un valor de "+pago+" K €.");
     }
 
+    /**
+     * Función que calcula si la casilla actual tiene edificios
+     * @return devuelve verdadero en caso de que haya algún edificio en la casilla, falso en caso contrario
+     */
+    public boolean tieneEdificios(){
+
+        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+            if(!getEdificiosContenidos().get(tipoEdificio).isEmpty()){
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    //todo cambiar Prop.:Fran a Hipotecada: Fran cuando se hipoteca la casilla
 
     @Override
     public boolean equals(Object obj) {

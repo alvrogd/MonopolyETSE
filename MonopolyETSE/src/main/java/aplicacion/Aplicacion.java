@@ -514,6 +514,44 @@ public class Aplicacion {
 
                 break;
 
+            case "hipotecar":
+                if (argc < 2) {
+                    Output.errorComando("Opción del comando -hipotecar- incorrecta.");
+                    salida.add(null);
+                    break;
+                }
+                switch (comando.get(1)) {
+                    default:
+                        salida.add(TipoComando.hipotecar);
+
+                        if (argc < 3) {
+                            salida.add(comando.get(1));
+                        } else {
+                            salida.add(comando.get(1) + " " + comando.get(2));
+                        }
+                        break;
+                }
+                break;
+
+            case "deshipotecar":
+                if (argc < 2) {
+                    Output.errorComando("Opción del comando -deshipotecar- incorrecta.");
+                    salida.add(null);
+                    break;
+                }
+                switch (comando.get(1)) {
+                    default:
+                        salida.add(TipoComando.deshipotecar);
+
+                        if (argc < 3) {
+                            salida.add(comando.get(1));
+                        } else {
+                            salida.add(comando.get(1) + " " + comando.get(2));
+                        }
+                        break;
+                }
+                break;
+
             case "avanzar":
                 salida.add(TipoComando.avanzar);
                 break;
@@ -1141,6 +1179,14 @@ public class Aplicacion {
                 }
 
                 getJuego().getTurno().getAvatar().avanzar(casillasPorMoverse);
+                break;
+
+            case hipotecar:
+                getJuego().getTurno().hipotecar(getJuego().getTablero().getCasillasTablero().get(comando.get(1).toString()));
+                break;
+
+            case deshipotecar:
+                getJuego().getTurno().deshipotecar(getJuego().getTablero().getCasillasTablero().get(comando.get(1).toString()));
                 break;
         }
     }

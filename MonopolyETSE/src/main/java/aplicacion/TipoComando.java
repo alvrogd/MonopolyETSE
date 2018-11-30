@@ -22,6 +22,8 @@ public enum TipoComando {
     verTablero("ver tablero"),
     edificar("edificar"),
     cambiarModo("cambiar modo"),
+    hipotecar("hipotecar"),
+    deshipotecar("deshipotecar"),
     vender("vender"),
     avanzar("avanzar"),
     ayuda("ayuda");
