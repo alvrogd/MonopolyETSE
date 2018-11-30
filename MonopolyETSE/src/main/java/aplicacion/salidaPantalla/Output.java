@@ -715,6 +715,10 @@ public class Output {
 
                 informacion.add("        -> Grupo: " + casilla.getGrupo().getTipo());
                 informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
+
+                if(casilla.isHipotecada())
+                    informacion.add("        -> Propiedad hipotecada.");
+
                 informacion.add("");
 
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");

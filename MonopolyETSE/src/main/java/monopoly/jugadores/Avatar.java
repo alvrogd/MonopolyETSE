@@ -947,7 +947,7 @@ public class Avatar {
     private void caerEnTransporte(int multiplicador) {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
+        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
 
             getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
                     getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador));
@@ -967,7 +967,7 @@ public class Avatar {
     private void caerEnServicio(int numeroCasillas, int multiplicador) {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
+        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
 
             int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
 
@@ -989,7 +989,7 @@ public class Avatar {
     private void caerEnSolar(int multiplicador) {
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador())) {
+        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
 
             int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
 
