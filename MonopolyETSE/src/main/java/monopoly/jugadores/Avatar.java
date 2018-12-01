@@ -169,7 +169,7 @@ public class Avatar {
         this.tipo = tipo;
 
         movimientoEstandar = true;
-        haMovidoCasillasTirada = false;
+        haMovidoCasillasTirada = true;
         casillasRestantesPorMoverse = 0;
 
         haMovido4Casillas = false;
@@ -735,7 +735,7 @@ public class Avatar {
 
         setMovimientoEstandar(!isMovimientoEstandar());
 
-        Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "personalizado"));
+        Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "avanzado"));
 
     }
 
