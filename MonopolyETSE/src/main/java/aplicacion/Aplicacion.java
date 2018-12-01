@@ -460,7 +460,6 @@ public class Aplicacion {
 
                 }
                 comando.add(auxiliar);
-
                 switch (comando.get(1)) {
                     case "casas":
                         salida.add(TipoComando.vender);
@@ -510,6 +509,10 @@ public class Aplicacion {
                         salida.add(Integer.parseInt(comando.get(3)));
                         salida.add(comando.get(4));
                         break;
+                    default:
+                        Output.errorComando("Opción del comando -vender- incorrecta.");
+                        salida.add(null);
+                        break;
                 }
 
                 break;
@@ -555,6 +558,16 @@ public class Aplicacion {
             case "avanzar":
                 salida.add(TipoComando.avanzar);
                 break;
+
+            case "estadisticas":
+                if(argc < 2){
+                    Output.errorComando("Comando -estadisticas generales- no implementado");
+                    salida.add(null);
+                    break;
+                }
+
+                salida.add(TipoComando.estadisticasJugador);
+                salida.add(comando.get(1));
 
             default:
                 Output.errorComando("Comando incorrecto.");
@@ -1187,6 +1200,31 @@ public class Aplicacion {
 
             case deshipotecar:
                 getJuego().getTurno().deshipotecar(getJuego().getTablero().getCasillasTablero().get(comando.get(1).toString()));
+                break;
+
+            case estadisticasJugador:
+
+                if(!getJuego().isIniciado()){
+                    Output.errorComando("No se ha iniciado el juego.");
+                    return;
+                }
+
+                Jugador jugador2;
+
+                jugador2 = getJuego().getJugadores().get(comando.get(1).toString());
+
+                if(jugador2 == null){
+                    Output.errorComando("No existe el jugador.");
+                    return;
+                }
+
+                Output.respuesta("(*) Estadísticas de "+jugador2.getNombre(),
+                        "      -> Dinero invertido           : " + jugador2.getDineroInvertido(),
+                        "      -> Pago de alquileres         : " + jugador2.getPagoDeAlquileres(),
+                        "      -> Cobro de alquileres        : " + jugador2.getCobroDeAlquileres(),
+                        "      -> Pasar por casilla de salida: " + jugador2.getPasarPorCasillaDeSalida(),
+                        "      -> Premios inversiones o botes: " + jugador2.getPremiosInversionesOBote(),
+                        "      -> Veces en la carcel         : " + jugador2.getVecesEnLaCarcel());
                 break;
         }
     }

@@ -274,6 +274,8 @@ public class Casilla {
 
         edificacion = new Edificio(this, tipoEdificio, getGrupo().getTipo());
 
+        comprador.incrementarDineroInvertido(edificacion.getPrecioCompra());
+
         comprador.pagar(getGrupo().getTablero().getBanca(), edificacion.getPrecioCompra());
 
         getEdificiosContenidos().get(tipoEdificio).add(edificacion);

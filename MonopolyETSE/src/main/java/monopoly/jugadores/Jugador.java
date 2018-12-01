@@ -32,6 +32,14 @@ public class Jugador {
     // Cantidad de turnos penalizado sin poder tirar los dados
     private int turnosPenalizado;
 
+    //Estadísticas
+    private int dineroInvertido;
+    private int pagoDeAlquileres;
+    private int cobroDeAlquileres;
+    private int pasarPorCasillaDeSalida;
+    private int premiosInversionesOBote;
+    private int vecesEnLaCarcel;
+
 
     /* Constructores */
 
@@ -60,6 +68,13 @@ public class Jugador {
         this.tiradasEnTurno = 0;
 
         this.turnosPenalizado = 0;
+
+        this.dineroInvertido = 0;
+        this.pagoDeAlquileres = 0;
+        this.cobroDeAlquileres = 0;
+        this.pasarPorCasillaDeSalida = 0;
+        this.premiosInversionesOBote = 0;
+        this.vecesEnLaCarcel = 0;
 
     }
 
@@ -107,6 +122,13 @@ public class Jugador {
 
         this.turnosPenalizado = 0;
 
+        this.dineroInvertido = 0;
+        this.pagoDeAlquileres = 0;
+        this.cobroDeAlquileres = 0;
+        this.pasarPorCasillaDeSalida = 0;
+        this.premiosInversionesOBote = 0;
+        this.vecesEnLaCarcel = 0;
+
     }
 
 
@@ -145,6 +167,127 @@ public class Jugador {
 
     }
 
+    public int getDineroInvertido() {
+        return dineroInvertido;
+    }
+
+    public void setDineroInvertido(int dineroInvertido) {
+        if(dineroInvertido < 0){
+            System.err.println("El dinero invertido debe ser mayor que 0.");
+            return;
+        }
+        this.dineroInvertido = dineroInvertido;
+    }
+
+    public void incrementarDineroInvertido(int dineroInvertido){
+        if(dineroInvertido < 0){
+            System.err.println("El dinero invertido debe ser mayor que 0.");
+            return;
+        }
+        setDineroInvertido(getDineroInvertido()+dineroInvertido);
+        return;
+
+    }
+
+    public int getPagoDeAlquileres() {
+        return pagoDeAlquileres;
+    }
+
+    public void setPagoDeAlquileres(int pagoDeAlquileres) {
+        if(pagoDeAlquileres < 0){
+            System.err.println("El pago de alquileres debe ser mayor que 0.");
+            return;
+        }
+        this.pagoDeAlquileres = pagoDeAlquileres;
+    }
+
+    public void incrementarPagoDeAlquileres(int pagoDeAlquileres){
+        if(pagoDeAlquileres < 0){
+            System.err.println("El pago de alquileres debe ser mayor que 0.");
+            return;
+        }
+        setPagoDeAlquileres(getPagoDeAlquileres()+pagoDeAlquileres);
+    }
+
+    public int getCobroDeAlquileres() {
+        return cobroDeAlquileres;
+    }
+
+    public void setCobroDeAlquileres(int cobroDeAlquileres) {
+        if(cobroDeAlquileres < 0){
+            System.err.println("El cobro de alquiler debe ser mayor que 0.");
+            return;
+        }
+        this.cobroDeAlquileres = cobroDeAlquileres;
+    }
+
+    public void incrementarCobroDeAlquileres(int cobroDeAlquileres){
+        if(cobroDeAlquileres < 0){
+            System.err.println("El cobro de alquiler debe ser mayor que 0.");
+            return;
+        }
+        setCobroDeAlquileres(getCobroDeAlquileres()+cobroDeAlquileres);
+    }
+
+    public int getPasarPorCasillaDeSalida() {
+        return pasarPorCasillaDeSalida;
+    }
+
+    public void setPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida) {
+        if(pasarPorCasillaDeSalida < 0){
+            System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
+            return;
+        }
+        this.pasarPorCasillaDeSalida = pasarPorCasillaDeSalida;
+    }
+
+    public void incrementarPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida){
+        if(pasarPorCasillaDeSalida < 0){
+            System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
+            return;
+        }
+        setPasarPorCasillaDeSalida(getPasarPorCasillaDeSalida()+pasarPorCasillaDeSalida);
+    }
+
+    public int getPremiosInversionesOBote() {
+        return premiosInversionesOBote;
+    }
+
+    public void setPremiosInversionesOBote(int premiosInversionesOBote) {
+        if(premiosInversionesOBote < 0){
+            System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
+            return;
+        }
+        this.premiosInversionesOBote = premiosInversionesOBote;
+    }
+
+    public void incrementarPremiosInversionesOBote(int premiosInversionesOBote){
+        if(premiosInversionesOBote < 0){
+            System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
+            return;
+        }
+        setPremiosInversionesOBote(getPremiosInversionesOBote()+premiosInversionesOBote);
+    }
+
+    public int getVecesEnLaCarcel() {
+        return vecesEnLaCarcel;
+    }
+
+    public void setVecesEnLaCarcel(int vecesEnLaCarcel) {
+        if(vecesEnLaCarcel < 0){
+            System.err.println("El número de veces en la carcel debe ser mayor que 0.");
+            return;
+        }
+        this.vecesEnLaCarcel = vecesEnLaCarcel;
+    }
+
+    public void incrementarVecesEnLaCarcel(int vecesEnLaCarcel){
+        if(vecesEnLaCarcel < 0){
+            System.err.println("El número de veces en la carcel debe ser mayor que 0.");
+            return;
+        }
+        setVecesEnLaCarcel(getVecesEnLaCarcel()+vecesEnLaCarcel);
+    }
 
     public boolean isEstaBancarrota() {
         return (estaBancarrota);
@@ -241,11 +384,13 @@ public class Jugador {
         // En caso contrario, dispone de la suficiente liquidez como para pagar
         else {
             setFortuna(getFortuna() - importe);
+            incrementarPagoDeAlquileres(importe);
 
             Output.respuesta("Se ha efectuado un pago:",
                     "        -> Receptor: " + receptor.getNombre(),
                     "        -> Importe: " + importe);
             receptor.setFortuna(receptor.getFortuna() + importe);
+            receptor.incrementarCobroDeAlquileres(importe);
         }
 
     }
@@ -291,8 +436,10 @@ public class Jugador {
                 // En caso contrario, dispone de la suficiente liquidez como para pagar
                 else {
                     setFortuna(getFortuna() - importe);
+                    incrementarPagoDeAlquileres(importe);
                     receptores.append(jugador.getNombre()).append("  ");
                     jugador.setFortuna(jugador.getFortuna() + importe);
+                    jugador.incrementarCobroDeAlquileres(importe);
                 }
             }
         }
@@ -355,6 +502,7 @@ public class Jugador {
                 return;
             }
 
+            incrementarDineroInvertido(importe);
             setFortuna(getFortuna() - importe);
             casilla.setComprable(false);
             casilla.setAlquiler(importe);
@@ -374,6 +522,7 @@ public class Jugador {
                 return;
             }
 
+            incrementarDineroInvertido(importe);
             setFortuna(getFortuna() - importe);
             casilla.setComprable(false);
             casilla.setAlquiler((int) (0.1 * importe));
@@ -793,6 +942,7 @@ public class Jugador {
     private void cobrarCarta(TipoCobro tipoCobro) {
 
         setFortuna(getFortuna() + tipoCobro.getImporte());
+        incrementarPremiosInversionesOBote(tipoCobro.getImporte());
         Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
 
     }

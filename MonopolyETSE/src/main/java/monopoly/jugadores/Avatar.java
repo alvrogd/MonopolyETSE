@@ -1050,6 +1050,8 @@ public class Avatar {
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
         getPosicion().getAvataresContenidos().remove(getIdentificador());
 
+        getJugador().incrementarVecesEnLaCarcel(1);
+
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         sethaMovidoCasillasTirada(true);
         setCasillasRestantesPorMoverse(0);
@@ -1086,8 +1088,9 @@ public class Avatar {
 
         Output.respuesta("¡Has cobrado el valor acumulado por los impuestos!");
         // Y se resetea el valor del "alquiler" del parking
-        parking.setAlquiler(0);
 
+        getJugador().incrementarPremiosInversionesOBote(parking.getAlquiler());
+        parking.setAlquiler(0);
 
     }
 
@@ -1105,6 +1108,8 @@ public class Avatar {
             getJugador().setFortuna(getJugador().getFortuna() + (importeSalidaEstandar ? Constantes.DINERO_SALIDA :
                     Constantes.DINERO_SALIDA_CARTA));
             Output.respuesta("Has cobrado el importe de la casilla de salida.");
+            getJugador().incrementarPasarPorCasillaDeSalida((importeSalidaEstandar ? Constantes.DINERO_SALIDA :
+                    Constantes.DINERO_SALIDA_CARTA));
         }
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);

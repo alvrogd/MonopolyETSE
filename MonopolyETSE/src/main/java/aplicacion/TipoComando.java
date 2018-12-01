@@ -26,6 +26,7 @@ public enum TipoComando {
     deshipotecar("deshipotecar"),
     vender("vender"),
     avanzar("avanzar"),
+    estadisticasJugador("estadisticas"),
     ayuda("ayuda");
 
     /*Atributos*/
