@@ -682,15 +682,19 @@ public class Jugador {
 
             getAvatar().caerEnIrACarcel();
 
-        // En caso contrario, se mueve normalmente
+        // En caso contrario, depende de si es un coche en modo avanzado
         else {
 
-            // Si es un avatar coche, puede volver a lanzar hasta 4 veces si se encuentra en modo avanzado y saca un
-            // valor mayor o igual a 4
-            if (getAvatar().getTipo().equals(TipoAvatar.coche) && getTiradasEnTurno() < 4 &&
-                    (primeraTirada + segundaTirada) >= 4 && !getAvatar().isMovimientoEstandar())
+            if( getAvatar().getTipo().equals(TipoAvatar.coche ) && !getAvatar().isMovimientoEstandar() ) {
 
-                getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
+                // Si ha sacado un 4 o más y no ha hecho el máximo de tiradas en un turno
+                if( getTiradasEnTurno() < 4 && (primeraTirada + segundaTirada) >= 4 )
+                    getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
+
+                else
+                    getAvatar().getTablero().getJuego().setHaLanzadoDados(true);
+
+            }
 
             // Sino, depende de si se han sacado dobles
             else
@@ -698,7 +702,6 @@ public class Jugador {
 
             getAvatar().mover(primeraTirada + segundaTirada, dobles);
         }
-
     }
 
 
