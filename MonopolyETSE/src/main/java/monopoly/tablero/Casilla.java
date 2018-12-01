@@ -28,12 +28,10 @@ public class Casilla {
 
     //Atributos de las estadísticas.
 
-
+    private int rentabilidad;
+    private int frecuencia;
 
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
-
-
-
 
     /* Constructores */
 
@@ -78,6 +76,9 @@ public class Casilla {
         this.importeCompra = 0;
         this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
 
+        this.rentabilidad = 0;
+        this.frecuencia = 0;
+
     }
 
     /*Getters y setters*/
@@ -116,6 +117,42 @@ public class Casilla {
 
     public boolean isHipotecada() {
         return hipotecada;
+    }
+
+    public int getRentabilidad() {
+        return rentabilidad;
+    }
+
+    public void setRentabilidad(int rentabilidad) {
+        if(rentabilidad < 0){
+            System.err.println("Rentabilidad no puede ser negativa.");
+            return;
+        }
+        this.rentabilidad = rentabilidad;
+    }
+
+    public void incrementarRentabilidad(int rentabilidad){
+        if(rentabilidad < 0){
+            System.err.println("Rentabilidad no puede ser negativa.");
+            return;
+        }
+        setRentabilidad(getRentabilidad()+rentabilidad);
+    }
+
+    public int getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(int frecuencia) {
+        if(frecuencia < 0){
+            System.err.println("Frecuencia no puede ser negativa.");
+            return;
+        }
+        this.frecuencia = frecuencia;
+    }
+
+    public void incrementarFrecuencia(){
+        this.frecuencia++;
     }
 
     public void setHipotecada(boolean hipotecada) {

@@ -550,6 +550,9 @@ public class Avatar {
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);
 
+        // Por último se incrementa la frecuencia de dicha casilla
+        getPosicion().incrementarFrecuencia();
+
     }
 
 
@@ -911,7 +914,7 @@ public class Avatar {
         int numeroCarta;
 
         // Se pide el número de carta
-        Output.imprimirEntradaComando("Carta de suerte! Introduzca un número del 1 al " +
+        Output.imprimirEntradaComando("¡Carta de suerte! Introduzca un número del 1 al " +
                 Constantes.NUM_CARTAS_SUERTE);
 
         do {
@@ -931,7 +934,7 @@ public class Avatar {
         int numeroCarta;
 
         // Se pide el número de carta
-        Output.imprimirEntradaComando("Carta de comunidad! Introduzca un número del 1 al " +
+        Output.imprimirEntradaComando("¡Carta de comunidad! Introduzca un número del 1 al " +
                 Constantes.NUM_CARTAS_COMUNIDAD);
 
         do {
@@ -950,8 +953,13 @@ public class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
 
-            getJugador().pagar(getPosicion().getPropietario(), (int) (getPosicion().getAlquiler() *
-                    getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador));
+            int importePagar = (int) (getPosicion().getAlquiler() *
+                    getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador);
+
+            getJugador().pagar(getPosicion().getPropietario(), importePagar);
+
+            // Se incrementa la rentabilidad de la casilla del jugador
+            getPosicion().incrementarRentabilidad(importePagar);
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
             if (getJugador().isEstaBancarrota())
@@ -972,8 +980,11 @@ public class Avatar {
 
             int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
 
-            getJugador().pagar(getPosicion().getPropietario(), numeroCasillas * Constantes.FACTOR_SERVICIO *
-                    multiplicadorPropio * multiplicador);
+            int importePagar = numeroCasillas * Constantes.FACTOR_SERVICIO * multiplicadorPropio * multiplicador;
+            getJugador().pagar(getPosicion().getPropietario(), importePagar);
+
+            // Se incrementa la rentabilidad de la casilla del jugador
+            getPosicion().incrementarRentabilidad(importePagar);
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
             if (getJugador().isEstaBancarrota())
@@ -994,7 +1005,12 @@ public class Avatar {
 
             int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
 
-            getJugador().pagar(getPosicion().getPropietario(), getPosicion().getAlquiler() * multiplicadorPropio * multiplicador);
+            int importePagar = getPosicion().getAlquiler() * multiplicadorPropio * multiplicador;
+
+            getJugador().pagar(getPosicion().getPropietario(), importePagar);
+
+            // Se incrementa la rentabilidad de la casilla del jugador
+            getPosicion().incrementarRentabilidad(importePagar);
 
             // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
             if (getJugador().isEstaBancarrota())

@@ -124,6 +124,24 @@ public class Grupo {
         }
     }
 
+    /**
+     * Función para calcular la rentabilidad del grupo
+     */
+    public int calcularRentabilidad(){
+
+        ArrayList<Casilla> casillas = getCasillas();
+        int rentabilidad = 0;
+
+        for(Casilla casilla : casillas){
+
+            rentabilidad += casilla.getRentabilidad();
+
+        }
+
+        return rentabilidad;
+
+    }
+
 
     @Override
     public boolean equals(Object o) {

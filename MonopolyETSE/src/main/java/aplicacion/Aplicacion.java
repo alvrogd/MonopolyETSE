@@ -561,8 +561,7 @@ public class Aplicacion {
 
             case "estadisticas":
                 if(argc < 2){
-                    Output.errorComando("Comando -estadisticas generales- no implementado");
-                    salida.add(null);
+                    salida.add(TipoComando.estadisticasGlobales);
                     break;
                 }
 
@@ -1222,6 +1221,16 @@ public class Aplicacion {
                 estadisticasJugador(auxJugador);
 
                 break;
+
+            case estadisticasGlobales:
+                
+                if(!getJuego().isIniciado()){
+                    Output.errorComando("No se ha iniciado el juego.");
+                    return;
+                }
+
+                estadisticasGlobales();
+                break;
         }
     }
 
@@ -1239,6 +1248,18 @@ public class Aplicacion {
                 "      -> Veces en la carcel         : " + jugador.getVecesEnLaCarcel());
 
         return;
+    }
+
+    private void estadisticasGlobales(){
+
+        Output.respuesta("(*) Estadísticas globales",
+                "      -> Casilla más rentable    : " + getJuego().casillaMasRentable().getNombre(),
+                "      -> Grupo más rentable      : " + getJuego().grupoMasRentable().getTipo().toString(),
+                "      -> Casilla más frecuentada : " + getJuego().casillaMasFrecuentada().getNombre(),
+                "      -> Jugador con más vueltas : " + getJuego().jugadorMasVueltas().getNombre(),
+                "      -> Jugador con más tiradas : " + getJuego().jugadorMasVecesDados().getNombre(),
+                "      -> Jugador en cabeza       : " + getJuego().jugadorEnCabeza().getNombre());
+
     }
 
 

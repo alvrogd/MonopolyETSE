@@ -5,6 +5,7 @@ import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.Casilla;
+import monopoly.tablero.Grupo;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
@@ -467,4 +468,158 @@ public class Juego {
             }
         }
     }
+
+    /**
+     * Función que devuelve la casilla más rentable del juego.
+     */
+    public Casilla casillaMasRentable(){
+
+        ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
+
+        //Casilla con rentabilidad maxima, inicialmente es la casilla negra.
+        Casilla casillaMax = casillas.get(0).get(1);
+
+        for(ArrayList<Casilla> fila : casillas){
+
+            for(Casilla casilla : fila){
+
+                if(casillaMax.getRentabilidad() < casilla.getRentabilidad())
+                    casillaMax = casilla;
+
+            }
+
+        }
+
+        return casillaMax;
+
+    }
+
+    /**
+     * Función que devuelve el grupo más rentable del juego
+     */
+    public Grupo grupoMasRentable(){
+
+        Set<TipoGrupo> keysGrupos = getTablero().getGrupos().keySet();
+
+        Grupo grupoMax = null;
+        int max = -1;
+
+        for(TipoGrupo clave : keysGrupos){
+
+            Grupo grupo = getTablero().getGrupos().get(clave);
+            int rentabilidadAux = grupo.calcularRentabilidad();
+
+            if(max < rentabilidadAux){
+
+                max = rentabilidadAux;
+                grupoMax = grupo;
+
+            }
+
+        }
+
+        return grupoMax;
+
+    }
+
+    /**
+     * Función que devuelve la casilla más frecuentada del juego
+     */
+    public Casilla casillaMasFrecuentada(){
+
+        ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
+
+        //Casilla con frecuencia máxima, inicialmente es la casilla negra.
+        Casilla casillaMax = casillas.get(0).get(1);
+
+        for(ArrayList<Casilla> fila : casillas){
+
+            for(Casilla casilla : fila){
+
+                if(casillaMax.getFrecuencia() < casilla.getFrecuencia())
+                    casillaMax = casilla;
+
+            }
+
+        }
+
+        return casillaMax;
+
+    }
+
+    /**
+     * Función que devuelve el jugador que más vueltas ha dado.
+     */
+    public Jugador jugadorMasVueltas(){
+
+        int vueltasMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int vueltasAux = jugadorActual.getAvatar().getVueltas();
+
+            if(vueltasMax < vueltasAux){
+                vueltasMax = vueltasAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+    }
+
+    /**
+     * Función que devuelve el jugador que ha tirado más veces los dados
+     */
+    public Jugador jugadorMasVecesDados(){
+
+        int dadosMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int dadosAux = jugadorActual.getValorDados();
+
+            if(dadosMax < dadosAux){
+                dadosMax = dadosAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+
+    }
+
+    /**
+     * Devuelve al jugador que se encuentra en cabeza
+     */
+
+    public Jugador jugadorEnCabeza(){
+
+        int cabezaMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int cabezaAux = jugadorActual.getAvatar().getVueltas();
+
+            if(cabezaMax < cabezaAux){
+                cabezaMax = cabezaAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+
+    }
+
 }

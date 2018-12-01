@@ -32,7 +32,7 @@ public class Jugador {
     // Cantidad de turnos penalizado sin poder tirar los dados
     private int turnosPenalizado;
 
-    //Estadísticas
+    //Estadísticas jugador
     private int dineroInvertido;
     private int pagoDeAlquileres;
     private int cobroDeAlquileres;
@@ -41,6 +41,8 @@ public class Jugador {
     private int vecesEnLaCarcel;
     private int pagoTasasEImpuestos;
 
+    //Atributos para las estadísticas globales
+    private int valorDados;
 
     /* Constructores */
 
@@ -77,6 +79,8 @@ public class Jugador {
         this.premiosInversionesOBote = 0;
         this.vecesEnLaCarcel = 0;
         this.pagoTasasEImpuestos = 0;
+
+        this.valorDados = 0;
 
     }
 
@@ -153,6 +157,25 @@ public class Jugador {
 
     /* No se implementa el setter de avatar dado que es una constante */
 
+    public int getValorDados() {
+        return valorDados;
+    }
+
+    public void setValorDados(int valorDados) {
+        if(valorDados < 0){
+            System.err.println("Valor de dados no puede ser menor que 0.");
+            return;
+        }
+        this.valorDados = valorDados;
+    }
+
+    public void incrementarValorDados(int valorDados){
+        if(valorDados < 0){
+            System.err.println("Valor de dados no puede ser menor que 0.");
+            return;
+        }
+        setValorDados(getValorDados() + valorDados);
+    }
 
     public int getFortuna() {
         return (fortuna);
@@ -380,6 +403,44 @@ public class Jugador {
     }
 
     /* Métodos */
+
+    /**
+     * Función para calcular la fortuna total del jugador, incluyendo su fortuna en dinero, valor de las propiedades y
+     * valor de los edificios.
+     */
+    public int calcularFortunaTotal(){
+
+        //Dinero invertido en la compra de propiedades
+        int valorPropiedades = 0;
+
+        //Dinero invertido en la compra de edificios
+        int valorEdificios = 0;
+
+        //Se recorren las propiedades del jugador
+        for(Casilla casilla : getPropiedades()){
+
+            //Se suma el valor de cada casilla que sea propiedad del jugador
+            valorPropiedades += casilla.getImporteCompra();
+
+            //Se recorren los edificios de cada casilla
+            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+                ArrayList<Edificio> edificios = casilla.getEdificiosContenidos().get(tipoEdificio);
+
+                for(Edificio edificio : edificios){
+
+                    //Se suma el valor del precio del edificio
+                    valorEdificios += edificio.getPrecioCompra();
+
+                }
+
+            }
+
+        }
+
+        return (getFortuna() + valorEdificios + valorPropiedades);
+
+    }
 
     /**
      * Se paga a otro jugador una cantidad dada; en caso de no disponer de suficiente liquidez, el jugador cae en
@@ -664,6 +725,9 @@ public class Jugador {
 
         int primeraTirada = dado.lanzarDado();
         int segundaTirada = dado.lanzarDado();
+
+        incrementarValorDados(1);
+
         boolean dobles = primeraTirada == segundaTirada;
 
         Output.respuesta("Se han tirado los dados:",

@@ -27,6 +27,7 @@ public enum TipoComando {
     vender("vender"),
     avanzar("avanzar"),
     estadisticasJugador("estadisticas"),
+    estadisticasGlobales("estadisticas"),
     ayuda("ayuda");
 
     /*Atributos*/
