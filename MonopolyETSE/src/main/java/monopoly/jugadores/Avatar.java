@@ -429,6 +429,7 @@ public class Avatar {
         }
 
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
+        getJugador().incrementarPagoTasasEImpuestos(Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
 
@@ -1010,6 +1011,7 @@ public class Avatar {
      */
     private void caerEnImpuesto1() {
 
+        getJugador().incrementarPagoTasasEImpuestos(Constantes.IMPUESTO_1);
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_1);
         // Se añade la cantidad pagada al "alquiler" del parking
         final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
@@ -1029,6 +1031,7 @@ public class Avatar {
      */
     private void caerEnImpuesto2() {
 
+        getJugador().incrementarPagoTasasEImpuestos(Constantes.IMPUESTO_2);
         getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_2);
         // Se añade la cantidad pagada al "alquiler" del parking
         final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(

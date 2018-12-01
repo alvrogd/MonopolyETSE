@@ -26,6 +26,10 @@ public class Casilla {
     private int alquiler;
     private boolean comprable;
 
+    //Atributos de las estadísticas.
+
+
+
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
 
 

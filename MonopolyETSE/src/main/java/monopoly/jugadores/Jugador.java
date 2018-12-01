@@ -39,6 +39,7 @@ public class Jugador {
     private int pasarPorCasillaDeSalida;
     private int premiosInversionesOBote;
     private int vecesEnLaCarcel;
+    private int pagoTasasEImpuestos;
 
 
     /* Constructores */
@@ -75,6 +76,7 @@ public class Jugador {
         this.pasarPorCasillaDeSalida = 0;
         this.premiosInversionesOBote = 0;
         this.vecesEnLaCarcel = 0;
+        this.pagoTasasEImpuestos = 0;
 
     }
 
@@ -128,6 +130,7 @@ public class Jugador {
         this.pasarPorCasillaDeSalida = 0;
         this.premiosInversionesOBote = 0;
         this.vecesEnLaCarcel = 0;
+        this.pagoTasasEImpuestos = 0;
 
     }
 
@@ -227,6 +230,26 @@ public class Jugador {
             return;
         }
         setCobroDeAlquileres(getCobroDeAlquileres()+cobroDeAlquileres);
+    }
+
+    public int getPagoTasasEImpuestos() {
+        return pagoTasasEImpuestos;
+    }
+
+    public void setPagoTasasEImpuestos(int pagoTasasEImpuestos) {
+        if(pagoTasasEImpuestos < 0){
+            System.err.println("El pago de tasas e impuestos debe ser mayor que 0.");
+            return;
+        }
+        this.pagoTasasEImpuestos = pagoTasasEImpuestos;
+    }
+
+    public void incrementarPagoTasasEImpuestos(int pagoTasasEImpuestos){
+        if(pagoTasasEImpuestos < 0){
+            System.err.println("El pago de tasas e impuestos debe ser mayor que 0");
+            return;
+        }
+        setPagoTasasEImpuestos(getPagoTasasEImpuestos()+pagoTasasEImpuestos);
     }
 
     public int getPasarPorCasillaDeSalida() {
@@ -981,15 +1004,17 @@ public class Jugador {
             importe = tipoPago.getImporte();
 
         // Ahora se puede, o bien pagar a la banca
-        if (receptor.equals("banca"))
+        if (receptor.equals("banca")) {
             pagar(getAvatar().getTablero().getJuego().getBanca(), importe);
-
+            incrementarPagoTasasEImpuestos(importe);
             // O bien pagar a todos los jugadores, en el caso de las cartas de pago de un alquiler en Cannes o pago por ser
             // escodigo presidente de la junta directiva
+        }
         else {
 
             final Collection<Jugador> jugadores = getAvatar().getTablero().getJuego().getJugadores().values();
 
+            incrementarPagoTasasEImpuestos(importe);
             pagar(new ArrayList<>(jugadores), importe);
         }
     }

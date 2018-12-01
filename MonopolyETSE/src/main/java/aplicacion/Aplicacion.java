@@ -568,6 +568,7 @@ public class Aplicacion {
 
                 salida.add(TipoComando.estadisticasJugador);
                 salida.add(comando.get(1));
+                break;
 
             default:
                 Output.errorComando("Comando incorrecto.");
@@ -1209,24 +1210,35 @@ public class Aplicacion {
                     return;
                 }
 
-                Jugador jugador2;
+                Jugador auxJugador;
 
-                jugador2 = getJuego().getJugadores().get(comando.get(1).toString());
+                auxJugador = getJuego().getJugadores().get(comando.get(1).toString());
 
-                if(jugador2 == null){
+                if(auxJugador == null){
                     Output.errorComando("No existe el jugador.");
                     return;
                 }
 
-                Output.respuesta("(*) Estadísticas de "+jugador2.getNombre(),
-                        "      -> Dinero invertido           : " + jugador2.getDineroInvertido(),
-                        "      -> Pago de alquileres         : " + jugador2.getPagoDeAlquileres(),
-                        "      -> Cobro de alquileres        : " + jugador2.getCobroDeAlquileres(),
-                        "      -> Pasar por casilla de salida: " + jugador2.getPasarPorCasillaDeSalida(),
-                        "      -> Premios inversiones o botes: " + jugador2.getPremiosInversionesOBote(),
-                        "      -> Veces en la carcel         : " + jugador2.getVecesEnLaCarcel());
+                estadisticasJugador(auxJugador);
+
                 break;
         }
+    }
+
+
+
+    private void estadisticasJugador(Jugador jugador){
+
+        Output.respuesta("(*) Estadísticas de "+jugador.getNombre(),
+                "      -> Dinero invertido           : " + jugador.getDineroInvertido(),
+                "      -> Pago tasas e impuestos     : " + jugador.getPagoTasasEImpuestos(),
+                "      -> Pago de alquileres         : " + jugador.getPagoDeAlquileres(),
+                "      -> Cobro de alquileres        : " + jugador.getCobroDeAlquileres(),
+                "      -> Pasar por casilla de salida: " + jugador.getPasarPorCasillaDeSalida(),
+                "      -> Premios inversiones o botes: " + jugador.getPremiosInversionesOBote(),
+                "      -> Veces en la carcel         : " + jugador.getVecesEnLaCarcel());
+
+        return;
     }
 
 

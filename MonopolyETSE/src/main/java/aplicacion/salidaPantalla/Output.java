@@ -31,7 +31,7 @@ public class Output {
     }
 
     public static void setBuffer(ArrayList<ArrayList<Object>> buffer) {
-        if(buffer == null){
+        if (buffer == null) {
             System.out.println("Buffer referencia a null");
             return;
         }
@@ -42,16 +42,16 @@ public class Output {
      * Función para añadir un mensaje al buffer
      *
      * @param impresion mensaje a imprimir
-     * @param ancho ancho ocupado por el mensaje
-     * @param alto alto ocupado por el mensaje
+     * @param ancho     ancho ocupado por el mensaje
+     * @param alto      alto ocupado por el mensaje
      */
-    public static void addBuffer(String impresion, Integer ancho, Integer alto){
+    public static void addBuffer(String impresion, Integer ancho, Integer alto) {
 
         //Variable auxiliar para enviar al buffer la información
 
         ArrayList<Object> aux = new ArrayList<>();
 
-        if(getBuffer() == null){
+        if (getBuffer() == null) {
             System.out.println("Buffer referencia a null en addBuffer.");
             return;
         }
@@ -66,8 +66,8 @@ public class Output {
     /**
      * Función para eliminar la información del buffer
      */
-    public static void vaciarBuffer(){
-        while(!buffer.isEmpty()){
+    public static void vaciarBuffer() {
+        while (!buffer.isEmpty()) {
             buffer.remove(0);
         }
     }
@@ -75,9 +75,10 @@ public class Output {
     /**
      * Función para crear e imprimir la cabecera del usuario. La cabecera se creará en función del ArrayList de los
      * mensajes, cada elemento del ArrayList se imprime en una columna distinta
+     *
      * @param mensajes ArrayList con los mensajes a imprimir
-     * @param ancho ancho entre el recuadro y el mensaje
-     * @param alto alto entre el recuadro y el mensaje
+     * @param ancho    ancho entre el recuadro y el mensaje
+     * @param alto     alto entre el recuadro y el mensaje
      */
     private static void imprimirCabecera(ArrayList<String> mensajes, int ancho, int alto) {
 
@@ -256,6 +257,7 @@ public class Output {
 
     /**
      * Función que llama a imprimirCabecera para imprimir la cabecera del jugador
+     *
      * @param jugador jugador del que se imprimirá la cabecera
      */
     public static void imprimirCabeceraJugador(Jugador jugador) {
@@ -272,7 +274,7 @@ public class Output {
 
         informacion.add(jugador.getAvatar().getPosicion().getNombre());
 
-        if(jugador.getAvatar().isMovimientoEstandar())
+        if (jugador.getAvatar().isMovimientoEstandar())
             informacion.add("Estándar");
         else
             informacion.add("Avanzado");
@@ -295,7 +297,7 @@ public class Output {
      */
     public static void imprimirEntradaComando(String accion) {
 
-        System.out.print("\uD83D\uDC49 "+accion+": ");
+        System.out.print("\uD83D\uDC49 " + accion + ": ");
 
     }
 
@@ -303,12 +305,13 @@ public class Output {
      * Función para crear y guardar en el buffer un recuadro con la información pasada en el ArrayList de mensajes.
      * La cabecera se creará en función del ArrayList de los mensajes, cada elemento del ArrayList se imprime en una
      * línea distinta
+     *
      * @param mensaje ArrayList en el que se almacenan los mensajes por líneas a imprimir
-     * @param tipo se le envía el tipo de recuadro que se quiere imprimir, en caso de que el tipo no exista se utiliza
-     *             el introducido por el usuario
-     * @param color color con el que se desea que se imprima el recuadro
-     * @param ancho ancho entre el recuadro y el mensaje
-     * @param alto alto entre el recuadro y el mensaje
+     * @param tipo    se le envía el tipo de recuadro que se quiere imprimir, en caso de que el tipo no exista se utiliza
+     *                el introducido por el usuario
+     * @param color   color con el que se desea que se imprima el recuadro
+     * @param ancho   ancho entre el recuadro y el mensaje
+     * @param alto    alto entre el recuadro y el mensaje
      */
     public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
 
@@ -443,10 +446,10 @@ public class Output {
 
         //El ancho total es lo que se imprime más 2 de los bordes y más 10 del color
         Integer anchoTotal = max + 2 * ancho + caracteresContar + 2 + 10;
-        Integer altoTotal = lineas + 2*alto + 2;
+        Integer altoTotal = lineas + 2 * alto + 2;
 
         //Se comprueba si el mensaje entraría dentro del tablero, en caso de que sí se pone impresionTablero a true
-        if(TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
+        if (TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
             impresionTablero = false;
         else
             impresionTablero = true;
@@ -466,17 +469,17 @@ public class Output {
      *
      * @param jugador jugador del cual se quiere obtener los edificios que ha comprado.
      */
-    private static HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador(Jugador jugador){
+    private static HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador(Jugador jugador) {
 
         HashMap<TipoEdificio, ArrayList<Edificio>> salida = new HashMap<>();
 
-        for(TipoEdificio tipoEdificio: TipoEdificio.values()){
+        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
             salida.put(tipoEdificio, new ArrayList<>());
         }
 
-        for(Casilla propiedad : jugador.getPropiedades()){
+        for (Casilla propiedad : jugador.getPropiedades()) {
 
-            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+            for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
                 ArrayList<Edificio> edificiosContenidos = propiedad.getEdificiosContenidos().get(tipoEdificio);
                 salida.get(tipoEdificio).addAll(edificiosContenidos);
             }
@@ -488,6 +491,7 @@ public class Output {
 
     /**
      * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del jugador
+     *
      * @param jugador jugador del que se guarda la información
      */
     public static ArrayList<String> JugadortoArrayString(Jugador jugador) {
@@ -567,7 +571,7 @@ public class Output {
 
         datos.add("        -> Edificios:");
 
-        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
 
             StringBuilder edificios = new StringBuilder();
 
@@ -576,13 +580,13 @@ public class Output {
             int size = aux.size();
             int count = 1;
 
-            edificios.append("            (*) "+tipoEdificio.getNombre()+": {");
+            edificios.append("            (*) " + tipoEdificio.getNombre() + ": {");
 
-            for(Edificio edificio : aux){
+            for (Edificio edificio : aux) {
 
                 edificios.append(edificio.getId());
 
-                if(count != size)
+                if (count != size)
                     edificios.append(", ");
 
                 count++;
@@ -597,6 +601,7 @@ public class Output {
 
     /**
      * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del avatar
+     *
      * @param avatar avatar del que se guarda la información
      */
     public static ArrayList<String> AvatartoArrayString(Avatar avatar) {
@@ -613,6 +618,7 @@ public class Output {
 
     /**
      * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos de la casilla
+     *
      * @param casilla casilla del que se guarda la información
      */
     public static ArrayList<String> CasillatoArrayString(Casilla casilla) {
@@ -641,7 +647,7 @@ public class Output {
         if (valorCasilla >= 0) {
 
             int alquiler = casilla.getAlquiler();
-            int importe = casilla.getImporteCompra()/10;
+            int importe = casilla.getImporteCompra() / 10;
 
             if (casilla.getGrupo().getTipo() == TipoGrupo.impuesto1 ||
                     casilla.getGrupo().getTipo() == TipoGrupo.impuesto2) {
@@ -678,7 +684,7 @@ public class Output {
 
                 informacion.add(jugadoresContenidos.toString());
 
-            } else if(casilla.getGrupo().getTipo() == TipoGrupo.carcel){
+            } else if (casilla.getGrupo().getTipo() == TipoGrupo.carcel) {
 
                 informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
                 StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: {");
@@ -687,9 +693,9 @@ public class Output {
 
                 boolean flag = false;
 
-                for(Character avatar: avatares) {
+                for (Character avatar : avatares) {
 
-                    if(casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
+                    if (casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
                         if (flag) {
                             jugadoresEncarcelados.append(" , {");
                         }
@@ -702,7 +708,7 @@ public class Output {
 
                 }
 
-                if(!flag){
+                if (!flag) {
                     jugadoresEncarcelados.append("no hay jugadores encarcelados :-)}");
                 }
 
@@ -716,48 +722,48 @@ public class Output {
                 informacion.add("        -> Grupo: " + casilla.getGrupo().getTipo());
                 informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
 
-                if(casilla.isHipotecada())
+                if (casilla.isHipotecada())
                     informacion.add("        -> Propiedad hipotecada.");
 
                 informacion.add("");
 
                 informacion.add("        -> Valor:                            " + valorCasilla + "K €");
 
-                if(casilla.getGrupo().getTipo() == TipoGrupo.transporte){
-                    informacion.add("        -> Alquiler con 1 transporte:        " + (int)(valorCasilla*0.25) + "K €");
-                    informacion.add("        -> Alquiler con 2 transportes:       " + (int)(valorCasilla*0.5) + "K €");
-                    informacion.add("        -> Alquiler con 3 transportes:       " + (int)(valorCasilla*0.75) + "K €");
-                    informacion.add("        -> Alquiler con 4 transportes:       " + (int)(valorCasilla) + "K €");
+                if (casilla.getGrupo().getTipo() == TipoGrupo.transporte) {
+                    informacion.add("        -> Alquiler con 1 transporte:        " + (int) (valorCasilla * 0.25) + "K €");
+                    informacion.add("        -> Alquiler con 2 transportes:       " + (int) (valorCasilla * 0.5) + "K €");
+                    informacion.add("        -> Alquiler con 3 transportes:       " + (int) (valorCasilla * 0.75) + "K €");
+                    informacion.add("        -> Alquiler con 4 transportes:       " + (int) (valorCasilla) + "K €");
                 } else {
                     informacion.add("        -> Alquiler:                         " + alquiler + "K €");
                 }
 
-                if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
+                if (casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla())) {
 
                     informacion.add("");
 
                     informacion.add("        -> Edificios:");
                     Set<TipoEdificio> keyEdificios = casilla.getEdificiosContenidos().keySet();
 
-                    for(TipoEdificio auxEdificio : keyEdificios){
+                    for (TipoEdificio auxEdificio : keyEdificios) {
 
                         StringBuilder linea = new StringBuilder();
                         ArrayList<Edificio> edificaciones = casilla.getEdificiosContenidos().get(auxEdificio);
                         int size = edificaciones.size();
 
-                        linea.append("           (*) "+auxEdificio.getNombre()+" {");
+                        linea.append("           (*) " + auxEdificio.getNombre() + " {");
 
-                        for(int i = 0; i < size; i++){
+                        for (int i = 0; i < size; i++) {
 
                             linea.append(edificaciones.get(i).getId());
 
-                            if(i != size - 1)
+                            if (i != size - 1)
                                 linea.append(", ");
 
                         }
 
-                        if(size == 0){
-                            linea.append("No hay edificaciones tipo "+auxEdificio.getNombre());
+                        if (size == 0) {
+                            linea.append("No hay edificaciones tipo " + auxEdificio.getNombre());
                         }
                         linea.append("}");
 
@@ -804,21 +810,22 @@ public class Output {
 
     /**
      * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del edificio.
+     *
      * @param edificio edificio del que se guarda la información.
      */
-    public static ArrayList<String> EdificiotoArrayString(Edificio edificio){
+    public static ArrayList<String> EdificiotoArrayString(Edificio edificio) {
 
         ArrayList<String> info = new ArrayList<>();
 
-        info.add("(*) Edificio id: "+edificio.getId());
+        info.add("(*) Edificio id: " + edificio.getId());
 
         info.add("      -> Propietario: " + edificio.getPosicion().getPropietario().getNombre());
 
-        info.add("      -> Casilla    : " +edificio.getPosicion().getNombre());
+        info.add("      -> Casilla    : " + edificio.getPosicion().getNombre());
 
-        info.add("      -> Grupo      : " +edificio.getPosicion().getGrupo().getTipo().toString());
+        info.add("      -> Grupo      : " + edificio.getPosicion().getGrupo().getTipo().toString());
 
-        info.add("      -> Coste      : " +edificio.getPrecioCompra());
+        info.add("      -> Coste      : " + edificio.getPrecioCompra());
 
         return info;
 
@@ -827,6 +834,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo error
+     *
      * @param errores mensajes a mandar al recuadro
      */
     public static void errorComando(String... errores) {
@@ -843,6 +851,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo error
+     *
      * @param error mensajes a mandar al recuadro
      */
     public static void errorComando(ArrayList<String> error) {
@@ -851,6 +860,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo sugerencia
+     *
      * @param sugerencias mensajes a mandar al recuadro
      */
     public static void sugerencia(String... sugerencias) {
@@ -867,6 +877,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo sugerencia
+     *
      * @param sugerencia mensajes a mandar al recuadro
      */
     public static void sugerencia(ArrayList<String> sugerencia) {
@@ -875,6 +886,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo respuesta
+     *
      * @param respuestas mensajes a mandar al recuadro
      */
     public static void respuesta(String... respuestas) {
@@ -891,6 +903,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo respuesta
+     *
      * @param respuestas mensajes a mandar al recuadro
      */
     public static void respuesta(ArrayList<String> respuestas) {
@@ -899,6 +912,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     *
      * @param mensajes mensajes a mandar al recuadro
      */
     public static void mensaje(String... mensajes) {
@@ -915,6 +929,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     *
      * @param mensajes mensajes a mandar al recuadro
      */
     public static void mensaje(ArrayList<String> mensajes) {
@@ -926,91 +941,91 @@ public class Output {
      */
 
 
-    public static void ayuda(String... ayuda){
+    public static void ayuda(String... ayuda) {
         ArrayList<String> informacion = new ArrayList<>();
 
         for (String resp : ayuda) {
             informacion.add(resp);
         }
 
-        imprimirRecuadro(informacion,"mensaje", TipoColor.violetaANSI, 2, 1);
+        imprimirRecuadro(informacion, "mensaje", TipoColor.violetaANSI, 2, 1);
     }
 
-    public static void imprimirAyuda(){
+    public static void imprimirAyuda() {
         ArrayList<String> ayuda = new ArrayList<>();
 
         Output.ayuda("",
-        "                                _.--,-```-.    " ,
-        "                               /    /      '.  " ,
-        "                              /  ../         ; " ,
-        "                              \\  ``\\  .``-    '" ,
-        "                               \\ ___\\/    \\   :" ,
-        "                                     \\    :   |" ,
-        "                                     |    ;  . " ,
-        "                                    ;   ;   :  " ,
-        "                                   /   :   :   " ,
-        "                                   `---'.  |   " ,
-        "                                    `--..`;    " ,
-        "                                   .--,_        " ,
-        "                                  |    |`.     " ,
-        "                                  `-- -`, ;    " ,
-        "                                    '---`\"     " ,
-        "                                              "
+                "                                _.--,-```-.    ",
+                "                               /    /      '.  ",
+                "                              /  ../         ; ",
+                "                              \\  ``\\  .``-    '",
+                "                               \\ ___\\/    \\   :",
+                "                                     \\    :   |",
+                "                                     |    ;  . ",
+                "                                    ;   ;   :  ",
+                "                                   /   :   :   ",
+                "                                   `---'.  |   ",
+                "                                    `--..`;    ",
+                "                                   .--,_        ",
+                "                                  |    |`.     ",
+                "                                  `-- -`, ;    ",
+                "                                    '---`\"     ",
+                "                                              "
 
-        ,"Información sobre comandos."
-        ,""
-        ," -> crear jugador <nombre> <tipo_Avatar>"
-        ,"      (*) Crea un jugador con el nombre introducido y su tipo de avatar."
-        ,"      (*) Tipos de avatares disponibles:"
-        ,"               - Coche"
-        ,"               - Esfinge"
-        ,"               - Sombrero"
-        ,"               - Pelota"
-        ,""
-        ," -> jugador"
-        ,"      (*) Informa del jugador que tiene el turno."
-        ,""
-        ," -> iniciar"
-        ,"      (*) Inicia el juego si hay dos o más jugadores."
-        ,"      (!) No se pueden añadir más jugadores una vez iniciado el juego."
-        ,""
-        ," -> listar jugadores"
-        ,"      (*) Imprime información sobre todos los jugadores del juego."
-        ,""
-        ," -> listar avatares"
-        ,"      (*) Imprime información sobre todos los avatares del tablero."
-        ,""
-        ," -> listar enventa"
-        ,"      (*) Imprime información sobre todas las casillas que están en venta."
-        ,""
-        ," -> lanzar dados"
-        ,"      (*) Se lanzan los dos dados del juego y se avanza el número de casillas"
-        ,"          correspondiente a la suma de los dos."
-        ,""
-        ," -> acabar turno"
-        ,"      (*) Finaliza el turno actual y pasa al siguiente jugador."
-        ,"      (!) No se puede pasar el turno sin haber tirado los dados."
-        ,""
-        ," -> salir carcel"
-        ,"      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel."
-        ,"      (!) Asegúrate de estar encarcelado."
-        ,""
-        ," -> describir jugador <nombre>"
-        ,"      (*) Se describe el jugador con el nombre introducido (si existe)."
-        ,""
-        ," -> describir avatar <id>"
-        ,"      (*) Se describe el avatar con el ID introducido (si existe)."
-        ,""
-        ," -> describir <casilla>"
-        ,"      (*) Se describe la casilla con el nombre introducido (si existe)."
-        ,""
-        ," -> comprar <casilla>"
-        ,"      (*) Se compra la casilla indicada en el comando."
-        ,"      (!) Solo puedes comprar una casilla si tu avatar está situado en ella."
-        ,"      (!) Asegúrate de tener suficiente liquidez."
-        ,""
-        ," -> ver tablero"
-        ,"      (*) Muestra al jugador el tablero.");
+                , "Información sobre comandos."
+                , ""
+                , " -> crear jugador <nombre> <tipo_Avatar>"
+                , "      (*) Crea un jugador con el nombre introducido y su tipo de avatar."
+                , "      (*) Tipos de avatares disponibles:"
+                , "               - Coche"
+                , "               - Esfinge"
+                , "               - Sombrero"
+                , "               - Pelota"
+                , ""
+                , " -> jugador"
+                , "      (*) Informa del jugador que tiene el turno."
+                , ""
+                , " -> iniciar"
+                , "      (*) Inicia el juego si hay dos o más jugadores."
+                , "      (!) No se pueden añadir más jugadores una vez iniciado el juego."
+                , ""
+                , " -> listar jugadores"
+                , "      (*) Imprime información sobre todos los jugadores del juego."
+                , ""
+                , " -> listar avatares"
+                , "      (*) Imprime información sobre todos los avatares del tablero."
+                , ""
+                , " -> listar enventa"
+                , "      (*) Imprime información sobre todas las casillas que están en venta."
+                , ""
+                , " -> lanzar dados"
+                , "      (*) Se lanzan los dos dados del juego y se avanza el número de casillas"
+                , "          correspondiente a la suma de los dos."
+                , ""
+                , " -> acabar turno"
+                , "      (*) Finaliza el turno actual y pasa al siguiente jugador."
+                , "      (!) No se puede pasar el turno sin haber tirado los dados."
+                , ""
+                , " -> salir carcel"
+                , "      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel."
+                , "      (!) Asegúrate de estar encarcelado."
+                , ""
+                , " -> describir jugador <nombre>"
+                , "      (*) Se describe el jugador con el nombre introducido (si existe)."
+                , ""
+                , " -> describir avatar <id>"
+                , "      (*) Se describe el avatar con el ID introducido (si existe)."
+                , ""
+                , " -> describir <casilla>"
+                , "      (*) Se describe la casilla con el nombre introducido (si existe)."
+                , ""
+                , " -> comprar <casilla>"
+                , "      (*) Se compra la casilla indicada en el comando."
+                , "      (!) Solo puedes comprar una casilla si tu avatar está situado en ella."
+                , "      (!) Asegúrate de tener suficiente liquidez."
+                , ""
+                , " -> ver tablero"
+                , "      (*) Muestra al jugador el tablero.");
 
 
     }
