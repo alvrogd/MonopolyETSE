@@ -8,6 +8,9 @@ import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.*;
+import monopoly.tablero.cartas.Carta;
+import monopoly.tablero.cartas.TipoAccion;
+import monopoly.tablero.cartas.TipoCobro;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -578,6 +581,7 @@ public class Aplicacion {
 
         return salida;
     }
+
 
     private void listarEdificiosGrupo(TipoGrupo tipoGrupo) {
 
@@ -1223,7 +1227,7 @@ public class Aplicacion {
                 break;
 
             case estadisticasGlobales:
-                
+
                 if(!getJuego().isIniciado()){
                     Output.errorComando("No se ha iniciado el juego.");
                     return;

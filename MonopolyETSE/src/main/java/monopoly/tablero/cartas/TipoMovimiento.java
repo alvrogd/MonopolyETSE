@@ -1,19 +1,22 @@
 package monopoly.tablero.cartas;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public enum TipoMovimiento {
 
-    moverAeropuerto( true, "Gwaihir", 0, true, 1, "Gandalf te llama para una aventura, monta en su Gwaihir. Si pasas por la casilla de Salida, cobra 2M€"),
+    moverAeropuerto( true, "Gwaihir", 0, true, 1, "Gandalf te llama para una aventura, monta en su Gwaihir", "Si pasas por la casilla de Salida, cobra 2M€"),
     moverCadiz( true, "Hogwarts", 0, true, 1, "¡Has recibido tu carta para ir a Hogwarts! Corre a estudiar magia." ),
-    moverCaceres( true, "Endor", 0, true, 1, "¡El imperio está atacando Endor! Ve a ayudar a los rebeldes. Si pasas por la casilla de Salida, cobra 2M€" ),
-    moverCarcel( true, "Azkaban", 0, false, 1, "El Ministerio de Magia te investiga por colaboración con los mortífagos. Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida\n" +
+    moverCaceres( true, "Endor", 0, true, 1, "¡El imperio está atacando Endor! Ve a ayudar a los rebeldes.", "Si pasas por la casilla de Salida, cobra 2M€" ),
+    moverCarcel( true, "Azkaban", 0, false, 1, "El Ministerio de Magia te investiga por colaboración con los mortífagos.", "Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida" +
             "y sin cobrar los 2M€. " ),
-    moverLeganes( true, "Braavos", 0, true, 1, "Vas a pedir un préstamo al banco de Braavos. Si pasas por la castilla de Salida cobra los 2M€" ),
+    moverLeganes( true, "Braavos", 0, true, 1, "Vas a pedir un préstamo al banco de Braavos.","Si pasas por la castilla de Salida cobra los 2M€" ),
     moverTrafico( false, "", -3, false, 1, "Overflow, retrocede tres casillas."),
-    moverTransporte( true, "transporte", 0, true, 2, "goto(transportes.next()). Si no tiene dueño, puedes comprársela a la banca. Si \n" +
+    moverTransporte( true, "transporte", 0, true, 2, "goto(transportes.next()). Si no tiene dueño, puedes comprársela a la banca."," Si " +
             "tiene dueño, paga al dueño el doble de la operación indicada. " ),
     moverSalida( true, "malloc(game)", 0, true, 1, "Necesitas reservar memoria, ve a la casilla de Salida. Cobra 2M€"),
-    moverValencia( true, "Platform 9 3/4", 0, false, 1, "" ),
-    moverPamplona( true, "Moria", 0, true, 1, "" );
+    moverValencia( true, "Platform 9 3/4", 0, false, 1, "Retrocede hasta Platform 9 3/4 para coger un tren."),
+    moverPamplona( true, "Moria", 0, true, 1, "Ve a Moria para ayudar a Gandalf a luchar contra el balrog de Moria.","Si pasas por la casilla de Salida, cobra 2000000€.");
 
 
 
@@ -34,13 +37,13 @@ public enum TipoMovimiento {
     private final int multiplicadorPago;
 
     // Descripción de la carta
-    private final String descripcion;
+    private final String[] descripcion;
 
 
 
     /* Constructor */
     private TipoMovimiento( boolean moverseDirectamente, String nombreCasillaDestino, int casillasDesplazarse, boolean
-            cobrarCasillaSalida, int multiplicadorPago, String descripcion ) {
+            cobrarCasillaSalida, int multiplicadorPago, String... descripcion ) {
 
         this.moverseDirectamente = moverseDirectamente;
         this.nombreCasillaDestino = nombreCasillaDestino;
@@ -74,8 +77,10 @@ public enum TipoMovimiento {
         return multiplicadorPago;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public ArrayList<String> getDescripcion() {
+
+        ArrayList<String> des = new ArrayList<>(Arrays.asList(this.descripcion));
+        return des;
     }
 
 }

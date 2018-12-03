@@ -1184,19 +1184,19 @@ public class Jugador {
 
             case cobro:
                 final TipoCobro tipoCobro = (TipoCobro) carta.getAccion();
-                Output.respuesta(tipoCobro.toString());
+                Output.respuesta(tipoCobro.getDescripcion());
                 cobrarCarta(tipoCobro);
                 break;
 
             case movimiento:
                 final TipoMovimiento tipoMovimiento = (TipoMovimiento) carta.getAccion();
-                Output.respuesta(tipoMovimiento.toString());
+                Output.respuesta(tipoMovimiento.getDescripcion());
                 moverCarta(tipoMovimiento);
                 break;
 
             case pago:
                 final TipoPago tipoPago = (TipoPago) carta.getAccion();
-                Output.respuesta(tipoPago.toString());
+                Output.respuesta(tipoPago.getDescripcion());
                 pagarCarta(tipoPago);
                 break;
         }
