@@ -36,4 +36,30 @@ public class Carta {
         return accion;
     }
 
+    @Override
+    public String toString(){
+
+        String res = "";
+
+        switch (tipoAccion) {
+
+            case cobro:
+                final TipoCobro tipoCobro = (TipoCobro) getAccion();
+                res += tipoCobro.getDescripcion();
+                break;
+
+            case movimiento:
+                final TipoMovimiento tipoMovimiento = (TipoMovimiento) getAccion();
+                res += tipoMovimiento.getDescripcion();
+                break;
+
+            case pago:
+                final TipoPago tipoPago = (TipoPago) getAccion();
+                res += tipoPago.getDescripcion();
+                break;
+        }
+
+        return res;
+
+    }
 }

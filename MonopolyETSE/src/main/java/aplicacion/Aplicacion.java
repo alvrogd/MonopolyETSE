@@ -135,8 +135,47 @@ public class Aplicacion {
 
     }
 
-    //Función que devuelve la tupla (TipoComando, String Argumentos), si se le pasa una línea devuelve la información
-    //separada en el comando y en sus correspondientes argumentos.
+    private void ejecutarSuerte(){
+
+        int count = 0, opc, size;
+        Scanner entrada = new Scanner(System.in);
+
+        size = getJuego().getCartasSuerte().size();
+
+        for(Carta carta : getJuego().getCartasSuerte()){
+
+            System.out.println("("+count+") "+carta.toString());
+            count++;
+
+        }
+
+        System.out.println("(*) Opción: ");
+        opc = entrada.nextInt();
+
+        getJuego().getTurno().leerCarta(getJuego().getCartasSuerte().get(opc%size));
+
+    }
+
+    private void ejecutarComunidad(){
+
+        int count = 0, opc, size;
+        Scanner entrada = new Scanner(System.in);
+
+        size = getJuego().getCartasComunidad().size();
+
+        for(Carta carta : getJuego().getCartasComunidad()){
+
+            System.out.println("("+count+") "+carta.toString());
+            count++;
+
+        }
+
+        System.out.println("(*) Opción: ");
+        opc = entrada.nextInt();
+
+        getJuego().getTurno().leerCarta(getJuego().getCartasComunidad().get(opc%size));
+
+    }
 
     /**
      * Función que devuelve la tupla (TipoComando, String Argumentos), si se le pasa una línea devuelve la información
@@ -572,6 +611,16 @@ public class Aplicacion {
                 salida.add(comando.get(1));
                 break;
 
+            case "suerte":
+                salida.add(null);
+                ejecutarSuerte();
+                break;
+
+            case "comunidad":
+                salida.add(null);
+                ejecutarComunidad();
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -582,7 +631,10 @@ public class Aplicacion {
         return salida;
     }
 
-
+    /**
+     * Función llamada por interpretarComando para listar los edificios de un grupo.
+     * @param tipoGrupo tipo del grupo cuyos edificios se van alistar.
+     */
     private void listarEdificiosGrupo(TipoGrupo tipoGrupo) {
 
         Grupo grupo = getJuego().getTablero().getGrupos().get(tipoGrupo);
@@ -1239,7 +1291,10 @@ public class Aplicacion {
     }
 
 
-
+    /**
+     * Función para añadir a Output la información sobre las estadísticas del jugador
+     * @param jugador jugador del que se quieren añadir las estadísticas
+     */
     private void estadisticasJugador(Jugador jugador){
 
         Output.respuesta("(*) Estadísticas de "+jugador.getNombre(),
@@ -1254,6 +1309,9 @@ public class Aplicacion {
         return;
     }
 
+    /**
+     * Función para añadir al Output la información sobre las estadísticas globales
+     */
     private void estadisticasGlobales(){
 
         Output.respuesta("(*) Estadísticas globales",
