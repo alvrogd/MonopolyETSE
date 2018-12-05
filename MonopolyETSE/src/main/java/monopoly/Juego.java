@@ -323,38 +323,42 @@ public class Juego {
         //Para poder pasar el turno el juego debe haberse iniciado.
         if (isIniciado() && !isFinalizado()) {
 
-            if (this.iterador == null) {
-                System.out.println("No se ha añadido ningún jugador.");
-                System.exit(1);
+            if( !isFinalizado() ) {
+
+                if (this.iterador == null) {
+                    System.out.println("No se ha añadido ningún jugador.");
+                    System.exit(1);
+                }
+
+                //Se pone el número de tiradas del jugador que tiene el turno a 0.
+                getTurno().setTiradasEnTurno(0);
+
+                //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
+                //desde el HashMap
+                if (this.iterador.hasNext())
+                    this.turno = getJugadores().get(this.iterador.next());
+
+                    //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
+                    //jugador.
+                else {
+                    this.iterador = getNombresJugadores().iterator();
+                    this.turno = getJugadores().get(this.iterador.next());
+                }
+
+                //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
+                if (getTurno().getTurnosPenalizado() != 0)
+                    getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
+
+                //Se establece el booleano de se han lanzado los dados a false.
+                this.haLanzadoDados = false;
+
+                // Al igual que el indicador de haber realizado una tirada
+                setHaHechoUnaTirada(false);
+
+                // Y el indicador de haber comprado una propiedad
+                setHaCompradoPropiedad(false);
+
             }
-
-            //Se pone el número de tiradas del jugador que tiene el turno a 0.
-            getTurno().setTiradasEnTurno(0);
-
-            //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
-            //desde el HashMap
-            if (this.iterador.hasNext())
-                this.turno = getJugadores().get(this.iterador.next());
-
-                //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
-                //jugador.
-            else {
-                this.iterador = getNombresJugadores().iterator();
-                this.turno = getJugadores().get(this.iterador.next());
-            }
-
-            //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
-            if (getTurno().getTurnosPenalizado() != 0)
-                getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
-
-            //Se establece el booleano de se han lanzado los dados a false.
-            this.haLanzadoDados = false;
-
-            // Al igual que el indicador de haber realizado una tirada
-            setHaHechoUnaTirada(false);
-
-            // Y el indicador de haber comprado una propiedad
-            setHaCompradoPropiedad(false);
 
         } else {
 
@@ -383,14 +387,12 @@ public class Juego {
         getTablero().getAvataresContenidos().remove(avatarJugador.getIdentificador());
         avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());
 
-        finalizarTurno();
-
         if (getNombresJugadores().size() == 1) {
             Output.mensaje("¡" + getTurno().getNombre() + " ha ganado el juego!");
             this.finalizado = true;
         }
 
-
+        finalizarTurno();
     }
 
     /**
@@ -608,7 +610,7 @@ public class Juego {
         for(String nombreJugador : getNombresJugadores()){
 
             Jugador jugadorActual = getJugador(nombreJugador);
-            int cabezaAux = jugadorActual.getAvatar().getVueltas();
+            int cabezaAux = jugadorActual.calcularFortunaTotal();
 
             if(cabezaMax < cabezaAux){
                 cabezaMax = cabezaAux;

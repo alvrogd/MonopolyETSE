@@ -162,15 +162,15 @@ public class Jugador {
     }
 
     public void setValorDados(int valorDados) {
-        if(valorDados < 0){
+        if (valorDados < 0) {
             System.err.println("Valor de dados no puede ser menor que 0.");
             return;
         }
         this.valorDados = valorDados;
     }
 
-    public void incrementarValorDados(int valorDados){
-        if(valorDados < 0){
+    public void incrementarValorDados(int valorDados) {
+        if (valorDados < 0) {
             System.err.println("Valor de dados no puede ser menor que 0.");
             return;
         }
@@ -198,19 +198,19 @@ public class Jugador {
     }
 
     public void setDineroInvertido(int dineroInvertido) {
-        if(dineroInvertido < 0){
+        if (dineroInvertido < 0) {
             System.err.println("El dinero invertido debe ser mayor que 0.");
             return;
         }
         this.dineroInvertido = dineroInvertido;
     }
 
-    public void incrementarDineroInvertido(int dineroInvertido){
-        if(dineroInvertido < 0){
+    public void incrementarDineroInvertido(int dineroInvertido) {
+        if (dineroInvertido < 0) {
             System.err.println("El dinero invertido debe ser mayor que 0.");
             return;
         }
-        setDineroInvertido(getDineroInvertido()+dineroInvertido);
+        setDineroInvertido(getDineroInvertido() + dineroInvertido);
         return;
 
     }
@@ -220,19 +220,19 @@ public class Jugador {
     }
 
     public void setPagoDeAlquileres(int pagoDeAlquileres) {
-        if(pagoDeAlquileres < 0){
+        if (pagoDeAlquileres < 0) {
             System.err.println("El pago de alquileres debe ser mayor que 0.");
             return;
         }
         this.pagoDeAlquileres = pagoDeAlquileres;
     }
 
-    public void incrementarPagoDeAlquileres(int pagoDeAlquileres){
-        if(pagoDeAlquileres < 0){
+    public void incrementarPagoDeAlquileres(int pagoDeAlquileres) {
+        if (pagoDeAlquileres < 0) {
             System.err.println("El pago de alquileres debe ser mayor que 0.");
             return;
         }
-        setPagoDeAlquileres(getPagoDeAlquileres()+pagoDeAlquileres);
+        setPagoDeAlquileres(getPagoDeAlquileres() + pagoDeAlquileres);
     }
 
     public int getCobroDeAlquileres() {
@@ -240,19 +240,19 @@ public class Jugador {
     }
 
     public void setCobroDeAlquileres(int cobroDeAlquileres) {
-        if(cobroDeAlquileres < 0){
+        if (cobroDeAlquileres < 0) {
             System.err.println("El cobro de alquiler debe ser mayor que 0.");
             return;
         }
         this.cobroDeAlquileres = cobroDeAlquileres;
     }
 
-    public void incrementarCobroDeAlquileres(int cobroDeAlquileres){
-        if(cobroDeAlquileres < 0){
+    public void incrementarCobroDeAlquileres(int cobroDeAlquileres) {
+        if (cobroDeAlquileres < 0) {
             System.err.println("El cobro de alquiler debe ser mayor que 0.");
             return;
         }
-        setCobroDeAlquileres(getCobroDeAlquileres()+cobroDeAlquileres);
+        setCobroDeAlquileres(getCobroDeAlquileres() + cobroDeAlquileres);
     }
 
     public int getPagoTasasEImpuestos() {
@@ -260,19 +260,19 @@ public class Jugador {
     }
 
     public void setPagoTasasEImpuestos(int pagoTasasEImpuestos) {
-        if(pagoTasasEImpuestos < 0){
+        if (pagoTasasEImpuestos < 0) {
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0.");
             return;
         }
         this.pagoTasasEImpuestos = pagoTasasEImpuestos;
     }
 
-    public void incrementarPagoTasasEImpuestos(int pagoTasasEImpuestos){
-        if(pagoTasasEImpuestos < 0){
+    public void incrementarPagoTasasEImpuestos(int pagoTasasEImpuestos) {
+        if (pagoTasasEImpuestos < 0) {
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0");
             return;
         }
-        setPagoTasasEImpuestos(getPagoTasasEImpuestos()+pagoTasasEImpuestos);
+        setPagoTasasEImpuestos(getPagoTasasEImpuestos() + pagoTasasEImpuestos);
     }
 
     public int getPasarPorCasillaDeSalida() {
@@ -280,19 +280,19 @@ public class Jugador {
     }
 
     public void setPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida) {
-        if(pasarPorCasillaDeSalida < 0){
+        if (pasarPorCasillaDeSalida < 0) {
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
             return;
         }
         this.pasarPorCasillaDeSalida = pasarPorCasillaDeSalida;
     }
 
-    public void incrementarPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida){
-        if(pasarPorCasillaDeSalida < 0){
+    public void incrementarPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida) {
+        if (pasarPorCasillaDeSalida < 0) {
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
             return;
         }
-        setPasarPorCasillaDeSalida(getPasarPorCasillaDeSalida()+pasarPorCasillaDeSalida);
+        setPasarPorCasillaDeSalida(getPasarPorCasillaDeSalida() + pasarPorCasillaDeSalida);
     }
 
     public int getPremiosInversionesOBote() {
@@ -300,19 +300,19 @@ public class Jugador {
     }
 
     public void setPremiosInversionesOBote(int premiosInversionesOBote) {
-        if(premiosInversionesOBote < 0){
+        if (premiosInversionesOBote < 0) {
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
             return;
         }
         this.premiosInversionesOBote = premiosInversionesOBote;
     }
 
-    public void incrementarPremiosInversionesOBote(int premiosInversionesOBote){
-        if(premiosInversionesOBote < 0){
+    public void incrementarPremiosInversionesOBote(int premiosInversionesOBote) {
+        if (premiosInversionesOBote < 0) {
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
             return;
         }
-        setPremiosInversionesOBote(getPremiosInversionesOBote()+premiosInversionesOBote);
+        setPremiosInversionesOBote(getPremiosInversionesOBote() + premiosInversionesOBote);
     }
 
     public int getVecesEnLaCarcel() {
@@ -320,19 +320,19 @@ public class Jugador {
     }
 
     public void setVecesEnLaCarcel(int vecesEnLaCarcel) {
-        if(vecesEnLaCarcel < 0){
+        if (vecesEnLaCarcel < 0) {
             System.err.println("El número de veces en la carcel debe ser mayor que 0.");
             return;
         }
         this.vecesEnLaCarcel = vecesEnLaCarcel;
     }
 
-    public void incrementarVecesEnLaCarcel(int vecesEnLaCarcel){
-        if(vecesEnLaCarcel < 0){
+    public void incrementarVecesEnLaCarcel(int vecesEnLaCarcel) {
+        if (vecesEnLaCarcel < 0) {
             System.err.println("El número de veces en la carcel debe ser mayor que 0.");
             return;
         }
-        setVecesEnLaCarcel(getVecesEnLaCarcel()+vecesEnLaCarcel);
+        setVecesEnLaCarcel(getVecesEnLaCarcel() + vecesEnLaCarcel);
     }
 
     public boolean isEstaBancarrota() {
@@ -408,7 +408,7 @@ public class Jugador {
      * Función para calcular la fortuna total del jugador, incluyendo su fortuna en dinero, valor de las propiedades y
      * valor de los edificios.
      */
-    public int calcularFortunaTotal(){
+    public int calcularFortunaTotal() {
 
         //Dinero invertido en la compra de propiedades
         int valorPropiedades = 0;
@@ -417,17 +417,17 @@ public class Jugador {
         int valorEdificios = 0;
 
         //Se recorren las propiedades del jugador
-        for(Casilla casilla : getPropiedades()){
+        for (Casilla casilla : getPropiedades()) {
 
             //Se suma el valor de cada casilla que sea propiedad del jugador
             valorPropiedades += casilla.getImporteCompra();
 
             //Se recorren los edificios de cada casilla
-            for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+            for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
 
                 ArrayList<Edificio> edificios = casilla.getEdificiosContenidos().get(tipoEdificio);
 
-                for(Edificio edificio : edificios){
+                for (Edificio edificio : edificios) {
 
                     //Se suma el valor del precio del edificio
                     valorEdificios += edificio.getPrecioCompra();
@@ -465,7 +465,7 @@ public class Jugador {
         if (balanceNegativoTrasPago(importe))
             caerEnBancarrota(this, receptor);
 
-        // En caso contrario, dispone de la suficiente liquidez como para pagar
+            // En caso contrario, dispone de la suficiente liquidez como para pagar
         else {
             setFortuna(getFortuna() - importe);
             incrementarPagoDeAlquileres(importe);
@@ -517,7 +517,7 @@ public class Jugador {
                 if (balanceNegativoTrasPago(importe))
                     caerEnBancarrota(this, jugador);
 
-                // En caso contrario, dispone de la suficiente liquidez como para pagar
+                    // En caso contrario, dispone de la suficiente liquidez como para pagar
                 else {
                     setFortuna(getFortuna() - importe);
                     incrementarPagoDeAlquileres(importe);
@@ -720,6 +720,7 @@ public class Jugador {
         if (getTurnosPenalizado() > 0) {
             Output.sugerencia("El jugador se encuentra penalizado durante " + getTurnosPenalizado() +
                     " turno(s).");
+            getAvatar().getTablero().getJuego().setHaLanzadoDados(true);
             return;
         }
 
@@ -746,13 +747,13 @@ public class Jugador {
 
             getAvatar().caerEnIrACarcel();
 
-        // En caso contrario, depende de si es un coche en modo avanzado
+            // En caso contrario, depende de si es un coche en modo avanzado
         else {
 
-            if( getAvatar().getTipo().equals(TipoAvatar.coche ) && !getAvatar().isMovimientoEstandar() ) {
+            if (getAvatar().getTipo().equals(TipoAvatar.coche) && !getAvatar().isMovimientoEstandar()) {
 
                 // Si ha sacado un 4 o más y no ha hecho el máximo de tiradas en un turno
-                if( getTiradasEnTurno() < 4 && (primeraTirada + segundaTirada) >= 4 )
+                if (getTiradasEnTurno() < 4 && (primeraTirada + segundaTirada) >= 4)
                     getAvatar().getTablero().getJuego().setHaLanzadoDados(false);
 
                 else
@@ -789,22 +790,23 @@ public class Jugador {
 
     /**
      * Un jugador dado cae en bancarrota, transfiriendo todas sus propiedades al deudor
+     *
      * @param endeudado jugador que cae en bancarrota
-     * @param deudor deudor del jugador que cae en bancarrota
+     * @param deudor    deudor del jugador que cae en bancarrota
      */
-    private void caerEnBancarrota( Jugador endeudado, Jugador deudor ) {
+    private void caerEnBancarrota(Jugador endeudado, Jugador deudor) {
 
-        if( endeudado == null ) {
-            System.err.println( "Endeudado no inicializado" );
+        if (endeudado == null) {
+            System.err.println("Endeudado no inicializado");
             return;
         }
 
-        if( deudor == null ) {
+        if (deudor == null) {
             System.err.println("Deudor no inicializado");
             return;
         }
 
-        if( isEstaBancarrota() )
+        if (isEstaBancarrota())
             return;
 
         Output.respuesta("¡El jugador ha caído en bancarrota!",
@@ -874,9 +876,9 @@ public class Jugador {
             return;
         }
 
-        for( Casilla casilla : casillas ) {
+        for (Casilla casilla : casillas) {
 
-            if( casilla == null ) {
+            if (casilla == null) {
                 System.err.println("Casilla no inicializada");
                 return;
             }
@@ -967,7 +969,7 @@ public class Jugador {
 
         // El usuario debe, o bien haber caído más de dos veces en la casilla para edificar, o bien poseer todos los
         // solares del grupo
-        if (getAvatar().getVecesCaidasEnPropiedades().get(casilla.getPosicionEnTablero()) > 2 ||
+        if (getAvatar().getVecesCaidasEnPropiedades().get(casilla.getPosicionEnTablero() % 40) > 2 ||
                 haObtenidoSolaresGrupo(casilla.getGrupo()))
 
             casilla.edificar(this, tipoEdificio);
@@ -1074,10 +1076,12 @@ public class Jugador {
         if (receptor.equals("banca")) {
             pagar(getAvatar().getTablero().getJuego().getBanca(), importe);
             incrementarPagoTasasEImpuestos(importe);
+            // Se incrementa el bote en el parking
+            final Casilla parking = getAvatar().getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(Constantes.POSICION_PARKING % 10);
+            parking.setAlquiler(parking.getAlquiler() + importe);
             // O bien pagar a todos los jugadores, en el caso de las cartas de pago de un alquiler en Cannes o pago por ser
             // escodigo presidente de la junta directiva
-        }
-        else {
+        } else {
 
             final Collection<Jugador> jugadores = getAvatar().getTablero().getJuego().getJugadores().values();
 
@@ -1149,18 +1153,18 @@ public class Jugador {
         // Se indica que aún no se ha movido las casillas correspondientes a la tirada
         getAvatar().sethaMovidoCasillasTirada(false);
         // Se indica el número de casillas restantes por moverse
-        getAvatar().setCasillasRestantesPorMoverse(numeroCasillas);
+        getAvatar().setCasillasRestantesPorMoverse(numeroCasillas + getAvatar().getCasillasRestantesPorMoverse());
 
         // Si el movimiento no es el estándar, se cambia
         if (!movimientoEstandar)
-            getAvatar().switchMovimiento();
+            getAvatar().switchMovimiento(true, false);
 
         // Se avanzan las casillas dadas
         getAvatar().avanzar(numeroCasillas, tipoMovimiento.isCobrarCasillaSalida(), false, tipoMovimiento.getMultiplicadorPago());
 
         // Y se devuelve el modo de movimiento a su estado original si fue modificado
         if (!movimientoEstandar)
-            getAvatar().switchMovimiento();
+            getAvatar().switchMovimiento(true, false);
     }
 
 

@@ -479,7 +479,7 @@ public class Aplicacion {
                 break;
 
             case "vender":
-                if (argc < 3) {
+                if (argc < 4) {
                     Output.errorComando("Opción del comando -vender- incorrecta.");
                     salida.add(null);
                     break;
@@ -621,6 +621,11 @@ public class Aplicacion {
                 ejecutarComunidad();
                 break;
 
+            case "pasta" :
+                salida.add(null);
+                getJuego().getTurno().setFortuna(getJuego().getTurno().getFortuna() + Integer.parseInt(comando.get(1)));
+                break;
+
             default:
                 Output.errorComando("Comando incorrecto.");
                 salida.add(null);
@@ -705,9 +710,9 @@ public class Aplicacion {
                     //todo ponlo bonito
                     if(construcciones == 0){
                         idEdificios.append(" | No se pueden construir más ").append(tipoEdificio.getPlural());
+                    } else {
+                        idEdificios.append(" | Se pueden construir ").append(construcciones).append(" ").append(tipoEdificio.getPlural());
                     }
-                    idEdificios.append(" | Se pueden construir ").append(construcciones).append(" ").append(tipoEdificio.getPlural());
-
                     res.add(idEdificios.toString());
 
                 } // Fin del for de tipoEdificio
@@ -1214,6 +1219,11 @@ public class Aplicacion {
 
                 if (!juego.isIniciado()) {
                     Output.errorComando("El juego no se ha iniciado.");
+                    return;
+                }
+
+                if (comando.get(1) == null) {
+                    System.err.println("Introducción comando vender incorrecta");
                     return;
                 }
 

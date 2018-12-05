@@ -473,7 +473,6 @@ public class Casilla {
 
     }
 
-    //todo cambiar Prop.:Fran a Hipotecada: Fran cuando se hipoteca la casilla
 
     @Override
     public boolean equals(Object obj) {

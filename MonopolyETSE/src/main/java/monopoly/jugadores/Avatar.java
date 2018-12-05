@@ -544,8 +544,8 @@ public class Avatar {
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
         // También se actualiza en caso de que sea propiedad del propio jugador
-        if( getPosicion().getPropietario().equals(getJugador()))
-            getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+        if (getPosicion().getPropietario().equals(getJugador()))
+            getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnPropiedades().get(posicionFinal % 40) + 1);
 
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);
@@ -570,8 +570,9 @@ public class Avatar {
         if (posicionFinal >= 40)
             setHaPasadoSalida(true);
 
-        setCasillasRestantesPorMoverse(0);
-        sethaMovidoCasillasTirada(true);
+        setCasillasRestantesPorMoverse(getCasillasRestantesPorMoverse() - numeroCasillas);
+        if (getCasillasRestantesPorMoverse() == 0)
+            sethaMovidoCasillasTirada(true);
 
         return (posicionFinal % 40);
 
@@ -723,22 +724,34 @@ public class Avatar {
      */
     public void switchMovimiento() {
 
+        switchMovimiento(false, true);
+    }
+
+
+    /**
+     * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
+     *
+     * @param forzar si se debe forzar el cambio de movimiento a pesar de las reglas del juego
+     */
+    public void switchMovimiento(boolean forzar, boolean splash) {
+
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
         // movimiento
-        if (!ishaMovidoCasillasTirada()) {
+        if (!ishaMovidoCasillasTirada() && !forzar) {
             Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
             return;
         }
 
         // Si es un coche y se ha movido ya
-        if (getTipo().equals(TipoAvatar.coche) && getTablero().getJuego().isHaHechoUnaTirada()) {
+        if (getTipo().equals(TipoAvatar.coche) && getTablero().getJuego().isHaHechoUnaTirada() && !forzar) {
             Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
             return;
         }
 
         setMovimientoEstandar(!isMovimientoEstandar());
 
-        Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "avanzado"));
+        if (splash)
+            Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "avanzado"));
 
     }
 
@@ -763,8 +776,10 @@ public class Avatar {
             boolean puedeMoverse = actualizarEncarcelamiento(dobles);
 
             // Si no puede moverse en el turno actual
-            if (!puedeMoverse)
+            if (!puedeMoverse) {
+                getTablero().getJuego().setHaLanzadoDados(true);
                 return;
+            }
 
         }
 
@@ -798,11 +813,11 @@ public class Avatar {
      * El avatar se mueve en el tablero, sujeto a condiciones en función de si es un movimiento resultado de una tirada
      * o si es resultado de haber sacado una carta de suerte o de comunidad
      *
-     * @param numeroCasillas número de casillas a moverse
-     * @param cobrarSalida si se debe cobrar el importe correspondiente en caso de pasar por la casilla de salida
+     * @param numeroCasillas        número de casillas a moverse
+     * @param cobrarSalida          si se debe cobrar el importe correspondiente en caso de pasar por la casilla de salida
      * @param importeSalidaEstandar si el importe a cobrar si se pasa por la casilla de salida es el estándar o el
      *                              establecido al escoger una carta de movimiento
-     * @param multiplicador multiplicador del pago a realizar en caso de caer en una propiedad de otro jugador
+     * @param multiplicador         multiplicador del pago a realizar en caso de caer en una propiedad de otro jugador
      */
     public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador) {
 
@@ -815,7 +830,6 @@ public class Avatar {
             Output.sugerencia("No se puede avanzar menos de una casilla.");
             return;
         }
-        //todo el coche si está penalizado a tomar por culo el juego
         //todo la pelota no acabe el turno cuando va hacia atrás
         // Se mueve el avatar
         actualizarPosicion(numeroCasillas, cobrarSalida, importeSalidaEstandar);
@@ -1073,6 +1087,7 @@ public class Avatar {
 
         setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
         sethaMovidoCasillasTirada(true);
+        getTablero().getJuego().setHaLanzadoDados(true);
         setCasillasRestantesPorMoverse(0);
         setEncarcelado(true);
         setHaEstadoCarcel(true);
