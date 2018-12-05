@@ -830,7 +830,6 @@ public class Avatar {
             Output.sugerencia("No se puede avanzar menos de una casilla.");
             return;
         }
-        //todo la pelota no acabe el turno cuando va hacia atrás
         // Se mueve el avatar
         actualizarPosicion(numeroCasillas, cobrarSalida, importeSalidaEstandar);
 

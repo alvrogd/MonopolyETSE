@@ -161,21 +161,31 @@ public class Jugador {
         return valorDados;
     }
 
+
+    // todo cambiar que es el número de tiradas
     public void setValorDados(int valorDados) {
+
         if (valorDados < 0) {
+
             System.err.println("Valor de dados no puede ser menor que 0.");
             return;
         }
+
         this.valorDados = valorDados;
     }
 
+
     public void incrementarValorDados(int valorDados) {
+
         if (valorDados < 0) {
+
             System.err.println("Valor de dados no puede ser menor que 0.");
             return;
         }
+
         setValorDados(getValorDados() + valorDados);
     }
+
 
     public int getFortuna() {
         return (fortuna);
@@ -193,125 +203,178 @@ public class Jugador {
 
     }
 
+
     public int getDineroInvertido() {
         return dineroInvertido;
     }
 
+
     public void setDineroInvertido(int dineroInvertido) {
+
         if (dineroInvertido < 0) {
+
             System.err.println("El dinero invertido debe ser mayor que 0.");
             return;
         }
+
         this.dineroInvertido = dineroInvertido;
     }
 
+
     public void incrementarDineroInvertido(int dineroInvertido) {
+
         if (dineroInvertido < 0) {
+
             System.err.println("El dinero invertido debe ser mayor que 0.");
             return;
         }
-        setDineroInvertido(getDineroInvertido() + dineroInvertido);
-        return;
 
+        setDineroInvertido(getDineroInvertido() + dineroInvertido);
     }
+
 
     public int getPagoDeAlquileres() {
         return pagoDeAlquileres;
     }
 
+
     public void setPagoDeAlquileres(int pagoDeAlquileres) {
+
         if (pagoDeAlquileres < 0) {
+
             System.err.println("El pago de alquileres debe ser mayor que 0.");
             return;
         }
+
         this.pagoDeAlquileres = pagoDeAlquileres;
     }
 
+
     public void incrementarPagoDeAlquileres(int pagoDeAlquileres) {
+
         if (pagoDeAlquileres < 0) {
+
             System.err.println("El pago de alquileres debe ser mayor que 0.");
             return;
         }
+
         setPagoDeAlquileres(getPagoDeAlquileres() + pagoDeAlquileres);
     }
+
 
     public int getCobroDeAlquileres() {
         return cobroDeAlquileres;
     }
 
+
     public void setCobroDeAlquileres(int cobroDeAlquileres) {
+
         if (cobroDeAlquileres < 0) {
+
             System.err.println("El cobro de alquiler debe ser mayor que 0.");
             return;
         }
+
         this.cobroDeAlquileres = cobroDeAlquileres;
     }
 
+
     public void incrementarCobroDeAlquileres(int cobroDeAlquileres) {
+
         if (cobroDeAlquileres < 0) {
+
             System.err.println("El cobro de alquiler debe ser mayor que 0.");
             return;
         }
+
         setCobroDeAlquileres(getCobroDeAlquileres() + cobroDeAlquileres);
     }
+
 
     public int getPagoTasasEImpuestos() {
         return pagoTasasEImpuestos;
     }
 
+
     public void setPagoTasasEImpuestos(int pagoTasasEImpuestos) {
+
         if (pagoTasasEImpuestos < 0) {
+
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0.");
             return;
         }
+
         this.pagoTasasEImpuestos = pagoTasasEImpuestos;
     }
 
+
     public void incrementarPagoTasasEImpuestos(int pagoTasasEImpuestos) {
+
         if (pagoTasasEImpuestos < 0) {
+
+
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0");
             return;
         }
+
         setPagoTasasEImpuestos(getPagoTasasEImpuestos() + pagoTasasEImpuestos);
     }
+
 
     public int getPasarPorCasillaDeSalida() {
         return pasarPorCasillaDeSalida;
     }
 
+
     public void setPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida) {
+
         if (pasarPorCasillaDeSalida < 0) {
+
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
             return;
         }
+
         this.pasarPorCasillaDeSalida = pasarPorCasillaDeSalida;
     }
 
+
     public void incrementarPasarPorCasillaDeSalida(int pasarPorCasillaDeSalida) {
+
         if (pasarPorCasillaDeSalida < 0) {
+
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0.");
             return;
         }
+
         setPasarPorCasillaDeSalida(getPasarPorCasillaDeSalida() + pasarPorCasillaDeSalida);
     }
+
 
     public int getPremiosInversionesOBote() {
         return premiosInversionesOBote;
     }
 
+
     public void setPremiosInversionesOBote(int premiosInversionesOBote) {
+
         if (premiosInversionesOBote < 0) {
+
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
             return;
         }
+
         this.premiosInversionesOBote = premiosInversionesOBote;
     }
 
+
     public void incrementarPremiosInversionesOBote(int premiosInversionesOBote) {
+
         if (premiosInversionesOBote < 0) {
+
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0.");
             return;
         }
+
         setPremiosInversionesOBote(getPremiosInversionesOBote() + premiosInversionesOBote);
     }
 
@@ -319,19 +382,27 @@ public class Jugador {
         return vecesEnLaCarcel;
     }
 
+
     public void setVecesEnLaCarcel(int vecesEnLaCarcel) {
+
         if (vecesEnLaCarcel < 0) {
+
             System.err.println("El número de veces en la carcel debe ser mayor que 0.");
             return;
         }
+
         this.vecesEnLaCarcel = vecesEnLaCarcel;
     }
 
+
     public void incrementarVecesEnLaCarcel(int vecesEnLaCarcel) {
+
         if (vecesEnLaCarcel < 0) {
+
             System.err.println("El número de veces en la carcel debe ser mayor que 0.");
             return;
         }
+
         setVecesEnLaCarcel(getVecesEnLaCarcel() + vecesEnLaCarcel);
     }
 
@@ -453,7 +524,7 @@ public class Jugador {
 
         if (receptor == null) {
             System.err.println("Jugador no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (importe < 0) {
@@ -490,17 +561,18 @@ public class Jugador {
 
         if (jugadores == null) {
             System.err.println("Jugadores no inicializados.");
-            return;
+            System.exit(1);
         }
 
         for (Jugador jugador : jugadores) {
 
             if (jugador == null) {
                 System.err.println("Jugador no inicializado.");
-                return;
+                System.exit(1);
             }
         }
 
+        // todo EXITS EN TODAS LAS CLASES DEL PAQUETE MONOPOLY
         if (importe < 0) {
             Output.sugerencia("No se puede pagar a un jugador una cantidad menor a 0.");
             return;
@@ -546,12 +618,12 @@ public class Jugador {
 
         if (vendedor == null) {
             System.err.println("Jugador no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (casilla == null) {
             System.err.println("Casilla no inicializada.");
-            return;
+            System.exit(1);
         }
 
         // Si la casilla no es comprable
@@ -633,7 +705,7 @@ public class Jugador {
 
         if (casilla == null) {
             System.err.println("Casilla no inicializada.");
-            return;
+            System.exit(1);
         }
 
         if (!casilla.getPropietario().equals(this)) {
@@ -673,7 +745,7 @@ public class Jugador {
 
         if (casilla == null) {
             System.err.println("Error: casilla no inicializada.");
-            return;
+            System.exit(1);
         }
 
         if (!casilla.getPropietario().equals(this)) {
@@ -714,7 +786,7 @@ public class Jugador {
 
         if (dado == null) {
             System.err.println("Dado no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (getTurnosPenalizado() > 0) {
@@ -798,12 +870,12 @@ public class Jugador {
 
         if (endeudado == null) {
             System.err.println("Endeudado no inicializado");
-            return;
+            System.exit(1);
         }
 
         if (deudor == null) {
             System.err.println("Deudor no inicializado");
-            return;
+            System.exit(1);
         }
 
         if (isEstaBancarrota())
@@ -828,17 +900,17 @@ public class Jugador {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (receptor == null) {
             System.err.println("Receptor no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (casilla == null) {
             System.err.println("Casilla no inicializada.");
-            return;
+            System.exit(1);
         }
 
         casilla.setPropietario(receptor);
@@ -863,24 +935,24 @@ public class Jugador {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (receptor == null) {
             System.err.println("Receptor no inicializado.");
-            return;
+            System.exit(1);
         }
 
         if (casillas == null) {
             System.err.println("Casillas no inicializadas.");
-            return;
+            System.exit(1);
         }
 
         for (Casilla casilla : casillas) {
 
             if (casilla == null) {
                 System.err.println("Casilla no inicializada");
-                return;
+                System.exit(1);
             }
         }
 
@@ -947,7 +1019,7 @@ public class Jugador {
 
         if (tipoEdificio == null) {
             System.err.println("Tipo de edificio no inicializado");
-            return;
+            System.exit(1);
         }
 
         final Casilla casilla = getAvatar().getPosicion();
@@ -993,12 +1065,12 @@ public class Jugador {
 
         if (tipoEdificio == null) {
             System.err.println("Tipo de edificio no inicializado");
-            return;
+            System.exit(1);
         }
 
         if (casilla == null) {
             System.err.println("Casilla no inicializada");
-            return;
+            System.exit(1);
         }
 
         if (!casilla.getPropietario().equals(this)) {
@@ -1177,7 +1249,7 @@ public class Jugador {
 
         if (carta == null) {
             System.err.println("Carta no inicializada");
-            return;
+            System.exit(1);
         }
 
         //Carta miCarta = new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio);

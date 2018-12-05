@@ -71,8 +71,8 @@ public class TableroASCII {
     public static String pintaTablero(Tablero tablero, ArrayList<ArrayList<Object>> info) {
 
         if (tablero == null) {
-            Output.sugerencia("Error: tablero no inicializado");
-            return (null);
+            System.err.println("Tablero no inicializado");
+            System.exit(1);
         }
 
         // String a devolver
@@ -87,7 +87,7 @@ public class TableroASCII {
         for (int i = caracteresPorLinea - 1; i < caracteresPorLinea * numeroLineas; i += caracteresPorLinea)
             tableroPintado.setCharAt(i, '\n');
 
-        // Se insertan las casillas tablero
+        // Se insertan las casillas en el tablero
         insertarFila(true, tableroPintado, tablero);
         insertarFila(false, tableroPintado, tablero);
         insertarColumnas(tableroPintado, tablero);    // Las columnas contenidas entre las filas superior e inferior
