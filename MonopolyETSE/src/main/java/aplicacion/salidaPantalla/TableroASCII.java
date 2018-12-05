@@ -692,9 +692,15 @@ public class TableroASCII {
             //propietario.append(decimal.format(precio)).append("K €");
             propietario.append(precio).append("K €");    // Supone un incremento de 5 ms
 
-        } else
+        // Si la casilla tiene propietario y no está hipotecada
+        }
+
+        else if( !casilla.isHipotecada() )
             propietario.append("Prop.: ").append(casilla.getPropietario().getNombre());
 
+        // Si está hipotecada
+        else
+            propietario.append("Hipot.: ").append(casilla.getPropietario().getNombre());
 
         // Se sitúa en la esquina inferior izquierda de la casilla (no en el separador)
         posicionEscritura = posicion + 1 + altoCasilla * caracteresPorLinea;
