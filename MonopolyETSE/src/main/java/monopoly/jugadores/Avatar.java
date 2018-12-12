@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Avatar {
+public abstract class Avatar {
 
     /* Atributos */
 
@@ -41,8 +41,6 @@ public class Avatar {
 
     // Representación ASCII en el dibujado del tablero
     private final char identificador;
-    // Uno de los cuatro tipos de avatares disponibles
-    private final TipoAvatar tipo;
 
     // Moverse de casilla en casilla o empleando el movimiento especial del tipo de avatar
     private boolean movimientoEstandar;
@@ -51,63 +49,17 @@ public class Avatar {
     // Cantidad de casillas que faltan por moverse
     private int casillasRestantesPorMoverse;
 
-    // Si la pelota se ha movido sus 4 casillas iniciales
-    private boolean haMovido4Casillas;
-    // Si la pelota se ha movida hacia atrás por primera vez
-    private boolean haMovidoAtras;
-
 
     /* Constructores */
-
-    /**
-     * Constructor diseñado para crear el avatar de la Banca al inicializar el juego
-     *
-     * @param jugador jugador que sea la Banca
-     */
-    public Avatar(Jugador jugador) {
-
-        if (jugador == null) {
-            System.err.println("Error: jugador no inicializado.");
-            System.exit(1);
-        }
-
-        this.jugador = jugador;
-        this.tablero = null;
-
-        haEstadoCarcel = false;
-        encarcelado = false;
-        turnosEnCarcel = 0;
-
-        vueltas = 0;
-        haPasadoSalida = false;
-        posicion = null;
-        vecesCaidasEnCasillas = null;
-        vecesCaidasEnPropiedades = null;
-
-        identificador = 'B';
-
-        tipo = TipoAvatar.banca;
-
-        movimientoEstandar = true;
-        haMovidoCasillasTirada = false;
-        casillasRestantesPorMoverse = 0;
-
-        haMovido4Casillas = false;
-        haMovidoAtras = false;
-
-
-    } /* Fin del constructor para la banca */
-
 
     /**
      * Constructor que crea el avatar de un jugador normal
      *
      * @param jugador        jugador cuyo avatar se va a crear
      * @param tablero        tablero del juego
-     * @param tipo           tipo de avatar a crear
      * @param casillaInicial casilla en la que posicionar el avatar del jugador
      */
-    public Avatar(Jugador jugador, Tablero tablero, TipoAvatar tipo, Casilla casillaInicial) {
+    public Avatar(Jugador jugador, Tablero tablero, Casilla casillaInicial) {
 
         if (jugador == null) {
             System.err.println("Jugador no inicializado.");
@@ -116,11 +68,6 @@ public class Avatar {
 
         if (tablero == null) {
             System.err.println("Tablero no inicializado.");
-            System.exit(1);
-        }
-
-        if (tipo == null) {
-            System.err.println("Tipo de avatar no inicializado.");
             System.exit(1);
         }
 
@@ -166,14 +113,9 @@ public class Avatar {
 
         casillaInicial.getAvataresContenidos().put(identificador, this);
 
-        this.tipo = tipo;
-
         movimientoEstandar = true;
         haMovidoCasillasTirada = true;
         casillasRestantesPorMoverse = 0;
-
-        haMovido4Casillas = false;
-        haMovidoAtras = false;
 
     }
 
@@ -305,14 +247,6 @@ public class Avatar {
     /* No se implementa el setter de identificador dado que es una constante */
 
 
-    public TipoAvatar getTipo() {
-        return (tipo);
-    }
-
-
-    /* No se implementa el setter de tipo dado que es una constante */
-
-
     public boolean isMovimientoEstandar() {
         return (movimientoEstandar);
     }
@@ -367,25 +301,6 @@ public class Avatar {
         this.haMovidoCasillasTirada = haMovidoCasillasTirada;
     }
 
-
-    public boolean isHaMovido4Casillas() {
-        return haMovido4Casillas;
-    }
-
-
-    public void setHaMovido4Casillas(boolean haMovido4Casillas) {
-        this.haMovido4Casillas = haMovido4Casillas;
-    }
-
-
-    public boolean isHaMovidoAtras() {
-        return haMovidoAtras;
-    }
-
-
-    public void setHaMovidoAtras(boolean haMovidoAtras) {
-        this.haMovidoAtras = haMovidoAtras;
-    }
 
 
     /* Métodos */
@@ -469,70 +384,34 @@ public class Avatar {
             return (false);
 
         } else
-
             setEncarcelado(false);
-        return (true);
 
+        return (true);
     }
 
 
     /**
-     * Se actualiza la posición del avatar, dado el número de casillas que se deben avanzar; el funcionamiento depende
+     * Se calcula la posición de la casilla a la que un avatar debe moverse, dado un número de casillas a avanzar; el
+     * funcionamiento depende del modo de movimiento establecido actualmente
+     *
+     * @param numeroCasillas número de casillas a moverse
+     * @return posición de la casilla destino
+     */
+    public abstract int calcularNuevaPosicion(int numeroCasillas);
+
+    /**
+     * Se actualiza la posición del avatar, dada la posición de la casilla a la que moverse; el funcionamiento depende
      * del modo de movimiento establecido actualmente
      *
-     * @param numeroCasillas cantidad de casillas a avanzar
+     * @param posicionFinal         la posición de la casilla a la que moverse
+     * @param cobrarSalida          si se debe cobrar el correspondiente importe en caso de pasar por la salida
+     * @param importeSalidaEstandar si el importe a cobrar por pasar por la salida es el estándar o se ve modificado
+     *                              por una carta obtenida
      */
-    public void actualizarPosicion(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar) {
-
-        int posicionFinal;
+    public void actualizarPosicion(int posicionFinal, boolean cobrarSalida, boolean importeSalidaEstandar) {
 
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
         getPosicion().getAvataresContenidos().remove(getIdentificador());
-
-
-        // Se calcula la posición nueva del avatar
-
-        // Si el jugador se encuentra en movimiento estándar, se avanza con normalidad
-        if (isMovimientoEstandar())
-            posicionFinal = actualizarPosicionNormal(numeroCasillas);
-
-            // En caso contrario, en función del tipo de avatar
-        else {
-
-            switch (getTipo()) {
-
-                case coche:
-
-                    posicionFinal = actualizarPosicionCoche(numeroCasillas);
-                    break;
-
-                case esfinge:
-
-                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
-                    break;
-
-                case pelota:
-
-                    // Se avanza si ya se ha movido cuatro casillas (indicativo de haber avanzado en una iteración
-                    // anterior) o si el número de casillas a moverse es mayor o igual a 4 (por el caso inicial)
-                    if (isHaMovido4Casillas() || numeroCasillas >= 4)
-                        posicionFinal = actualizarPosicionPelota(numeroCasillas, true);
-                    else
-                        posicionFinal = actualizarPosicionPelota(numeroCasillas, false);
-
-                    break;
-
-                case sombrero:
-
-                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
-                    break;
-
-                default:
-
-                    posicionFinal = actualizarPosicionNormal(numeroCasillas);
-                    break;
-            }
-        }
 
         // Se establece la nueva posición
         setPosicion(getTablero().getCasillas().get((posicionFinal / 10) % 4).get(posicionFinal % 10));
@@ -552,7 +431,6 @@ public class Avatar {
 
         // Por último se incrementa la frecuencia de dicha casilla
         getPosicion().incrementarFrecuencia();
-
     }
 
 
@@ -562,7 +440,7 @@ public class Avatar {
      * @param numeroCasillas número de casillas a moverse
      * @return posición de la casilla en el tablero a la que el avatar se ha movido
      */
-    private int actualizarPosicionNormal(int numeroCasillas) {
+    public int actualizarPosicionNormal(int numeroCasillas) {
 
         int posicionFinal = getPosicion().getPosicionEnTablero() + numeroCasillas;
 
@@ -575,147 +453,6 @@ public class Avatar {
             sethaMovidoCasillasTirada(true);
 
         return (posicionFinal % 40);
-
-    }
-
-
-    /**
-     * Se actualiza la posición del avatar empleando el movimiento avanzado de un coche
-     *
-     * @param numeroCasillas número de casillas a moverse
-     * @return posición de la casilla en el tablero a la que el avatar se ha movido
-     */
-    private int actualizarPosicionCoche(int numeroCasillas) {
-
-        // Se asigna inicialmente el número de casilla inicial
-        int posicionFinal = getPosicion().getPosicionEnTablero();
-
-
-        if (numeroCasillas >= 4) {
-
-            posicionFinal += numeroCasillas;
-
-            // Si ha pasado por la casilla de salida
-            if (posicionFinal >= 40)
-                setHaPasadoSalida(true);
-
-        } else {
-
-            posicionFinal -= numeroCasillas;
-
-            // Si ha pasado por la casilla de salida (debe considerarse que ahora se mueve hacia atrás)
-            if (posicionFinal < 0) {
-                setHaPasadoSalida(true);
-
-                // Y se corrige además el número de casilla al que el avatar debe ir
-                posicionFinal = 40 + posicionFinal;
-            }
-
-            // Se indica que el jugador no puede volver a lanzar los dados ni en este turno ni en los dos siguientes
-            getTablero().getJuego().setHaLanzadoDados(true);
-            // Se establecen 3 turnos dado que, al finalizar este, el juego le restará un turno de penalización al
-            // jugador
-            getJugador().setTurnosPenalizado(3);
-
-        }
-
-        setCasillasRestantesPorMoverse(0);
-        return (posicionFinal % 40);
-
-    }
-
-
-    /**
-     * Se actualiza la posición del avatar empleando el movimiento avanzado de una pelota
-     *
-     * @param numeroCasillas número de casillas a moverse
-     * @return posición de la casilla en el tablero a la que el avatar se ha movido
-     */
-    private int actualizarPosicionPelota(int numeroCasillas, boolean avanzar) {
-
-        // Se asigna inicialmente el número de casilla inicial
-        int posicionFinal = getPosicion().getPosicionEnTablero();
-
-
-        if (avanzar) {
-
-            // Si aún no se ha movido las 4 casillas iniciales
-            if (!isHaMovido4Casillas()) {
-                numeroCasillas -= 4;
-                posicionFinal += 4;
-                setHaMovido4Casillas(true);
-
-                // Si aún se puede mover más el avatar, se avanza hasta la 5ª casilla dado que será donde deba parar
-                if (numeroCasillas > 0) {
-                    numeroCasillas--;
-                    posicionFinal++;
-                }
-            }
-
-            // Si ya se han avanzado las 4 casillas iniciales y se ha vuelto a llamar a esta función, la tirada del
-            // jugador fue de al menos 6 casillas
-            else {
-
-                // Por lo tanto, o bien se va a la siguiente casilla de tirada impar
-                if (numeroCasillas > 1) {
-                    numeroCasillas -= 2;
-                    posicionFinal += 2;
-                }
-
-                // O bien se avanza a la siguiente casilla dado que el avatar sólo puede moverse una más
-                else {
-                    numeroCasillas--;
-                    posicionFinal++;
-                }
-
-            }
-
-            // Si ha pasado por la casilla de salida
-            if (posicionFinal >= 40)
-                setHaPasadoSalida(true);
-
-        } else {
-
-            // Si aún no se ha movido hacia atrás, se retrocede una casilla dado que debe parar en ella
-            if (!isHaMovidoAtras()) {
-                numeroCasillas--;
-                posicionFinal--;
-                setHaMovidoAtras(true);
-
-            }
-
-            // Si ya se ha avanzado hacia atrás y se ha vuelto a llamar a esta función, la tirada del jugador fue de
-            // de una suma total de 2 o 3
-            else {
-
-                // Por lo tanto, o bien se va a la siguiente casilla de tirada impar
-                if (numeroCasillas > 1) {
-                    numeroCasillas -= 2;
-                    posicionFinal -= 2;
-                }
-
-                // O bien se avanza a la casilla anterior dado que el avatar sólo puede moverse una más
-                else {
-                    numeroCasillas--;
-                    posicionFinal--;
-                }
-
-            }
-
-            // Si ha pasado por la casilla de salida (debe considerarse que ahora se mueve hacia atrás)
-            if (posicionFinal < 0) {
-                setHaPasadoSalida(true);
-
-                // Y se corrige además el número de casilla al que el avatar debe ir
-                posicionFinal = 40 + posicionFinal;
-            }
-
-
-        }
-
-        setCasillasRestantesPorMoverse(numeroCasillas);
-        return (posicionFinal % 40);
-
     }
 
 
@@ -729,24 +466,28 @@ public class Avatar {
 
 
     /**
+     * Se comprueba si el avatar puede cambiar su modo de movimiento
+     *
+     * @return si el avatar puede cambiar el modo de movimiento
+     */
+    public boolean poderCambiarMovimiento(boolean forzar) {
+
+        // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
+        // movimiento
+        // todo avisar de Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
+        return( haMovidoCasillasTirada || forzar );
+    }
+
+    /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      *
      * @param forzar si se debe forzar el cambio de movimiento a pesar de las reglas del juego
      */
     public void switchMovimiento(boolean forzar, boolean splash) {
 
-        // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
-        // movimiento
-        if (!ishaMovidoCasillasTirada() && !forzar) {
-            Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
-            return;
-        }
 
-        // Si es un coche y se ha movido ya
-        if (getTipo().equals(TipoAvatar.coche) && getTablero().getJuego().isHaHechoUnaTirada() && !forzar) {
-            Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
+        if (!poderCambiarMovimiento(forzar))
             return;
-        }
 
         setMovimientoEstandar(!isMovimientoEstandar());
 
@@ -787,10 +528,6 @@ public class Avatar {
         sethaMovidoCasillasTirada(false);
         // Se indica el número de casillas restantes por moverse
         setCasillasRestantesPorMoverse(numeroCasillas);
-        // Se indica (por si es la pelota) que aún no se ha movido las 4 casillas iniciales
-        setHaMovido4Casillas(false);
-        // Se indica (por si es la pelota) que aún no se ha movido hacia atrás
-        setHaMovidoAtras(false);
 
         // Y se avanza
         avanzar(numeroCasillas);
@@ -831,7 +568,7 @@ public class Avatar {
             return;
         }
         // Se mueve el avatar
-        actualizarPosicion(numeroCasillas, cobrarSalida, importeSalidaEstandar);
+        actualizarPosicion(calcularNuevaPosicion(numeroCasillas), cobrarSalida, importeSalidaEstandar);
 
         // En función del tipo de casilla en la que se ha caído
         switch (getPosicion().getGrupo().getTipo()) {
@@ -982,7 +719,7 @@ public class Avatar {
 
     }
 
-
+    // todo en teoría Fran va a hacer que los multiplicadores vayan implícitos al obtener el alquiler
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
