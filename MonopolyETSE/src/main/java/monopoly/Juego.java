@@ -3,12 +3,13 @@ package monopoly;
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.TipoAvatar;
-import monopoly.tablero.Casilla;
-import monopoly.tablero.Grupo;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Grupo;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.*;
 
@@ -453,19 +454,19 @@ public class Juego {
                 //Se recorren las casillas de cada fila
                 for (Casilla casilla : fila) {
 
-                    //Se comprueba que estén en venta
-                    if (casilla.isComprable()) {
+                    if(casilla instanceof Solar) {
 
-                        //Si no pertenecen al grupo de transportes ni al de servicios, o sea, si pertenecen a solares.
-                        if (casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
-                                casilla.getGrupo().getTipo() != TipoGrupo.servicios) {
+                        Solar solar = (Solar) casilla;
 
-                            //Se establece el nuevo precio en caso de que no se haya comprado la casilla.
-                            casilla.getGrupo().setPrecio(
-                                    (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * casilla.getGrupo().getPrecio()));
+                        //Se comprueba que estén en venta
+                        if (solar.isComprable()) {
+                                //Se establece el nuevo precio en caso de que no se haya comprado la solar.
+                                solar.getGrupo().setPrecio(
+                                        (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * solar.getGrupo().getPrecio()));
 
                         }
                     }
+
                 }
             }
         }
@@ -474,25 +475,28 @@ public class Juego {
     /**
      * Función que devuelve la casilla más rentable del juego.
      */
-    public Casilla casillaMasRentable(){
+    public Propiedad casillaMasRentable(){
 
         ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
 
-        //Casilla con rentabilidad maxima, inicialmente es la casilla negra.
-        Casilla casillaMax = casillas.get(0).get(1);
+        //Propiedad con rentabilidad maxima, inicialmente es la casilla negra.
+        Propiedad propiedadMax = (Propiedad) casillas.get(0).get(1);
 
         for(ArrayList<Casilla> fila : casillas){
 
             for(Casilla casilla : fila){
 
-                if(casillaMax.getRentabilidad() < casilla.getRentabilidad())
-                    casillaMax = casilla;
+                if(casilla instanceof Propiedad) {
+                    Propiedad propiedad = (Propiedad) casilla;
+                    if (propiedadMax.getRentabilidad() < propiedad.getRentabilidad())
+                        propiedadMax = propiedad;
+                }
 
             }
 
         }
 
-        return casillaMax;
+        return propiedadMax;
 
     }
 

@@ -4,6 +4,8 @@ import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
 import monopoly.jugadores.Jugador;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Grupo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

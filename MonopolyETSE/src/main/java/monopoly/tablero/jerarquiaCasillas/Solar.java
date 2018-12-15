@@ -1,69 +1,25 @@
-package monopoly.tablero;
+package monopoly.tablero.jerarquiaCasillas;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
-import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
+import monopoly.tablero.Tablero;
+import monopoly.tablero.TipoEdificio;
 
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Casilla {
-
-    /* Atributos */
-    private final String nombre;
-    private final Grupo grupo;
-
-    private final int posicionEnTablero;
-    private Jugador propietario;
-    private boolean hipotecada;
-
-    private HashMap<Character, Avatar> avataresContenidos;
-
-    private final int precioInicial;
-    private int importeCompra;
-    private int alquiler;
-    private boolean comprable;
-
-    //Atributos de las estadísticas.
-
-    private int rentabilidad;
-    private int frecuencia;
+public class Solar extends Propiedad{
 
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
 
-    /* Constructores */
+    public Solar(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario, Tablero tablero){
 
-    public Casilla(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario) {
-
-        if (grupo == null) {
-            System.err.println("Error: grupo no inicializado.");
-            System.exit(1);
-        }
-
-        if (posicion < 0) {
-            System.err.println("Error: posición de la casilla en el tablero menor que 0");
-            System.exit(1);
-        }
-
-        if (propietario == null) {
-            System.err.println("Error: jugador no inicializado.");
-            System.exit(1);
-        }
-
-        this.nombre = nombre;
-        this.grupo = grupo;
-        this.posicionEnTablero = posicion;
-
-        this.comprable = comprable;
-
-        this.propietario = propietario;
-        this.hipotecada = false;
-
-        avataresContenidos = new HashMap<>();
+        super(nombre, grupo, comprable, posicion, propietario, tablero);
 
         ArrayList<Edificio> auxEdificio;
+
+        setAlquiler((int) (Constantes.COEF_ALQUILER * getAlquiler()));
 
         edificiosContenidos = new HashMap<>();
 
@@ -72,111 +28,6 @@ public class Casilla {
             edificiosContenidos.put(aux, auxEdificio);
         }
 
-        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
-        this.importeCompra = 0;
-        this.alquiler = (int) (Constantes.COEF_ALQUILER * (grupo.getPrecio() / (double) grupo.getCasillas().size()));
-
-        this.rentabilidad = 0;
-        this.frecuencia = 0;
-
-    }
-
-    /*Getters y setters*/
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public int getPosicionEnTablero() {
-        return posicionEnTablero;
-    }
-
-    public Jugador getPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(Jugador propietario) {
-        if(propietario == null){
-            System.err.println("El propietario referencia a null");
-            return;
-        }
-        this.propietario = propietario;
-    }
-
-    public boolean isComprable() {
-        return comprable;
-    }
-
-    public void setComprable(boolean comprable) {
-        this.comprable = comprable;
-    }
-
-    public boolean isHipotecada() {
-        return hipotecada;
-    }
-
-    public int getRentabilidad() {
-        return rentabilidad;
-    }
-
-    public void setRentabilidad(int rentabilidad) {
-        if(rentabilidad < 0){
-            System.err.println("Rentabilidad no puede ser negativa.");
-            return;
-        }
-        this.rentabilidad = rentabilidad;
-    }
-
-    public void incrementarRentabilidad(int rentabilidad){
-        if(rentabilidad < 0){
-            System.err.println("Rentabilidad no puede ser negativa.");
-            return;
-        }
-        setRentabilidad(getRentabilidad()+rentabilidad);
-    }
-
-    public int getFrecuencia() {
-        return frecuencia;
-    }
-
-    public void setFrecuencia(int frecuencia) {
-        if(frecuencia < 0){
-            System.err.println("Frecuencia no puede ser negativa.");
-            return;
-        }
-        this.frecuencia = frecuencia;
-    }
-
-    public void incrementarFrecuencia(){
-        this.frecuencia++;
-    }
-
-    public void setHipotecada(boolean hipotecada) {
-        this.hipotecada = hipotecada;
-    }
-
-    public HashMap<Character, Avatar> getAvataresContenidos() {
-        return avataresContenidos;
-    }
-
-    public void setAvataresContenidos(HashMap<Character, Avatar> avataresContenidos) {
-        if(avataresContenidos == null){
-            System.err.println("Avatares referencia a null");
-            return;
-        }
-        this.avataresContenidos = avataresContenidos;
-    }
-
-    public int getAlquiler() {
-        return alquiler;
-    }
-
-    public void setAlquiler(int alquiler) {
-        this.alquiler = alquiler;
     }
 
     public HashMap<TipoEdificio, ArrayList<Edificio>> getEdificiosContenidos() {
@@ -184,30 +35,14 @@ public class Casilla {
     }
 
     public void setEdificiosContenidos(HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos) {
+
         if(edificiosContenidos == null){
-            System.err.println("Edificios contenidos referencia a null");
-            return;
+            System.err.println("Error: edificiosContenidos referencia a null");
+            System.exit(1);
         }
+
         this.edificiosContenidos = edificiosContenidos;
     }
-
-    public int getImporteCompra() {
-        return importeCompra;
-    }
-
-    public void setImporteCompra(int importeCompra) {
-        if(importeCompra < 0){
-            System.err.println("Importe de compra no puede ser negativo.");
-            return;
-        }
-        this.importeCompra = importeCompra;
-    }
-
-    public int getPrecioInicial() {
-        return precioInicial;
-    }
-
-    /*Métodos*/
 
     /**
      * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
@@ -231,7 +66,7 @@ public class Casilla {
             return;
         }
 
-        numCasillasGrupo = getGrupo().getCasillas().size();
+        numCasillasGrupo = getGrupo().getSolares().size();
 
         numHoteles = getEdificiosContenidos().get(TipoEdificio.hotel).size();
         numCasas = getEdificiosContenidos().get(TipoEdificio.casa).size();
@@ -245,8 +80,15 @@ public class Casilla {
             return;
 
         }
+
+        if(!(comprador.getAvatar().getPosicion() instanceof Solar)){
+            Output.respuesta("No se puede edificar en esta casilla.");
+            return;
+        }
+
+        Solar solar = (Solar) comprador.getAvatar().getPosicion();
         if(comprador.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(tipoEdificio,
-                comprador.getAvatar().getPosicion().getGrupo().getTipo()))){
+                solar.getGrupo().getTipo()))){
 
             Output.respuesta("El jugador no dispone de suficiente liquidez como para realizar la " +
                     "compra.");
@@ -326,58 +168,6 @@ public class Casilla {
         Output.respuesta("Has creado tu edificio con id " + edificacion.getId());
 
         actualizarAlquiler();
-
-    }
-
-    /**
-     * Función para recalcular el alquiler de la casilla, debería usarse cada vez que se construye / vende un edificio.
-     */
-    private void actualizarAlquiler(){
-
-        int alquilerNuevo = 0;
-        int importe = getImporteCompra()/10;
-
-        for(TipoEdificio aux : TipoEdificio.values()){
-
-            ArrayList<Edificio> edificios = getEdificiosContenidos().get(aux);
-            int size = edificios.size();
-
-            switch(aux){
-
-                case casa:
-                    switch(size){
-                        case 1:
-                            alquilerNuevo += (importe*Constantes.ALQ_UNACASA);
-                            break;
-                        case 2:
-                            alquilerNuevo += (importe*Constantes.ALQ_DOSCASA);
-                            break;
-                        case 3:
-                            alquilerNuevo += (importe*Constantes.ALQ_TRESCASA);
-                            break;
-                        case 4:
-                            alquilerNuevo += (importe*Constantes.ALQ_CUATROCASA);
-                            break;
-                    }
-                    break;
-
-                case hotel:
-                    alquilerNuevo += size*importe*Constantes.ALQ_HOTEL;
-                    break;
-
-                case piscina:
-                    alquilerNuevo += size*importe*Constantes.ALQ_PISCINA;
-                    break;
-
-                case pistaDeporte:
-                    alquilerNuevo += size*importe*Constantes.ALQ_PISTADEPORTE;
-                    break;
-
-            }
-
-        }
-
-        setAlquiler(alquilerNuevo);
 
     }
 
@@ -475,27 +265,66 @@ public class Casilla {
 
 
     @Override
-    public boolean equals(Object obj) {
+    public void actualizarAlquiler() {
 
-        // Si apuntan a la misma dirección de memoria
-        if (this == obj) return (true);
+            int alquilerNuevo = 0;
 
-        // Si el objeto con el que se compara apunta a null
-        if (obj == null) return (false);
+            int importe = (int)(Constantes.COEF_ALQUILER * getImporteCompra());
 
-        // Si no pertenecen a la misma clase
-        if (getClass() != obj.getClass()) return (false);
+            if(importe == 0)
+                importe = (int)(Constantes.COEF_ALQUILER * getPrecioActual());
 
-        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
-        // llamar a sus métodos
-        final Casilla otro = (Casilla) obj;
+            for(TipoEdificio aux : TipoEdificio.values()){
 
-        // Si los identificadores de sus avatares son el mismo
-        if (this.getPosicionEnTablero() != otro.getPosicionEnTablero()) return (false);
+                ArrayList<Edificio> edificios = getEdificiosContenidos().get(aux);
+                int size = edificios.size();
 
-        /* Si no se ha cumplido ninguna condición anterior, son el mismo objeto */
-        return (true);
+                switch(aux){
 
-    } /* Fin del método equals */
+                    case casa:
+                        switch(size){
+                            case 1:
+                                alquilerNuevo += (importe*Constantes.ALQ_UNACASA);
+                                break;
+                            case 2:
+                                alquilerNuevo += (importe*Constantes.ALQ_DOSCASA);
+                                break;
+                            case 3:
+                                alquilerNuevo += (importe*Constantes.ALQ_TRESCASA);
+                                break;
+                            case 4:
+                                alquilerNuevo += (importe*Constantes.ALQ_CUATROCASA);
+                                break;
+                        }
+                        break;
 
+                    case hotel:
+                        alquilerNuevo += size*importe*Constantes.ALQ_HOTEL;
+                        break;
+
+                    case piscina:
+                        alquilerNuevo += size*importe*Constantes.ALQ_PISCINA;
+                        break;
+
+                    case pistaDeporte:
+                        alquilerNuevo += size*importe*Constantes.ALQ_PISTADEPORTE;
+                        break;
+
+                }
+
+            }
+
+            //Si no hay ningún edificio, el alquilerNuevo será igual a 0.
+
+            //En caso de que no haya edificios y el propietario haya obtenido todos los solares del grupo
+            //se multiplica el alquiler actual por 2.
+            if((alquilerNuevo == 0) && getPropietario().haObtenidoSolaresGrupo(getGrupo())){
+                alquilerNuevo = 2 * super.getAlquiler();
+            }
+
+            //En caso de que el alquilerNuevo no sea cero, bien por los edificios o por haber obtenido los solares
+            //se actualiza el alquiler.
+            if(alquilerNuevo != 0)
+                setAlquiler(alquilerNuevo);
+    }
 }

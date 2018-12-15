@@ -1,5 +1,6 @@
-package monopoly.tablero;
+package monopoly.tablero.jerarquiaCasillas;
 
+import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 
@@ -13,7 +14,7 @@ public class Edificio {
 
     /* Constructor */
 
-    public Edificio(Casilla posicion, TipoEdificio tipoEdificio, TipoGrupo grupo) {
+    public Edificio(Solar posicion, TipoEdificio tipoEdificio, TipoGrupo grupo) {
 
         StringBuilder newId = new StringBuilder();
         Integer numEdificio;

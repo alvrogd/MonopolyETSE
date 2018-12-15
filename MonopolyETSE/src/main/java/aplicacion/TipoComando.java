@@ -14,17 +14,17 @@ public enum TipoComando {
     lanzarDados("lanzar dados"),
     finalizarTurno("acabar turno"),
     salirCarcel("salir carcel"),
-    describirCasilla("describir"),
+    describirCasilla(true, "describir"),
     describirJugador("describir jugador"),
     describirAvatar("describir avatar"),
-    comprarPropiedad("comprar"),
+    comprarPropiedad(true, "comprar"),
     listarVentas("listar enventa"),
     verTablero("ver tablero"),
     edificar("edificar"),
     cambiarModo("cambiar modo"),
-    hipotecar("hipotecar"),
-    deshipotecar("deshipotecar"),
-    vender("vender"),
+    hipotecar(true, "hipotecar"),
+    deshipotecar(true, "deshipotecar"),
+    vender(true, 3, "vender"),
     avanzar("avanzar"),
     estadisticasJugador("estadisticas"),
     estadisticasGlobales("estadisticas"),
@@ -33,14 +33,61 @@ public enum TipoComando {
     /*Atributos*/
     private final String comando;
 
+    //Atributos para saber si el comando va a tener el nombre de una casilla y de ser así,
+    //indicar cuantos espacios hay de la primera palabra del comando a la que aparece la casilla.
+    private final boolean contieneCasilla;
+    private final int espaciosCasilla;
+
     /*Constructores*/
-    private TipoComando(String comando){
+    private TipoComando(String comando) {
         this.comando = comando;
+        this.contieneCasilla = false;
+        this.espaciosCasilla = 1;
+    }
+
+    private TipoComando(boolean contieneCasilla, String comando) {
+        this.comando = comando;
+        this.contieneCasilla = contieneCasilla;
+        this.espaciosCasilla = 1;
+    }
+
+    private TipoComando(boolean contieneCasilla, int espaciosCasilla, String comando) {
+        this.comando = comando;
+        this.contieneCasilla = contieneCasilla;
+        this.espaciosCasilla = espaciosCasilla;
     }
 
     /*Métodos*/
-    public String getComando(){
-        return(comando);
+    public String getComando() {
+        return (comando);
     }
 
+    public boolean isContieneCasilla() {
+        return contieneCasilla;
+    }
+
+    public int getEspaciosCasilla() {
+        return espaciosCasilla;
+    }
+
+    public static TipoComando toComandoCasilla(String palabra) {
+
+        boolean encontrado = false;
+        TipoComando comando = null;
+
+        for (TipoComando tComando : TipoComando.values()) {
+
+            if (tComando.getComando().equals(palabra)) {
+                if (tComando.isContieneCasilla()) {
+                    encontrado = true;
+                    comando = tComando;
+                    break;
+                }
+
+            }
+        }
+
+        return comando;
+
+    }
 }

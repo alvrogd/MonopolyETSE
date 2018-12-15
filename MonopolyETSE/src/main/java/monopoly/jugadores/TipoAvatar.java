@@ -54,6 +54,7 @@ public enum TipoAvatar {
 
             default:
                 return null;
+
         }
     }
 }

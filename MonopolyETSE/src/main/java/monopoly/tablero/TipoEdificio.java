@@ -44,4 +44,71 @@ public enum TipoEdificio {
     public String getEspacios() {
         return espacios;
     }
+
+    public static TipoEdificio toEdificio(String edificio){
+
+        TipoEdificio tipoEdificio = null;
+
+        switch(edificio){
+
+            case "casa":
+                tipoEdificio = TipoEdificio.casa;
+                break;
+
+            case "casas":
+                tipoEdificio = TipoEdificio.casa;
+                break;
+
+            case "Casas":
+                tipoEdificio = TipoEdificio.casa;
+                break;
+
+            case "Casa":
+                tipoEdificio = TipoEdificio.casa;
+                break;
+
+            case "hotel":
+                tipoEdificio = TipoEdificio.hotel;
+                break;
+            case "Hotel":
+                tipoEdificio = TipoEdificio.hotel;
+                break;
+            case "Hoteles":
+                tipoEdificio = TipoEdificio.hotel;
+                break;
+            case "hoteles":
+                tipoEdificio = TipoEdificio.hotel;
+                break;
+
+            case "piscinas":
+                tipoEdificio = TipoEdificio.piscina;
+                break;
+            case "piscina":
+                tipoEdificio = TipoEdificio.piscina;
+                break;
+            case "Piscina":
+                tipoEdificio = TipoEdificio.piscina;
+                break;
+            case "Piscinas":
+                tipoEdificio = TipoEdificio.piscina;
+                break;
+
+            case "pista":
+                tipoEdificio = TipoEdificio.pistaDeporte;
+                break;
+            case "Pista":
+                tipoEdificio = TipoEdificio.pistaDeporte;
+                break;
+            case "pistas":
+                tipoEdificio = TipoEdificio.pistaDeporte;
+                break;
+            case "Pistas":
+                tipoEdificio = TipoEdificio.pistaDeporte;
+                break;
+
+        }
+
+        return tipoEdificio;
+
+    }
 }

@@ -5,10 +5,12 @@ import monopoly.Constantes;
 import monopoly.Dado;
 import monopoly.tablero.*;
 import monopoly.tablero.cartas.*;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Edificio;
+import monopoly.tablero.jerarquiaCasillas.Grupo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class Jugador {
 

@@ -1,11 +1,10 @@
 package aplicacion.salidaPantalla;
 
 import monopoly.jugadores.Avatar;
-import monopoly.tablero.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

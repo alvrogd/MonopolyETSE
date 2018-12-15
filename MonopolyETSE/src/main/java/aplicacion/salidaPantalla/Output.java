@@ -3,8 +3,8 @@ package aplicacion.salidaPantalla;
 import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
-import monopoly.tablero.Casilla;
-import monopoly.tablero.Edificio;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Edificio;
 import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 
@@ -647,7 +647,7 @@ public class Output {
         if (valorCasilla >= 0) {
 
             int alquiler = casilla.getAlquiler();
-            int importe = casilla.getImporteCompra() / 10;
+            int importe = (int) casilla.getImporteCompra() * Constantes.COEF_ALQUILER;
 
             if (casilla.getGrupo().getTipo() == TipoGrupo.impuesto1 ||
                     casilla.getGrupo().getTipo() == TipoGrupo.impuesto2) {
