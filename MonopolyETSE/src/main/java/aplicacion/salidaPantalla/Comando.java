@@ -56,7 +56,7 @@ public class Comando implements IComando {
         String aux = "";
 
         //Se busca la primera palabra del comando
-        for (int i = 0; arrayChar[i] != ' '; i++) {
+        for (int i = 0; i < tamChar && arrayChar[i] != ' '; i++) {
 
             aux += arrayChar[i];
             comienzo = i;
@@ -78,21 +78,29 @@ public class Comando implements IComando {
         } else {
             numEspacios = tipoComando.getEspaciosCasilla() - 1; //-1 porque ya se ha contado un espacio
         }
-        //Se siguen buscando las palabras, se empieza en comienzo+1 (no se cuenta el anterior espacio
-        for (int i = comienzo + 1; i < tamChar; i++) {
 
+        //Variable para saber si se han buscado más palabras.
+        boolean entradoFor = false;
+        //Se siguen buscando las palabras, se empieza en comienzo+1 (no se cuenta el anterior espacio
+        for (int i = comienzo + 2; i < tamChar; i++) {
+            entradoFor = true;
             if (arrayChar[i] == ' ') {
 
                 if (numEspacios != 0) {
                     numEspacios--;
                     argumentos.add(aux);
                     aux = "";
+                } else {
+                    aux += arrayChar[i];
                 }
 
             } else {
                 aux += arrayChar[i];
             }
         }
+
+        if(entradoFor)
+            argumentos.add(aux);
 
         return argumentos;
 
@@ -129,7 +137,7 @@ public class Comando implements IComando {
                             Output.errorComando("Argumentos del comando -crear jugador- incorrectos.");
                             return;
                         }
-                        crearJugador(getArgv().get(3), getArgv().get(4));
+                        crearJugador(getArgv().get(2), getArgv().get(3));
                         break;
 
                     default:
@@ -169,7 +177,7 @@ public class Comando implements IComando {
                         if(size < 3)
                             listarEdificios();
                         else
-                            listarEdificiosGrupo(getArgv().get(3));
+                            listarEdificiosGrupo(getArgv().get(2));
 
                         break;
 
