@@ -86,11 +86,11 @@ public class Edificio {
 
         if(tipoEdificio == null){
             System.err.println("Tipo de edificio referencia a null");
-            return null;
+            return 0;
         }
         if(tipoGrupo == null){
             System.err.println("Tipo de grupo referencia a null");
-            return null;
+            return 0;
         }
 
         return((int)(tipoGrupo.getPrecioInicial() * tipoEdificio.getCompra()));

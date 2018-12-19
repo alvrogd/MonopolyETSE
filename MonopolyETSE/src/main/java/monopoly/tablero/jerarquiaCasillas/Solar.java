@@ -47,23 +47,17 @@ public class Solar extends Propiedad{
     /**
      * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
      * @param tipoEdificio tipo del edificio a edificar
-     * @param comprador jugador que compra el edificio
      */
-    public void edificar(Jugador comprador, TipoEdificio tipoEdificio){
+    public int edificar(TipoEdificio tipoEdificio, boolean splash){
 
         Edificio edificacion;
         int precio;
         int numHoteles, numCasas, numPiscinas, numPistas, numCasillasGrupo;
         boolean maximo;
 
-        if(comprador == null){
-            System.err.println("El comprador referencia a null");
-            return;
-        }
-
         if(tipoEdificio == null){
             System.err.println("El tipo de edificio referencia a null");
-            return;
+            return 0;
         }
 
         numCasillasGrupo = getGrupo().getSolares().size();
@@ -76,39 +70,24 @@ public class Solar extends Propiedad{
         if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
                 numPistas == numCasillasGrupo){
 
-            Output.respuesta("No se pueden realizar más edificaciones en esta casilla.");
-            return;
+            if(splash)
+                Output.respuesta("No se pueden realizar más edificaciones en esta casilla.");
+            return 0;
 
         }
-
-        if(!(comprador.getAvatar().getPosicion() instanceof Solar)){
-            Output.respuesta("No se puede edificar en esta casilla.");
-            return;
-        }
-
-        Solar solar = (Solar) comprador.getAvatar().getPosicion();
-        if(comprador.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(tipoEdificio,
-                solar.getGrupo().getTipo()))){
-
-            Output.respuesta("El jugador no dispone de suficiente liquidez como para realizar la " +
-                    "compra.");
-
-            return;
-
-        }
-
-        precio = (int) tipoEdificio.getCompra() * getPrecioInicial();
 
         switch(tipoEdificio){
 
             case casa:
                 if(numCasas == 4){
-                    Output.respuesta("No se pueden construir más casas en esta casilla.");
-                    return;
+                    if(splash)
+                        Output.respuesta("No se pueden construir más casas en esta casilla.");
+                    return 0;
                 }
                 if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo){
-                    Output.respuesta("No se pueden construir más casas en esta casilla.");
-                    return;
+                    if(splash)
+                        Output.respuesta("No se pueden construir más casas en esta casilla.");
+                    return 0;
                 }
 
                 break;
@@ -116,12 +95,14 @@ public class Solar extends Propiedad{
             case hotel:
 
                 if(numCasas != 4){
-                    Output.respuesta("Se necesitan cuatro casas para poder construir un hotel.");
-                    return;
+                    if(splash)
+                        Output.respuesta("Se necesitan cuatro casas para poder construir un hotel.");
+                    return 0;
                 }
                 if(numHoteles == numCasillasGrupo){
-                    Output.respuesta("No se pueden edificar más hoteles en esta casilla.");
-                    return;
+                    if(splash)
+                        Output.respuesta("No se pueden edificar más hoteles en esta casilla.");
+                    return 0;
                 }
 
                 destruirEdificio(TipoEdificio.casa, 4);
@@ -130,13 +111,15 @@ public class Solar extends Propiedad{
 
             case piscina:
                 if(numHoteles < 1 || numCasas < 2){
-                    Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
-                    return;
+                    if(splash)
+                        Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
+                    return 0;
                 }
 
                 if(numPiscinas == numCasillasGrupo){
-                    Output.respuesta("No se pueden edificar más piscinas en esta casilla.");
-                    return;
+                    if(splash)
+                        Output.respuesta("No se pueden edificar más piscinas en esta casilla.");
+                    return 0;
                 }
 
 
@@ -144,12 +127,14 @@ public class Solar extends Propiedad{
 
             case pistaDeporte:
                 if(numHoteles < 2){
-                    Output.respuesta("Para construir una pista de deporte se necesitan al menos dos hoteles.");
-                    return;
+                    if(splash)
+                        Output.respuesta("Para construir una pista de deporte se necesitan al menos dos hoteles.");
+                    return 0;
                 }
                 if(numPistas == numCasillasGrupo){
-                    Output.respuesta("No se pueden edificar más pistas de deporte en esta casilla.");
-                    return;
+                    if(splash)
+                        Output.respuesta("No se pueden edificar más pistas de deporte en esta casilla.");
+                    return 0;
                 }
                 break;
 
@@ -157,18 +142,25 @@ public class Solar extends Propiedad{
 
         edificacion = new Edificio(this, tipoEdificio, getGrupo().getTipo());
 
-        comprador.incrementarDineroInvertido(edificacion.getPrecioCompra());
-
-        comprador.pagar(getGrupo().getTablero().getBanca(), edificacion.getPrecioCompra());
-
         getEdificiosContenidos().get(tipoEdificio).add(edificacion);
 
         setAlquiler(getAlquiler());
 
-        Output.respuesta("Has creado tu edificio con id " + edificacion.getId());
+        if(splash)
+            Output.respuesta("Has creado tu edificio con id " + edificacion.getId());
 
         actualizarAlquiler();
 
+        return (Edificio.calcularPrecioCompra(tipoEdificio, getGrupo().getTipo()));
+
+    }
+
+    /**
+     * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
+     * @param tipoEdificio tipo del edificio a edificar
+     */
+    public int edificar(TipoEdificio tipoEdificio){
+        return(edificar(tipoEdificio,true));
     }
 
     /**
@@ -199,48 +191,49 @@ public class Solar extends Propiedad{
 
     /**
      * Método para que el propietario de la casilla venda tantos edificios como se indica
-     * @param jugador propietario de la casilla
      * @param tipoEdificio tipo de edificio a vender
      * @param cantidad número de edificios para vender
+     * @param splash indicación si se imprimirán mensajes en pantalla
      */
-    public void venderEdificio(Jugador jugador, TipoEdificio tipoEdificio, int cantidad){
+    public int venderEdificio(TipoEdificio tipoEdificio, int cantidad, boolean splash){
 
         if(cantidad < 1){
             System.err.println("No se puede vender un número negativo de edificios.");
-            return;
-        }
-        if(jugador == null){
-            System.err.println("jugador referencia a null");
-            return;
+            return 0;
         }
         if(tipoEdificio == null){
             System.err.println("tipoEdificio referencia a null");
-            return;
+            return 0;
         }
-        if(!jugador.equals(getPropietario())){
-            Output.mensaje("No puedes vender edificios de una casilla que no es tuya.");
-        }
+
+
 
         int eliminados = destruirEdificio(tipoEdificio, cantidad);
 
-        int pago =(eliminados *
-                Edificio.calcularPrecioCompra(tipoEdificio, getGrupo().getTipo()))/2;
-
-        jugador.setFortuna(jugador.getFortuna() + pago);
-
         if(eliminados == 0){
-
-            Output.respuesta("No hay edificios de tipo "+tipoEdificio.getNombre()+" en la casilla "+getNombre());
-            return;
-
+            if(splash)
+                Output.respuesta("No hay edificios de tipo "+tipoEdificio.getNombre()+" en la casilla "+getNombre());
+            return 0;
         }
 
         if(eliminados != cantidad){
-            Output.respuesta("Solo se han podido vender "+eliminados+" edificios de tipo " + tipoEdificio.getNombre() + ".");
+            if(splash)
+                Output.respuesta("Solo se han podido vender "+eliminados+" edificios de tipo " + tipoEdificio.getNombre() + ".");
         }
 
-        Output.respuesta("El jugador " + jugador.getNombre() +" ha vendido "+eliminados+" edificios de tipo " +
-                tipoEdificio.getNombre() + " por un valor de "+pago+" K €.");
+        return ((eliminados * Edificio.calcularPrecioCompra(tipoEdificio, getGrupo().getTipo()))/2);
+
+    }
+
+    /**
+     * Método para que el propietario de la casilla venda tantos edificios como se indica
+     * @param tipoEdificio tipo de edificio a vender
+     * @param cantidad número de edificios para vender
+     */
+    public int venderEdificio(TipoEdificio tipoEdificio, int cantidad){
+
+        return venderEdificio(tipoEdificio, cantidad, true);
+
     }
 
     /**

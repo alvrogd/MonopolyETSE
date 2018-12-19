@@ -3,6 +3,7 @@ package aplicacion.salidaPantalla;
 import aplicacion.Aplicacion;
 import aplicacion.TipoComando;
 import monopoly.jugadores.Avatar;
+import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.TipoEdificio;
@@ -315,6 +316,10 @@ public class Comando implements IComando {
             case "mover":
                 if(size > 1)
                     mover(getArgv().get(1));
+
+            default:
+                Output.errorComando("Comando incorrecto");
+                break;
 
         }
 
@@ -678,8 +683,7 @@ public class Comando implements IComando {
                         } else {
                             construcciones = numCasillas - numEdificio;
                         }
-
-                        //todo ponlo bonito
+                        
                         if (construcciones == 0) {
                             idEdificios.append(" | No se pueden construir más ").append(tipoEdificio.getPlural());
                         } else {
@@ -717,7 +721,7 @@ public class Comando implements IComando {
             return;
         }
 
-        if (getApp().getJuego().getTurno().getAvatar().getTipo() != TipoAvatar.coche)
+        if (getApp().getJuego().getTurno().getAvatar() instanceof Coche)
             getApp().getJuego().setHaCompradoPropiedad(false);
 
         getApp().getJuego().getTurno().lanzarDados(getApp().getJuego().getTablero().getDado());
@@ -806,7 +810,7 @@ public class Comando implements IComando {
             return;
         }
 
-        if (getApp().getJuego().isHaCompradoPropiedad() && getApp().getJuego().getTurno().getAvatar().getTipo().equals(TipoAvatar.coche) &&
+        if ((getApp().getJuego().isHaCompradoPropiedad() && getApp().getJuego().getTurno().getAvatar() instanceof Coche) &&
                 !getApp().getJuego().getTurno().getAvatar().isMovimientoEstandar()) {
             Output.sugerencia("Ya has comprado una casilla en este turno.");
             return;
