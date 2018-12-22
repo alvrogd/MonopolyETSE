@@ -48,6 +48,7 @@ public abstract class Trato {
 
     /**
      * Se lleva a cabo el trato propuesto
+     * @return si se ha podido llevar a cabo el trato
      */
-    public abstract void aceptar();
+    public abstract boolean aceptar();
 }

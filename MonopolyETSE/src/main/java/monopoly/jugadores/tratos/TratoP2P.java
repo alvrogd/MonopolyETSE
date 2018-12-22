@@ -51,11 +51,13 @@ public class TratoP2P extends Trato {
 
     /**
      * Se lleva a cabo el trato propuesto
+     *
+     * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public void aceptar() {
+    public boolean aceptar() {
 
-        aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2());
+        return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2()));
     }
 
     /**
@@ -65,8 +67,19 @@ public class TratoP2P extends Trato {
      * @param receptor   receptor del trato
      * @param propiedad1 propiedad que transfiere el emisor
      * @param propiedad2 propiedad que transfiere el receptor
+     * @return si se ha podido llevar a cabo el trato
      */
-    public void aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2) {
+    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2) {
+
+        if (!propiedad1.getPropietario().equals(emisor)) {
+            Output.respuesta("La propiedad 1 no pertenece al emisor");
+            return (false);
+        }
+
+        if (!propiedad2.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 2 no le pertenece");
+            return (false);
+        }
 
         // Se cambia el propietario de la primera propiedad
         propiedad1.setPropietario(receptor);
@@ -83,5 +96,7 @@ public class TratoP2P extends Trato {
                 "        -> Receptor: " + receptor.getNombre(),
                 "        -> Propiedad 1: " + propiedad1.getNombre(),
                 "        -> Propiedad 2: " + propiedad2.getNombre());
+
+        return (true);
     }
 }

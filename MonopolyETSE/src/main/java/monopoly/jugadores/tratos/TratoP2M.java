@@ -52,11 +52,13 @@ public class TratoP2M extends Trato {
 
     /**
      * Se lleva a cabo el trato propuesto
+     *
+     * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public void aceptar() {
+    public boolean aceptar() {
 
-        aceptar(getEmisor(), getReceptor(), getPropiedad1(), getCantidadDinero());
+        return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getCantidadDinero()));
     }
 
     /**
@@ -66,12 +68,18 @@ public class TratoP2M extends Trato {
      * @param receptor       receptor del trato
      * @param propiedad1     propiedad que transfiere el emisor
      * @param cantidadDinero cantidad de dinero que transfiere el receptor
+     * @return si se ha podido llevar a cabo el trato
      */
-    public void aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, int cantidadDinero) {
+    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, int cantidadDinero) {
+
+        if (!propiedad1.getPropietario().equals(emisor)) {
+            Output.respuesta("La propiedad 1 no pertenece al emisor");
+            return (false);
+        }
 
         if (receptor.balanceNegativoTrasPago(cantidadDinero)) {
             Output.sugerencia("No dispone de liquidez suficiente para aceptar el trato");
-            return;
+            return (false);
         }
 
         // Se cambia el propietario de la primera propiedad
@@ -89,6 +97,8 @@ public class TratoP2M extends Trato {
                 "        -> Receptor: " + receptor.getNombre(),
                 "        -> Propiedad 1: " + propiedad1.getNombre(),
                 "        -> Cantidad de dinero: " + cantidadDinero + "K €");
+
+        return (true);
     }
 }
 

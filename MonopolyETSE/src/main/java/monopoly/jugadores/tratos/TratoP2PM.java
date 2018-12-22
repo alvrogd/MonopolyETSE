@@ -40,9 +40,11 @@ public class TratoP2PM extends TratoP2P {
 
     /**
      * Se lleva a cabo el trato propuesto
+     *
+     * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public void aceptar() {
+    public boolean aceptar() {
 
         aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getCantidadDinero());
     }
@@ -55,16 +57,18 @@ public class TratoP2PM extends TratoP2P {
      * @param propiedad1     propiedad que transfiere el emisor
      * @param propiedad2     propiedad que transfiere el receptor
      * @param cantidadDinero cantidad de dinero que transfiere el receptor
+     * @return si se ha podido llevar a cabo el trato
      */
-    public void aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, int
+    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, int
             cantidadDinero) {
 
         if (receptor.balanceNegativoTrasPago(cantidadDinero)) {
             Output.sugerencia("No dispone de liquidez suficiente para aceptar el trato");
-            return;
+            return (false);
         }
 
-        super.aceptar(emisor, receptor, propiedad1, propiedad2);
+        if (!super.aceptar(emisor, receptor, propiedad1, propiedad2))
+            return (false);
 
         // Se añade la cantidad de dinero establecida del receptor al emisor
         emisor.setFortuna(emisor.getFortuna() + cantidadDinero);
@@ -77,5 +81,7 @@ public class TratoP2PM extends TratoP2P {
                 "        -> Propiedad 1: " + propiedad1.getNombre(),
                 "        -> Propiedad 2: " + propiedad2.getNombre(),
                 "        -> Cantidad de dinero: " + cantidadDinero + "K €");
+
+        return (true);
     }
 }

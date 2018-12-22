@@ -53,11 +53,13 @@ public class TratoP2PA extends TratoP2P {
 
     /**
      * Se lleva a cabo el trato propuesto
+     *
+     * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public void aceptar() {
+    public boolean aceptar() {
 
-        aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getPropiedad3(), getNumeroTurnos());
+        return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getPropiedad3(), getNumeroTurnos()));
     }
 
     /**
@@ -70,11 +72,23 @@ public class TratoP2PA extends TratoP2P {
      * @param propiedad3   propiedad especificada para la inmunidad ante el pago de alquileres
      * @param numeroTurnos número de turnos en los que el emisor gozará de inmunidad ante pagos de alquiler en la
      *                     propiedad especificada
+     * @return si se ha podido llevar a cabo el trato
      */
-    public void aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, Propiedad
+    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, Propiedad
             propiedad3, int numeroTurnos) {
 
-        super.aceptar(emisor, receptor, propiedad1, propiedad2);
+        if (!propiedad3.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 3 no le pertenece");
+            return (false);
+        }
+
+        if (numeroTurnos < 0) {
+            System.err.println("El número de turnos de inmunidad no puede ser negativo");
+            return (false);
+        }
+
+        if (!super.aceptar(emisor, receptor, propiedad1, propiedad2))
+            return (false);
 
         // Se crea la inmunidad a alquileres en la casilla especificada
         emisor.getInmunidades().add(new Inmunidad(propiedad3, numeroTurnos));
@@ -85,5 +99,7 @@ public class TratoP2PA extends TratoP2P {
                 "        -> Propiedad 2: " + propiedad2.getNombre(),
                 "        -> Propiedad 3: " + propiedad3.getNombre(),
                 "        -> Turnos de inmunidad ante alquileres: " + numeroTurnos + " turno(s)");
+
+        return (true);
     }
 }
