@@ -6,7 +6,6 @@ import monopoly.tablero.Transporte;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
-import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Servicio;
 import monopoly.tablero.jerarquiaCasillas.Solar;
@@ -174,8 +173,8 @@ public abstract class Avatar {
     public void setTurnosEnCarcel(int turnosEnCarcel) {
 
         if (turnosEnCarcel < 0) {
-            System.err.println("El número turnos en la cárcel de un avatar no puede ser menor a 0.");
-            return;
+            System.err.println("El número turnos en la cárcel de un avatar no puede ser menor a 0");
+            System.exit(1);
         }
         this.turnosEnCarcel = turnosEnCarcel;
     }
@@ -189,8 +188,8 @@ public abstract class Avatar {
     public void setVueltas(int vueltas) {
 
         if (vueltas < 0) {
-            System.err.println("El número de vueltas de un avatar no puede ser menor a 0.");
-            return;
+            System.err.println("El número de vueltas de un avatar no puede ser menor a 0");
+            System.exit(1);
         }
 
         this.vueltas = vueltas;
@@ -205,8 +204,8 @@ public abstract class Avatar {
     public void setPosicion(Casilla posicion) {
 
         if (posicion == null) {
-            System.err.println("Casilla no inicializada.");
-            return;
+            System.err.println("Casilla no inicializada");
+            System.exit(1);
         }
 
         this.posicion = posicion;
@@ -222,8 +221,8 @@ public abstract class Avatar {
     public void setVecesCaidasEnCasillas(ArrayList<Integer> vecesCaidasEnCasillas) {
 
         if (vecesCaidasEnCasillas == null) {
-            System.err.println("ArrayList no inicializado.");
-            return;
+            System.err.println("ArrayList de veces caídas en casillas no inicializado");
+            System.exit(1);
         }
 
         this.vecesCaidasEnCasillas = vecesCaidasEnCasillas;
@@ -238,8 +237,8 @@ public abstract class Avatar {
     public void setVecesCaidasEnPropiedades(ArrayList<Integer> vecesCaidasEnPropiedades) {
 
         if (vecesCaidasEnPropiedades == null) {
-            System.err.println("ArrayList no inicializado.");
-            return;
+            System.err.println("ArrayList de veces caídas en propiedades no inicializado.");
+            System.exit(1);
         }
 
         this.vecesCaidasEnPropiedades = vecesCaidasEnPropiedades;
@@ -282,8 +281,8 @@ public abstract class Avatar {
     public void setCasillasRestantesPorMoverse(int casillasRestantesPorMoverse) {
 
         if (casillasRestantesPorMoverse < 0) {
-            System.err.println("El número de casillas restantes por moverse no puede ser menor a 0.");
-            return;
+            System.err.println("El número de casillas restantes por moverse no puede ser menor a 0");
+            System.exit(1);
         }
         this.casillasRestantesPorMoverse = casillasRestantesPorMoverse;
     }
@@ -955,5 +954,15 @@ public abstract class Avatar {
 
         // Si el identificador es distinto; son el mismo objeto
         return (getIdentificador() == otro.getIdentificador());
+    }
+
+
+    @Override
+    public String toString() {
+
+        return("(*) Avatar ID: " + getIdentificador() + "\n" +
+                "        -> Tipo: " + getClass() + "\n" +
+                "        -> Casilla: " + getPosicion().getNombre() + "\n" +
+                "        -> Jugador: " + getJugador().getNombre() + "\n" );
     }
 }

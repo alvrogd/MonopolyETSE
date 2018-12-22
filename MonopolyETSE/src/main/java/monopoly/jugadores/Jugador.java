@@ -13,6 +13,7 @@ import monopoly.tablero.*;
 import monopoly.tablero.jerarquiaCasillas.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Jugador extends Participante {
 
@@ -1081,5 +1082,141 @@ public class Jugador extends Participante {
 
     } /* Fin del método equals */
 
+
+    @Override
+    public String toString() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        // Se añade el nombre, el identificador del avatar y la fortuna del jugador
+        stringBuilder.append("(*) Jugador: ").append(getNombre()).append("\n");
+        stringBuilder.append("        -> Avatar: ").append(((Character) getAvatar().getIdentificador()).toString()).append("\n");
+        stringBuilder.append("        -> Fortuna: ").append(((Integer) getFortuna()).toString()).append("K €\n");
+
+        // Número de propiedades del jugador
+        int numPropiedades = getPropiedades().size();
+
+        // En la variable auxiliar propr se añadirá la información de las propiedades
+        StringBuilder prop = new StringBuilder();
+
+        // Se calcula el número de propiedades y de propiedades hipotecadas para, en caso de que sean 0, añadir un
+        // formato especial
+        int numProp = 0;
+
+        // Se realiza lo mismo con las propiedades hipotecadas
+        StringBuilder propHipotecadas = new StringBuilder();
+        int numHip = 0;
+
+        ArrayList<Propiedad> propiedades;
+
+        prop.append("        -> Propiedades: {");
+        propHipotecadas.append("        -> Propiedades hipotecadas: {");
+
+        for (int i = 0; i < numPropiedades; i++) {
+
+            propiedades = getPropiedades();
+
+            // Si la casilla está hipotecada se añade a su StringBuilder correspondiente
+            if (propiedades.get(i).isHipotecada()) {
+
+                // El nombre
+                propHipotecadas.append(propiedades.get(i).getNombre());
+
+                // Si es la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades - 1)
+                    propHipotecadas.append(", ");
+
+                numHip++;
+
+            } else {
+
+                // El nombre
+                prop.append(propiedades.get(i).getNombre());
+
+                // En caso de que sea la última propiedad del jugador no se añade la coma
+                if (i != numPropiedades - 1)
+                    prop.append(", ");
+
+                numProp++;
+            }
+        }
+
+        // Si no se han encontrado propiedades de un determinado tipo
+        if (numProp == 0)
+            prop.append("Sin propiedades");
+        if (numHip == 0)
+            propHipotecadas.append("Sin propiedades hipotecadas");
+
+        // Se cierran los StringBuilders
+        prop.append("}");
+        propHipotecadas.append("}");
+
+        // Y se añaden al StringBuilder original
+        stringBuilder.append(prop.toString()).append("\n");
+        stringBuilder.append(propHipotecadas.toString()).append("\n");
+
+        // todo creo que es un método de Output
+        HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador = edificiosJugador();
+
+        // Ahora se añaden los edificios
+        stringBuilder.append("        -> Edificios:\n");
+
+        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
+            StringBuilder edificios = new StringBuilder();
+
+            ArrayList<Edificio> aux = edificiosJugador.get(tipoEdificio);
+
+            int size = aux.size();
+            int count = 1;
+
+            edificios.append("            (*) ").append(tipoEdificio.getNombre()).append(": {");
+
+            for (Edificio edificio : aux) {
+
+                edificios.append(edificio.getId());
+
+                if (count != size)
+                    edificios.append(", ");
+
+                count++;
+            }
+
+            edificios.append("}");
+            stringBuilder.append(edificios.toString()).append("\n");
+        }
+
+        return stringBuilder.toString();
+    }
+
+
+    /**
+     * Función para devolver a la función toString la información de los edificios que tiene que el jugador; el
+     * ArrayList tendrá un tamaño de 4, el primero para las casas, el segundo para los hoteles, el tercero para las
+     * piscinas y el cuarto para las pistas de deporte
+     */
+    private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador() {
+
+        HashMap<TipoEdificio, ArrayList<Edificio>> salida = new HashMap<>();
+
+        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+            salida.put(tipoEdificio, new ArrayList<>());
+        }
+
+        for (Propiedad propiedad : getPropiedades()) {
+
+            if( propiedad instanceof Solar ) {
+
+                final Solar solar = (Solar)propiedad;
+
+                for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+                    ArrayList<Edificio> edificiosContenidos = solar.getEdificiosContenidos().get(tipoEdificio);
+                    salida.get(tipoEdificio).addAll(edificiosContenidos);
+                }
+            }
+        }
+
+        return salida;
+    }
 }
 
