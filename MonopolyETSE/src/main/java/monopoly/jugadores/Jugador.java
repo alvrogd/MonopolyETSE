@@ -7,6 +7,9 @@ import monopoly.jugadores.acciones.Edificacion;
 import monopoly.jugadores.acciones.IAccionJugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.jugadores.acciones.TransferenciaPropiedad;
+import monopoly.jugadores.excepciones.EstarBancarrotaException;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.jugadores.tratos.*;
 import monopoly.tablero.*;
 import monopoly.tablero.jerarquiaCasillas.*;
@@ -137,7 +140,7 @@ public class Jugador extends Participante {
         if (numeroTiradas < 0) {
 
             System.err.println("El número de tiradas no puede ser menor que 0");
-            return;
+            System.exit(1);
         }
 
         this.numeroTiradas = numeroTiradas;
@@ -149,7 +152,7 @@ public class Jugador extends Participante {
         if (numeroTiradas < 0) {
 
             System.err.println("El número de tiradas no puede ser menor que 0");
-            return;
+            System.exit(1);
         }
 
         setNumeroTiradas(getNumeroTiradas() + numeroTiradas);
@@ -165,7 +168,7 @@ public class Jugador extends Participante {
 
         if (tiradasEnTurno < 0) {
             Output.sugerencia("El número de tiradas en un turno no puede ser menor a 0");
-            return;
+            System.exit(1);
         }
 
         this.tiradasEnTurno = tiradasEnTurno;
@@ -182,7 +185,7 @@ public class Jugador extends Participante {
 
         if (turnosPenalizado < 0) {
             Output.sugerencia("El número de turnos penalizados no puede ser menor a 0");
-            return;
+            System.exit(1);
         }
 
         this.turnosPenalizado = turnosPenalizado;
@@ -198,7 +201,7 @@ public class Jugador extends Participante {
 
         if (acciones == null) {
             System.err.println("ArrayList de acciones no inicializado");
-            return;
+            System.exit(1);
         }
 
         this.acciones = acciones;
@@ -214,7 +217,7 @@ public class Jugador extends Participante {
 
         if (tratosRecibidos == null) {
             System.err.println("ArrayList de tratos recibidos no inicializado");
-            return;
+            System.exit(1);
         }
 
         this.tratosRecibidos = tratosRecibidos;
@@ -230,7 +233,7 @@ public class Jugador extends Participante {
 
         if (inmunidades == null) {
             System.err.println("ArrayList de inmunidades no inicializado");
-            return;
+            System.exit(1);
         }
 
         this.inmunidades = inmunidades;
@@ -247,7 +250,7 @@ public class Jugador extends Participante {
         if (dineroInvertido < 0) {
 
             System.err.println("El dinero invertido debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.dineroInvertido = dineroInvertido;
@@ -259,7 +262,7 @@ public class Jugador extends Participante {
         if (dineroInvertido < 0) {
 
             System.err.println("El dinero invertido debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setDineroInvertido(getDineroInvertido() + dineroInvertido);
@@ -276,7 +279,7 @@ public class Jugador extends Participante {
         if (pagoDeAlquileres < 0) {
 
             System.err.println("El pago de alquileres debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.pagoDeAlquileres = pagoDeAlquileres;
@@ -288,7 +291,7 @@ public class Jugador extends Participante {
         if (pagoDeAlquileres < 0) {
 
             System.err.println("El pago de alquileres debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setPagoDeAlquileres(getPagoDeAlquileres() + pagoDeAlquileres);
@@ -305,7 +308,7 @@ public class Jugador extends Participante {
         if (cobroDeAlquileres < 0) {
 
             System.err.println("El cobro de alquiler debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.cobroDeAlquileres = cobroDeAlquileres;
@@ -317,7 +320,7 @@ public class Jugador extends Participante {
         if (cobroDeAlquileres < 0) {
 
             System.err.println("El cobro de alquiler debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setCobroDeAlquileres(getCobroDeAlquileres() + cobroDeAlquileres);
@@ -334,7 +337,7 @@ public class Jugador extends Participante {
         if (pagoTasasEImpuestos < 0) {
 
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.pagoTasasEImpuestos = pagoTasasEImpuestos;
@@ -347,7 +350,7 @@ public class Jugador extends Participante {
 
 
             System.err.println("El pago de tasas e impuestos debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setPagoTasasEImpuestos(getPagoTasasEImpuestos() + pagoTasasEImpuestos);
@@ -364,7 +367,7 @@ public class Jugador extends Participante {
         if (pasarPorCasillaDeSalida < 0) {
 
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.pasarPorCasillaDeSalida = pasarPorCasillaDeSalida;
@@ -376,7 +379,7 @@ public class Jugador extends Participante {
         if (pasarPorCasillaDeSalida < 0) {
 
             System.err.println("El número de veces que se ha pasado por la casilla de salida debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setPasarPorCasillaDeSalida(getPasarPorCasillaDeSalida() + pasarPorCasillaDeSalida);
@@ -393,7 +396,7 @@ public class Jugador extends Participante {
         if (premiosInversionesOBote < 0) {
 
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.premiosInversionesOBote = premiosInversionesOBote;
@@ -405,7 +408,7 @@ public class Jugador extends Participante {
         if (premiosInversionesOBote < 0) {
 
             System.err.println("Los premios de inversiones o bote debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setPremiosInversionesOBote(getPremiosInversionesOBote() + premiosInversionesOBote);
@@ -421,7 +424,7 @@ public class Jugador extends Participante {
         if (vecesEnLaCarcel < 0) {
 
             System.err.println("El número de veces en la carcel debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         this.vecesEnLaCarcel = vecesEnLaCarcel;
@@ -433,7 +436,7 @@ public class Jugador extends Participante {
         if (vecesEnLaCarcel < 0) {
 
             System.err.println("El número de veces en la carcel debe ser mayor que 0");
-            return;
+            System.exit(1);
         }
 
         setVecesEnLaCarcel(getVecesEnLaCarcel() + vecesEnLaCarcel);
@@ -453,7 +456,7 @@ public class Jugador extends Participante {
      * @return si se ha efectuado el pago correctamente
      */
     @Override
-    public boolean pagar(Participante receptor, int importe) {
+    public boolean pagar(Participante receptor, int importe) throws EstarBancarrotaException, NoSerPropietarioException {
 
         if (super.pagar(receptor, importe)) {
 
@@ -468,7 +471,9 @@ public class Jugador extends Participante {
 
             return (true);
 
-        } else
+        }
+
+        else
             return (false);
     }
 

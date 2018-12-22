@@ -1,6 +1,10 @@
 package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.excepciones.EstarBancarrotaException;
+import monopoly.jugadores.excepciones.NoComprarABancaException;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.Transporte;
@@ -62,7 +66,7 @@ public abstract class Participante {
 
         if (fortuna < 0) {
             System.err.println("La fortuna de un participante no puede ser menor a 0");
-            return;
+            System.exit( 1 );
         }
 
         this.fortuna = fortuna;
@@ -88,14 +92,14 @@ public abstract class Participante {
 
         if (propiedades == null) {
             System.err.println("ArrayList de propiedades no inicializado");
-            return;
+            System.exit( 1 );
         }
 
         for (Propiedad propiedad: propiedades){
 
             if (propiedad == null) {
                 System.err.println("Propiedad no inicializada");
-                return;
+                System.exit( 1 );
             }
         }
 
@@ -159,8 +163,9 @@ public abstract class Participante {
             System.err.println("El importe de un pago no puede ser negativo");
             // Se devuelve true dado que los métodos que emplean a este continuan la transacción correspondiente en
             // caso de obtener false al llamarlo
-            return (true);
+            System.exit( 1 );
         }
+
         return ((getFortuna() - importe) < 0.0);
     }
 
@@ -171,7 +176,8 @@ public abstract class Participante {
      * @param endeudado participante que cae en bancarrota
      * @param deudor    deudor del jugador que cae en bancarrota
      */
-    private void caerEnBancarrota(Participante endeudado, Participante deudor) {
+    private void caerEnBancarrota(Participante endeudado, Participante deudor) throws EstarBancarrotaException,
+            NoSerPropietarioException {
 
         if (endeudado == null) {
             System.err.println("Endeudado no inicializado");
@@ -184,7 +190,7 @@ public abstract class Participante {
         }
 
         if (isEstaBancarrota())
-            return;
+            throw new EstarBancarrotaException("El participante ya se encuentra en bancarrota");
 
         Output.respuesta("¡El participante ha caído en bancarrota!",
                 "Transfiriendo todas las propiedades al participante " + deudor.getNombre());
@@ -202,7 +208,7 @@ public abstract class Participante {
      * @param importe  cantidad a pagar
      * @return         si se ha efectuado correctamente el pago
      */
-    public boolean pagar(Participante receptor, int importe) {
+    public boolean pagar(Participante receptor, int importe) throws EstarBancarrotaException, NoSerPropietarioException {
 
         if (receptor == null) {
             System.err.println("Receptor no inicializado");
@@ -211,7 +217,7 @@ public abstract class Participante {
 
         if (importe < 0) {
             System.err.println("No se puede pagar a un participante una cantidad menor a 0");
-            return( false );
+            System.exit( 1 );
         }
 
         // Si el jugador cayese en bancarrota, se transfieren al receptor las propiedades del jugador
@@ -231,7 +237,6 @@ public abstract class Participante {
 
             return( true );
         }
-
     }
 
 
@@ -243,7 +248,8 @@ public abstract class Participante {
      * @param importe       cantidad a pagar
      * @return              número de pagos efectuados correctamente
      */
-    public int pagar(ArrayList<Participante> participantes, int importe) {
+    public int pagar(ArrayList<Participante> participantes, int importe) throws EstarBancarrotaException,
+            NoSerPropietarioException {
 
         if (participantes == null) {
             System.err.println("Participantes no inicializados");
@@ -261,7 +267,7 @@ public abstract class Participante {
         // todo EXITS EN TODAS LAS CLASES DEL PAQUETE MONOPOLY
         if (importe < 0) {
             System.err.println("No se puede pagar a un participante una cantidad menor a 0");
-            return( 0 );
+            System.exit( 1 );
         }
 
         StringBuilder receptores = new StringBuilder();
@@ -304,7 +310,8 @@ public abstract class Participante {
      * @param propiedad  propiedad a comprar
      * @return           importe de la compra
      */
-    public int comprar(Participante vendedor, Propiedad propiedad) {
+    public int comprar(Participante vendedor, Propiedad propiedad) throws NoComprarABancaException, NoLiquidezException,
+            NoSerPropietarioException {
 
         if (vendedor == null) {
             System.err.println("Jugador no inicializado");
@@ -317,10 +324,8 @@ public abstract class Participante {
         }
 
         // Si la casilla no pertenece a la banca
-        if (!(propiedad.getPropietario() instanceof Banca)) {
-            Output.respuesta("La casilla no pertenece a la banca.");
-            return(0);
-        }
+        if (!(propiedad.getPropietario() instanceof Banca))
+            throw new NoComprarABancaException("La casilla no pertenece a la banca");
 
         int importe;
 
@@ -330,11 +335,9 @@ public abstract class Participante {
             importe = propiedad.getGrupo().getPrecio();
 
             // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
-            if (balanceNegativoTrasPago(importe)) {
-                Output.respuesta("El participante no dispone de suficiente liquidez como para realiza la " +
-                        "compra");
-                return( 0);
-            }
+            if (balanceNegativoTrasPago(importe))
+                throw new NoLiquidezException("El participante no dispone de suficiente liquidez como para realiza " +
+                        "la compra");
 
             setFortuna(getFortuna() - importe);
             propiedad.setComprable(false);
@@ -349,11 +352,9 @@ public abstract class Participante {
             importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getSolares().size());
 
             // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
-            if (balanceNegativoTrasPago(importe)) {
-                Output.respuesta("El participante no dispone de suficiente liquidez como para realiza la " +
-                        "compra");
-                return(0);
-            }
+            if (balanceNegativoTrasPago(importe))
+                throw new NoLiquidezException("El participante no dispone de suficiente liquidez como para realiza " +
+                        "la compra");
 
             setFortuna(getFortuna() - importe);
             propiedad.setComprable(false);
@@ -377,7 +378,8 @@ public abstract class Participante {
      * @param receptor   participante que va a obtener la propiedad
      * @param propiedad  propiedad a transferir
      */
-    private void transferirPropiedad(Participante emisor, Participante receptor, Propiedad propiedad) {
+    private void transferirPropiedad(Participante emisor, Participante receptor, Propiedad propiedad) throws
+            NoSerPropietarioException {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado.");
@@ -394,6 +396,9 @@ public abstract class Participante {
             System.exit(1);
         }
 
+        if (!propiedad.getPropietario().equals(emisor))
+            throw new NoSerPropietarioException("La propiedad no pertenece al emisor");
+
         propiedad.setPropietario(receptor);
         receptor.getPropiedades().add(propiedad);
         emisor.getPropiedades().remove(propiedad);
@@ -401,7 +406,6 @@ public abstract class Participante {
         Output.respuesta("Se ha transferido la propiedad:",
                 "        -> Receptor: " + receptor.getNombre(),
                 "        -> Propiedad: " + propiedad.getNombre());
-
     }
 
 
@@ -412,7 +416,8 @@ public abstract class Participante {
      * @param receptor    participante que va a obtener laz propiedades
      * @param propiedades propiedades a transferir
      */
-    private void transferirPropiedad(Participante emisor, Participante receptor, ArrayList<Propiedad> propiedades) {
+    private void transferirPropiedad(Participante emisor, Participante receptor, ArrayList<Propiedad> propiedades)
+        throws NoSerPropietarioException {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado");
@@ -435,6 +440,9 @@ public abstract class Participante {
                 System.err.println("Propiedad no inicializada");
                 System.exit(1);
             }
+
+            if (!propiedad.getPropietario().equals(emisor))
+                throw new NoSerPropietarioException("La propiedad no pertenece al emisor");
         }
 
         StringBuilder transferidas = new StringBuilder();
