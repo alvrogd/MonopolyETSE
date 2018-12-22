@@ -61,6 +61,7 @@ public class TratoP2M extends Trato {
         return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getCantidadDinero()));
     }
 
+
     /**
      * Se lleva a cabo el trato propuesto
      *

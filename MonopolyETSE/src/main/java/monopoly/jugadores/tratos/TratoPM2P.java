@@ -48,6 +48,7 @@ public class TratoPM2P extends TratoP2P {
         return(aceptar(getEmisor(), getReceptor(), getPropiedad1(), getCantidadDinero(), getPropiedad2()));
     }
 
+
     /**
      * Se lleva a cabo el trato propuesto
      *

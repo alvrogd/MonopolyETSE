@@ -46,8 +46,9 @@ public class TratoP2PM extends TratoP2P {
     @Override
     public boolean aceptar() {
 
-        aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getCantidadDinero());
+        return(aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getCantidadDinero()));
     }
+
 
     /**
      * Se lleva a cabo el trato propuesto

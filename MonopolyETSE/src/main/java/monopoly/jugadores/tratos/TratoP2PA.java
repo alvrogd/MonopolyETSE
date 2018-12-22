@@ -62,6 +62,7 @@ public class TratoP2PA extends TratoP2P {
         return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getPropiedad3(), getNumeroTurnos()));
     }
 
+
     /**
      * Se lleva a cabo el trato propuesto
      *

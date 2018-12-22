@@ -60,6 +60,7 @@ public class TratoP2P extends Trato {
         return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2()));
     }
 
+
     /**
      * Se lleva a cabo el trato propuesto
      *
