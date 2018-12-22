@@ -1,6 +1,6 @@
 package monopoly.jugadores.acciones;
 
-import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 import java.util.ArrayList;
@@ -10,15 +10,15 @@ public class TransferenciaPropiedad implements IAccionJugador {
 
     /* Atributos */
 
-    private Jugador emisor;
-    private Jugador receptor;
+    private Participante emisor;
+    private Participante receptor;
     private ArrayList<Propiedad> propiedades;
 
 
 
     /* Constructor */
 
-    public TransferenciaPropiedad(Jugador emisor, Jugador receptor, Propiedad... propiedades) {
+    public TransferenciaPropiedad(Participante emisor, Participante receptor, Propiedad... propiedades) {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado");
@@ -55,11 +55,11 @@ public class TransferenciaPropiedad implements IAccionJugador {
 
     /* Getters y setters */
 
-    public Jugador getEmisor() {
+    public Participante getEmisor() {
         return emisor;
     }
 
-    public void setEmisor(Jugador emisor) {
+    public void setEmisor(Participante emisor) {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado");
@@ -69,11 +69,11 @@ public class TransferenciaPropiedad implements IAccionJugador {
         this.emisor = emisor;
     }
 
-    public Jugador getReceptor() {
+    public Participante getReceptor() {
         return receptor;
     }
 
-    public void setReceptor(Jugador receptor) {
+    public void setReceptor(Participante receptor) {
 
         if (receptor == null) {
             System.err.println("Receptor no inicializado");

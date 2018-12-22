@@ -3,7 +3,10 @@ package monopoly.jugadores;
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
+import monopoly.jugadores.acciones.Edificacion;
 import monopoly.jugadores.acciones.IAccionJugador;
+import monopoly.jugadores.acciones.TransferenciaMonetaria;
+import monopoly.jugadores.acciones.TransferenciaPropiedad;
 import monopoly.tablero.*;
 import monopoly.tablero.cartas.*;
 import monopoly.tablero.jerarquiaCasillas.*;
@@ -485,8 +488,23 @@ public class Jugador extends Participante {
 
         int importe = super.comprar( vendedor, propiedad);
 
-        // Se incrementan las estadísticas del jugador
-        incrementarDineroInvertido(importe);
+
+
+        // Si se ha efectuado la compra correctamente
+        if( importe > 0 ) {
+
+            // Se incrementan las estadísticas del jugador
+            incrementarDineroInvertido(importe);
+
+            // Se indica que se ha efectuado una compra en el turno
+            getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
+
+            // Se registra la acción
+            getAcciones().add(new TransferenciaMonetaria(importe, this, vendedor));
+            getAcciones().add(new TransferenciaPropiedad(vendedor, this, propiedad));
+        }
+
+        return( importe);
     }
 
 
@@ -661,9 +679,14 @@ public class Jugador extends Participante {
         // El usuario debe, o bien haber caído más de dos veces en el solar para edificar, o bien poseer todos los
         // solares del grupo
         if (getAvatar().getVecesCaidasEnPropiedades().get(solar.getPosicionEnTablero() % 40) > 2 ||
-                haObtenidoSolaresGrupo(solar.getGrupo()))
+                haObtenidoSolaresGrupo(solar.getGrupo())) {
 
-            solar.edificar(this, tipoEdificio);
+            // Se resta a la fortuna el importe de edificar
+            setFortuna(getFortuna()- solar.edificar(tipoEdificio));
+
+            // Se registra la acción
+            getAcciones().add(new Edificacion(solar, tipoEdificio, 1));
+        }
 
         else
             Output.respuesta("Para edificar en una casilla, debe haber cumplido uno de los siguientes requisitos:",
@@ -702,8 +725,8 @@ public class Jugador extends Participante {
             return;
         }
 
-        if (solar.getEdificiosContenidos().isEmpty()) {
-            Output.sugerencia("No existen edificios en el solar dado");
+        if (solar.getEdificiosContenidos().get(tipoEdificio).isEmpty()) {
+            Output.sugerencia("No existen edificios del tipo especificado en el solar dado");
             return;
         }
 
@@ -712,7 +735,11 @@ public class Jugador extends Participante {
             return;
         }
 
-        solar.venderEdificio(this, tipoEdificio, cantidad);
+        // Se suma a la fortuna el importe de eliminar los edificios
+        setFortuna(getFortuna() + solar.venderEdificio(tipoEdificio, cantidad));
+
+        // Se registra la acción
+        getAcciones().add(new Edificacion(solar, tipoEdificio, -cantidad));
     }
 
 
@@ -726,6 +753,10 @@ public class Jugador extends Participante {
         setFortuna(getFortuna() + tipoCobro.getImporte());
         incrementarPremiosInversionesOBote(tipoCobro.getImporte());
         Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
+
+        // Se registra la acción
+        getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(), getAvatar().getTablero().getBanca(),
+                this));
 
     }
 
@@ -870,8 +901,6 @@ public class Jugador extends Participante {
             System.exit(1);
         }
 
-        //Carta miCarta = new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio);
-
         final TipoAccion tipoAccion = carta.getTipoAccion();
 
         switch (tipoAccion) {
@@ -897,7 +926,15 @@ public class Jugador extends Participante {
     }
 
 
-    public void
+    /**
+     * Se deshacen las acciones que han beneficiado al jugador en la última tirada; es decir, el dinero recibido por
+     * premios y cobros de tasas, así como todas las compras y ventas efectuadas
+     */
+    public void revertirAcciones() {
+
+        for( IAccionJugador iAccionJugador : getAcciones() )
+            iAccionJugador.revertirAccion();
+    }
 
 
     @Override

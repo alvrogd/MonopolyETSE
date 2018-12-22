@@ -2,6 +2,7 @@ package monopoly.jugadores;
 
 import monopoly.Constantes;
 import monopoly.Dado;
+import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
@@ -887,7 +888,13 @@ public abstract class Avatar {
         // Y se resetea el valor del "alquiler" del parking
 
         getJugador().incrementarPremiosInversionesOBote(parking.getAlquiler());
+
+        // Se registra el pago obtenido
+        getJugador().getAcciones().add(new TransferenciaMonetaria(parking.getAlquiler(), getTablero().getBanca(), getJugador()));
+
         parking.setAlquiler(0);
+
+
 
     }
 
@@ -902,12 +909,17 @@ public abstract class Avatar {
 
         // Si no ha estado en la carcel y se permite, se le suma el correspondiente importe a su fortuna
         if (!isHaEstadoCarcel() && cobrarSalida) {
-            getJugador().setFortuna(getJugador().getFortuna() + (importeSalidaEstandar ? Constantes.DINERO_SALIDA :
-                    Constantes.DINERO_SALIDA_CARTA));
+
+            int importe = (importeSalidaEstandar ? Constantes.DINERO_SALIDA : Constantes.DINERO_SALIDA_CARTA);
+
+            getJugador().setFortuna(getJugador().getFortuna() + importe);
+            getJugador().incrementarPasarPorCasillaDeSalida(importe);
             Output.respuesta("Has cobrado el importe de la casilla de salida.");
-            getJugador().incrementarPasarPorCasillaDeSalida((importeSalidaEstandar ? Constantes.DINERO_SALIDA :
-                    Constantes.DINERO_SALIDA_CARTA));
+
+            // Se registra el pago obtenido
+            getJugador().getAcciones().add(new TransferenciaMonetaria(importe, getTablero().getBanca(), getJugador()));
         }
+
         setHaEstadoCarcel(false);
         setTurnosEnCarcel(0);
         setHaPasadoSalida(false);

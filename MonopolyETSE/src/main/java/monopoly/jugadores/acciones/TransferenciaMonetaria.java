@@ -1,7 +1,7 @@
 package monopoly.jugadores.acciones;
 
 import aplicacion.salidaPantalla.Output;
-import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,14 +11,14 @@ public class TransferenciaMonetaria implements IAccionJugador {
     /* Atributos */
 
     private int importe;
-    private Jugador emisor;
-    private ArrayList<Jugador> receptores;
+    private Participante emisor;
+    private ArrayList<Participante> receptores;
 
 
 
     /* Constructor */
 
-    public TransferenciaMonetaria(int importe, Jugador emisor, Jugador... receptores ) {
+    public TransferenciaMonetaria(int importe, Participante emisor, Participante... receptores ) {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado");
@@ -30,7 +30,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
             System.exit(1);
         }
 
-        for (Jugador receptor : receptores) {
+        for (Participante receptor : receptores) {
 
             if (receptor == null) {
                 System.err.println("Receptor no inicializado");
@@ -59,6 +59,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
         return importe;
     }
 
+
     public void setImporte(int importe) {
 
         if( importe < 0 ) {
@@ -69,11 +70,13 @@ public class TransferenciaMonetaria implements IAccionJugador {
         this.importe = importe;
     }
 
-    public Jugador getEmisor() {
+
+    public Participante getEmisor() {
         return emisor;
     }
 
-    public void setEmisor(Jugador emisor) {
+
+    public void setEmisor(Participante emisor) {
 
         if( emisor == null ) {
             System.err.println( "Emisor no inicializado" );
@@ -83,18 +86,19 @@ public class TransferenciaMonetaria implements IAccionJugador {
         this.emisor = emisor;
     }
 
-    public ArrayList<Jugador> getReceptores() {
+    public ArrayList<Participante> getReceptores() {
         return receptores;
     }
 
-    public void setReceptores(ArrayList<Jugador> receptores) {
+
+    public void setReceptores(ArrayList<Participante> receptores) {
 
         if( receptores == null ) {
             System.err.println( "ArrrayList de receptores no inicializado" );
             return;
         }
 
-        for( Jugador receptor : receptores ) {
+        for( Participante receptor : receptores ) {
 
             if( receptor == null ) {
                 System.err.println( "Receptor no inicializado" );
@@ -120,7 +124,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
         getEmisor().setFortuna( getEmisor().getFortuna() + getImporte() * getReceptores().size() );
 
         // Se resta a los emisores el importe recibido
-        for( Jugador receptor : getReceptores() )
+        for( Participante receptor : getReceptores() )
             receptor.setFortuna( receptor.getFortuna() - getImporte() );
     }
 }

@@ -341,7 +341,6 @@ public abstract class Participante {
             propiedad.setAlquiler(importe);
             propiedad.setImporteCompra(importe);
             transferirPropiedad(vendedor, this, casilla);
-            getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
 
         }
 
@@ -362,8 +361,6 @@ public abstract class Participante {
             propiedad.setAlquiler((int) (0.1 * importe));
             propiedad.setImporteCompra(importe);
             transferirPropiedad(vendedor, this, casilla);
-            getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
-
         }
 
         Output.respuesta("Se ha efectuado un pago:",

@@ -17,6 +17,30 @@ public class Edificacion implements IAccionJugador {
 
     /* Constructor */
 
+    public Edificacion(Solar solar, TipoEdificio tipoEdificio, int balance) {
+
+        this( solar, 0, 0, 0, 0);
+
+        switch( tipoEdificio ) {
+
+            case casa:
+                this.balances.put(TipoEdificio.casa, balance);
+                break;
+
+            case hotel:
+                this.balances.put(TipoEdificio.hotel, balance);
+                break;
+
+            case piscina:
+                this.balances.put(TipoEdificio.piscina, balance);
+                break;
+
+            case pistaDeporte:
+                this.balances.put(TipoEdificio.pistaDeporte, balance);
+                break;
+        }
+    }
+
     public Edificacion(Solar solar, int balanceCasas, int balanceHoteles, int balancePistas, int balancePiscinas) {
 
         if (solar == null) {
