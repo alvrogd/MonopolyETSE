@@ -813,6 +813,16 @@ public class Jugador extends Participante {
             System.exit( 1);
         }
 
+        if(!propiedad1.getPropietario().equals(this)) {
+            Output.respuesta("La propiedad 1 no le pertenece");
+            return;
+        }
+
+        if(!propiedad2.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 2 no pertenece al receptor del trato");
+            return;
+        }
+
         receptor.getTratosRecibidos().add(new TratoP2P(this, receptor, propiedad1, propiedad2));
     }
 
@@ -835,8 +845,13 @@ public class Jugador extends Participante {
             System.exit( 1);
         }
 
+        if(!propiedad1.getPropietario().equals(this)) {
+            Output.respuesta("La propiedad 1 no le pertenece");
+            return;
+        }
+
         if( cantidadDinero < 0 ) {
-            System.err.println("La cantidad de dinero de un trato no puede ser menor a 0" );
+            Output.respuesta("La cantidad de dinero de un trato no puede ser menor a 0" );
             return;
         }
 
@@ -867,6 +882,11 @@ public class Jugador extends Participante {
             System.exit( 1);
         }
 
+        if(!propiedad1.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad no pertenece al receptor del trato");
+            return;
+        }
+
         receptor.getTratosRecibidos().add(new TratoM2P(this, receptor, cantidadDinero, propiedad1));
     }
 
@@ -893,6 +913,16 @@ public class Jugador extends Participante {
         if( propiedad2 == null ) {
             System.err.println("Propiedad 2 no inicializada" );
             System.exit( 1);
+        }
+
+        if(!propiedad1.getPropietario().equals(this)) {
+            Output.respuesta("La propiedad 1 no le pertenece");
+            return;
+        }
+
+        if(!propiedad2.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 2 no pertenece al receptor del trato");
+            return;
         }
 
         if( cantidadDinero < 0 ) {
@@ -934,6 +964,16 @@ public class Jugador extends Participante {
             System.exit( 1);
         }
 
+        if(!propiedad1.getPropietario().equals(this)) {
+            Output.respuesta("La propiedad 1 no le pertenece");
+            return;
+        }
+
+        if(!propiedad2.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 2 no pertenece al receptor del trato");
+            return;
+        }
+
         receptor.getTratosRecibidos().add(new TratoPM2P(this, receptor, propiedad1, cantidadDinero, propiedad2));
     }
 
@@ -969,6 +1009,21 @@ public class Jugador extends Participante {
         if( propiedad3 == null ) {
             System.err.println("Propiedad 3 no inicializada" );
             System.exit( 1);
+        }
+
+        if(!propiedad1.getPropietario().equals(this)) {
+            Output.respuesta("La propiedad 1 no le pertenece");
+            return;
+        }
+
+        if(!propiedad2.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 2 no pertenece al receptor del trato");
+            return;
+        }
+
+        if(!propiedad3.getPropietario().equals(receptor)) {
+            Output.respuesta("La propiedad 3 no pertenece al receptor del trato");
+            return;
         }
 
         if (numeroTurnos < 0) {
