@@ -1099,7 +1099,7 @@ public class Jugador extends Participante {
         // En la variable auxiliar propr se añadirá la información de las propiedades
         StringBuilder prop = new StringBuilder();
 
-        // Se calcula el número de propiedades y de propiedades hipotecadas para, en caso de que sean 0, añadir un
+        // Se calculará el número de propiedades y de propiedades hipotecadas para, en caso de que sean 0, añadir un
         // formato especial
         int numProp = 0;
 
@@ -1107,13 +1107,16 @@ public class Jugador extends Participante {
         StringBuilder propHipotecadas = new StringBuilder();
         int numHip = 0;
 
+        // Variable en la que almacenar propiedades del jugador
         ArrayList<Propiedad> propiedades;
 
+        // Se añaden las cabeceras de las líneas de las propiedades
         prop.append("        -> Propiedades: {");
         propHipotecadas.append("        -> Propiedades hipotecadas: {");
 
         for (int i = 0; i < numPropiedades; i++) {
 
+            // Se obtienen las propiedades
             propiedades = getPropiedades();
 
             // Si la casilla está hipotecada se añade a su StringBuilder correspondiente
@@ -1155,7 +1158,6 @@ public class Jugador extends Participante {
         stringBuilder.append(prop.toString()).append("\n");
         stringBuilder.append(propHipotecadas.toString()).append("\n");
 
-        // todo creo que es un método de Output
         HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador = edificiosJugador();
 
         // Ahora se añaden los edificios
@@ -1163,60 +1165,70 @@ public class Jugador extends Participante {
 
         for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
 
+            // Se crea un StringBuilder para cada tipo de edificio
             StringBuilder edificios = new StringBuilder();
 
+            // Se cogen los edificios de dicho tipo
             ArrayList<Edificio> aux = edificiosJugador.get(tipoEdificio);
 
-            int size = aux.size();
-            int count = 1;
+            // Variable para llevar la cuenta de edificios añadidos
+            int i = 1;
 
+            // Se inserta la cabecera para el tipo de edificio
             edificios.append("            (*) ").append(tipoEdificio.getNombre()).append(": {");
 
             for (Edificio edificio : aux) {
 
+                // Se inserta el ID del edificio
                 edificios.append(edificio.getId());
 
-                if (count != size)
+                // Si no es el último edificio a añadir, se inserta una coma
+                if (i != aux.size())
                     edificios.append(", ");
 
-                count++;
+                i++;
             }
 
+            // Se cierra la línea y se añade al StringBuilder
             edificios.append("}");
             stringBuilder.append(edificios.toString()).append("\n");
         }
 
-        return stringBuilder.toString();
+        return (stringBuilder.toString());
     }
 
 
     /**
-     * Función para devolver a la función toString la información de los edificios que tiene que el jugador; el
-     * ArrayList tendrá un tamaño de 4, el primero para las casas, el segundo para los hoteles, el tercero para las
-     * piscinas y el cuarto para las pistas de deporte
+     * Se obtienen los edificios que posee el jugador
+     *
+     * @return HashMap con los edificios clasificados por tipo
      */
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador() {
 
-        HashMap<TipoEdificio, ArrayList<Edificio>> salida = new HashMap<>();
+        HashMap<TipoEdificio, ArrayList<Edificio>> hashMap = new HashMap<>();
 
-        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
-            salida.put(tipoEdificio, new ArrayList<>());
-        }
+        // Se añade un ArrayList vacío al mapa por cada tipo de edificio posible
+        for (TipoEdificio tipoEdificio : TipoEdificio.values())
+            hashMap.put(tipoEdificio, new ArrayList<>());
 
+        // Para cada propiedad
         for (Propiedad propiedad : getPropiedades()) {
 
-            if( propiedad instanceof Solar ) {
+            // Se comprueba si es un solar
+            if (propiedad instanceof Solar) {
 
-                final Solar solar = (Solar)propiedad;
+                final Solar solar = (Solar) propiedad;
 
+                // Se añaden sus edificios por tipos
                 for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
                     ArrayList<Edificio> edificiosContenidos = solar.getEdificiosContenidos().get(tipoEdificio);
-                    salida.get(tipoEdificio).addAll(edificiosContenidos);
+                    hashMap.get(tipoEdificio).addAll(edificiosContenidos);
                 }
             }
         }
 
-        return salida;
+        return (hashMap);
     }
 }
 
