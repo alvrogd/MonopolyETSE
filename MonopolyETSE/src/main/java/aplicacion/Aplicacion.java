@@ -1,8 +1,6 @@
 package aplicacion;
 
-import aplicacion.salidaPantalla.Output;
-import aplicacion.salidaPantalla.TableroASCII;
-import aplicacion.salidaPantalla.TipoColor;
+import aplicacion.salidaPantalla.*;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
@@ -22,6 +20,7 @@ public class Aplicacion {
     private Menu menu;
     private ArrayList<ArrayList<Object>> buffer;
     private boolean haLanzadoDados;
+    public static ConsolaNormal consola = new ConsolaNormal();
 
     /*Constructores*/
 
@@ -62,12 +61,12 @@ public class Aplicacion {
      */
     public void imprimirBuffer() {
 
-        //En caso de que el buffer se vaya a imprimir en el trablero y el juego esté iniciado
+        //En caso de que el buffer se vaya a imprimir en el tablero y el juego esté iniciado
         if (Output.isImpresionTablero() && getJuego().isIniciado()) {
             System.out.print("\033[H\033[2J"); //se limpia la consola
 
             //Se imprime el tablero junto el buffer
-            System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer()));
+            Aplicacion.consola.imprimir(TableroASCII.pintaTablero(getJuego().getTablero(), Output.getBuffer()));
             Output.vaciarBuffer();
 
         } else {
@@ -77,17 +76,25 @@ public class Aplicacion {
             if (getJuego().isIniciado()) {
                 System.out.print("\033[H\033[2J");
                 //Si está iniciado se imprime el tablero sin nada en su interior
-                System.out.println(TableroASCII.pintaTablero(getJuego().getTablero(), null));
+                Aplicacion.consola.imprimir(TableroASCII.pintaTablero(getJuego().getTablero(), null));
             }
 
             //Se imprime el buffer
             for (int i = 0; i < tam; i++) {
-                System.out.println(Output.getBuffer().get(i).get(0));
+                Aplicacion.consola.imprimir(Output.getBuffer().get(i).get(0).toString());
             }
 
             //Se vacía el buffer
             Output.vaciarBuffer();
         }
+
+    }
+
+    public void introducirComando(String linea){
+
+        Comando comando = new Comando(linea,this);
+
+        comando.ejecutarComando();
 
     }
 
@@ -97,52 +104,10 @@ public class Aplicacion {
     public void limpiarTablero() {
 
         for (int i = 0; i < 50; i++)
-            System.out.println();
+            Aplicacion.consola.imprimir("");
 
     }
 
-
-    private void ejecutarSuerte(){
-
-        int count = 0, opc, size;
-        Scanner entrada = new Scanner(System.in);
-
-        size = getJuego().getCartasSuerte().size();
-
-        for(Carta carta : getJuego().getCartasSuerte()){
-
-            System.out.println("("+count+") "+carta.toString());
-            count++;
-
-        }
-
-        System.out.println("(*) Opción: ");
-        opc = entrada.nextInt();
-
-        getJuego().getTurno().leerCarta(getJuego().getCartasSuerte().get(opc%size));
-
-    }
-
-    private void ejecutarComunidad(){
-
-        int count = 0, opc, size;
-        Scanner entrada = new Scanner(System.in);
-
-        size = getJuego().getCartasComunidad().size();
-
-        for(Carta carta : getJuego().getCartasComunidad()){
-
-            System.out.println("("+count+") "+carta.toString());
-            count++;
-
-        }
-
-        System.out.println("(*) Opción: ");
-        opc = entrada.nextInt();
-
-        getJuego().getTurno().leerCarta(getJuego().getCartasComunidad().get(opc%size));
-
-    }
 }
 
 

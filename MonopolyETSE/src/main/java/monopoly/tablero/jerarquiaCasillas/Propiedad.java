@@ -51,9 +51,9 @@ public abstract class Propiedad extends Casilla{
         this.comprable = comprable;
         this.hipotecada = false;
 
-        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
+        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
         this.importeCompra = 0;
-        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getCasillas().size());
+        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
 
         this.rentabilidad = 0;
 
@@ -139,7 +139,7 @@ public abstract class Propiedad extends Casilla{
     }
 
     public int getPrecioActual(){
-        return((int) (grupo.getPrecio() / (double) grupo.getCasillas().size()));
+        return((int) (grupo.getPrecio() / (double) grupo.getPropiedades().size()));
     }
 
 
@@ -189,5 +189,20 @@ public abstract class Propiedad extends Casilla{
      */
     public void actualizarAlquiler(){
         return;
+    }
+
+    @Override
+    public String toString(){
+
+        String salida = super.toString();
+
+        salida += "\n";
+        salida += "        -> Tipo       : " + getGrupo().getTipo().getTipoCasilla();
+        salida += "        -> Propietario: " + getPropietario().getNombre() + "\n\n";
+        salida += "        -> Valor      : " + getPrecioActual() + "K €\n";
+        salida += "        -> Alquiler   : " + getAlquiler() + "K €\n";
+
+        return salida;
+
     }
 }

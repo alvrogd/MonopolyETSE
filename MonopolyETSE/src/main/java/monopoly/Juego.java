@@ -2,6 +2,7 @@ package monopoly;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
+import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
@@ -27,7 +28,7 @@ public class Juego {
     private ArrayList<String> nombresJugadores;
 
     //Jugador que hace el rol de la banca
-    private Jugador banca;
+    private Banca banca;
 
     //Tablero del juego
     private Tablero tablero;
@@ -77,8 +78,8 @@ public class Juego {
      */
     public Juego() {
 
-        banca = new Jugador("banca");
-        turno = banca;
+        banca = new Banca();
+        turno = null;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
         tablero = new Tablero(banca, this);
@@ -205,7 +206,7 @@ public class Juego {
         return (jugadores.get(jugador));
     }
 
-    public Jugador getBanca() {
+    public Banca getBanca() {
         return banca;
     }
 

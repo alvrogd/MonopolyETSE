@@ -1,5 +1,6 @@
 package aplicacion.salidaPantalla;
 
+import aplicacion.Aplicacion;
 import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
@@ -251,7 +252,7 @@ public class Output {
         }
 
         impresion.append("╯");
-        System.out.println(impresion);
+        Aplicacion.consola.imprimir(impresion.toString());
     }
 
 
@@ -458,379 +459,34 @@ public class Output {
 
     }
 
-    //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
-    //imprimir recuadro
-
-
     /**
-     * Función para devolver a la función JugadortoArrayString la información de los edificios que tiene que el jugador.
-     * El ArrayList tendrá un tamaño de 4, el primero para las casas, el segundo para los hoteles, el tercero para las
-     * piscinas y el cuarto para las pistas de deporte.
-     *
-     * @param jugador jugador del cual se quiere obtener los edificios que ha comprado.
+     * Función para pasar un string a un ArrayList<> donde cada componente es una línea del string.
      */
-    private static HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador(Jugador jugador) {
+    public static ArrayList<String> toArrayString(String string){
 
-        HashMap<TipoEdificio, ArrayList<Edificio>> salida = new HashMap<>();
+        char[] arrayString = string.toCharArray();
+        int size = string.length();
 
-        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
-            salida.put(tipoEdificio, new ArrayList<>());
-        }
+        ArrayList<String> salida = new ArrayList<>();
 
-        for (Casilla propiedad : jugador.getPropiedades()) {
+        String linea = ""; //variable donde se almacenará cada fila
 
-            for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
-                ArrayList<Edificio> edificiosContenidos = propiedad.getEdificiosContenidos().get(tipoEdificio);
-                salida.get(tipoEdificio).addAll(edificiosContenidos);
+        for(int i = 0; i < size; i++){
+
+            if(arrayString[i] == '\n'){
+                salida.add(linea);
+                linea = "";
+            } else {
+
+                linea += arrayString[i];
+
             }
 
         }
 
         return salida;
-    }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del jugador
-     *
-     * @param jugador jugador del que se guarda la información
-     */
-    public static ArrayList<String> JugadortoArrayString(Jugador jugador) {
-        if (jugador == null) {
-            System.err.println("Jugador referencia a null.");
-            return null;
-        }
-
-        //En datos se almacenarán los datos que se devuelven.
-        ArrayList<String> datos = new ArrayList<>();
-
-        //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
-        datos.add("(*) Jugador: " + jugador.getNombre());
-        datos.add("        -> Avatar: " + ((Character) jugador.getAvatar().getIdentificador()).toString());
-        datos.add("        -> Fortuna: " + ((Integer) jugador.getFortuna()).toString() + "K €");
-
-        //Numero de propiedades del jugador
-        int numPropiedades = jugador.getPropiedades().size();
-
-        //En la variable auxiliar se añadirá el String a añadir de las propiedades
-        StringBuilder prop = new StringBuilder();
-        //Se calcula el número de propiedades y de prop hipotecadas para que si son 0 añadir un formato especial.
-        int numProp = 0;
-
-        //Lo mismo que la anterior pero con las propiedades hipotecadas
-        StringBuilder propHipotecadas = new StringBuilder();
-        int numHip = 0;
-        ArrayList<Casilla> casillas;
-        prop.append("        -> Propiedades: {");
-        propHipotecadas.append("        -> Propiedades hipotecadas: {");
-
-        for (int i = 0; i < numPropiedades; i++) {
-
-            casillas = jugador.getPropiedades();
-
-            //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
-            if (casillas.get(i).isHipotecada()) {
-
-                //se añade el nombre de la casilla
-                propHipotecadas.append(casillas.get(i).getNombre());
-
-                //En caso de que sea la última propiedad del jugador no se añade la coma
-                if (i != numPropiedades - 1)
-                    propHipotecadas.append(", ");
-
-                numHip++;
-
-            } else {
-                //se añade el nombre de la casilla
-                prop.append(casillas.get(i).getNombre());
-
-                //En caso de que sea la última propiedad del jugador no se añade la coma
-                if (i != numPropiedades - 1)
-                    prop.append(", ");
-
-                numProp++;
-
-            }
-
-        }
-
-
-        if (numProp == 0) {
-            prop.append("Sin propiedades");
-        }
-        if (numHip == 0) {
-            propHipotecadas.append("Sin propiedades hipotecadas");
-        }
-
-        prop.append("}");
-        propHipotecadas.append("}");
-
-        datos.add(prop.toString());
-        datos.add(propHipotecadas.toString());
-
-        HashMap<TipoEdificio, ArrayList<Edificio>> edificiosJugador = edificiosJugador(jugador);
-
-        datos.add("        -> Edificios:");
-
-        for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
-
-            StringBuilder edificios = new StringBuilder();
-
-            ArrayList<Edificio> aux = edificiosJugador.get(tipoEdificio);
-
-            int size = aux.size();
-            int count = 1;
-
-            edificios.append("            (*) " + tipoEdificio.getNombre() + ": {");
-
-            for (Edificio edificio : aux) {
-
-                edificios.append(edificio.getId());
-
-                if (count != size)
-                    edificios.append(", ");
-
-                count++;
-            }
-
-            edificios.append("}");
-            datos.add(edificios.toString());
-        }
-
-        return datos;
-    }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del avatar
-     *
-     * @param avatar avatar del que se guarda la información
-     */
-    public static ArrayList<String> AvatartoArrayString(Avatar avatar) {
-
-        ArrayList<String> informacion = new ArrayList<>();
-
-        informacion.add("(*) Avatar ID: " + avatar.getIdentificador());
-        informacion.add("        -> Tipo: " + avatar.getTipo().getNombre());
-        informacion.add("        -> Casilla: " + avatar.getPosicion().getNombre());
-        informacion.add("        -> Jugador: " + avatar.getJugador().getNombre());
-
-        return informacion;
-    }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos de la casilla
-     *
-     * @param casilla casilla del que se guarda la información
-     */
-    public static ArrayList<String> CasillatoArrayString(Casilla casilla) {
-
-        ArrayList<String> informacion = new ArrayList<>();
-        Integer aux;
-
-        int valorCasilla;
-
-        informacion.add("(*) Casilla: " + casilla.getNombre());
-
-
-        if (casilla.getGrupo().getTipo() != TipoGrupo.carcel && casilla.getGrupo().getTipo() != TipoGrupo.parking &&
-                casilla.getGrupo().getTipo() != TipoGrupo.salida && casilla.getGrupo().getTipo() != TipoGrupo.irCarcel)
-            informacion.add("        -> Tipo: " + casilla.getGrupo().getTipo().getTipoCasilla());
-
-
-        if (casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
-                TipoGrupo.transporte)
-            valorCasilla = casilla.getGrupo().getPrecio();
-        else
-            valorCasilla = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
-
-        // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
-        // de suerte o de comunidad)
-        if (valorCasilla >= 0) {
-
-            int alquiler = casilla.getAlquiler();
-            int importe = (int) casilla.getImporteCompra() * Constantes.COEF_ALQUILER;
-
-            if (casilla.getGrupo().getTipo() == TipoGrupo.impuesto1 ||
-                    casilla.getGrupo().getTipo() == TipoGrupo.impuesto2) {
-
-                informacion.add("");
-                informacion.add("        -> A pagar: " + casilla.getGrupo().getPrecio());
-
-
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.parking) {
-
-                informacion.add("        -> Bote: " + casilla.getGrupo().getCasillas().get(0).getAlquiler());
-
-                StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: {");
-
-                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
-
-                Avatar avatarAux;
-
-                boolean flag = false;
-
-                for (Character avatar : avatares) {
-
-                    avatarAux = casilla.getAvataresContenidos().get(avatar);
-
-                    jugadoresContenidos.append(avatarAux.getJugador().getNombre());
-
-                    jugadoresContenidos.append(", ");
-
-                }
-
-                int tam = jugadoresContenidos.toString().length();
-
-                jugadoresContenidos.replace(tam, tam, "}");
-
-                informacion.add(jugadoresContenidos.toString());
-
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.carcel) {
-
-                informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
-                StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: {");
-
-                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
-
-                boolean flag = false;
-
-                for (Character avatar : avatares) {
-
-                    if (casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
-                        if (flag) {
-                            jugadoresEncarcelados.append(" , {");
-                        }
-                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
-                        jugadoresEncarcelados.append(", ");
-                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
-                        jugadoresEncarcelados.append("}");
-                        flag = true;
-                    }
-
-                }
-
-                if (!flag) {
-                    jugadoresEncarcelados.append("no hay jugadores encarcelados :-)}");
-                }
-
-
-                informacion.add(jugadoresEncarcelados.toString());
-
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.salida) {
-                informacion.add("        -> Dinero a recibir: " + casilla.getGrupo().getPrecio() + "K €");
-            } else {
-
-                informacion.add("        -> Grupo: " + casilla.getGrupo().getTipo());
-                informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
-
-                if (casilla.isHipotecada())
-                    informacion.add("        -> Propiedad hipotecada.");
-
-                informacion.add("");
-
-                informacion.add("        -> Valor:                            " + valorCasilla + "K €");
-
-                if (casilla.getGrupo().getTipo() == TipoGrupo.transporte) {
-                    informacion.add("        -> Alquiler con 1 transporte:        " + (int) (valorCasilla * 0.25) + "K €");
-                    informacion.add("        -> Alquiler con 2 transportes:       " + (int) (valorCasilla * 0.5) + "K €");
-                    informacion.add("        -> Alquiler con 3 transportes:       " + (int) (valorCasilla * 0.75) + "K €");
-                    informacion.add("        -> Alquiler con 4 transportes:       " + (int) (valorCasilla) + "K €");
-                } else {
-                    informacion.add("        -> Alquiler:                         " + alquiler + "K €");
-                }
-
-                if (casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla())) {
-
-                    informacion.add("");
-
-                    informacion.add("        -> Edificios:");
-                    Set<TipoEdificio> keyEdificios = casilla.getEdificiosContenidos().keySet();
-
-                    for (TipoEdificio auxEdificio : keyEdificios) {
-
-                        StringBuilder linea = new StringBuilder();
-                        ArrayList<Edificio> edificaciones = casilla.getEdificiosContenidos().get(auxEdificio);
-                        int size = edificaciones.size();
-
-                        linea.append("           (*) " + auxEdificio.getNombre() + " {");
-
-                        for (int i = 0; i < size; i++) {
-
-                            linea.append(edificaciones.get(i).getId());
-
-                            if (i != size - 1)
-                                linea.append(", ");
-
-                        }
-
-                        if (size == 0) {
-                            linea.append("No hay edificaciones tipo " + auxEdificio.getNombre());
-                        }
-                        linea.append("}");
-
-                        informacion.add(linea.toString());
-
-                    }
-
-                    informacion.add("");
-                    aux = Edificio.calcularPrecioCompra(TipoEdificio.hotel, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor hotel:                      " + aux + "K €");
-
-                    aux = Edificio.calcularPrecioCompra(TipoEdificio.casa, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor casa:                       " + aux + "K €");
-
-                    aux = Edificio.calcularPrecioCompra(TipoEdificio.piscina, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor piscina:                    " + aux + "K €");
-
-                    aux = Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor pista de deporte:           " + aux + "K €");
-
-                    informacion.add("");
-                    informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * importe
-                            + "K €");
-                    informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * importe
-                            + "K €");
-                }
-            }
-
-        }
-
-        return informacion;
 
     }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del edificio.
-     *
-     * @param edificio edificio del que se guarda la información.
-     */
-    public static ArrayList<String> EdificiotoArrayString(Edificio edificio) {
-
-        ArrayList<String> info = new ArrayList<>();
-
-        info.add("(*) Edificio id: " + edificio.getId());
-
-        info.add("      -> Propietario: " + edificio.getPosicion().getPropietario().getNombre());
-
-        info.add("      -> Casilla    : " + edificio.getPosicion().getNombre());
-
-        info.add("      -> Grupo      : " + edificio.getPosicion().getGrupo().getTipo().toString());
-
-        info.add("      -> Coste      : " + edificio.getPrecioCompra());
-
-        return info;
-
-    }
-
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo error

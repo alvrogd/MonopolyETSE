@@ -10,7 +10,7 @@ public class Edificio {
     private final TipoEdificio tipo;
     private final int precioCompra;
     private final String id;
-    private final Casilla posicion;
+    private final Solar posicion;
 
     /* Constructor */
 
@@ -72,7 +72,7 @@ public class Edificio {
         return id;
     }
 
-    public Casilla getPosicion() {
+    public Solar getPosicion() {
         return posicion;
     }
 
@@ -94,6 +94,25 @@ public class Edificio {
         }
 
         return((int)(tipoGrupo.getPrecioInicial() * tipoEdificio.getCompra()));
+    }
+
+    @Override
+    public String toString(){
+
+        String salida = "";
+
+        salida += "(*) Edificio id: " + getId();
+
+        salida += "      -> Propietario: " + getPosicion().getPropietario().getNombre() + "\n";
+
+        salida += "      -> Casilla    : " + getPosicion().getNombre() + "\n";
+
+        salida += "      -> Grupo      : " + getPosicion().getGrupo().getTipo().toString() + "\n";
+
+        salida += "      -> Coste      : " + getPrecioCompra() + "\n";
+
+        return salida;
+
     }
 
 }
