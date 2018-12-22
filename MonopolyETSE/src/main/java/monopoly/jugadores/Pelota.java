@@ -1,7 +1,7 @@
 package monopoly.jugadores;
 
-import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 
 public class Pelota extends Avatar {
 

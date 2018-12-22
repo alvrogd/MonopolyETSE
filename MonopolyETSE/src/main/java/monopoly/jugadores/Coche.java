@@ -1,8 +1,8 @@
 package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
-import monopoly.tablero.Casilla;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 
 public class Coche extends Avatar {
 
@@ -24,6 +24,35 @@ public class Coche extends Avatar {
 
 
     /* Métodos */
+
+    /**
+     * Se comprueba si se ha sacado el número máximo de dobles permitidos para el avatar del jugador
+     * @return si se ha sacado el número máximo de dobles permitidos
+     */
+    @Override
+    public boolean doblesMaximos(){
+
+        return( getJugador().getTiradasEnTurno() == 3 && !isMovimientoEstandar());
+    }
+
+
+    /**
+     * Se comprueba, en función de la tirada obtenida, si no es posible realizar otra nueva tirada más tarde
+     * @param primeraTirada valor del primer dado
+     * @param segundaTirada valor del segundo dado
+     * @return              si no es posible realizar otra tirada más
+     */
+    @Override
+    public boolean noMasTiradas(int primeraTirada, int segundaTirada) {
+
+        if (isMovimientoEstandar())
+            return (super.noMasTiradas(primeraTirada, segundaTirada));
+
+        else
+            // Si no ha sacado un 4 o más o ha hecho el máximo de tiradas en un turno
+            return (getJugador().getTiradasEnTurno() >= 4 || (primeraTirada + segundaTirada) < 4);
+    }
+
 
     /**
      * Se calcula la posición de la casilla a la que un avatar debe moverse, dado un número de casillas a avanzar; el

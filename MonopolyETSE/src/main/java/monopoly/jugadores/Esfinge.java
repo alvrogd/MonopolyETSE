@@ -1,8 +1,12 @@
 package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
-import monopoly.tablero.Casilla;
+import monopoly.jugadores.acciones.IAccionJugador;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import sun.net.InetAddressCachePolicy;
+
+import java.util.ArrayList;
 
 public class Esfinge extends Avatar {
 
@@ -10,6 +14,10 @@ public class Esfinge extends Avatar {
 
     // Se establece al cambiar a modo avanzado si el movimiento se efectuará hacia la izquierda o hacia la derecha
     private boolean moverseAOeste;
+
+
+
+    /* Constructor */
 
     /**
      * Constructor que crea un avatar de la clase Esfinge para un jugador
@@ -42,6 +50,24 @@ public class Esfinge extends Avatar {
     /* Métodos */
 
     /**
+     * Se comprueba, en función de la tirada obtenida, si no es posible realizar otra nueva tirada más tarde
+     * @param primeraTirada valor del primer dado
+     * @param segundaTirada valor del segundo dado
+     * @return              si no es posible realizar otra tirada más
+     */
+    @Override
+    public boolean noMasTiradas(int primeraTirada, int segundaTirada) {
+
+        if (isMovimientoEstandar())
+            return (super.noMasTiradas(primeraTirada, segundaTirada));
+
+        else
+            // Si no ha sacado un 4 o más o ha hecho el máximo de tiradas en un turno
+            return (getJugador().getTiradasEnTurno() >= 3 || (primeraTirada + segundaTirada) < 4);
+    }
+
+
+    /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      *
      * @param forzar si se debe forzar el cambio de movimiento a pesar de las reglas del juego
@@ -49,13 +75,13 @@ public class Esfinge extends Avatar {
     @Override
     public void switchMovimiento(boolean forzar, boolean splash) {
 
-        super.switchMovimiento( forzar, splash );
+        super.switchMovimiento(forzar, splash);
 
         // Se actualiza la dirección a la que moverse en caso de establecer el movimiento avanzado
-        if( !isMovimientoEstandar() ) {
+        if (!isMovimientoEstandar()) {
 
             int posicion = getPosicion().getPosicionEnTablero();
-            setMoverseAOeste( ( posicion % 40 == 3 ) || ( posicion % 40 == 0 ) );
+            setMoverseAOeste((posicion % 40 == 3) || (posicion % 40 == 0));
         }
     }
 
@@ -73,7 +99,7 @@ public class Esfinge extends Avatar {
         if (isMovimientoEstandar())
             return (actualizarPosicionNormal(numeroCasillas));
 
-        // En caso contrario
+            // En caso contrario
         else
             return (actualizarPosicionEsfinge(numeroCasillas));
     }
@@ -94,25 +120,64 @@ public class Esfinge extends Avatar {
         if (numeroCasillas >= 4) { // todo diferenciar entre empezar a moverse desde un lado o desde arriba y abajo
 
             // Se comprueba si la siguiente fila de destino es la norte o la sur (el avatar debe ir a la norte si se
-            // encuentra en la fila superior o en la columna izquierda
-            int siguienteFila = ( ( posicionFinal % 40 == 0 ) || ( posicionFinal % 40 == 1 ) ) ? 2 : 0;
+            // encuentra en la fila inferior o en la columna izquierda)
+            int siguienteFila = ((posicionFinal % 40 == 0) || (posicionFinal % 40 == 1)) ? 2 : 0;
+
+            // Si el avatar se encuentra en una de las columnas, se mueve a la segunda casilla de la correspondiente
+            // fila
+            if ((posicionFinal % 40 == 1) || (posicionFinal % 40 == 3))
+                posicionFinal = (siguienteFila * 10) + 1;
+
+            // En caso contrario, se va a la fila de destino avanzando una posición
+            else {
+
+                // Si se va a la fila norte moviéndose al oeste, se retroceden posiciones
+                if (siguienteFila == 2 && isMoverseAOeste() )
+                    posicionFinal = 30 - 1 - posicionFinal % 10;
+
+                // En el caso de la ir a la fila sur hacia el oeste, se avanzan posiciones
+                else if( siguienteFila != 2 && isMoverseAOeste() )
+                    posicionFinal = 10 + 1 - posicionFinal % 10;
+
+                // De tener que ir a la fila norte moviéndose al este, se avanzan posiciones
+                else if( siguienteFila == 2 && !isMoverseAOeste() )
+                    posicionFinal = 30 + 1 - posicionFinal % 10;
+
+                // La última opción es tener que ir a la fila sur moviéndose al este, teniendo que retroceder
+                else
+                    posicionFinal = 10 - 1 - posicionFinal % 10;
 
 
+                // Si se ha llegado al final de un lado, se vuelve al inicio de este
+                if( posicionFinal % 10 == 0 )
 
-            posicionFinal += numeroCasillas;
+                    if( siguienteFila == 2 && isMoverseAOeste() )
+                        posicionFinal += 10;
+
+                    else if( siguienteFila != 2 && isMoverseAOeste())
+                        posicionFinal -= 10;
+
+                    else if( siguienteFila == 2 && !isMoverseAOeste() )
+                        posicionFinal -=10;
+
+                    else
+                        posicionFinal += 10;
+
+            }
 
             // Si ha pasado por la casilla de salida
             if (posicionFinal >= 40)
                 setHaPasadoSalida(true);
 
-        } else {
-
-            // todo deshacer cambios de la última tirada
-
         }
 
-        setCasillasRestantesPorMoverse(0);
+        // Si se ha sacado menos de un 4, se deshacen las compras de propiedades y edificios, y se eliminan los pagos
+        // obtenidos por premios en el último turno
+        else
+            getJugador().revertirAcciones();
+
+
+        setCasillasRestantesPorMoverse(getCasillasRestantesPorMoverse() - 1);
         return (posicionFinal % 40);
     }
-
 }

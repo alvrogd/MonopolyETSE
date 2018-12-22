@@ -1,7 +1,8 @@
 package monopoly.jugadores;
 
 import monopoly.Constantes;
-import monopoly.tablero.Casilla;
+import monopoly.Dado;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
 import monopoly.tablero.TipoGrupo;
@@ -87,9 +88,11 @@ public abstract class Avatar {
         vueltas = 0;
         haPasadoSalida = false;
         posicion = casillaInicial;
+
         vecesCaidasEnCasillas = new ArrayList<>();
         for (int i = 0; i < Constantes.NUMERO_CASILLAS; i++)
             vecesCaidasEnCasillas.add(0);
+
         vecesCaidasEnPropiedades = new ArrayList<>();
         for (int i = 0; i < Constantes.NUMERO_CASILLAS; i++)
             vecesCaidasEnPropiedades.add(0);
@@ -167,7 +170,7 @@ public abstract class Avatar {
     public void setTurnosEnCarcel(int turnosEnCarcel) {
 
         if (turnosEnCarcel < 0) {
-            Output.sugerencia("El número turnos en la cárcel de un avatar no puede ser menor a 0.");
+            System.err.println("El número turnos en la cárcel de un avatar no puede ser menor a 0.");
             return;
         }
         this.turnosEnCarcel = turnosEnCarcel;
@@ -182,7 +185,7 @@ public abstract class Avatar {
     public void setVueltas(int vueltas) {
 
         if (vueltas < 0) {
-            Output.sugerencia("El número de vueltas de un avatar no puede ser menor a 0.");
+            System.err.println("El número de vueltas de un avatar no puede ser menor a 0.");
             return;
         }
 
@@ -274,6 +277,7 @@ public abstract class Avatar {
 
     public void setCasillasRestantesPorMoverse(int casillasRestantesPorMoverse) {
 
+        // todo cambiar estos a System.err.println
         if (casillasRestantesPorMoverse < 0) {
             Output.sugerencia("El número de casillas restantes por moverse no puede ser menor a 0.");
             return;
@@ -304,6 +308,28 @@ public abstract class Avatar {
 
 
     /* Métodos */
+
+    /**
+     * Se comprueba si se ha sacado el número máximo de dobles permitidos para el avatar del jugador
+     * @return si se ha sacado el número máximo de dobles permitidos
+     */
+    public boolean doblesMaximos(){
+
+        return( getJugador().getTiradasEnTurno() == 3 );
+    }
+
+
+    /**
+     * Se comprueba, en función de la tirada obtenida, si no es posible realizar otra nueva tirada más tarde
+     * @param primeraTirada valor del primer dado
+     * @param segundaTirada valor del segundo dado
+     * @return              si no es posible realizar otra tirada más
+     */
+    public boolean noMasTiradas(int primeraTirada, int segundaTirada) {
+
+        return( primeraTirada != segundaTirada);
+    }
+
 
     /**
      * En caso de ser posible, el jugador del avatar paga el importe correspondiente y en desencarcelado
@@ -477,6 +503,7 @@ public abstract class Avatar {
         // todo avisar de Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
         return( haMovidoCasillasTirada || forzar );
     }
+
 
     /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
