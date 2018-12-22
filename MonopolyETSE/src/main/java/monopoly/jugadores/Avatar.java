@@ -727,16 +727,22 @@ public abstract class Avatar {
         if (!transporte.isComprable() && !transporte.getPropietario().equals(this.getJugador()) &&
                 !transporte.isHipotecada()) {
 
-            int importePagar = (int) (transporte.getAlquiler()/* *
+            if( getJugador().serInmuneA(transporte))
+                Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
+
+            else {
+
+                int importePagar = (int) (transporte.getAlquiler()/* *
                     propiedad.getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador*/);
 
-            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
-            if(!getJugador().pagar(transporte.getPropietario(), importePagar))
-                getTablero().getJuego().jugadorEnBancarrota(getJugador());
+                // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+                if (!getJugador().pagar(transporte.getPropietario(), importePagar))
+                    getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
-            else
-                // Se incrementa la rentabilidad de la casilla
-                transporte.incrementarRentabilidad(importePagar);
+                else
+                    // Se incrementa la rentabilidad de la casilla
+                    transporte.incrementarRentabilidad(importePagar);
+            }
         }
     }
 
@@ -752,18 +758,24 @@ public abstract class Avatar {
         if (!servicio.isComprable() && !servicio.getPropietario().equals(this.getJugador()) &&
                 !servicio.isHipotecada()) {
 
-            //int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
+            if( getJugador().serInmuneA(servicio))
+                Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
 
-            int importePagar = numeroCasillas * Constantes.FACTOR_SERVICIO /** multiplicadorPropio*/ *
-                    servicio.getAlquiler() * multiplicador;
+            else {
 
-            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
-            if(!getJugador().pagar(servicio.getPropietario(), importePagar))
-                getTablero().getJuego().jugadorEnBancarrota(getJugador());
+                //int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
 
-            else
-                // Se incrementa la rentabilidad de la casilla
-                servicio.incrementarRentabilidad(importePagar);
+                int importePagar = numeroCasillas * Constantes.FACTOR_SERVICIO /** multiplicadorPropio*/ *
+                        servicio.getAlquiler() * multiplicador;
+
+                // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+                if (!getJugador().pagar(servicio.getPropietario(), importePagar))
+                    getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
+                else
+                    // Se incrementa la rentabilidad de la casilla
+                    servicio.incrementarRentabilidad(importePagar);
+            }
         }
     }
 
@@ -778,17 +790,23 @@ public abstract class Avatar {
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!solar.isComprable() && !solar.getPropietario().equals(this.getJugador()) && !solar.isHipotecada()) {
 
-            //int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
+            if( getJugador().serInmuneA(solar))
+                Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
 
-            int importePagar = solar.getAlquiler() /** multiplicadorPropio*/ * multiplicador;
+            else {
 
-            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
-            if(!getJugador().pagar(solar.getPropietario(), importePagar))
-                getTablero().getJuego().jugadorEnBancarrota(getJugador());
+                //int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
 
-            else
-                // Se incrementa la rentabilidad de la casilla
-                solar.incrementarRentabilidad(importePagar);
+                int importePagar = solar.getAlquiler() /** multiplicadorPropio*/ * multiplicador;
+
+                // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+                if(!getJugador().pagar(solar.getPropietario(), importePagar))
+                    getTablero().getJuego().jugadorEnBancarrota(getJugador());
+
+                else
+                    // Se incrementa la rentabilidad de la casilla
+                    solar.incrementarRentabilidad(importePagar);
+            }
         }
     }
 
@@ -846,7 +864,6 @@ public abstract class Avatar {
                 "|  \\-'`:._]",
                 "\\__/;      '-.", ""
         );
-
     }
 
 
@@ -898,7 +915,6 @@ public abstract class Avatar {
         setHaPasadoSalida(false);
         setVueltas(getVueltas() + 1);
         getTablero().getJuego().actualizarVueltas();
-
     }
 
 
@@ -919,6 +935,5 @@ public abstract class Avatar {
 
         // Si el identificador es distinto; son el mismo objeto
         return (getIdentificador() == otro.getIdentificador());
-
     }
 }

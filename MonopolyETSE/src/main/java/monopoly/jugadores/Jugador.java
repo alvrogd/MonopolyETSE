@@ -7,10 +7,12 @@ import monopoly.jugadores.acciones.Edificacion;
 import monopoly.jugadores.acciones.IAccionJugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.jugadores.acciones.TransferenciaPropiedad;
+import monopoly.jugadores.tratos.*;
 import monopoly.tablero.*;
 import monopoly.tablero.jerarquiaCasillas.*;
 
 import java.util.ArrayList;
+import java.util.function.IntUnaryOperator;
 
 public class Jugador extends Participante {
 
@@ -26,6 +28,12 @@ public class Jugador extends Participante {
 
     // Acciones que ha realizado a lo largo de un turno
     private ArrayList<IAccionJugador> acciones;
+
+    // Tratos que ha recibido
+    private ArrayList<Trato> tratosRecibidos;
+
+    // Inmunidades de las que goza
+    private ArrayList<Inmunidad> inmunidades;
 
     // Estadísticas del jugador
     private int dineroInvertido;
@@ -93,6 +101,10 @@ public class Jugador extends Participante {
         this.turnosPenalizado = 0;
 
         this.acciones = new ArrayList<>();
+
+        this.tratosRecibidos = new ArrayList<>();
+
+        this.inmunidades = new ArrayList<>();
 
         this.dineroInvertido = 0;
         this.pagoDeAlquileres = 0;
@@ -190,6 +202,38 @@ public class Jugador extends Participante {
         }
 
         this.acciones = acciones;
+    }
+
+
+    public ArrayList<Trato> getTratosRecibidos() {
+        return tratosRecibidos;
+    }
+
+
+    public void setTratosRecibidos(ArrayList<Trato> tratosRecibidos) {
+
+        if (tratosRecibidos == null) {
+            System.err.println("ArrayList de tratos recibidos no inicializado");
+            return;
+        }
+
+        this.tratosRecibidos = tratosRecibidos;
+    }
+
+
+    public ArrayList<Inmunidad> getInmunidades() {
+        return inmunidades;
+    }
+
+
+    public void setInmunidades(ArrayList<Inmunidad> inmunidades) {
+
+        if (inmunidades == null) {
+            System.err.println("ArrayList de inmunidades no inicializado");
+            return;
+        }
+
+        this.inmunidades = inmunidades;
     }
 
 
@@ -743,6 +787,262 @@ public class Jugador extends Participante {
 
         for (IAccionJugador iAccionJugador : getAcciones())
             iAccionJugador.revertirAccion();
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una propiedad por otra
+     * @param receptor   receptor del trato
+     * @param propiedad1 propiedad a intercambiar por parte del emisor
+     * @param propiedad2 propiedad a intercambiar por parte del receptor
+     */
+    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2 ) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( propiedad2 == null ) {
+            System.err.println("Propiedad 2 no inicializada" );
+            System.exit( 1);
+        }
+
+        receptor.getTratosRecibidos().add(new TratoP2P(this, receptor, propiedad1, propiedad2));
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una propiedad por una cantidad de dinero especificada
+     * @param receptor       receptor del trato
+     * @param propiedad1     propiedad a intercambiar por parte del emisor
+     * @param cantidadDinero cantidad de dinero a intercambiar por parte del receptor
+     */
+    public void proponerTrato(Jugador receptor, Propiedad propiedad1, int cantidadDinero ) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( cantidadDinero < 0 ) {
+            System.err.println("La cantidad de dinero de un trato no puede ser menor a 0" );
+            return;
+        }
+
+        receptor.getTratosRecibidos().add(new TratoP2M(this, receptor, propiedad1, cantidadDinero));
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una cantidad de dinero especificada por una propiedad
+     * @param receptor       receptor del trato
+     * @param cantidadDinero cantidad de dinero a intercambiar por parte del emisor
+     * @param propiedad1     propiedad a intercambiar por parte del receptor
+     */
+    public void proponerTrato(Jugador receptor, int cantidadDinero, Propiedad propiedad1 ) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( cantidadDinero < 0 ) {
+            System.err.println("La cantidad de dinero de un trato no puede ser menor a 0" );
+            return;
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        receptor.getTratosRecibidos().add(new TratoM2P(this, receptor, cantidadDinero, propiedad1));
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una propiedad por otra y una cantidad de dinero especificada
+     * @param receptor       receptor del trato
+     * @param propiedad1     propiedad a intercambiar por parte del emisor
+     * @param propiedad2     propiedad a intercambiar por parte del receptor
+     * @param cantidadDinero cantidad de dinero a intercambiar por parte del receptor
+     */
+    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, int cantidadDinero ) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( propiedad2 == null ) {
+            System.err.println("Propiedad 2 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( cantidadDinero < 0 ) {
+            System.err.println("La cantidad de dinero de un trato no puede ser menor a 0" );
+            return;
+        }
+
+        receptor.getTratosRecibidos().add(new TratoP2PM(this, receptor, propiedad1, propiedad2, cantidadDinero));
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una propiedad y una cantidad de dinero especificada por una
+     * propiedad
+     * @param receptor       receptor del trato
+     * @param propiedad1     propiedad a intercambiar por parte del emisor
+     * @param cantidadDinero cantidad de dinero a intercambiar por parte del emisor
+     * @param propiedad2     propiedad a intercambiar por parte del receptor
+     */
+    public void proponerTrato(Jugador receptor, Propiedad propiedad1, int cantidadDinero, Propiedad propiedad2 ) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( cantidadDinero < 0 ) {
+            System.err.println("La cantidad de dinero de un trato no puede ser menor a 0" );
+            return;
+        }
+
+        if( propiedad2 == null ) {
+            System.err.println("Propiedad 2 no inicializada" );
+            System.exit( 1);
+        }
+
+        receptor.getTratosRecibidos().add(new TratoPM2P(this, receptor, propiedad1, cantidadDinero, propiedad2));
+    }
+
+
+    /**
+     * Se propone a un jugador un trato de intercambio de una propiedad por otra e inmunidad a pago de alquileres en
+     * una propiedad especificada
+     * @param receptor   receptor del trato
+     * @param propiedad1 propiedad a intercambiar por parte del emisor
+     * @param propiedad2 propiedad a intercambiar por parte del receptor
+     * @param propiedad3   propiedad especificada para la inmunidad ante el pago de alquileres
+     * @param numeroTurnos número de turnos en los que el emisor gozará de inmunidad ante pagos de alquiler en la
+     *                     propiedad especificada
+     */
+    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, Propiedad propiedad3, int
+                              numeroTurnos) {
+
+        if( receptor == null ) {
+            System.err.println("Receptor no inicializado" );
+            System.exit( 1);
+        }
+
+        if( propiedad1 == null ) {
+            System.err.println("Propiedad 1 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( propiedad2 == null ) {
+            System.err.println("Propiedad 2 no inicializada" );
+            System.exit( 1);
+        }
+
+        if( propiedad3 == null ) {
+            System.err.println("Propiedad 3 no inicializada" );
+            System.exit( 1);
+        }
+
+        if (numeroTurnos < 0) {
+            System.err.println("El número de turnos de inmunidad no puede ser negativo");
+            System.exit(1);
+        }
+
+        receptor.getTratosRecibidos().add(new TratoP2PA(this, receptor, propiedad1, propiedad2, propiedad3,
+                numeroTurnos));
+    }
+
+
+    /**
+     * Se acepta un trato dado
+     * @param trato trato a aceptar
+     */
+    public void aceptarTrato(Trato trato) {
+
+        if( trato == null ) {
+            System.err.println( "Trato no inicializado" );
+            System.exit( 1);
+        }
+
+        trato.aceptar();
+    }
+
+
+    /**
+     * Se comprueba si el jugador es inmune a pagos de alquiler en una propiedad dada
+     * @param propiedad propiedad cuya inmunidad comprobar
+     * @return          si el jugador es inmune a pagos en la propiedad especificada
+     */
+    public boolean serInmuneA( Propiedad propiedad ) {
+
+        if( propiedad == null ) {
+            System.err.println( "Propiedad no inicializada" );
+            return( false );
+        }
+
+        for( Inmunidad inmunidad : getInmunidades() ) {
+
+            if( inmunidad.getPropiedad().equals(propiedad))
+                return( true );
+        }
+
+        return( false );
+    }
+
+
+    /**
+     * Se reduce en un turno la inmunidad de todas las inmunidades del jugador, siendo eliminadas aquellas que alcanzan
+     * los 0 turnos
+     */
+    // todo esto tiene que ser llamado desde el juego al asignarse el turno al jugador
+    public void reducirInmunidad() {
+
+        for( int i = 0; i < getInmunidades().size(); i++ ) {
+
+            final Inmunidad inmunidad = getInmunidades().get(i);
+
+            inmunidad.setNumeroTurnos(inmunidad.getNumeroTurnos() - 1);
+
+            // Si ya se ha agotado, se elimina
+            if( inmunidad.getNumeroTurnos() == 0 ) {
+
+                getInmunidades().remove(i);
+
+                Output.respuesta("Has dejado de ser inmune a los alquileres de " +
+                        inmunidad.getPropiedad().getNombre() + "!");
+
+                // Se reduce en uno el iterante para un funciomiento apropiado del bucle
+                i--;
+            }
+        }
     }
 
 

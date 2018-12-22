@@ -178,7 +178,6 @@ public abstract class Carta {
             int numeroPagos = jugador.pagar(new ArrayList<>(jugadores), importe);
 
             jugador.incrementarPagoTasasEImpuestos(importe * numeroPagos);
-
         }
     }
 
