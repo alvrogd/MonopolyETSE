@@ -60,7 +60,7 @@ public class TratoM2P extends Trato {
         return (aceptar(getEmisor(), getReceptor(), getCantidadDinero(), getPropiedad1()));
     }
 
-    
+
     /**
      * Se lleva a cabo el trato propuesto
      *

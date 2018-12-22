@@ -537,6 +537,26 @@ public abstract class Avatar {
 
 
     /**
+     * Se establece el modo de movimiento básico para el avatar
+     */
+    public void moverEnBasico() {
+
+        if( !isMovimientoEstandar() )
+            switchMovimiento();
+    }
+
+
+    /**
+     * Se establece el modo de movimiento avanzado para el avatar
+     */
+    public void moverEnAvanzado() {
+
+        if( isMovimientoEstandar() )
+            switchMovimiento();
+    }
+
+
+    /**
      * Mueve al jugador de un avatar, en caso de no estar encarcelado, o estarlo y sacar dobles; si se ha estado en la
      * cárcel el número máximo de turnos permitidos, se fuerza su salida
      *
