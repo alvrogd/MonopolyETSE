@@ -117,7 +117,7 @@ public class Esfinge extends Avatar {
         int posicionFinal = getPosicion().getPosicionEnTablero();
 
 
-        if (numeroCasillas >= 4) { // todo diferenciar entre empezar a moverse desde un lado o desde arriba y abajo
+        if (numeroCasillas >= 4) {
 
             // Se comprueba si la siguiente fila de destino es la norte o la sur (el avatar debe ir a la norte si se
             // encuentra en la fila inferior o en la columna izquierda)

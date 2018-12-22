@@ -1,5 +1,6 @@
 package monopoly.tablero;
 
+import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
@@ -112,10 +113,10 @@ public class Tablero {
         ArrayList<Object> aux = new ArrayList<>();
 
         //Se añaden los nombres de las casillas en orden fila - posición
-        aux.add(0); aux.add(1); aux.add("Platform 9 3/4");
+        aux.add(0); aux.add(1); aux.add(Constantes.NOMBRE_NEGRO_1);
 
         ArrayList<Object> aux2 = new ArrayList<>();
-        aux2.add(0); aux2.add(3); aux2.add("Diagon Alley");
+        aux2.add(0); aux2.add(3); aux2.add(Constantes.NOMBRE_NEGRO_2);
 
         //Se introduce el tipo de grupo, el tablero, si es comprable y los nombres de las casillas
         Grupo negro = new Grupo(TipoGrupo.negro, this, true, aux, aux2);
@@ -125,13 +126,13 @@ public class Tablero {
         //Casillas cyan
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(6); aux.add("Godric's Hollow");
+        aux.add(0); aux.add(6); aux.add(Constantes.NOMBRE_CYAN_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(0); aux2.add(8); aux2.add("Hogsmeade");
+        aux2.add(0); aux2.add(8); aux2.add(Constantes.NOMBRE_CYAN_2);
 
         ArrayList<Object> aux3 = new ArrayList<>();
-        aux3.add(0); aux3.add(9); aux3.add("Hogwarts");
+        aux3.add(0); aux3.add(9); aux3.add(Constantes.NOMBRE_CYAN_3);
 
         Grupo cyan = new Grupo(TipoGrupo.cyan, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.cyan, cyan);
@@ -140,13 +141,13 @@ public class Tablero {
         //Casillas rosa
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(1); aux.add("Tatooine");
+        aux.add(1); aux.add(1); aux.add(Constantes.NOMBRE_ROSA_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(3); aux2.add("Alderaan");
+        aux2.add(1); aux2.add(3); aux2.add(Constantes.NOMBRE_ROSA_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(1); aux3.add(4); aux3.add("Coruscant");
+        aux3.add(1); aux3.add(4); aux3.add(Constantes.NOMBRE_ROSA_3);
 
         Grupo rosa = new Grupo(TipoGrupo.rosa, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.rosa, rosa);
@@ -155,13 +156,13 @@ public class Tablero {
         //Casillas naranja
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(6); aux.add("Endor");
+        aux.add(1); aux.add(6); aux.add(Constantes.NOMBRE_NARANJA_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1);aux2.add(8); aux2.add("Hoth");
+        aux2.add(1);aux2.add(8); aux2.add(Constantes.NOMBRE_NARANJA_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(1); aux3.add(9); aux3.add("Mustafar");
+        aux3.add(1); aux3.add(9); aux3.add(Constantes.NOMBRE_NARANJA_3);
 
         Grupo naranja = new Grupo(TipoGrupo.naranja, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.naranja, naranja);
@@ -170,13 +171,13 @@ public class Tablero {
         //Casillas rojo
 
         aux = new ArrayList<>();
-        aux.add(2); aux.add(1); aux.add("Meereen");
+        aux.add(2); aux.add(1); aux.add(Constantes.NOMBRE_ROJO_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(3); aux2.add("Casterly Rock");
+        aux2.add(2); aux2.add(3); aux2.add(Constantes.NOMBRE_ROJO_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(4); aux3.add("Braavos");
+        aux3.add(2); aux3.add(4); aux3.add(Constantes.NOMBRE_ROJO_3);
 
         Grupo rojo = new Grupo(TipoGrupo.rojo, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.rojo, rojo);
@@ -185,13 +186,13 @@ public class Tablero {
         //Casilla marron
 
         aux = new ArrayList<>();
-        aux.add(2); aux.add(6); aux.add("Winterfell");
+        aux.add(2); aux.add(6); aux.add(Constantes.NOMBRE_MARRON_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(7); aux2.add("Night's Watch");
+        aux2.add(2); aux2.add(7); aux2.add(Constantes.NOMBRE_MARRON_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(9); aux3.add("Beyond the Wall");
+        aux3.add(2); aux3.add(9); aux3.add(Constantes.NOMBRE_MARRON_3);
 
         Grupo marron = new Grupo(TipoGrupo.marron, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.marron, marron);
@@ -200,13 +201,13 @@ public class Tablero {
         //Casillas verde
 
         aux = new ArrayList<>();
-        aux.add(3); aux.add(1); aux.add("The Shire");
+        aux.add(3); aux.add(1); aux.add(Constantes.NOMBRE_VERDE_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(3); aux2.add(2); aux2.add("Moria");
+        aux2.add(3); aux2.add(2); aux2.add(Constantes.NOMBRE_VERDE_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(4); aux3.add("Helm's Deep");
+        aux3.add(3); aux3.add(4); aux3.add(Constantes.NOMBRE_VERDE_3);
 
         Grupo verde = new Grupo(TipoGrupo.verde, this, true, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.verde, verde);
@@ -215,10 +216,10 @@ public class Tablero {
         //Casilla azul
 
         aux = new ArrayList<>();
-        aux.add(3); aux.add(7); aux.add("Isengard");
+        aux.add(3); aux.add(7); aux.add(Constantes.NOMBRE_AZUL_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(3); aux2.add(9); aux2.add("Mordor");
+        aux2.add(3); aux2.add(9); aux2.add(Constantes.NOMBRE_AZUL_2);
 
         Grupo azul = new Grupo(TipoGrupo.azul, this, true, aux, aux2);
         this.grupos.put(TipoGrupo.azul, azul);
@@ -227,7 +228,7 @@ public class Tablero {
         //Salida
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(0); aux.add("malloc(game)");
+        aux.add(0); aux.add(0); aux.add(Constantes.NOMBRE_SALIDA);
 
         Grupo salida = new Grupo(TipoGrupo.salida, this, false, aux);
         this.grupos.put(TipoGrupo.salida, salida);
@@ -236,7 +237,7 @@ public class Tablero {
         //Carcel
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(0); aux.add("Azkaban");
+        aux.add(1); aux.add(0); aux.add(Constantes.NOMBRE_CARCEL);
 
         Grupo carcel = new Grupo(TipoGrupo.carcel, this, false, aux);
         this.grupos.put(TipoGrupo.carcel, carcel);
@@ -245,7 +246,7 @@ public class Tablero {
         //Parking
 
         aux = new ArrayList<>();
-        aux.add(2); aux.add(0); aux.add("Death Star");
+        aux.add(2); aux.add(0); aux.add(Constantes.NOMBRE_PARKING);
 
         Grupo parking = new Grupo(TipoGrupo.parking, this, false, aux);
         this.grupos.put(TipoGrupo.parking, parking);
@@ -254,7 +255,7 @@ public class Tablero {
         //irCarcel
 
         aux = new ArrayList<>();
-        aux.add(3);  aux.add(0); aux.add("goto(Azkaban)");
+        aux.add(3);  aux.add(0); aux.add(Constantes.NOMBRE_IR_A_CARCEL);
 
         Grupo irCarcel = new Grupo(TipoGrupo.irCarcel, this, false, aux); //26
         this.grupos.put(TipoGrupo.irCarcel, irCarcel);
@@ -263,16 +264,16 @@ public class Tablero {
         //Transporte
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(5); aux.add("Hogwarts Express");
+        aux.add(0); aux.add(5); aux.add(Constantes.NOMBRE_TRANSPORTE_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(5); aux2.add("Imperial Destroyer");
+        aux2.add(1); aux2.add(5); aux2.add(Constantes.NOMBRE_TRANSPORTE_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(5); aux3.add("King's Landing");
+        aux3.add(2); aux3.add(5); aux3.add(Constantes.NOMBRE_TRANSPORTE_3);
 
         ArrayList<Object> aux4 = new ArrayList<>();
-        aux4.add(3); aux4.add(5); aux4.add("Gwaihir");
+        aux4.add(3); aux4.add(5); aux4.add(Constantes.NOMBRE_TRANSPORTE_4);
 
         Grupo transporte = new Grupo(TipoGrupo.transporte, this, true, aux, aux2, aux3, aux4); //30
         this.grupos.put(TipoGrupo.transporte, transporte);
@@ -281,10 +282,10 @@ public class Tablero {
         //Casillas servicio
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(2); aux.add("servicio1");
+        aux.add(1); aux.add(2); aux.add(Constantes.NOMBRE_SERVICIO_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(8); aux2.add("servicio2");
+        aux2.add(2); aux2.add(8); aux2.add(Constantes.NOMBRE_SERVICIO_2);
 
         Grupo servicios = new Grupo(TipoGrupo.servicios, this, true, aux, aux2); //32
         this.grupos.put(TipoGrupo.servicios, servicios);
@@ -293,7 +294,7 @@ public class Tablero {
         //Impuesto tipo 1
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(4); aux.add("Sméagol's Tax");
+        aux.add(0); aux.add(4); aux.add(Constantes.NOMBRE_IMPUESTO_1);
 
         Grupo impuestos1 = new Grupo(TipoGrupo.impuesto1, this, false, aux);
         this.grupos.put(TipoGrupo.impuesto1, impuestos1);
@@ -302,7 +303,7 @@ public class Tablero {
         //Impuesto tipo 2
 
         aux = new ArrayList<>();
-        aux.add(3); aux.add(8); aux.add("Smaug's Tax");
+        aux.add(3); aux.add(8); aux.add(Constantes.NOMBRE_IMPUESTO_2);
 
         Grupo impuestos2 = new Grupo(TipoGrupo.impuesto2, this, false, aux);//34
         this.grupos.put(TipoGrupo.impuesto2, impuestos2);
@@ -311,13 +312,13 @@ public class Tablero {
         //Casillas suerte
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(7); aux.add("suerte1");
+        aux.add(0); aux.add(7); aux.add(Constantes.NOMBRE_SUERTE_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(2); aux2.add("suerte2");
+        aux2.add(2); aux2.add(2); aux2.add(Constantes.NOMBRE_SUERTE_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(6); aux3.add("suerte3");
+        aux3.add(3); aux3.add(6); aux3.add(Constantes.NOMBRE_SUERTE_3);
 
         Grupo suerte = new Grupo(TipoGrupo.suerte, this, false, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.suerte, suerte);
@@ -326,13 +327,13 @@ public class Tablero {
         //Casillas comunidad
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(2); aux.add("comunidad1");
+        aux.add(0); aux.add(2); aux.add(Constantes.NOMBRE_COMUNIDAD_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(7); aux2.add("comunidad2");
+        aux2.add(1); aux2.add(7); aux2.add(Constantes.NOMBRE_COMUNIDAD_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(3); aux3.add("comunidad3");
+        aux3.add(3); aux3.add(3); aux3.add(Constantes.NOMBRE_COMUNIDAD_3);
 
         Grupo comunidad = new Grupo(TipoGrupo.comunidad, this, false, aux, aux2, aux3);
         this.grupos.put(TipoGrupo.comunidad, comunidad);

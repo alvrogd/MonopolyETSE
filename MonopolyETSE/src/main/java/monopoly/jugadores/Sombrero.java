@@ -110,7 +110,7 @@ public class Sombrero extends Avatar {
         int posicionFinal = getPosicion().getPosicionEnTablero();
 
 
-        if (numeroCasillas >= 4) { // todo diferenciar entre empezar a moverse desde un lado o desde arriba y abajo
+        if (numeroCasillas >= 4) {
 
             // Se comprueba si la siguiente columna de destino es la oeste o la este (el avatar debe ir a la oeste si
             // se encuentra en la fila inferior o en la columna derehca

@@ -124,11 +124,14 @@ public class Coche extends Avatar {
      * @return si el avatar puede cambiar el modo de movimiento
      */
     @Override
-    public boolean poderCambiarMovimiento(boolean forzar) {
+    public boolean noPoderCambiarMovimiento(boolean forzar) {
 
         // Si es un coche y se ha movido ya
-        // todo avisar de Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
-        return( super.poderCambiarMovimiento(forzar) && ( !getTablero().getJuego().isHaHechoUnaTirada() || forzar) );
-    }
+        boolean noEsPosible = getTablero().getJuego().isHaHechoUnaTirada() && !forzar;
 
+        if( noEsPosible )
+            Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
+
+        return( super.noPoderCambiarMovimiento(forzar) || noEsPosible );
+    }
 }

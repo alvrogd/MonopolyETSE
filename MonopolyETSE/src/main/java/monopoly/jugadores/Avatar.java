@@ -1,12 +1,15 @@
 package monopoly.jugadores;
 
 import monopoly.Constantes;
-import monopoly.Dado;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
+import monopoly.tablero.Transporte;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.Servicio;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -278,9 +281,8 @@ public abstract class Avatar {
 
     public void setCasillasRestantesPorMoverse(int casillasRestantesPorMoverse) {
 
-        // todo cambiar estos a System.err.println
         if (casillasRestantesPorMoverse < 0) {
-            Output.sugerencia("El número de casillas restantes por moverse no puede ser menor a 0.");
+            System.err.println("El número de casillas restantes por moverse no puede ser menor a 0.");
             return;
         }
         this.casillasRestantesPorMoverse = casillasRestantesPorMoverse;
@@ -449,9 +451,15 @@ public abstract class Avatar {
 
         // Se actualiza el número de veces que ha caído en la casilla
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
+
         // También se actualiza en caso de que sea propiedad del propio jugador
-        if (getPosicion().getPropietario().equals(getJugador()))
-            getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnPropiedades().get(posicionFinal % 40) + 1);
+        if( getPosicion() instanceof Propiedad ) {
+
+            final Propiedad propiedad = (Propiedad)getPosicion();
+
+            if (propiedad.getPropietario().equals(getJugador()))
+                getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnPropiedades().get(posicionFinal % 40) + 1);
+        }
 
         // Y se añade el avatar al listado de avatares contenidos en la nueva casilla
         getPosicion().getAvataresContenidos().put(getIdentificador(), this);
@@ -497,12 +505,16 @@ public abstract class Avatar {
      *
      * @return si el avatar puede cambiar el modo de movimiento
      */
-    public boolean poderCambiarMovimiento(boolean forzar) {
+    public boolean noPoderCambiarMovimiento(boolean forzar) {
 
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
         // movimiento
-        // todo avisar de Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
-        return( haMovidoCasillasTirada || forzar );
+        boolean noEsPosible = !haMovidoCasillasTirada && !forzar;
+
+        if( noEsPosible )
+            Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
+
+        return( noEsPosible );
     }
 
 
@@ -513,8 +525,7 @@ public abstract class Avatar {
      */
     public void switchMovimiento(boolean forzar, boolean splash) {
 
-
-        if (!poderCambiarMovimiento(forzar))
+        if (noPoderCambiarMovimiento(forzar))
             return;
 
         setMovimientoEstandar(!isMovimientoEstandar());
@@ -599,54 +610,62 @@ public abstract class Avatar {
         actualizarPosicion(calcularNuevaPosicion(numeroCasillas), cobrarSalida, importeSalidaEstandar);
 
         // En función del tipo de casilla en la que se ha caído
-        switch (getPosicion().getGrupo().getTipo()) {
+        switch (getPosicion().getNombre()) {
 
-            case suerte:
+            case Constantes.NOMBRE_SUERTE_1:
+            case Constantes.NOMBRE_SUERTE_2:
+            case Constantes.NOMBRE_SUERTE_3:
                 Output.respuesta("Has caído en una casilla de suerte.");
                 caerEnSuerte();
                 break;
 
-            case comunidad:
+            case Constantes.NOMBRE_COMUNIDAD_1:
+            case Constantes.NOMBRE_COMUNIDAD_2:
+            case Constantes.NOMBRE_COMUNIDAD_3:
                 Output.respuesta("Has caído en una casilla de comunidad.");
                 caerEnComunidad();
                 break;
 
-            case impuesto1:
+            case Constantes.NOMBRE_IMPUESTO_1:
                 Output.respuesta("Has caído en la primera casilla de impuestos.");
-                caerEnImpuesto1();
+                caerEnImpuesto(Constantes.IMPUESTO_1);
                 break;
 
-            case impuesto2:
+            case Constantes.NOMBRE_IMPUESTO_2:
                 Output.respuesta("Has caído en la segunda casilla de impuestos.");
-                caerEnImpuesto2();
+                caerEnImpuesto(Constantes.IMPUESTO_2);
                 break;
 
-            case transporte:
+            case Constantes.NOMBRE_TRANSPORTE_1:
+            case Constantes.NOMBRE_TRANSPORTE_2:
+            case Constantes.NOMBRE_TRANSPORTE_3:
+            case Constantes.NOMBRE_TRANSPORTE_4:
                 Output.respuesta("Has caído en una casilla de transporte.");
                 caerEnTransporte(multiplicador);
                 break;
 
-            case servicios:
+            case Constantes.NOMBRE_SERVICIO_1:
+            case Constantes.NOMBRE_SERVICIO_2:
                 Output.respuesta("Has caído en una casilla de servicio.");
                 caerEnServicio(numeroCasillas, multiplicador);
                 break;
 
-            case carcel:
+            case Constantes.NOMBRE_CARCEL:
                 // acción asociada a la casilla de cárcel
                 Output.respuesta("Has caído en la casilla de visita de la cárcel.");
                 break;
 
-            case irCarcel:
+            case Constantes.NOMBRE_IR_A_CARCEL:
                 Output.respuesta("Has caído en la casilla de ir a la cárcel.");
                 caerEnIrACarcel();
                 break;
 
-            case parking:
+            case Constantes.NOMBRE_PARKING:
                 Output.respuesta("Has caído en la casilla del parking.");
                 caerEnParking();
                 break;
 
-            case salida:
+            case Constantes.NOMBRE_SALIDA:
                 Output.respuesta("Has caído en la casilla de salida.");
                 break;
 
@@ -654,32 +673,6 @@ public abstract class Avatar {
                 Output.respuesta("Has caído en una casilla de un solar.");
                 caerEnSolar(multiplicador);
         }
-
-        /*
-        // Si es un avatar de pelota, aún pueden quedar posiciones por moverse
-        if (getCasillasRestantesPorMoverse() > 0)
-            avanzar(getCasillasRestantesPorMoverse(), cobrarSalida, importeSalidaEstandar, multiplicador);*/
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-
-        // Si este objeto y el objeto pasado como parámetro apuntan a la misma dirección de memoria
-        if (this == o) return (true);
-
-            // Si el parámetro referencia a null
-        else if (o == null) return (false);
-
-        // Si el parámetro no es un objeto de tipo Avatar
-        if (getClass() != o.getClass()) return (false);
-
-        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder llamar a sus métodos
-        final Avatar otro = (Avatar) o;
-
-        // Si el identificador es distinto; son el mismo objeto
-        return (getIdentificador() == otro.getIdentificador());
-
     }
 
 
@@ -699,7 +692,7 @@ public abstract class Avatar {
             numeroCarta = scanner.nextInt();
         } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_SUERTE);
 
-        getJugador().leerCarta(getTablero().getJuego().barajarSuerte(numeroCarta));
+        getTablero().getJuego().barajarSuerte(numeroCarta).accion();
     }
 
 
@@ -719,57 +712,59 @@ public abstract class Avatar {
             numeroCarta = scanner.nextInt();
         } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_COMUNIDAD);
 
-        getJugador().leerCarta(getTablero().getJuego().barajarComunidad(numeroCarta));
-
+        getTablero().getJuego().barajarComunidad(numeroCarta).accion();
     }
+
 
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
     private void caerEnTransporte(int multiplicador) {
 
-        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
+        final Transporte transporte = (Transporte) getPosicion();
 
-            int importePagar = (int) (getPosicion().getAlquiler() *
-                    getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador);
+        // Si ha caído en una casilla que no es comprable dado que la tiene otro jugador
+        if (!transporte.isComprable() && !transporte.getPropietario().equals(this.getJugador()) &&
+                !transporte.isHipotecada()) {
 
-            getJugador().pagar(getPosicion().getPropietario(), importePagar);
+            int importePagar = (int) (transporte.getAlquiler()/* *
+                    propiedad.getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte) * 0.25 * multiplicador*/);
 
-            // Se incrementa la rentabilidad de la casilla del jugador
-            getPosicion().incrementarRentabilidad(importePagar);
-
-            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if (getJugador().isEstaBancarrota())
+            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+            if(!getJugador().pagar(transporte.getPropietario(), importePagar))
                 getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
+            else
+                // Se incrementa la rentabilidad de la casilla
+                transporte.incrementarRentabilidad(importePagar);
         }
-
     }
 
-    // todo en teoría Fran va a hacer que los multiplicadores vayan implícitos al obtener el alquiler
+
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
     private void caerEnServicio(int numeroCasillas, int multiplicador) {
 
+        final Servicio servicio = (Servicio)getPosicion();
+
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
+        if (!servicio.isComprable() && !servicio.getPropietario().equals(this.getJugador()) &&
+                !servicio.isHipotecada()) {
 
-            int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
+            //int multiplicadorPropio = (getPosicion().getPropietario().numeroCasillasObtenidas(TipoGrupo.servicios) == 1) ? 4 : 10;
 
-            int importePagar = numeroCasillas * Constantes.FACTOR_SERVICIO * multiplicadorPropio * multiplicador;
-            getJugador().pagar(getPosicion().getPropietario(), importePagar);
+            int importePagar = numeroCasillas * Constantes.FACTOR_SERVICIO /** multiplicadorPropio*/ *
+                    servicio.getAlquiler() * multiplicador;
 
-            // Se incrementa la rentabilidad de la casilla del jugador
-            getPosicion().incrementarRentabilidad(importePagar);
-
-            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if (getJugador().isEstaBancarrota())
+            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+            if(!getJugador().pagar(servicio.getPropietario(), importePagar))
                 getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
+            else
+                // Se incrementa la rentabilidad de la casilla
+                servicio.incrementarRentabilidad(importePagar);
         }
-
     }
 
 
@@ -778,24 +773,23 @@ public abstract class Avatar {
      */
     private void caerEnSolar(int multiplicador) {
 
+        final Solar solar = (Solar)getPosicion();
+
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
-        if (!getPosicion().isComprable() && !getPosicion().getPropietario().equals(this.getJugador()) && !getPosicion().isHipotecada()) {
+        if (!solar.isComprable() && !solar.getPropietario().equals(this.getJugador()) && !solar.isHipotecada()) {
 
-            int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
+            //int multiplicadorPropio = getPosicion().getPropietario().haObtenidoSolaresGrupo(getPosicion().getGrupo()) ? 2 : 1;
 
-            int importePagar = getPosicion().getAlquiler() * multiplicadorPropio * multiplicador;
+            int importePagar = solar.getAlquiler() /** multiplicadorPropio*/ * multiplicador;
 
-            getJugador().pagar(getPosicion().getPropietario(), importePagar);
-
-            // Se incrementa la rentabilidad de la casilla del jugador
-            getPosicion().incrementarRentabilidad(importePagar);
-
-            // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-            if (getJugador().isEstaBancarrota())
+            // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+            if(!getJugador().pagar(solar.getPropietario(), importePagar))
                 getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
+            else
+                // Se incrementa la rentabilidad de la casilla
+                solar.incrementarRentabilidad(importePagar);
         }
-
     }
 
 
@@ -803,39 +797,21 @@ public abstract class Avatar {
      * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
      * avatar en el parking
      */
-    private void caerEnImpuesto1() {
+    private void caerEnImpuesto( int impuesto ) {
 
-        getJugador().incrementarPagoTasasEImpuestos(Constantes.IMPUESTO_1);
-        getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_1);
-        // Se añade la cantidad pagada al "alquiler" del parking
-        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
-                Constantes.POSICION_PARKING % 10);
-        parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_1);
-
-        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-        if (getJugador().isEstaBancarrota())
+        // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
+        if(!getJugador().pagar(getTablero().getBanca(), impuesto))
             getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
-    }
+        else {
+            // Se incrementa el pago de impuestos
+            getJugador().incrementarPagoTasasEImpuestos(impuesto);
 
-
-    /**
-     * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
-     * avatar en el parking
-     */
-    private void caerEnImpuesto2() {
-
-        getJugador().incrementarPagoTasasEImpuestos(Constantes.IMPUESTO_2);
-        getJugador().pagar(getTablero().getBanca(), Constantes.IMPUESTO_2);
-        // Se añade la cantidad pagada al "alquiler" del parking
-        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
-                Constantes.POSICION_PARKING % 10);
-        parking.setAlquiler(parking.getAlquiler() + Constantes.IMPUESTO_2);
-
-        // Si el jugador ha caído en bancarrota tras el pago, debe notificarse
-        if (getJugador().isEstaBancarrota())
-            getTablero().getJuego().jugadorEnBancarrota(getJugador());
-
+            // Se añade la cantidad pagada al "alquiler" del parking
+            final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+                    Constantes.POSICION_PARKING % 10);
+            parking.setAlquiler(parking.getAlquiler() + impuesto);
+        }
     }
 
 
@@ -893,9 +869,6 @@ public abstract class Avatar {
         getJugador().getAcciones().add(new TransferenciaMonetaria(parking.getAlquiler(), getTablero().getBanca(), getJugador()));
 
         parking.setAlquiler(0);
-
-
-
     }
 
 
@@ -928,4 +901,24 @@ public abstract class Avatar {
 
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+
+        // Si este objeto y el objeto pasado como parámetro apuntan a la misma dirección de memoria
+        if (this == o) return (true);
+
+            // Si el parámetro referencia a null
+        else if (o == null) return (false);
+
+        // Si el parámetro no es un objeto de tipo Avatar
+        if (getClass() != o.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder llamar a sus métodos
+        final Avatar otro = (Avatar) o;
+
+        // Si el identificador es distinto; son el mismo objeto
+        return (getIdentificador() == otro.getIdentificador());
+
+    }
 }
