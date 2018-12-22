@@ -53,7 +53,7 @@ public class Jugador extends Participante {
      */
     public Jugador(String nombre, Tablero tablero, TipoAvatar tipoAvatar, Casilla casillaInicial) {
 
-        super( nombre, Constantes.DINERO_INICIAL);
+        super(nombre, Constantes.DINERO_INICIAL);
 
         if (tablero == null) {
             System.err.println("Tablero no inicializado");
@@ -70,7 +70,7 @@ public class Jugador extends Participante {
             System.exit(1);
         }
 
-        switch( tipoAvatar ) {
+        switch (tipoAvatar) {
 
             case coche:
                 this.avatar = new Coche(this, tablero, casillaInicial);
@@ -186,8 +186,8 @@ public class Jugador extends Participante {
 
     public void setAcciones(ArrayList<IAccionJugador> acciones) {
 
-        if( acciones == null ) {
-            System.err.println( "ArrayList de acciones no inicializado" );
+        if (acciones == null) {
+            System.err.println("ArrayList de acciones no inicializado");
             return;
         }
 
@@ -408,27 +408,26 @@ public class Jugador extends Participante {
      *
      * @param receptor participante al que pagar el importe
      * @param importe  cantidad a pagar
-     * @return         si se ha efectuado el pago correctamente
+     * @return si se ha efectuado el pago correctamente
      */
     @Override
     public boolean pagar(Participante receptor, int importe) {
 
-        if( super.pagar( receptor, importe ) ) {
+        if (super.pagar(receptor, importe)) {
 
             // Si no se trata de la banca
-            if( !(receptor instanceof Banca )) {
+            if (!(receptor instanceof Banca)) {
 
-                final Jugador jugador = (Jugador)receptor;
+                final Jugador jugador = (Jugador) receptor;
                 incrementarPagoDeAlquileres(importe);
                 jugador.incrementarCobroDeAlquileres(importe);
 
             }
 
-            return( true );
-        }
+            return (true);
 
-        else
-            return( false );
+        } else
+            return (false);
     }
 
 
@@ -439,7 +438,7 @@ public class Jugador extends Participante {
      *
      * @param participantes participantes a los que pagar el importe
      * @param importe       cantidad a pagar
-     * @return              número de pagos efectuados correctamente
+     * @return número de pagos efectuados correctamente
      */
     @Override
     public int pagar(ArrayList<Participante> participantes, int importe) {
@@ -451,16 +450,16 @@ public class Jugador extends Participante {
         incrementarPagoDeAlquileres(importe * pagosExitosos);
 
         // Se incrementan las estadísticas de los receptores
-        for( int i = 0; i < pagosExitosos; i++ ) {
+        for (int i = 0; i < pagosExitosos; i++) {
 
-            if( participantes.get( i ) instanceof Jugador ) {
+            if (participantes.get(i) instanceof Jugador) {
 
-                final Jugador jugador = (Jugador)participantes.get(i);
+                final Jugador jugador = (Jugador) participantes.get(i);
                 jugador.incrementarCobroDeAlquileres(importe);
             }
         }
 
-        return( pagosExitosos );
+        return (pagosExitosos);
     }
 
 
@@ -468,30 +467,29 @@ public class Jugador extends Participante {
      * Se compra una casilla a un participante pagando el correspondiente importe, en caso de disponer de la suficiente
      * liquidez
      *
-     * @param vendedor   jugador al que comprar la casilla
-     * @param propiedad  propiedad a comprar
-     * @return           importe de la compra
+     * @param vendedor  jugador al que comprar la casilla
+     * @param propiedad propiedad a comprar
+     * @return importe de la compra
      */
     @Override
     public int comprar(Participante vendedor, Propiedad propiedad) {
 
-        if( propiedad == null ) {
-            System.err.println( "Propiedad no inicializada" );
-            System.exit( 1);
+        if (propiedad == null) {
+            System.err.println("Propiedad no inicializada");
+            System.exit(1);
         }
 
         // Si el jugador no se encuentra en la casilla a comprar
         if (getAvatar().getPosicion().getPosicionEnTablero() != propiedad.getPosicionEnTablero()) {
             Output.respuesta("El jugador no se encuentra en la propiedad a comprar");
-            return(0);
+            return (0);
         }
 
-        int importe = super.comprar( vendedor, propiedad);
-
+        int importe = super.comprar(vendedor, propiedad);
 
 
         // Si se ha efectuado la compra correctamente
-        if( importe > 0 ) {
+        if (importe > 0) {
 
             // Se incrementan las estadísticas del jugador
             incrementarDineroInvertido(importe);
@@ -504,7 +502,7 @@ public class Jugador extends Participante {
             getAcciones().add(new TransferenciaPropiedad(vendedor, this, propiedad));
         }
 
-        return( importe);
+        return (importe);
     }
 
 
@@ -552,11 +550,11 @@ public class Jugador extends Participante {
             getAvatar().caerEnIrACarcel();
 
 
-        // En caso contrario
+            // En caso contrario
         else {
 
             // Se comprueba si se podrá realizar otra tirada
-            getAvatar().getTablero().getJuego().setHaLanzadoDados(getAvatar().noMasTiradas(primeraTirada,segundaTirada));
+            getAvatar().getTablero().getJuego().setHaLanzadoDados(getAvatar().noMasTiradas(primeraTirada, segundaTirada));
 
             // Y se mueve el avatar
             getAvatar().mover(primeraTirada + segundaTirada, dobles);
@@ -587,9 +585,9 @@ public class Jugador extends Participante {
             return;
         }
 
-        if( propiedad instanceof Solar) {
+        if (propiedad instanceof Solar) {
 
-            final Solar solar = ( Solar ) propiedad;
+            final Solar solar = (Solar) propiedad;
 
             if (solar.tieneEdificios()) {
                 System.err.println("No se puede hipotecar una propiedad mientras esta contenga edificios");
@@ -640,9 +638,7 @@ public class Jugador extends Participante {
             Output.respuesta("El jugador no dispone de suficiente liquidez como para deshipotecar la " +
                     "propiedad");
 
-        }
-
-        else {
+        } else {
 
             setFortuna(getFortuna() - importe);
             propiedad.setHipotecada(false);
@@ -682,13 +678,11 @@ public class Jugador extends Participante {
                 haObtenidoSolaresGrupo(solar.getGrupo())) {
 
             // Se resta a la fortuna el importe de edificar
-            setFortuna(getFortuna()- solar.edificar(tipoEdificio));
+            setFortuna(getFortuna() - solar.edificar(tipoEdificio));
 
             // Se registra la acción
             getAcciones().add(new Edificacion(solar, tipoEdificio, 1));
-        }
-
-        else
+        } else
             Output.respuesta("Para edificar en una casilla, debe haber cumplido uno de los siguientes requisitos:",
                     "        -> Poseer todos los solares del grupo de la casilla",
                     "        -> Haber caído más de dos veces en el solar");
@@ -744,195 +738,12 @@ public class Jugador extends Participante {
 
 
     /**
-     * Se procesa un tipo de cobro dado
-     *
-     * @param tipoCobro tipo de cobro a procesar
-     */
-    private void cobrarCarta(TipoCobro tipoCobro) {
-
-        setFortuna(getFortuna() + tipoCobro.getImporte());
-        incrementarPremiosInversionesOBote(tipoCobro.getImporte());
-        Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
-
-        // Se registra la acción
-        getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(), getAvatar().getTablero().getBanca(),
-                this));
-
-    }
-
-
-    /**
-     * Se procesa un tipo de pago dado
-     *
-     * @param tipoPago tipo de pago a procesar
-     */
-    private void pagarCarta(TipoPago tipoPago) {
-
-        final String receptor = tipoPago.getNombreReceptor();
-
-        int importe = 0;
-
-        // Si el importe debe ser calculado, se trata de la casilla de pago de impuesto por bienes inmuebles
-        if (tipoPago.isImporteCalculado()) {
-
-            // Se obtienen las propiedades del jugador
-            ArrayList<Casilla> propiedades = getPropiedades();
-
-            // Se recorren los edificios de cada casilla sumando el correspiente importe
-            for (Casilla casilla : propiedades) {
-
-                importe += casilla.getEdificiosContenidos().get(TipoEdificio.casa).size() * 400;
-                importe += casilla.getEdificiosContenidos().get(TipoEdificio.hotel).size() * 1150;
-                importe += casilla.getEdificiosContenidos().get(TipoEdificio.piscina).size() * 200;
-                importe += casilla.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size() * 750;
-
-            }
-        }
-
-        // En caso contrario, el importe se obtiene directamente del tipo de pago
-        else
-            importe = tipoPago.getImporte();
-
-        // Ahora se puede, o bien pagar a la banca
-        if (receptor.equals("banca")) {
-            pagar(getAvatar().getTablero().getJuego().getBanca(), importe);
-            incrementarPagoTasasEImpuestos(importe);
-            // Se incrementa el bote en el parking
-            final Casilla parking = getAvatar().getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(Constantes.POSICION_PARKING % 10);
-            parking.setAlquiler(parking.getAlquiler() + importe);
-            // O bien pagar a todos los jugadores, en el caso de las cartas de pago de un alquiler en Cannes o pago por ser
-            // escodigo presidente de la junta directiva
-        } else {
-
-            final Collection<Jugador> jugadores = getAvatar().getTablero().getJuego().getJugadores().values();
-
-            incrementarPagoTasasEImpuestos(importe);
-            pagar(new ArrayList<>(jugadores), importe);
-        }
-    }
-
-
-    /**
-     * Se procesa un tipo de movimiento dado
-     *
-     * @param tipoMovimiento tipo de movimiento a procesar
-     */
-    private void moverCarta(TipoMovimiento tipoMovimiento) {
-
-        // Nombre de la casilla de destino
-        final String nombreDestino = tipoMovimiento.getNombreCasillaDestino();
-
-        // Posición actual
-        int posicionActual = getAvatar().getPosicion().getPosicionEnTablero();
-        // Posición de destino
-        int posicionDestino;
-
-        // Número de casillas a moverse
-        int numeroCasillas;
-
-        // Si el movimiento actual del avatar es el avanzado
-        boolean movimientoEstandar = getAvatar().isMovimientoEstandar();
-
-
-        // Si el movimiento se efectúa directamente a una casilla dada
-        if (tipoMovimiento.isMoverseDirectamente()) {
-
-            switch (nombreDestino) {
-
-                // Si el destino es la cárcel, simplemente se encarcela al avatar del jugador
-                case "Azkaban":
-                    getAvatar().caerEnIrACarcel();
-                    return;
-
-                // Si el destino es la próxima casilla de transporte (los transportes se encuentran en las posiciones
-                // 5, 15, 25 y 35
-                case "transporte":
-
-                    // La siguiente casilla de transporte puede estar como mucho a 10 casillas de la actual
-                    posicionDestino = posicionActual + 10;
-                    posicionDestino -= (posicionDestino - 5) % 10;
-
-                    posicionDestino %= 40;
-                    break;
-
-                // En caso contrario, se obtiene la posición de destino directamente
-                default:
-                    final Casilla destino = getAvatar().getTablero().getCasillasTablero().get(nombreDestino);
-                    posicionDestino = destino.getPosicionEnTablero();
-                    break;
-            }
-        }
-
-        // O sino, es el caso de la carta en la que se retroceden tres casillas
-        else
-            posicionDestino = posicionActual + tipoMovimiento.getCasillasDesplazarse();
-
-        // Se calcula el número de casillas a avanzar (el valor de posicionDestino es incrementado en una vuelta
-        // para realizar después el módulo y evitar así resultados negativos)
-        numeroCasillas = (posicionDestino + 40 - posicionActual) % 40;
-
-        // Se indica que aún no se ha movido las casillas correspondientes a la tirada
-        getAvatar().sethaMovidoCasillasTirada(false);
-        // Se indica el número de casillas restantes por moverse
-        getAvatar().setCasillasRestantesPorMoverse(numeroCasillas + getAvatar().getCasillasRestantesPorMoverse());
-
-        // Si el movimiento no es el estándar, se cambia
-        if (!movimientoEstandar)
-            getAvatar().switchMovimiento(true, false);
-
-        // Se avanzan las casillas dadas
-        getAvatar().avanzar(numeroCasillas, tipoMovimiento.isCobrarCasillaSalida(), false, tipoMovimiento.getMultiplicadorPago());
-
-        // Y se devuelve el modo de movimiento a su estado original si fue modificado
-        if (!movimientoEstandar)
-            getAvatar().switchMovimiento(true, false);
-    }
-
-
-    /**
-     * Se actúa en función de lo que indica una carta dada
-     *
-     * @param carta carta en función de cual actuar
-     */
-    public void leerCarta(Carta carta) {
-
-        if (carta == null) {
-            System.err.println("Carta no inicializada");
-            System.exit(1);
-        }
-
-        final TipoAccion tipoAccion = carta.getTipoAccion();
-
-        switch (tipoAccion) {
-
-            case cobro:
-                final TipoCobro tipoCobro = (TipoCobro) carta.getAccion();
-                Output.respuesta(tipoCobro.getDescripcion());
-                cobrarCarta(tipoCobro);
-                break;
-
-            case movimiento:
-                final TipoMovimiento tipoMovimiento = (TipoMovimiento) carta.getAccion();
-                Output.respuesta(tipoMovimiento.getDescripcion());
-                moverCarta(tipoMovimiento);
-                break;
-
-            case pago:
-                final TipoPago tipoPago = (TipoPago) carta.getAccion();
-                Output.respuesta(tipoPago.getDescripcion());
-                pagarCarta(tipoPago);
-                break;
-        }
-    }
-
-
-    /**
      * Se deshacen las acciones que han beneficiado al jugador en la última tirada; es decir, el dinero recibido por
      * premios y cobros de tasas, así como todas las compras y ventas efectuadas
      */
     public void revertirAcciones() {
 
-        for( IAccionJugador iAccionJugador : getAcciones() )
+        for (IAccionJugador iAccionJugador : getAcciones())
             iAccionJugador.revertirAccion();
     }
 
