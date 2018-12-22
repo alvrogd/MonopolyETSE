@@ -1,10 +1,7 @@
 package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.NoComprarABancaException;
-import monopoly.jugadores.excepciones.NoLiquidezException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.Transporte;
@@ -311,7 +308,7 @@ public abstract class Participante {
      * @return           importe de la compra
      */
     public int comprar(Participante vendedor, Propiedad propiedad) throws NoComprarABancaException, NoLiquidezException,
-            NoSerPropietarioException {
+            NoSerPropietarioException, NoEncontrarseEnPropiedadException {
 
         if (vendedor == null) {
             System.err.println("Jugador no inicializado");
