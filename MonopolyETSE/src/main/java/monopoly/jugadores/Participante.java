@@ -319,7 +319,7 @@ public abstract class Participante {
         // Si la casilla no pertenece a la banca
         if (!(propiedad.getPropietario() instanceof Banca)) {
             Output.respuesta("La casilla no pertenece a la banca.");
-            return;
+            return(0);
         }
 
         int importe;
@@ -340,14 +340,13 @@ public abstract class Participante {
             propiedad.setComprable(false);
             propiedad.setAlquiler(importe);
             propiedad.setImporteCompra(importe);
-            transferirPropiedad(vendedor, this, casilla);
+            transferirPropiedad(vendedor, this, propiedad);
 
         }
 
         // Si es un solar, el alquiler es proporcional al número de casillas del grupo
         else {
-
-            importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getCasillas().size());
+            importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getSolares().size());
 
             // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
             if (balanceNegativoTrasPago(importe)) {
@@ -360,7 +359,7 @@ public abstract class Participante {
             propiedad.setComprable(false);
             propiedad.setAlquiler((int) (0.1 * importe));
             propiedad.setImporteCompra(importe);
-            transferirPropiedad(vendedor, this, casilla);
+            transferirPropiedad(vendedor, this, propiedad);
         }
 
         Output.respuesta("Se ha efectuado un pago:",

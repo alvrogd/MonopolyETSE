@@ -8,11 +8,9 @@ import monopoly.jugadores.acciones.IAccionJugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.jugadores.acciones.TransferenciaPropiedad;
 import monopoly.tablero.*;
-import monopoly.tablero.cartas.*;
 import monopoly.tablero.jerarquiaCasillas.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Jugador extends Participante {
 
@@ -39,7 +37,7 @@ public class Jugador extends Participante {
     private int pagoTasasEImpuestos;
 
     // Atributo para las estadísticas globales
-    private int valorDados;
+    private int numeroTiradas;
 
 
 
@@ -85,6 +83,7 @@ public class Jugador extends Participante {
                 break;
 
             case sombrero:
+            default:
                 this.avatar = new Sombrero(this, tablero, casillaInicial);
                 break;
         }
@@ -116,33 +115,32 @@ public class Jugador extends Participante {
     /* No se implementa el setter de avatar dado que es una constante */
 
 
-    public int getValorDados() {
-        return valorDados;
+    public int getNumeroTiradas() {
+        return numeroTiradas;
     }
 
 
-    // todo cambiar que es el número de tiradas
-    public void setValorDados(int valorDados) {
+    public void setNumeroTiradas(int numeroTiradas) {
 
-        if (valorDados < 0) {
+        if (numeroTiradas < 0) {
 
-            System.err.println("Valor de dados no puede ser menor que 0");
+            System.err.println("El número de tiradas no puede ser menor que 0");
             return;
         }
 
-        this.valorDados = valorDados;
+        this.numeroTiradas = numeroTiradas;
     }
 
 
-    public void incrementarValorDados(int valorDados) {
+    public void incrementarNumeroTiradas(int numeroTiradas) {
 
-        if (valorDados < 0) {
+        if (numeroTiradas < 0) {
 
-            System.err.println("Valor de dados no puede ser menor que 0");
+            System.err.println("El número de tiradas no puede ser menor que 0");
             return;
         }
 
-        setValorDados(getValorDados() + valorDados);
+        setNumeroTiradas(getNumeroTiradas() + numeroTiradas);
     }
 
 
@@ -532,7 +530,7 @@ public class Jugador extends Participante {
         int primeraTirada = dado.lanzarDado();
         int segundaTirada = dado.lanzarDado();
 
-        incrementarValorDados(1);
+        incrementarNumeroTiradas(1);
 
         boolean dobles = primeraTirada == segundaTirada;
 
