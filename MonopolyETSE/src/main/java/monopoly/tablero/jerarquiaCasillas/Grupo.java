@@ -16,7 +16,7 @@ public class Grupo {
     private int precio;
 
     //ArrayList con las solares que contiene el grupo
-    private final ArrayList<Solar> solares;
+    private final ArrayList<Propiedad> propiedades;
 
     private Tablero tablero;
 
@@ -28,10 +28,10 @@ public class Grupo {
      * @param tipo tipo del grupo
      * @param tablero tablero al que pertenece el grupo
      * @param comprable si sus solares correspondientes son comprables o no
-     * @param solares un atributo multivalorado en el que se introducirá un ArrayList de Object por casilla, donde este
+     * @param propiedades un atributo multivalorado en el que se introducirá un ArrayList de Object por casilla, donde este
      *                 almacenará la tupla: fila - posición - nombre de la casilla*/
 
-    public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... solares) {
+    public Grupo(TipoGrupo tipo, Tablero tablero, boolean comprable, ArrayList<Object>... propiedades) {
 
         //Comprobación del tipo de grupo
         if (tipo == null) {
@@ -42,7 +42,7 @@ public class Grupo {
             System.err.println("Tablero referencia a null");
             System.exit(1);
         }
-        if(solares == null) {
+        if(propiedades == null) {
             System.err.println("Posiciones referencia a null");
             System.exit(1);
         }
@@ -50,12 +50,11 @@ public class Grupo {
         this.tipo = tipo;
         this.precio = tipo.getPrecioInicial();
 
-        //Comprobación de que las solares no son null
-        this.solares = new ArrayList<>();
-        Solar aux;
+        //Comprobación de que las propiedades no son null
+        this.propiedades = new ArrayList<>();
 
-        //Se comprueba que las solares no sean null y que contengan la información adecuada.
-        for(ArrayList<Object> c : solares){
+        //Se comprueba que las propiedades no sean null y que contengan la información adecuada.
+        for(ArrayList<Object> c : propiedades){
 
             if (c == null) {
                 System.err.println("Casilla incorrecta.");
@@ -66,27 +65,49 @@ public class Grupo {
                 System.exit(1);
             }
 
-            //Para que así solares pueda determinar su alquiler sabiendo el número de estas que va a haber en su grupo
-            this.solares.add(null);
+            //Para que así propiedades pueda determinar su alquiler sabiendo el número de estas que va a haber en su grupo
+            this.propiedades.add(null);
         }
 
         int contador = 0;
 
         this.tablero = tablero;
 
-        for (ArrayList<Object> c : solares) {
+        Propiedad aux = null;
+
+        for (ArrayList<Object> c : propiedades) {
 
             //Se crea la nueva casilla con el tercer elemento del Array (el nombre), el grupo, si es comprable y su
             //posición en módulo 40, por último se le pasa la banca.
-            aux = new Solar((String)c.get(2), this, comprable,
-                    10*(int)c.get(0)+(int)c.get(1), tablero.getBanca(), tablero);
+
+            if(tipo.getTipoCasilla().equals("solar")) {
+
+                aux = (Propiedad) new Solar((String) c.get(2), this, comprable,
+                        10 * (int) c.get(0) + (int) c.get(1), tablero.getBanca(), tablero);
+
+            } else if(tipo.getTipoCasilla().equals("servicio")){
+
+                aux = (Propiedad) new Servicio((String) c.get(2), this, comprable,
+                        10 * (int) c.get(0) + (int) c.get(1), tablero.getBanca(), tablero);
+
+            } else if(tipo.getTipoCasilla().equals("transporte")){
+
+                aux = (Propiedad) new Transporte((String) c.get(2), this, comprable,
+                        10 * (int) c.get(0) + (int) c.get(1), tablero.getBanca(), tablero);
+
+            } else {
+
+                System.err.println("Tipo de grupo incorrecto.");
+                System.exit(-1);
+
+            }
 
             //Se mete la casilla en el ArrayList del tablero en su posición correspondiente y en el HashMap.
             tablero.getCasillas().get((int)c.get(0)).set((int)c.get(1),aux);
             tablero.getCasillasTablero().put((String)c.get(2),aux);
 
             //Por último se añade al ArrayList de Casillas del grupo
-            this.solares.set(contador++, aux);
+            this.propiedades.set(contador++, aux);
         }
     }
 
@@ -101,8 +122,8 @@ public class Grupo {
         return tipo;
     }
 
-    public ArrayList<Solar> getSolares() {
-        return solares;
+    public ArrayList<Propiedad> getPropiedades() {
+        return propiedades;
     }
 
     public Tablero getTablero() {
@@ -118,10 +139,10 @@ public class Grupo {
 
         this.precio = precio;
 
-        int nuevoAlquiler = (int) (Constantes.COEF_ALQUILER * (precio / (double) getSolares().size()));
+        int nuevoAlquiler = (int) (Constantes.COEF_ALQUILER * (precio / (double) getPropiedades().size()));
 
-        for(Solar solar:getSolares()){
-            solar.setAlquiler(nuevoAlquiler);
+        for(Propiedad propiedad:getPropiedades()){
+            propiedad.setAlquiler(nuevoAlquiler);
         }
     }
 
@@ -130,10 +151,10 @@ public class Grupo {
      */
     public int calcularRentabilidad(){
 
-        ArrayList<Solar> solares = getSolares();
+        ArrayList<Propiedad> propiedades = getPropiedades();
         int rentabilidad = 0;
 
-        for(Solar solar : solares){
+        for(Propiedad solar : propiedades){
 
             rentabilidad += solar.getRentabilidad();
 

@@ -92,6 +92,16 @@ public abstract class Casilla {
     }
 
     @Override
+    public String toString(){
+
+        String salida = "";
+
+        salida += "(*) Casilla: " + getNombre() + "\n";
+
+        return toString();
+    }
+
+    @Override
     public boolean equals(Object obj) {
 
         // Si apuntan a la misma dirección de memoria

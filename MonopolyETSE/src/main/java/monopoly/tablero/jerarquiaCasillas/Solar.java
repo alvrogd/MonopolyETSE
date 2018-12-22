@@ -8,6 +8,7 @@ import monopoly.tablero.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Solar extends Propiedad{
 
@@ -60,7 +61,7 @@ public class Solar extends Propiedad{
             return 0;
         }
 
-        numCasillasGrupo = getGrupo().getSolares().size();
+        numCasillasGrupo = getGrupo().getPropiedades().size();
 
         numHoteles = getEdificiosContenidos().get(TipoEdificio.hotel).size();
         numCasas = getEdificiosContenidos().get(TipoEdificio.casa).size();
@@ -319,5 +320,69 @@ public class Solar extends Propiedad{
             //se actualiza el alquiler.
             if(alquilerNuevo != 0)
                 setAlquiler(alquilerNuevo);
+    }
+
+    @Override
+    public String toString(){
+
+        String salida = super.toString();
+
+        salida += "\n";
+        salida += "        -> Edificios:\n";
+
+        Set<TipoEdificio> keyEdificios = getEdificiosContenidos().keySet();
+
+        for (TipoEdificio auxEdificio : keyEdificios) {
+
+            StringBuilder linea = new StringBuilder();
+            ArrayList<Edificio> edificaciones = getEdificiosContenidos().get(auxEdificio);
+            int size = edificaciones.size();
+
+            linea.append("           (*) " + auxEdificio.getNombre() + " {");
+
+            for (int i = 0; i < size; i++) {
+
+                linea.append(edificaciones.get(i).getId());
+
+                if (i != size - 1)
+                    linea.append(", ");
+
+            }
+
+            if (size == 0) {
+                linea.append("No hay edificaciones tipo " + auxEdificio.getNombre());
+            }
+            linea.append("}");
+
+            salida += linea.toString() + "\n";
+
+        }
+
+        salida += "\n";
+
+        int aux = Edificio.calcularPrecioCompra(TipoEdificio.casa, getGrupo().getTipo());
+        salida += "        -> Valor casa:                        " + aux + "K €" + "\n";
+
+        aux = Edificio.calcularPrecioCompra(TipoEdificio.hotel, getGrupo().getTipo());
+        salida += "        -> Valor hotel:                       " + aux + "K €" + "\n";
+
+        aux = Edificio.calcularPrecioCompra(TipoEdificio.piscina, getGrupo().getTipo());
+        salida += "        -> Valor piscina:                     " + aux + "K €" + "\n";
+
+        aux = Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, getGrupo().getTipo());
+        salida += "        -> Valor pista de deporte:            " + aux + "K €" + "\n\n";
+
+        int alquiler = getAlquiler();
+
+        salida += "        -> Alquiler con una casa:             " + Constantes.ALQ_UNACASA*alquiler + "K €\n";
+        salida += "        -> Alquiler con dos casas:            " + Constantes.ALQ_DOSCASA*alquiler + "K €\n";
+        salida += "        -> Alquiler con tres casas:           " + Constantes.ALQ_TRESCASA*alquiler + "K €\n";
+        salida += "        -> Alquiler con cuatro casas:         " + Constantes.ALQ_CUATROCASA*alquiler + "K €\n";
+        salida += "        -> Alquiler con un hotel:             " + Constantes.ALQ_HOTEL*alquiler + "K €\n";
+        salida += "        -> Alquiler con una piscina:          " + Constantes.ALQ_PISCINA*alquiler + "K €\n";
+        salida += "        -> Alquiler con una pista de deporte: " + Constantes.ALQ_PISTADEPORTE*alquiler + "K €\n";
+
+        return salida;
+
     }
 }

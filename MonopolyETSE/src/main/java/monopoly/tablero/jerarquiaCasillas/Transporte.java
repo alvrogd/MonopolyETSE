@@ -1,7 +1,9 @@
-package monopoly.tablero;
+package monopoly.tablero.jerarquiaCasillas;
 
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
+import monopoly.tablero.Tablero;
+import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
@@ -29,5 +31,18 @@ public class Transporte extends Propiedad {
 
         setAlquiler((int)((numTransportes/4.0)* importe));
 
+    }
+
+    @Override
+    public String toString(){
+
+        String salida = super.toString();
+
+        salida += "        -> Alquiler con 1 transporte:        " + (getPrecioActual() * 0.25) + "K €" + "\n";
+        salida += "        -> Alquiler con 2 transportes:       " + (getPrecioActual() * 0.5) + "K €" + "\n";
+        salida += "        -> Alquiler con 3 transportes:       " + (getPrecioActual() * 0.75) + "K €" + "\n";
+        salida += "        -> Alquiler con 4 transportes:       " + (getPrecioActual()) + "K €" + "\n";
+
+        return salida;
     }
 }

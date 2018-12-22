@@ -19,8 +19,6 @@ public class Comando implements IComando {
     private ArrayList<String> argv;
     private Aplicacion app;
 
-    //todo toString de las casillas
-
     /**
      * Genera los argumentos del comando además de asignar el tipo de comando que es
      *
@@ -354,12 +352,12 @@ public class Comando implements IComando {
 
         for(Carta carta : getApp().getJuego().getCartasSuerte()){
 
-            System.out.println("("+count+") "+carta.toString());
+            Aplicacion.consola.imprimir("("+count+") "+carta.toString());
             count++;
 
         }
 
-        System.out.println("(*) Opción: ");
+        Aplicacion.consola.imprimir("(*) Opción: ");
         opc = entrada.nextInt();
 
         getApp().getJuego().getTurno().leerCarta(getApp().getJuego().getCartasSuerte().get(opc%size));
@@ -375,12 +373,12 @@ public class Comando implements IComando {
 
         for(Carta carta : getApp().getJuego().getCartasComunidad()){
 
-            System.out.println("("+count+") "+carta.toString());
+            Aplicacion.consola.imprimir("("+count+") "+carta.toString());
             count++;
 
         }
 
-        System.out.println("(*) Opción: ");
+        Aplicacion.consola.imprimir("(*) Opción: ");
         opc = entrada.nextInt();
 
         getApp().getJuego().getTurno().leerCarta(getApp().getJuego().getCartasComunidad().get(opc%size));
@@ -466,7 +464,7 @@ public class Comando implements IComando {
         ArrayList<String> auxiliar = new ArrayList<>();
         ArrayList<String> informacionEnviar = new ArrayList<>();
 
-        auxiliar = Output.JugadortoArrayString(getApp().getJuego().getTurno());
+        auxiliar = Output.toArrayString(getApp().getJuego().getTurno().toString());
 
         informacionEnviar.add("Información del jugador que tiene el turno.");
 
@@ -508,7 +506,7 @@ public class Comando implements IComando {
 
         for (String jug : jugadores) {
             //Se obtiene la información del jugador con la función JugadortoArrayString
-            infoEnviar = Output.JugadortoArrayString(getApp().getJuego().getJugador(jug));
+            infoEnviar = Output.toArrayString(getApp().getJuego().getJugador(jug).toString());
 
             //Nueva línea
             respuesta.add("");
@@ -545,7 +543,7 @@ public class Comando implements IComando {
 
         for (String nombre : jug) {
 
-            avatares = Output.AvatartoArrayString(getApp().getJuego().getJugador(nombre).getAvatar());
+            avatares = Output.toArrayString(getApp().getJuego().getJugador(nombre).getAvatar().toString());
 
             resp.add("");
 
@@ -581,7 +579,7 @@ public class Comando implements IComando {
                         for (Edificio edificio : solar.getEdificiosContenidos().get(tipoEdificio)) {
 
                             flag = true;
-                            respuesta.addAll(Output.EdificiotoArrayString(edificio));
+                            respuesta.addAll(Output.toArrayString(edificio.toString()));
                             respuesta.add(" ");
 
                         }
@@ -627,13 +625,13 @@ public class Comando implements IComando {
         StringBuilder idEdificios;
 
         //Número de casillas que tiene el grupo
-        int numCasillas = grupo.getSolares().size();
+        int numCasillas = grupo.getPropiedades().size();
 
         res.add("Los edificios del grupo " + tipoGrupo.toString() + " son los siguientes.");
 
         boolean flagGrupo = false;
 
-        for (Casilla casilla : grupo.getSolares()) {
+        for (Casilla casilla : grupo.getPropiedades()) {
 
             if (casilla instanceof Solar) {
 
@@ -770,7 +768,7 @@ public class Comando implements IComando {
             return;
         }
 
-        Output.respuesta(Output.CasillatoArrayString(casilla));
+        Output.respuesta(Output.toArrayString(casilla.toString()));
     }
 
     public void describirJugador(String nombreJugador) {
@@ -786,7 +784,7 @@ public class Comando implements IComando {
             return;
         }
 
-        Output.respuesta(Output.JugadortoArrayString(jugador));
+        Output.respuesta(Output.toArrayString(jugador.toString()));
     }
 
     public void describirAvatar(String idAvatar) {
@@ -801,7 +799,7 @@ public class Comando implements IComando {
             Output.errorComando("Ese avatar no existe.");
             return;
         }
-        Output.respuesta(Output.AvatartoArrayString(avatar1));
+        Output.respuesta(Output.toArrayString(avatar1.toString()));
     }
 
     public void comprar(String nombreSolar) {
@@ -846,7 +844,7 @@ public class Comando implements IComando {
 
                     if (solar.isComprable()) {
 
-                        auxiliar1 = Output.CasillatoArrayString(casillaAux);
+                        auxiliar1 = Output.toArrayString(casillaAux.toString());
                         tamArray = auxiliar1.size();
                         respuesta1.add("");
                         for (int i = 0; i < tamArray; i++) {

@@ -4,6 +4,7 @@ import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
+import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
@@ -17,7 +18,7 @@ public class Tablero {
     private Dado dado;
 
     //La banca
-    private Jugador banca;
+    private Banca banca;
 
     //El juego actual
     private Juego juego;
@@ -49,7 +50,7 @@ public class Tablero {
      * @param banca el jugador que tomará el rol de banca en el juego
      * @param juego juego al que pertenecerá el tablero
      */
-    public Tablero(Jugador banca, Juego juego) {
+    public Tablero(Banca banca, Juego juego) {
 
         if(banca == null){
             System.err.println("banca hace referencia a null");
@@ -357,7 +358,7 @@ public class Tablero {
         return casillasTablero;
     }
 
-    public Jugador getBanca(){
+    public Banca getBanca(){
         return banca;
     }
 
