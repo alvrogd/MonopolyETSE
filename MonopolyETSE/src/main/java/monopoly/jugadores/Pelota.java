@@ -1,9 +1,6 @@
 package monopoly.jugadores;
 
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoEstarEncarceladoException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 
@@ -185,7 +182,7 @@ public class Pelota extends Avatar {
      */
     @Override
     public void mover(int numeroCasillas, boolean dobles) throws ImposibleMoverseException, NoSerPropietarioException,
-            EstarBancarrotaException, NoEstarEncarceladoException  {
+            EstarBancarrotaException, NoEstarEncarceladoException, ImposibleCambiarModoException {
 
         // Se indica que aún no se ha movido las 4 casillas iniciales
         setHaMovido4Casillas(false);

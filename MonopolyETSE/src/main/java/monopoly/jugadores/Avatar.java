@@ -558,7 +558,7 @@ public abstract class Avatar {
      * @param dobles         si los dados han dado el mismo valor
      */
     public void mover(int numeroCasillas, boolean dobles) throws ImposibleMoverseException, EstarBancarrotaException,
-            NoSerPropietarioException, NoEstarEncarceladoException {
+            NoSerPropietarioException, NoEstarEncarceladoException, ImposibleCambiarModoException {
 
         /*if (numeroCasillas < 2) {
             Output.sugerencia("El número sacado en una tirada no puede ser menor que 2");
@@ -595,7 +595,7 @@ public abstract class Avatar {
      * @param numeroCasillas número de casillas a moverse
      */
     public void avanzar(int numeroCasillas) throws ImposibleMoverseException, EstarBancarrotaException,
-            NoSerPropietarioException {
+            NoSerPropietarioException, ImposibleCambiarModoException {
 
         avanzar(numeroCasillas, true, true, 1);
     }
@@ -612,7 +612,8 @@ public abstract class Avatar {
      * @param multiplicador         multiplicador del pago a realizar en caso de caer en una propiedad de otro jugador
      */
     public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador)
-        throws  ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException {
+        throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException,
+            ImposibleCambiarModoException {
 
         if (ishaMovidoCasillasTirada())
             throw new ImposibleMoverseException("Ya se ha movido todas las casillas correspondientes a la tirada");
@@ -695,7 +696,8 @@ public abstract class Avatar {
     /**
      * Se escoge una carta de suerte
      */
-    private void caerEnSuerte() {
+    private void caerEnSuerte() throws NoSerPropietarioException, EstarBancarrotaException,
+            ImposibleCambiarModoException, ImposibleMoverseException {
 
         Scanner scanner = new Scanner(System.in);
         int numeroCarta;
@@ -715,7 +717,8 @@ public abstract class Avatar {
     /**
      * Se escoge una carta de comunidad
      */
-    private void caerEnComunidad() {
+    private void caerEnComunidad() throws EstarBancarrotaException, NoSerPropietarioException,
+            ImposibleCambiarModoException, ImposibleMoverseException {
 
         Scanner scanner = new Scanner(System.in);
         int numeroCarta;

@@ -555,7 +555,9 @@ public class Jugador extends Participante {
      *
      * @param dado instancia del dado a tirar
      */
-    public void lanzarDados(Dado dado) throws EstarPenalizadoException {
+    public void lanzarDados(Dado dado) throws EstarPenalizadoException, ImposibleMoverseException,
+            EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
+            ImposibleCambiarModoException {
 
         if (dado == null) {
             System.err.println("Dado no inicializado");
@@ -999,7 +1001,7 @@ public class Jugador extends Participante {
      *
      * @param trato trato a aceptar
      */
-    public void aceptarTrato(Trato trato) {
+    public void aceptarTrato(Trato trato) throws NoLiquidezException, NoSerPropietarioException {
 
         if (trato == null) {
             System.err.println("Trato no inicializado");
