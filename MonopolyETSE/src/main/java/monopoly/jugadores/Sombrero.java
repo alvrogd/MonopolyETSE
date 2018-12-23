@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 
@@ -66,7 +67,7 @@ public class Sombrero extends Avatar {
      * @param forzar si se debe forzar el cambio de movimiento a pesar de las reglas del juego
      */
     @Override
-    public void switchMovimiento(boolean forzar, boolean splash) {
+    public void switchMovimiento(boolean forzar, boolean splash) throws ImposibleCambiarModoException  {
 
         super.switchMovimiento(forzar, splash);
 

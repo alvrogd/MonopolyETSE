@@ -346,7 +346,7 @@ public abstract class Participante {
 
         // Si es un solar, el alquiler es proporcional al número de casillas del grupo
         else {
-            importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getSolares().size());
+            importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getPropiedades().size());
 
             // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
             if (balanceNegativoTrasPago(importe))
@@ -494,6 +494,6 @@ public abstract class Participante {
      */
     public boolean haObtenidoSolaresGrupo(Grupo grupo) {
 
-        return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getSolares().size());
+        return (numeroCasillasObtenidas(grupo.getTipo()) == grupo.getPropiedades().size());
     }
 }

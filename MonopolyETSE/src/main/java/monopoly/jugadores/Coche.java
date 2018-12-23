@@ -1,6 +1,7 @@
 package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 
@@ -124,7 +125,7 @@ public class Coche extends Avatar {
      * @return si el avatar puede cambiar el modo de movimiento
      */
     @Override
-    public boolean noPoderCambiarMovimiento(boolean forzar) {
+    public boolean noPoderCambiarMovimiento(boolean forzar) throws ImposibleCambiarModoException {
 
         // Si es un coche y se ha movido ya
         boolean noEsPosible = getTablero().getJuego().isHaHechoUnaTirada() && !forzar;

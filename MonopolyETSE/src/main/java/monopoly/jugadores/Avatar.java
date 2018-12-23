@@ -2,13 +2,10 @@ package monopoly.jugadores;
 
 import monopoly.Constantes;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
-import monopoly.tablero.Transporte;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
-import monopoly.tablero.jerarquiaCasillas.Propiedad;
-import monopoly.tablero.jerarquiaCasillas.Servicio;
-import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -313,69 +310,64 @@ public abstract class Avatar {
 
     /**
      * Se comprueba si se ha sacado el número máximo de dobles permitidos para el avatar del jugador
+     *
      * @return si se ha sacado el número máximo de dobles permitidos
      */
-    public boolean doblesMaximos(){
+    public boolean doblesMaximos() {
 
-        return( getJugador().getTiradasEnTurno() == 3 );
+        return (getJugador().getTiradasEnTurno() == 3);
     }
 
 
     /**
      * Se comprueba, en función de la tirada obtenida, si no es posible realizar otra nueva tirada más tarde
+     *
      * @param primeraTirada valor del primer dado
      * @param segundaTirada valor del segundo dado
-     * @return              si no es posible realizar otra tirada más
+     * @return si no es posible realizar otra tirada más
      */
     public boolean noMasTiradas(int primeraTirada, int segundaTirada) {
 
-        return( primeraTirada != segundaTirada);
+        return (primeraTirada != segundaTirada);
     }
 
 
     /**
      * En caso de ser posible, el jugador del avatar paga el importe correspondiente y en desencarcelado
      */
-    public void salirCarcel() {
+    public void salirCarcel() throws NoEstarEncarceladoException, SeHanLanzadoDadosException, NoLiquidezException,
+            EstarBancarrotaException, NoSerPropietarioException {
 
-        if (!isEncarcelado()) {
-            Output.sugerencia("El avatar no se encuentra en la cárcel.");
-            return;
-        }
+        if (!isEncarcelado())
+            throw new NoEstarEncarceladoException("El avatar no se encuentra en la cárcel");
 
-        if (getTablero().getJuego().isHaLanzadoDados()) {
-            Output.sugerencia("No se puede salir de la cárcel después de haber lanzado los dados");
-            return;
-        }
+        if (getTablero().getJuego().isHaLanzadoDados())
+            throw new SeHanLanzadoDadosException("No se puede salir de la cárcel después de haber lanzado los dados");
 
-        if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)) {
-            Output.respuesta("El jugador no dispone de suficiente liquidez como para salir de la cárcel.");
-            return;
-        }
+        if (getJugador().balanceNegativoTrasPago(Constantes.DINERO_CARCEL))
+            throw new NoLiquidezException("El jugador no dispone de suficiente liquidez como para salir de la cárcel");
 
-        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel.");
+        Output.sugerencia("Se pagará el importe correspondiente para salir de la cárcel");
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
-
     }
+
 
     /**
      * Se fuerza la salida de la cárcel, incluso si no se dispone de suficiente liquidez, cayendo el jugador del avatar
      * en la bancarrota en dicho caso
      */
-    public void forzarSalirCarcel() {
+    public void forzarSalirCarcel() throws NoEstarEncarceladoException, EstarBancarrotaException,
+            NoSerPropietarioException {
 
-        if (!isEncarcelado()) {
-            Output.sugerencia("El avatar no se encuentra en la cárcel.");
-            return;
-        }
+        if (!isEncarcelado())
+            throw new NoEstarEncarceladoException("El avatar no se encuentra en la cárcel");
 
         getJugador().pagar(getTablero().getBanca(), Constantes.DINERO_CARCEL);
         getJugador().incrementarPagoTasasEImpuestos(Constantes.DINERO_CARCEL);
 
         setEncarcelado(false);
-
     }
 
 
@@ -387,18 +379,19 @@ public abstract class Avatar {
      * @param dobles si los dados han dado el mismo valor
      * @return si el avatar puede moverse o no en la actual tirada
      */
-    public boolean actualizarEncarcelamiento(boolean dobles) {
+    public boolean actualizarEncarcelamiento(boolean dobles) throws NoEstarEncarceladoException,
+            EstarBancarrotaException, NoSerPropietarioException {
 
         // Si no ha sacado dobles
         if (!dobles) {
 
-            Output.sugerencia("No se puede salir de la cárcel sin sacar dobles.");
+            Output.sugerencia("No se puede salir de la cárcel sin sacar dobles");
             setTurnosEnCarcel(getTurnosEnCarcel() + 1);
 
             // Y, si ya ha estado tres turnos en la cárcel, se fuerza su salida
             if (getTurnosEnCarcel() == Constantes.MAX_TURNOS_CARCEL) {
-                Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos.",
-                        "Se pagará el importe correspondiente para salir de la cárcel.");
+                Output.sugerencia("Has estado en la cárcel el número máximo de turnos permitidos",
+                        "Se pagará el importe correspondiente para salir de la cárcel");
 
                 forzarSalirCarcel();
 
@@ -427,6 +420,7 @@ public abstract class Avatar {
      */
     public abstract int calcularNuevaPosicion(int numeroCasillas);
 
+
     /**
      * Se actualiza la posición del avatar, dada la posición de la casilla a la que moverse; el funcionamiento depende
      * del modo de movimiento establecido actualmente
@@ -452,9 +446,9 @@ public abstract class Avatar {
         getVecesCaidasEnCasillas().set(posicionFinal % 40, getVecesCaidasEnCasillas().get(posicionFinal % 40) + 1);
 
         // También se actualiza en caso de que sea propiedad del propio jugador
-        if( getPosicion() instanceof Propiedad ) {
+        if (getPosicion() instanceof Propiedad) {
 
-            final Propiedad propiedad = (Propiedad)getPosicion();
+            final Propiedad propiedad = (Propiedad) getPosicion();
 
             if (propiedad.getPropietario().equals(getJugador()))
                 getVecesCaidasEnPropiedades().set(posicionFinal % 40, getVecesCaidasEnPropiedades().get(posicionFinal % 40) + 1);
@@ -493,7 +487,7 @@ public abstract class Avatar {
     /**
      * Se cambia el modo de movimiento del avatar, alternando entre los dos disponibles
      */
-    public void switchMovimiento() {
+    public void switchMovimiento() throws ImposibleCambiarModoException {
 
         switchMovimiento(false, true);
     }
@@ -504,16 +498,17 @@ public abstract class Avatar {
      *
      * @return si el avatar puede cambiar el modo de movimiento
      */
-    public boolean noPoderCambiarMovimiento(boolean forzar) {
+    public boolean noPoderCambiarMovimiento(boolean forzar) throws ImposibleCambiarModoException {
 
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
         // movimiento
         boolean noEsPosible = !haMovidoCasillasTirada && !forzar;
 
-        if( noEsPosible )
-            Output.sugerencia("No puede cambiarse el modo de movimiento hasta moverse el nº de casillas de la tirada");
+        if (noEsPosible)
+            throw new ImposibleCambiarModoException("No puede cambiarse el modo de movimiento hasta moverse el nº " +
+                    "de casillas de la tirada");
 
-        return( noEsPosible );
+        return (false);
     }
 
 
@@ -522,7 +517,7 @@ public abstract class Avatar {
      *
      * @param forzar si se debe forzar el cambio de movimiento a pesar de las reglas del juego
      */
-    public void switchMovimiento(boolean forzar, boolean splash) {
+    public void switchMovimiento(boolean forzar, boolean splash) throws ImposibleCambiarModoException {
 
         if (noPoderCambiarMovimiento(forzar))
             return;
@@ -538,9 +533,9 @@ public abstract class Avatar {
     /**
      * Se establece el modo de movimiento básico para el avatar
      */
-    public void moverEnBasico() {
+    public void moverEnBasico() throws ImposibleCambiarModoException {
 
-        if( !isMovimientoEstandar() )
+        if (!isMovimientoEstandar())
             switchMovimiento();
     }
 
@@ -548,9 +543,9 @@ public abstract class Avatar {
     /**
      * Se establece el modo de movimiento avanzado para el avatar
      */
-    public void moverEnAvanzado() {
+    public void moverEnAvanzado() throws ImposibleCambiarModoException {
 
-        if( isMovimientoEstandar() )
+        if (isMovimientoEstandar())
             switchMovimiento();
     }
 
@@ -562,12 +557,13 @@ public abstract class Avatar {
      * @param numeroCasillas cantidad de casillas a moverse
      * @param dobles         si los dados han dado el mismo valor
      */
-    public void mover(int numeroCasillas, boolean dobles) {
+    public void mover(int numeroCasillas, boolean dobles) throws ImposibleMoverseException, EstarBancarrotaException,
+            NoSerPropietarioException, NoEstarEncarceladoException {
 
-        if (numeroCasillas < 2) {
-            Output.sugerencia("El número sacado en una tirada no puede ser menor que 2.");
+        /*if (numeroCasillas < 2) {
+            Output.sugerencia("El número sacado en una tirada no puede ser menor que 2");
             return;
-        }
+        }*/
 
         // Si está en la cárcel, se comprueba si el avatar se moverá o no
         if (isEncarcelado()) {
@@ -598,7 +594,8 @@ public abstract class Avatar {
      *
      * @param numeroCasillas número de casillas a moverse
      */
-    public void avanzar(int numeroCasillas) {
+    public void avanzar(int numeroCasillas) throws ImposibleMoverseException, EstarBancarrotaException,
+            NoSerPropietarioException {
 
         avanzar(numeroCasillas, true, true, 1);
     }
@@ -614,17 +611,17 @@ public abstract class Avatar {
      *                              establecido al escoger una carta de movimiento
      * @param multiplicador         multiplicador del pago a realizar en caso de caer en una propiedad de otro jugador
      */
-    public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador) {
+    public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador)
+        throws  ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException {
 
-        if (ishaMovidoCasillasTirada()) {
-            Output.sugerencia("Ya se ha movido todas las casillas correspondientes a la tirada");
-            return;
-        }
+        if (ishaMovidoCasillasTirada())
+            throw new ImposibleMoverseException("Ya se ha movido todas las casillas correspondientes a la tirada");
 
         if (numeroCasillas <= 0) {
             Output.sugerencia("No se puede avanzar menos de una casilla.");
-            return;
+            System.exit(1);
         }
+
         // Se mueve el avatar
         actualizarPosicion(calcularNuevaPosicion(numeroCasillas), cobrarSalida, importeSalidaEstandar);
 
@@ -738,7 +735,7 @@ public abstract class Avatar {
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
-    private void caerEnTransporte(int multiplicador) {
+    private void caerEnTransporte(int multiplicador) throws EstarBancarrotaException, NoSerPropietarioException {
 
         final Transporte transporte = (Transporte) getPosicion();
 
@@ -746,7 +743,7 @@ public abstract class Avatar {
         if (!transporte.isComprable() && !transporte.getPropietario().equals(this.getJugador()) &&
                 !transporte.isHipotecada()) {
 
-            if( getJugador().serInmuneA(transporte))
+            if (getJugador().serInmuneA(transporte))
                 Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
 
             else {
@@ -769,15 +766,16 @@ public abstract class Avatar {
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
-    private void caerEnServicio(int numeroCasillas, int multiplicador) {
+    private void caerEnServicio(int numeroCasillas, int multiplicador) throws EstarBancarrotaException,
+            NoSerPropietarioException {
 
-        final Servicio servicio = (Servicio)getPosicion();
+        final Servicio servicio = (Servicio) getPosicion();
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!servicio.isComprable() && !servicio.getPropietario().equals(this.getJugador()) &&
                 !servicio.isHipotecada()) {
 
-            if( getJugador().serInmuneA(servicio))
+            if (getJugador().serInmuneA(servicio))
                 Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
 
             else {
@@ -802,14 +800,14 @@ public abstract class Avatar {
     /**
      * En caso de que la casilla pertenezca a otro jugador, el jugador del avatar paga el correspondiente importe
      */
-    private void caerEnSolar(int multiplicador) {
+    private void caerEnSolar(int multiplicador) throws EstarBancarrotaException, NoSerPropietarioException {
 
-        final Solar solar = (Solar)getPosicion();
+        final Solar solar = (Solar) getPosicion();
 
         // Si ha caído en una casilla que no es comprable dado que la tiene otro jugadror
         if (!solar.isComprable() && !solar.getPropietario().equals(this.getJugador()) && !solar.isHipotecada()) {
 
-            if( getJugador().serInmuneA(solar))
+            if (getJugador().serInmuneA(solar))
                 Output.respuesta("Lucky you! No tienes que pagar el alquiler de momento ¬¬");
 
             else {
@@ -819,7 +817,7 @@ public abstract class Avatar {
                 int importePagar = solar.getAlquiler() /** multiplicadorPropio*/ * multiplicador;
 
                 // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
-                if(!getJugador().pagar(solar.getPropietario(), importePagar))
+                if (!getJugador().pagar(solar.getPropietario(), importePagar))
                     getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
                 else
@@ -834,10 +832,10 @@ public abstract class Avatar {
      * El jugador del avatar paga el correspondiente importe y se añade al montón que un jugador obtendrá al caer su
      * avatar en el parking
      */
-    private void caerEnImpuesto( int impuesto ) {
+    private void caerEnImpuesto(int impuesto) throws EstarBancarrotaException, NoSerPropietarioException {
 
         // Si no se ha podido efectuar el pago, es por haber caído en bancarrota, lo cual debe notificarse
-        if(!getJugador().pagar(getTablero().getBanca(), impuesto))
+        if (!getJugador().pagar(getTablero().getBanca(), impuesto))
             getTablero().getJuego().jugadorEnBancarrota(getJugador());
 
         else {
@@ -960,9 +958,9 @@ public abstract class Avatar {
     @Override
     public String toString() {
 
-        return("(*) Avatar ID: " + getIdentificador() + "\n" +
+        return ("(*) Avatar ID: " + getIdentificador() + "\n" +
                 "        -> Tipo: " + getClass() + "\n" +
                 "        -> Casilla: " + getPosicion().getNombre() + "\n" +
-                "        -> Jugador: " + getJugador().getNombre() + "\n" );
+                "        -> Jugador: " + getJugador().getNombre() + "\n");
     }
 }
