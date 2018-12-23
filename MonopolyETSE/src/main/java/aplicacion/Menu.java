@@ -1,5 +1,6 @@
 package aplicacion;
 
+import aplicacion.salidaPantalla.ConsolaNormal;
 import aplicacion.salidaPantalla.Output;
 import aplicacion.salidaPantalla.TableroASCII;
 
@@ -15,12 +16,15 @@ public class Menu {
             System.err.println("app referencia a null.");
             return;
         }
-            this.app = app;
+        this.app = app;
+    }
+
+
+    public Aplicacion getApp() {
+        return app;
     }
 
     public void iniciarAplicacion(){
-        Scanner entrada = new Scanner(System.in);
-
 
         Output.mensaje(        "",
                 "___  ___                              _         _____ _____ _____ _____ " ,
@@ -51,8 +55,7 @@ public class Menu {
 
         app.imprimirBuffer();
 
-        Output.imprimirEntradaComando();
-        app.introducirComando(entrada.nextLine());
+        Aplicacion.consola.leer("Acción");
 
         while(true){
 
@@ -61,7 +64,7 @@ public class Menu {
             }
 
             Output.imprimirEntradaComando();
-            app.introducirComando(entrada.nextLine());
+            app.introducirComando(Aplicacion.consola.leer("Acción"));
 
         }
     }

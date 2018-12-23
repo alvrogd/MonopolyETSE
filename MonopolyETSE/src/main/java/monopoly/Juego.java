@@ -2,16 +2,17 @@ package monopoly;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
+import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.TipoAvatar;
-import monopoly.tablero.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Grupo;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.cartas.*;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class Juego {
 
@@ -27,7 +28,7 @@ public class Juego {
     private ArrayList<String> nombresJugadores;
 
     //Jugador que hace el rol de la banca
-    private Jugador banca;
+    private Banca banca;
 
     //Tablero del juego
     private Tablero tablero;
@@ -55,6 +56,18 @@ public class Juego {
 
     //Booleano para saber si el usuario puede volver a tirar los dados
     private boolean haLanzadoDados;
+    // Si ha realizado ya una tirada
+    private boolean haHechoUnaTirada;
+
+    //Booleano para saber si el usuario ha acabado el movimiento actual.
+    private boolean haAcabadoMovimiento;
+
+    // Si ha comprado una propiedad en el turno (por el avatar coche)
+    private boolean haCompradoPropiedad;
+
+    private ArrayList<Carta> cartasSuerte;
+
+    private ArrayList<Carta> cartasComunidad;
 
     /* Constructores */
 
@@ -65,8 +78,8 @@ public class Juego {
      */
     public Juego() {
 
-        banca = new Jugador("banca");
-        turno = banca;
+        banca = new Banca();
+        turno = null;
         jugadores = new HashMap<>();
         nombresJugadores = new ArrayList<>();
         tablero = new Tablero(banca, this);
@@ -75,25 +88,30 @@ public class Juego {
         seHaIncrementado = false;
         finalizado = false;
         haLanzadoDados = false;
+        haHechoUnaTirada = false;
+        haAcabadoMovimiento = false;
+        haCompradoPropiedad = false;
+        anadirCartas();
 
     }
 
     /**
      * Constructor para iniciar un Juego con unos jugadores predeterminados, se podrían añadir más
+     *
      * @param jugadores
      */
-    public Juego(ArrayList<Jugador> jugadores){
+    public Juego(ArrayList<Jugador> jugadores) {
 
         this();
 
-        if(jugadores == null){
+        if (jugadores == null) {
             System.err.println("Jugador referencia a null");
             System.exit(1);
         }
 
-        for(Jugador jugador: jugadores){
+        for (Jugador jugador : jugadores) {
 
-            if(jugador == null){
+            if (jugador == null) {
                 System.err.println("Jugador referencia a null");
                 System.exit(1);
             }
@@ -101,6 +119,73 @@ public class Juego {
             addJugador(jugador);
 
         }
+    }
+
+    private void anadirCartas() {
+
+        cartasComunidad = new ArrayList<>();
+        cartasSuerte = new ArrayList<>();
+
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCadiz));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCaceres));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarLoteria));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarBienesInmuebles));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverLeganes));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarPresidente));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTrafico));
+        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMovil));
+        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarAcciones));
+        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTransporte));
+
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarBalneario));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverSalida));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarInternet));
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarViajeLeon));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarHacienda));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverValencia));
+        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarAlquilerCannes));
+        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarJet));
+        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverPamplona));
+
+    }
+
+    private void barajarCarta(String tipo) {
+
+        switch (tipo) {
+            case "suerte":
+                Collections.shuffle(getCartasSuerte());
+
+            case "comunidad":
+                Collections.shuffle(getCartasComunidad());
+        }
+    }
+
+    public Carta barajarSuerte(int numCarta) {
+
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
+            Output.errorComando("Ha introducido un número incorrecto.");
+            return null;
+        }
+        barajarCarta("suerte");
+
+        return (getCartasSuerte().get(numCarta - 1));
+
+    }
+
+    public Carta barajarComunidad(int numCarta) {
+
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
+            Output.errorComando("Ha introducido un número incorrecto.");
+            return null;
+        }
+        barajarCarta("comunidad");
+
+        return (getCartasComunidad().get(numCarta - 1));
 
     }
 
@@ -121,7 +206,7 @@ public class Juego {
         return (jugadores.get(jugador));
     }
 
-    public Jugador getBanca() {
+    public Banca getBanca() {
         return banca;
     }
 
@@ -137,6 +222,14 @@ public class Juego {
         this.haLanzadoDados = haLanzadoDados;
     }
 
+    public boolean isHaHechoUnaTirada() {
+        return haHechoUnaTirada;
+    }
+
+    public void setHaHechoUnaTirada(boolean haHechoUnaTirada) {
+        this.haHechoUnaTirada = haHechoUnaTirada;
+    }
+
     public boolean isIniciado() {
         return iniciado;
     }
@@ -145,10 +238,43 @@ public class Juego {
         return finalizado;
     }
 
+    public boolean isHaAcabadoMovimiento() {
+        return haAcabadoMovimiento;
+    }
+
+    public void setHaAcabadoMovimiento(boolean haAcabadoMovimiento) {
+        this.haAcabadoMovimiento = haAcabadoMovimiento;
+    }
+
+    public boolean isHaCompradoPropiedad() {
+        return haCompradoPropiedad;
+    }
+
+    public void setHaCompradoPropiedad(boolean haCompradoPropiedad) {
+        this.haCompradoPropiedad = haCompradoPropiedad;
+    }
+
+    public ArrayList<Carta> getCartasSuerte() {
+        return cartasSuerte;
+    }
+
+    public void setCartasSuerte(ArrayList<Carta> cartasSuerte) {
+        this.cartasSuerte = cartasSuerte;
+    }
+
+    public ArrayList<Carta> getCartasComunidad() {
+        return cartasComunidad;
+    }
+
+    public void setCartasComunidad(ArrayList<Carta> cartasComunidad) {
+        this.cartasComunidad = cartasComunidad;
+    }
+
     /* Setters */
 
     /**
      * Función para añadir un jugador al juego.
+     *
      * @param jugador jugador que se desea añadir al juego.
      */
     public void addJugador(Jugador jugador) {
@@ -199,28 +325,42 @@ public class Juego {
         //Para poder pasar el turno el juego debe haberse iniciado.
         if (isIniciado() && !isFinalizado()) {
 
-            if (this.iterador == null) {
-                System.out.println("No se ha añadido ningún jugador.");
-                System.exit(1);
+            if( !isFinalizado() ) {
+
+                if (this.iterador == null) {
+                    System.out.println("No se ha añadido ningún jugador.");
+                    System.exit(1);
+                }
+
+                //Se pone el número de tiradas del jugador que tiene el turno a 0.
+                getTurno().setTiradasEnTurno(0);
+
+                //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
+                //desde el HashMap
+                if (this.iterador.hasNext())
+                    this.turno = getJugadores().get(this.iterador.next());
+
+                    //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
+                    //jugador.
+                else {
+                    this.iterador = getNombresJugadores().iterator();
+                    this.turno = getJugadores().get(this.iterador.next());
+                }
+
+                //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
+                if (getTurno().getTurnosPenalizado() != 0)
+                    getTurno().setTurnosPenalizado(getTurno().getTurnosPenalizado() - 1);
+
+                //Se establece el booleano de se han lanzado los dados a false.
+                this.haLanzadoDados = false;
+
+                // Al igual que el indicador de haber realizado una tirada
+                setHaHechoUnaTirada(false);
+
+                // Y el indicador de haber comprado una propiedad
+                setHaCompradoPropiedad(false);
+
             }
-
-            //Se pone el número de tiradas del jugador que tiene el turno a 0.
-            getTurno().setTiradasEnTurno(0);
-
-            //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
-            //desde el HashMap
-            if (this.iterador.hasNext())
-                this.turno = getJugadores().get(this.iterador.next());
-
-            //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
-            //jugador.
-            else {
-                this.iterador = getNombresJugadores().iterator();
-                this.turno = getJugadores().get(this.iterador.next());
-            }
-
-            //Se establece el booleano de se han lanzado los dados a false.
-            this.haLanzadoDados = false;
 
         } else {
 
@@ -230,13 +370,13 @@ public class Juego {
 
     }
 
-    public void jugadorEnBancarrota(Jugador jugador){
+    public void jugadorEnBancarrota(Jugador jugador) {
 
-        if(jugador == null){
+        if (jugador == null) {
             System.err.println("jugador referencia a null");
             return;
         }
-        if(!jugador.isEstaBancarrota()){
+        if (!jugador.isEstaBancarrota()) {
             System.err.println("El jugador no está en bancarrota");
             return;
         }
@@ -247,16 +387,14 @@ public class Juego {
         getNombresJugadores().remove(jugador.getNombre());
 
         getTablero().getAvataresContenidos().remove(avatarJugador.getIdentificador());
-        avatarJugador.getPosicion().getAvataresContenidos().remove((Character)avatarJugador.getIdentificador());
+        avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());
 
-        finalizarTurno();
-
-        if(getNombresJugadores().size() == 1){
-            Output.mensaje("¡" + getTurno().getNombre()+ " ha ganado el juego!");
+        if (getNombresJugadores().size() == 1) {
+            Output.mensaje("¡" + getTurno().getNombre() + " ha ganado el juego!");
             this.finalizado = true;
         }
 
-
+        finalizarTurno();
     }
 
     /**
@@ -271,7 +409,7 @@ public class Juego {
             return;
         }
 
-        if(isFinalizado()){
+        if (isFinalizado()) {
             System.err.println("Juego acabado.");
             return;
         }
@@ -306,7 +444,7 @@ public class Juego {
 
         // En el caso de que todos los avatares hayan recorrido ya 4 vueltas y no se haya incrementado antes el precio
         // de los solares
-        if (this.vueltasMin == 4 && !this.seHaIncrementado) {
+        if (this.vueltasMin % 4 == 0 && !this.seHaIncrementado && this.vueltasMin != 0) {
 
             //Se miran todas las casillas del tablero y en caso de que sean comprables y no sean ni transportes ni
             //servicios se incrementa el precio del grupo en Constantes.INCREMENTO_VUELTAS
@@ -317,21 +455,178 @@ public class Juego {
                 //Se recorren las casillas de cada fila
                 for (Casilla casilla : fila) {
 
-                    //Se comprueba que estén en venta
-                    if (casilla.isComprable()) {
+                    if(casilla instanceof Solar) {
 
-                        //Si no pertenecen al grupo de transportes ni al de servicios, o sea, si pertenecen a solares.
-                        if (casilla.getGrupo().getTipo() != TipoGrupo.transporte &&
-                                casilla.getGrupo().getTipo() != TipoGrupo.servicios) {
+                        Solar solar = (Solar) casilla;
 
-                            //Se establece el nuevo precio.
-                            casilla.getGrupo().setPrecio(
-                                    (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * casilla.getGrupo().getPrecio()));
+                        //Se comprueba que estén en venta
+                        if (solar.isComprable()) {
+                                //Se establece el nuevo precio en caso de que no se haya comprado la solar.
+                                solar.getGrupo().setPrecio(
+                                        (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * solar.getGrupo().getPrecio()));
 
                         }
                     }
+
                 }
             }
         }
     }
+
+    /**
+     * Función que devuelve la casilla más rentable del juego.
+     */
+    public Propiedad casillaMasRentable(){
+
+        ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
+
+        //Propiedad con rentabilidad maxima, inicialmente es la casilla negra.
+        Propiedad propiedadMax = (Propiedad) casillas.get(0).get(1);
+
+        for(ArrayList<Casilla> fila : casillas){
+
+            for(Casilla casilla : fila){
+
+                if(casilla instanceof Propiedad) {
+                    Propiedad propiedad = (Propiedad) casilla;
+                    if (propiedadMax.getRentabilidad() < propiedad.getRentabilidad())
+                        propiedadMax = propiedad;
+                }
+
+            }
+
+        }
+
+        return propiedadMax;
+
+    }
+
+    /**
+     * Función que devuelve el grupo más rentable del juego
+     */
+    public Grupo grupoMasRentable(){
+
+        Set<TipoGrupo> keysGrupos = getTablero().getGrupos().keySet();
+
+        Grupo grupoMax = null;
+        int max = -1;
+
+        for(TipoGrupo clave : keysGrupos){
+
+            Grupo grupo = getTablero().getGrupos().get(clave);
+            int rentabilidadAux = grupo.calcularRentabilidad();
+
+            if(max < rentabilidadAux){
+
+                max = rentabilidadAux;
+                grupoMax = grupo;
+
+            }
+
+        }
+
+        return grupoMax;
+
+    }
+
+    /**
+     * Función que devuelve la casilla más frecuentada del juego
+     */
+    public Casilla casillaMasFrecuentada(){
+
+        ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
+
+        //Casilla con frecuencia máxima, inicialmente es la casilla negra.
+        Casilla casillaMax = casillas.get(0).get(1);
+
+        for(ArrayList<Casilla> fila : casillas){
+
+            for(Casilla casilla : fila){
+
+                if(casillaMax.getFrecuencia() < casilla.getFrecuencia())
+                    casillaMax = casilla;
+
+            }
+
+        }
+
+        return casillaMax;
+
+    }
+
+    /**
+     * Función que devuelve el jugador que más vueltas ha dado.
+     */
+    public Jugador jugadorMasVueltas(){
+
+        int vueltasMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int vueltasAux = jugadorActual.getAvatar().getVueltas();
+
+            if(vueltasMax < vueltasAux){
+                vueltasMax = vueltasAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+    }
+
+    /**
+     * Función que devuelve el jugador que ha tirado más veces los dados
+     */
+    public Jugador jugadorMasVecesDados(){
+
+        int dadosMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int dadosAux = jugadorActual.getValorDados();
+
+            if(dadosMax < dadosAux){
+                dadosMax = dadosAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+
+    }
+
+    /**
+     * Devuelve al jugador que se encuentra en cabeza
+     */
+
+    public Jugador jugadorEnCabeza(){
+
+        int cabezaMax = -1;
+        Jugador jugadorMax = null;
+
+        for(String nombreJugador : getNombresJugadores()){
+
+            Jugador jugadorActual = getJugador(nombreJugador);
+            int cabezaAux = jugadorActual.calcularFortunaTotal();
+
+            if(cabezaMax < cabezaAux){
+                cabezaMax = cabezaAux;
+                jugadorMax = jugadorActual;
+            }
+
+        }
+
+        return jugadorMax;
+
+
+    }
+
 }

@@ -6,8 +6,7 @@ public enum TipoAvatar {
     pelota("pelota"),
     coche("coche"),
     esfinge("esfinge"),
-    sombrero("sombrero"),
-    banca("banca");
+    sombrero("sombrero");
 
 
     /* Atributo */
@@ -54,6 +53,7 @@ public enum TipoAvatar {
 
             default:
                 return null;
+
         }
     }
 }

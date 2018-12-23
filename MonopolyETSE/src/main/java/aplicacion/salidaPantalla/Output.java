@@ -1,10 +1,11 @@
 package aplicacion.salidaPantalla;
 
+import aplicacion.Aplicacion;
 import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
-import monopoly.tablero.Casilla;
-import monopoly.tablero.Edificio;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Edificio;
 import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 
@@ -31,7 +32,7 @@ public class Output {
     }
 
     public static void setBuffer(ArrayList<ArrayList<Object>> buffer) {
-        if(buffer == null){
+        if (buffer == null) {
             System.out.println("Buffer referencia a null");
             return;
         }
@@ -42,16 +43,16 @@ public class Output {
      * Función para añadir un mensaje al buffer
      *
      * @param impresion mensaje a imprimir
-     * @param ancho ancho ocupado por el mensaje
-     * @param alto alto ocupado por el mensaje
+     * @param ancho     ancho ocupado por el mensaje
+     * @param alto      alto ocupado por el mensaje
      */
-    public static void addBuffer(String impresion, Integer ancho, Integer alto){
+    public static void addBuffer(String impresion, Integer ancho, Integer alto) {
 
         //Variable auxiliar para enviar al buffer la información
 
         ArrayList<Object> aux = new ArrayList<>();
 
-        if(getBuffer() == null){
+        if (getBuffer() == null) {
             System.out.println("Buffer referencia a null en addBuffer.");
             return;
         }
@@ -66,8 +67,8 @@ public class Output {
     /**
      * Función para eliminar la información del buffer
      */
-    public static void vaciarBuffer(){
-        while(!buffer.isEmpty()){
+    public static void vaciarBuffer() {
+        while (!buffer.isEmpty()) {
             buffer.remove(0);
         }
     }
@@ -75,9 +76,10 @@ public class Output {
     /**
      * Función para crear e imprimir la cabecera del usuario. La cabecera se creará en función del ArrayList de los
      * mensajes, cada elemento del ArrayList se imprime en una columna distinta
+     *
      * @param mensajes ArrayList con los mensajes a imprimir
-     * @param ancho ancho entre el recuadro y el mensaje
-     * @param alto alto entre el recuadro y el mensaje
+     * @param ancho    ancho entre el recuadro y el mensaje
+     * @param alto     alto entre el recuadro y el mensaje
      */
     private static void imprimirCabecera(ArrayList<String> mensajes, int ancho, int alto) {
 
@@ -250,12 +252,13 @@ public class Output {
         }
 
         impresion.append("╯");
-        System.out.println(impresion);
+        Aplicacion.consola.imprimir(impresion.toString());
     }
 
 
     /**
      * Función que llama a imprimirCabecera para imprimir la cabecera del jugador
+     *
      * @param jugador jugador del que se imprimirá la cabecera
      */
     public static void imprimirCabeceraJugador(Jugador jugador) {
@@ -271,6 +274,11 @@ public class Output {
         informacion.add(aux.toString());
 
         informacion.add(jugador.getAvatar().getPosicion().getNombre());
+
+        if (jugador.getAvatar().isMovimientoEstandar())
+            informacion.add("Estándar");
+        else
+            informacion.add("Avanzado");
         informacion.add("");
 
         imprimirCabecera(informacion, 1, 0);
@@ -286,15 +294,25 @@ public class Output {
     }
 
     /**
+     * Función para imprimir la entrada para introucir el comando.
+     */
+    public static void imprimirEntradaComando(String accion) {
+
+        System.out.print("\uD83D\uDC49 " + accion + ": ");
+
+    }
+
+    /**
      * Función para crear y guardar en el buffer un recuadro con la información pasada en el ArrayList de mensajes.
      * La cabecera se creará en función del ArrayList de los mensajes, cada elemento del ArrayList se imprime en una
      * línea distinta
+     *
      * @param mensaje ArrayList en el que se almacenan los mensajes por líneas a imprimir
-     * @param tipo se le envía el tipo de recuadro que se quiere imprimir, en caso de que el tipo no exista se utiliza
-     *             el introducido por el usuario
-     * @param color color con el que se desea que se imprima el recuadro
-     * @param ancho ancho entre el recuadro y el mensaje
-     * @param alto alto entre el recuadro y el mensaje
+     * @param tipo    se le envía el tipo de recuadro que se quiere imprimir, en caso de que el tipo no exista se utiliza
+     *                el introducido por el usuario
+     * @param color   color con el que se desea que se imprima el recuadro
+     * @param ancho   ancho entre el recuadro y el mensaje
+     * @param alto    alto entre el recuadro y el mensaje
      */
     public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
 
@@ -429,10 +447,10 @@ public class Output {
 
         //El ancho total es lo que se imprime más 2 de los bordes y más 10 del color
         Integer anchoTotal = max + 2 * ancho + caracteresContar + 2 + 10;
-        Integer altoTotal = lineas + 2*alto + 2;
+        Integer altoTotal = lineas + 2 * alto + 2;
 
         //Se comprueba si el mensaje entraría dentro del tablero, en caso de que sí se pone impresionTablero a true
-        if(TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
+        if (TableroASCII.anchoDisponible < anchoTotal || TableroASCII.altoDisponible < altoTotal)
             impresionTablero = false;
         else
             impresionTablero = true;
@@ -441,260 +459,38 @@ public class Output {
 
     }
 
-    //Función que devuelve un ArrayList con los datos del jugador pasados a String --> util para las funciones de
-    //imprimir recuadro
-
     /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del jugador
-     * @param jugador jugador del que se guarda la información
+     * Función para pasar un string a un ArrayList<> donde cada componente es una línea del string.
      */
-    public static ArrayList<String> JugadortoArrayString(Jugador jugador) {
-        if (jugador == null) {
-            System.err.println("Jugador referencia a null.");
-            return null;
-        }
+    public static ArrayList<String> toArrayString(String string){
 
-        //En datos se almacenarán los datos que se devuelven.
-        ArrayList<String> datos = new ArrayList<>();
+        char[] arrayString = string.toCharArray();
+        int size = string.length();
 
-        //Se añade el nombre, el identificador del avatar y la fortuna del jugador.
-        datos.add("(*) Jugador: " + jugador.getNombre());
-        datos.add("        -> Avatar: " + ((Character) jugador.getAvatar().getIdentificador()).toString());
-        datos.add("        -> Fortuna: " + ((Integer) jugador.getFortuna()).toString() + "K €");
+        ArrayList<String> salida = new ArrayList<>();
 
-        //Numero de propiedades del jugador
-        int numPropiedades = jugador.getPropiedades().size();
+        String linea = ""; //variable donde se almacenará cada fila
 
-        //En la variable auxiliar se añadirá el String a añadir de las propiedades
-        StringBuilder prop = new StringBuilder();
-        //Se calcula el número de propiedades y de prop hipotecadas para que si son 0 añadir un formato especial.
-        int numProp = 0;
+        for(int i = 0; i < size; i++){
 
-        //Lo mismo que la anterior pero con las propiedades hipotecadas
-        StringBuilder propHipotecadas = new StringBuilder();
-        int numHip = 0;
-        ArrayList<Casilla> casillas;
-        prop.append("        -> Propiedades: {");
-        propHipotecadas.append("        -> Propiedades hipotecadas: {");
-
-        for (int i = 0; i < numPropiedades; i++) {
-
-            casillas = jugador.getPropiedades();
-
-            //En caso de que la casilla esté hipotecada se añade a su StringBuilder correspondiente
-            if (casillas.get(i).isHipotecada()) {
-
-                //se añade el nombre de la casilla
-                propHipotecadas.append(casillas.get(i).getNombre());
-
-                //En caso de que sea la última propiedad del jugador no se añade la coma
-                if (i != numPropiedades - 1)
-                    propHipotecadas.append(", ");
-
-                numHip++;
-
+            if(arrayString[i] == '\n'){
+                salida.add(linea);
+                linea = "";
             } else {
-                //se añade el nombre de la casilla
-                prop.append(casillas.get(i).getNombre());
 
-                //En caso de que sea la última propiedad del jugador no se añade la coma
-                if (i != numPropiedades - 1)
-                    prop.append(", ");
-
-                numProp++;
+                linea += arrayString[i];
 
             }
 
         }
 
-
-        if (numProp == 0) {
-            prop.append("Sin propiedades");
-        }
-        if (numHip == 0) {
-            propHipotecadas.append("Sin propiedades hipotecadas");
-        }
-
-        prop.append("}");
-        propHipotecadas.append("}");
-
-        datos.add(prop.toString());
-        datos.add(propHipotecadas.toString());
-
-        return datos;
-    }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos del avatar
-     * @param avatar avatar del que se guarda la información
-     */
-    public static ArrayList<String> AvatartoArrayString(Avatar avatar) {
-
-        ArrayList<String> informacion = new ArrayList<>();
-
-        informacion.add("(*) Avatar ID: " + avatar.getIdentificador());
-        informacion.add("        -> Tipo: " + avatar.getTipo().getNombre());
-        informacion.add("        -> Casilla: " + avatar.getPosicion().getNombre());
-        informacion.add("        -> Jugador: " + avatar.getJugador().getNombre());
-
-        return informacion;
-    }
-
-    /**
-     * Función que devuelve un ArrayList de String para mandar a imprimirRecuadro, con los datos de la casilla
-     * @param casilla casilla del que se guarda la información
-     */
-    public static ArrayList<String> CasillatoArrayString(Casilla casilla) {
-
-        ArrayList<String> informacion = new ArrayList<>();
-        Edificio aux;
-
-        int valorCasilla;
-
-        informacion.add("(*) Casilla: " + casilla.getNombre());
-
-
-        if (casilla.getGrupo().getTipo() != TipoGrupo.carcel && casilla.getGrupo().getTipo() != TipoGrupo.parking &&
-                casilla.getGrupo().getTipo() != TipoGrupo.salida && casilla.getGrupo().getTipo() != TipoGrupo.irCarcel)
-            informacion.add("        -> Tipo: " + casilla.getGrupo().getTipo().getTipoCasilla());
-
-
-        if (casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
-                TipoGrupo.transporte)
-            valorCasilla = casilla.getGrupo().getPrecio();
-        else
-            valorCasilla = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
-
-        // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
-        // de suerte o de comunidad)
-        if (valorCasilla >= 0) {
-
-            int alquiler = casilla.getAlquiler();
-
-            if (casilla.getGrupo().getTipo() == TipoGrupo.impuesto1 ||
-                    casilla.getGrupo().getTipo() == TipoGrupo.impuesto2) {
-
-                informacion.add("");
-                informacion.add("        -> A pagar: " + casilla.getGrupo().getPrecio());
-
-
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.parking) {
-
-                informacion.add("        -> Bote: " + casilla.getGrupo().getCasillas().get(0).getAlquiler());
-
-                StringBuilder jugadoresContenidos = new StringBuilder("        -> Jugadores: {");
-
-                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
-
-                Avatar avatarAux;
-
-                boolean flag = false;
-
-                for (Character avatar : avatares) {
-
-                    avatarAux = casilla.getAvataresContenidos().get(avatar);
-
-                    jugadoresContenidos.append(avatarAux.getJugador().getNombre());
-
-                    jugadoresContenidos.append(", ");
-
-                }
-
-                int tam = jugadoresContenidos.toString().length();
-
-                jugadoresContenidos.replace(tam, tam, "}");
-
-                informacion.add(jugadoresContenidos.toString());
-
-            } else if(casilla.getGrupo().getTipo() == TipoGrupo.carcel){
-
-                informacion.add("        -> Salir: " + casilla.getGrupo().getPrecio());
-                StringBuilder jugadoresEncarcelados = new StringBuilder("        -> Jugadores encarcelados: {");
-
-                Set<Character> avatares = casilla.getAvataresContenidos().keySet();
-
-                boolean flag = false;
-
-                for(Character avatar: avatares) {
-
-                    if(casilla.getAvataresContenidos().get(avatar).isEncarcelado()) {
-                        if (flag) {
-                            jugadoresEncarcelados.append(" , {");
-                        }
-                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getJugador().getNombre());
-                        jugadoresEncarcelados.append(", ");
-                        jugadoresEncarcelados.append(casilla.getAvataresContenidos().get(avatar).getTurnosEnCarcel());
-                        jugadoresEncarcelados.append("}");
-                        flag = true;
-                    }
-
-                }
-
-                if(!flag){
-                    jugadoresEncarcelados.append("no hay jugadores encarcelados :-)}");
-                }
-
-
-                informacion.add(jugadoresEncarcelados.toString());
-
-            } else if (casilla.getGrupo().getTipo() == TipoGrupo.salida) {
-                informacion.add("        -> Dinero a recibir: " + casilla.getGrupo().getPrecio() + "K €");
-            } else {
-                informacion.add("        -> Grupo: " + casilla.getGrupo().getTipo());
-                informacion.add("        -> Propietario: " + casilla.getPropietario().getNombre());
-                informacion.add("");
-                informacion.add("        -> Valor:                            " + valorCasilla + "K €");
-
-                if(casilla.getGrupo().getTipo() == TipoGrupo.transporte){
-                    informacion.add("        -> Alquiler con 1 transporte:        " + (int)valorCasilla*0.25 + "K €");
-                    informacion.add("        -> Alquiler con 2 transportes:       " + (int)valorCasilla*0.5 + "K €");
-                    informacion.add("        -> Alquiler con 3 transportes:       " + (int)valorCasilla*0.75 + "K €");
-                    informacion.add("        -> Alquiler con 4 transportes:       " + (int)valorCasilla + "K €");
-                } else {
-                    informacion.add("        -> Alquiler:                         " + alquiler + "K €");
-                }
-
-                if( casilla.getGrupo().getTipo().getTipoCasilla().equals(TipoGrupo.azul.getTipoCasilla() )) {
-                    informacion.add("");
-                    aux = new Edificio(TipoEdificio.hotel, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor hotel:                      " + aux.getPrecioCompra() + "K €");
-
-                    aux = new Edificio(TipoEdificio.casa, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor casa:                       " + aux.getPrecioCompra() + "K €");
-
-                    aux = new Edificio(TipoEdificio.piscina, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor piscina:                    " + aux.getPrecioCompra() + "K €");
-
-                    aux = new Edificio(TipoEdificio.pistaDeporte, casilla.getGrupo().getTipo());
-                    informacion.add("        -> Valor pista de deporte:           " + aux.getPrecioCompra() + "K €");
-
-                    informacion.add("");
-                    informacion.add("        -> Alquiler con una casa:            " + Constantes.ALQ_UNACASA * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con dos casas:           " + Constantes.ALQ_DOSCASA * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con tres casas:          " + Constantes.ALQ_TRESCASA * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con cuatro casas:        " + Constantes.ALQ_CUATROCASA * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con un hotel:            " + Constantes.ALQ_HOTEL * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con un piscina:          " + Constantes.ALQ_PISCINA * alquiler
-                            + "K €");
-                    informacion.add("        -> Alquiler con un pista de deporte: " + Constantes.ALQ_PISTADEPORTE * alquiler
-                            + "K €");
-                }
-            }
-
-        }
-
-        return informacion;
+        return salida;
 
     }
-
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo error
+     *
      * @param errores mensajes a mandar al recuadro
      */
     public static void errorComando(String... errores) {
@@ -711,6 +507,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo error
+     *
      * @param error mensajes a mandar al recuadro
      */
     public static void errorComando(ArrayList<String> error) {
@@ -719,6 +516,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo sugerencia
+     *
      * @param sugerencias mensajes a mandar al recuadro
      */
     public static void sugerencia(String... sugerencias) {
@@ -735,6 +533,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo sugerencia
+     *
      * @param sugerencia mensajes a mandar al recuadro
      */
     public static void sugerencia(ArrayList<String> sugerencia) {
@@ -743,6 +542,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo respuesta
+     *
      * @param respuestas mensajes a mandar al recuadro
      */
     public static void respuesta(String... respuestas) {
@@ -759,6 +559,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un ArrayList de String y guarda en el buffer un recuadro de tipo respuesta
+     *
      * @param respuestas mensajes a mandar al recuadro
      */
     public static void respuesta(ArrayList<String> respuestas) {
@@ -767,6 +568,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     *
      * @param mensajes mensajes a mandar al recuadro
      */
     public static void mensaje(String... mensajes) {
@@ -783,6 +585,7 @@ public class Output {
 
     /**
      * Función a la que se pasa un atributo multivalorado de String y guarda en el buffer un recuadro de tipo mensaje
+     *
      * @param mensajes mensajes a mandar al recuadro
      */
     public static void mensaje(ArrayList<String> mensajes) {
@@ -794,63 +597,92 @@ public class Output {
      */
 
 
-    public static void imprimirAyuda(){
-        ArrayList<String> ayuda = new ArrayList<>();
-        ayuda.add("Información sobre comandos.");
-        ayuda.add("");
-        ayuda.add(" -> crear jugador <nombre> <tipo_Avatar>");
-        ayuda.add("      (*) Crea un jugador con el nombre introducido y su tipo de avatar.");
-        ayuda.add("      (*) Tipos de avatares disponibles:");
-        ayuda.add("               - Coche");
-        ayuda.add("               - Esfinge");
-        ayuda.add("               - Sombrero");
-        ayuda.add("               - Pelota");
-        ayuda.add("");
-        ayuda.add(" -> jugador");
-        ayuda.add("      (*) Informa del jugador que tiene el turno.");
-        ayuda.add("");
-        ayuda.add(" -> iniciar");
-        ayuda.add("      (*) Inicia el juego si hay dos o más jugadores.");
-        ayuda.add("      (!) No se pueden añadir más jugadores una vez iniciado el juego.");
-        ayuda.add("");
-        ayuda.add(" -> listar jugadores");
-        ayuda.add("      (*) Imprime información sobre todos los jugadores del juego.");
-        ayuda.add("");
-        ayuda.add(" -> listar avatares");
-        ayuda.add("      (*) Imprime información sobre todos los avatares del tablero.");
-        ayuda.add("");
-        ayuda.add(" -> listar enventa");
-        ayuda.add("      (*) Imprime información sobre todas las casillas que están en venta.");
-        ayuda.add("");
-        ayuda.add(" -> lanzar dados");
-        ayuda.add("      (*) Se lanzan los dos dados del juego y se avanza el número de casillas");
-        ayuda.add("          correspondiente a la suma de los dos.");
-        ayuda.add("");
-        ayuda.add(" -> acabar turno");
-        ayuda.add("      (*) Finaliza el turno actual y pasa al siguiente jugador.");
-        ayuda.add("      (!) No se puede pasar el turno sin haber tirado los dados.");
-        ayuda.add("");
-        ayuda.add(" -> salir carcel");
-        ayuda.add("      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel.");
-        ayuda.add("      (!) Asegúrate de estar encarcelado.");
-        ayuda.add("");
-        ayuda.add(" -> describir jugador <nombre>");
-        ayuda.add("      (*) Se describe el jugador con el nombre introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> describir avatar <id>");
-        ayuda.add("      (*) Se describe el avatar con el ID introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> describir <casilla>");
-        ayuda.add("      (*) Se describe la casilla con el nombre introducido (si existe).");
-        ayuda.add("");
-        ayuda.add(" -> comprar <casilla>");
-        ayuda.add("      (*) Se compra la casilla indicada en el comando.");
-        ayuda.add("      (!) Solo puedes comprar una casilla si tu avatar está situado en ella.");
-        ayuda.add("      (!) Asegúrate de tener suficiente liquidez.");
-        ayuda.add("");
-        ayuda.add(" -> ver tablero");
-        ayuda.add("      (*) Muestra al jugador el tablero.");
+    public static void ayuda(String... ayuda) {
+        ArrayList<String> informacion = new ArrayList<>();
 
-        imprimirRecuadro(ayuda,"AYUDA: ", TipoColor.violetaANSI, 2, 1);
+        for (String resp : ayuda) {
+            informacion.add(resp);
+        }
+
+        imprimirRecuadro(informacion, "mensaje", TipoColor.violetaANSI, 2, 1);
+    }
+
+    public static void imprimirAyuda() {
+        ArrayList<String> ayuda = new ArrayList<>();
+
+        Output.ayuda("",
+                "                                _.--,-```-.    ",
+                "                               /    /      '.  ",
+                "                              /  ../         ; ",
+                "                              \\  ``\\  .``-    '",
+                "                               \\ ___\\/    \\   :",
+                "                                     \\    :   |",
+                "                                     |    ;  . ",
+                "                                    ;   ;   :  ",
+                "                                   /   :   :   ",
+                "                                   `---'.  |   ",
+                "                                    `--..`;    ",
+                "                                   .--,_        ",
+                "                                  |    |`.     ",
+                "                                  `-- -`, ;    ",
+                "                                    '---`\"     ",
+                "                                              "
+
+                , "Información sobre comandos."
+                , ""
+                , " -> crear jugador <nombre> <tipo_Avatar>"
+                , "      (*) Crea un jugador con el nombre introducido y su tipo de avatar."
+                , "      (*) Tipos de avatares disponibles:"
+                , "               - Coche"
+                , "               - Esfinge"
+                , "               - Sombrero"
+                , "               - Pelota"
+                , ""
+                , " -> jugador"
+                , "      (*) Informa del jugador que tiene el turno."
+                , ""
+                , " -> iniciar"
+                , "      (*) Inicia el juego si hay dos o más jugadores."
+                , "      (!) No se pueden añadir más jugadores una vez iniciado el juego."
+                , ""
+                , " -> listar jugadores"
+                , "      (*) Imprime información sobre todos los jugadores del juego."
+                , ""
+                , " -> listar avatares"
+                , "      (*) Imprime información sobre todos los avatares del tablero."
+                , ""
+                , " -> listar enventa"
+                , "      (*) Imprime información sobre todas las casillas que están en venta."
+                , ""
+                , " -> lanzar dados"
+                , "      (*) Se lanzan los dos dados del juego y se avanza el número de casillas"
+                , "          correspondiente a la suma de los dos."
+                , ""
+                , " -> acabar turno"
+                , "      (*) Finaliza el turno actual y pasa al siguiente jugador."
+                , "      (!) No se puede pasar el turno sin haber tirado los dados."
+                , ""
+                , " -> salir carcel"
+                , "      (*) Se paga el importe correspondiente y se libera el avatar de la cárcel."
+                , "      (!) Asegúrate de estar encarcelado."
+                , ""
+                , " -> describir jugador <nombre>"
+                , "      (*) Se describe el jugador con el nombre introducido (si existe)."
+                , ""
+                , " -> describir avatar <id>"
+                , "      (*) Se describe el avatar con el ID introducido (si existe)."
+                , ""
+                , " -> describir <casilla>"
+                , "      (*) Se describe la casilla con el nombre introducido (si existe)."
+                , ""
+                , " -> comprar <casilla>"
+                , "      (*) Se compra la casilla indicada en el comando."
+                , "      (!) Solo puedes comprar una casilla si tu avatar está situado en ella."
+                , "      (!) Asegúrate de tener suficiente liquidez."
+                , ""
+                , " -> ver tablero"
+                , "      (*) Muestra al jugador el tablero.");
+
+
     }
 }

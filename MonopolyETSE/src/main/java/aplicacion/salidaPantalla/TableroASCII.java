@@ -1,11 +1,12 @@
 package aplicacion.salidaPantalla;
 
 import monopoly.jugadores.Avatar;
-import monopoly.tablero.Casilla;
+import monopoly.jugadores.Banca;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,8 +72,8 @@ public class TableroASCII {
     public static String pintaTablero(Tablero tablero, ArrayList<ArrayList<Object>> info) {
 
         if (tablero == null) {
-            Output.sugerencia("Error: tablero no inicializado");
-            return (null);
+            System.err.println("Tablero no inicializado");
+            System.exit(1);
         }
 
         // String a devolver
@@ -87,7 +88,7 @@ public class TableroASCII {
         for (int i = caracteresPorLinea - 1; i < caracteresPorLinea * numeroLineas; i += caracteresPorLinea)
             tableroPintado.setCharAt(i, '\n');
 
-        // Se insertan las casillas tablero
+        // Se insertan las casillas en el tablero
         insertarFila(true, tableroPintado, tablero);
         insertarFila(false, tableroPintado, tablero);
         insertarColumnas(tableroPintado, tablero);    // Las columnas contenidas entre las filas superior e inferior
@@ -135,7 +136,7 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla izquierda
-        insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada);
+        insertarCasilla(stringBuilder, casillaIterada, posicionIterada);
 
         // Se suman el ancho de la casilla y un separador, para insertar la casilla contigua desde la posición inicial
         // del separador que comparte con esta
@@ -147,7 +148,7 @@ public class TableroASCII {
 
         // Se insertan las casillas intermedias
         for (int i = 1; i < casillasPorFila; i++) {
-            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada);
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada);
 
             posicionIterada += anchoCasilla + 1;
             posicionCasillaIterada += superior ? 1 : -1;
@@ -156,7 +157,7 @@ public class TableroASCII {
         }
 
         // Se inserta la casilla derecha
-        insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada);
+        insertarCasilla(stringBuilder, casillaIterada, posicionIterada);
 
     }
 
@@ -183,7 +184,7 @@ public class TableroASCII {
             // Las casillas izquierdas son insertadas de mayor a menor en función del orden del tablero; las derechas
             // son insertadas de menor a mayor
             casillaIterada = tablero.getCasillas().get(1).get(i);
-            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada);
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada);
 
             // Casilla derecha
 
@@ -191,7 +192,7 @@ public class TableroASCII {
             // intermedios
             posicionIterada += ((casillasPorLado - 1) * anchoCasilla + separadoresPorLado - 2);
             casillaIterada = tablero.getCasillas().get(3).get(casillasPorFila - i);
-            insertarCasilla(stringBuilder, tablero, casillaIterada, posicionIterada);
+            insertarCasilla(stringBuilder, casillaIterada, posicionIterada);
 
             // Se sitúa en la siguiente casilla izquierda a insertar (1 separador + ancho de la casilla + 1 separador +
             // salto de línea + líneas del alto de la casilla)
@@ -206,24 +207,28 @@ public class TableroASCII {
      * Se inserta una casilla en el tablero a pintar
      *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero       tablero que contiene la casilla
      * @param casilla       casilla a pintar
      * @param posicion      posición de la esquina superior izquierda de la casilla en el tablero a pintar
      */
-    private static void insertarCasilla(StringBuilder stringBuilder, Tablero tablero, Casilla casilla, int posicion) {
+    private static void insertarCasilla(StringBuilder stringBuilder, Casilla casilla, int posicion) {
 
         // Se pintan los límites de la casilla
         insertarLimites(stringBuilder, posicion);
 
         // Se inserta su nombre
+        // todo necesito un método para obtener su color
         insertarNombre(stringBuilder, posicion, casilla.getNombre(), casilla.getGrupo().getTipo().getColor());
 
         // Se insertan los jugadores contenidos
         insertarJugadores(stringBuilder, posicion, casilla.getAvataresContenidos());
 
-        // Se inserta el nombre de su propietario o, en su defecto, el precio de compra
-        insertarPropietario(stringBuilder, tablero, posicion, casilla);
+        // Se inserta el nombre de su propietario o, en su defecto, el precio de compra, en caso de tratarse de una
+        // propiedad
+        if (casilla instanceof Propiedad) {
 
+            final Propiedad propiedad = (Propiedad) casilla;
+            insertarPropietario(stringBuilder, posicion, propiedad);
+        }
     }
 
 
@@ -661,28 +666,27 @@ public class TableroASCII {
      * de una casilla; de no haber sido comprada, se inserta su precio de compra
      *
      * @param stringBuilder stringBuilder en el que se está representando el tablero
-     * @param tablero       tablero que contiene la casilla a pintar
      * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar el propietario
-     * @param casilla       casilla cuyo propietario se va a representar
+     * @param propiedad     propiedad cuyo propietario se va a representar
      */
-    private static void insertarPropietario(StringBuilder stringBuilder, Tablero tablero, int posicion, Casilla
-            casilla) {
+    private static void insertarPropietario(StringBuilder stringBuilder, int posicion, Propiedad
+            propiedad) {
 
         int posicionEscritura;
         StringBuilder propietario = new StringBuilder();
 
         // Si la casilla no tiene un propietario
-        if (casilla.getPropietario().equals(tablero.getBanca())) {
+        if (propiedad.getPropietario() instanceof Banca) {
 
             int precio;
 
             // Si es una casilla de servicios o de transporte, el precio no es repartido entre los integrantes del
             // grupo
-            if (casilla.getGrupo().getTipo() == TipoGrupo.servicios || casilla.getGrupo().getTipo() ==
+            if (propiedad.getGrupo().getTipo() == TipoGrupo.servicios || propiedad.getGrupo().getTipo() ==
                     TipoGrupo.transporte)
-                precio = casilla.getGrupo().getPrecio();
+                precio = propiedad.getGrupo().getPrecio();
             else
-                precio = (int) (casilla.getGrupo().getPrecio() / (double) casilla.getGrupo().getCasillas().size());
+                precio = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getPropiedades().size());
 
             // Debe diferenciarse entre aquellas casillas que tengan un precio asociado y aquellas que no (como las
             // de suerte o de comunidad)
@@ -692,9 +696,13 @@ public class TableroASCII {
             //propietario.append(decimal.format(precio)).append("K €");
             propietario.append(precio).append("K €");    // Supone un incremento de 5 ms
 
-        } else
-            propietario.append("Prop.: ").append(casilla.getPropietario().getNombre());
+            // Si la casilla tiene propietario y no está hipotecada
+        } else if (!propiedad.isHipotecada())
+            propietario.append("Prop.: ").append(propiedad.getPropietario().getNombre());
 
+            // Si está hipotecada
+        else
+            propietario.append("Hipot.: ").append(propiedad.getPropietario().getNombre());
 
         // Se sitúa en la esquina inferior izquierda de la casilla (no en el separador)
         posicionEscritura = posicion + 1 + altoCasilla * caracteresPorLinea;
@@ -705,7 +713,6 @@ public class TableroASCII {
 
         for (int i = 0; i < menor; i++)
             stringBuilder.setCharAt(posicionEscritura++, propietario.charAt(i));
-
     }
 
 
