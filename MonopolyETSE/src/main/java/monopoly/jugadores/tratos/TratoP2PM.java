@@ -2,6 +2,8 @@ package monopoly.jugadores.tratos;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 public class TratoP2PM extends TratoP2P {
@@ -44,7 +46,7 @@ public class TratoP2PM extends TratoP2P {
      * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public boolean aceptar() {
+    public boolean aceptar() throws NoLiquidezException, NoSerPropietarioException {
 
         return(aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getCantidadDinero()));
     }
@@ -61,12 +63,10 @@ public class TratoP2PM extends TratoP2P {
      * @return si se ha podido llevar a cabo el trato
      */
     public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, int
-            cantidadDinero) {
+            cantidadDinero) throws NoLiquidezException, NoSerPropietarioException  {
 
-        if (receptor.balanceNegativoTrasPago(cantidadDinero)) {
-            Output.sugerencia("No dispone de liquidez suficiente para aceptar el trato");
-            return (false);
-        }
+        if (receptor.balanceNegativoTrasPago(cantidadDinero))
+            throw new NoLiquidezException("No dispone de liquidez suficiente para aceptar el trato");
 
         if (!super.aceptar(emisor, receptor, propiedad1, propiedad2))
             return (false);

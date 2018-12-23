@@ -48,7 +48,7 @@ public class Inmunidad {
 
         if (numeroTurnos < 0) {
             System.err.println("El número de turnos de inmunidad no puede ser negativo");
-            return;
+            System.exit(1);
         }
 
         this.numeroTurnos = numeroTurnos;

@@ -2,11 +2,14 @@ package monopoly.jugadores.tratos;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 public class TratoP2P extends Trato {
 
     /* Atributos */
+
     final Propiedad propiedad1;
     final Propiedad propiedad2;
 
@@ -55,7 +58,7 @@ public class TratoP2P extends Trato {
      * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public boolean aceptar() {
+    public boolean aceptar() throws NoSerPropietarioException, NoLiquidezException {
 
         return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2()));
     }
@@ -70,17 +73,14 @@ public class TratoP2P extends Trato {
      * @param propiedad2 propiedad que transfiere el receptor
      * @return si se ha podido llevar a cabo el trato
      */
-    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2) {
+    public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2) throws
+            NoSerPropietarioException {
 
-        if (!propiedad1.getPropietario().equals(emisor)) {
-            Output.respuesta("La propiedad 1 no pertenece al emisor");
-            return (false);
-        }
+        if (!propiedad1.getPropietario().equals(emisor))
+            throw new NoSerPropietarioException("La propiedad 1 no pertenece al emisor");
 
-        if (!propiedad2.getPropietario().equals(receptor)) {
-            Output.respuesta("La propiedad 2 no le pertenece");
-            return (false);
-        }
+        if (!propiedad2.getPropietario().equals(receptor))
+            throw new NoSerPropietarioException("La propiedad 2 no le pertenece");
 
         // Se cambia el propietario de la primera propiedad
         propiedad1.setPropietario(receptor);

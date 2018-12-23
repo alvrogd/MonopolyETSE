@@ -1,6 +1,8 @@
 package monopoly.jugadores.tratos;
 
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 
 public abstract class Trato {
 
@@ -50,5 +52,5 @@ public abstract class Trato {
      * Se lleva a cabo el trato propuesto
      * @return si se ha podido llevar a cabo el trato
      */
-    public abstract boolean aceptar();
+    public abstract boolean aceptar() throws NoLiquidezException, NoSerPropietarioException;
 }

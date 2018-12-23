@@ -2,6 +2,7 @@ package monopoly.jugadores.tratos;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 public class TratoP2PA extends TratoP2P {
@@ -57,7 +58,7 @@ public class TratoP2PA extends TratoP2P {
      * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public boolean aceptar() {
+    public boolean aceptar() throws NoSerPropietarioException {
 
         return (aceptar(getEmisor(), getReceptor(), getPropiedad1(), getPropiedad2(), getPropiedad3(), getNumeroTurnos()));
     }
@@ -73,19 +74,17 @@ public class TratoP2PA extends TratoP2P {
      * @param propiedad3   propiedad especificada para la inmunidad ante el pago de alquileres
      * @param numeroTurnos número de turnos en los que el emisor gozará de inmunidad ante pagos de alquiler en la
      *                     propiedad especificada
-     * @return si se ha podido llevar a cabo el trato
+     * @return             si se ha podido llevar a cabo el trato
      */
     public boolean aceptar(Jugador emisor, Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, Propiedad
-            propiedad3, int numeroTurnos) {
+            propiedad3, int numeroTurnos) throws NoSerPropietarioException {
 
-        if (!propiedad3.getPropietario().equals(receptor)) {
-            Output.respuesta("La propiedad 3 no le pertenece");
-            return (false);
-        }
+        if (!propiedad3.getPropietario().equals(receptor))
+            throw new NoSerPropietarioException("La propiedad 3 no le pertenece");
 
         if (numeroTurnos < 0) {
             System.err.println("El número de turnos de inmunidad no puede ser negativo");
-            return (false);
+            System.exit(1);
         }
 
         if (!super.aceptar(emisor, receptor, propiedad1, propiedad2))

@@ -2,6 +2,8 @@ package monopoly.jugadores.tratos;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 public class TratoM2P extends Trato {
@@ -55,7 +57,7 @@ public class TratoM2P extends Trato {
      * @return si se ha podido llevar a cabo el trato
      */
     @Override
-    public boolean aceptar() {
+    public boolean aceptar() throws NoLiquidezException, NoSerPropietarioException {
 
         return (aceptar(getEmisor(), getReceptor(), getCantidadDinero(), getPropiedad1()));
     }
@@ -70,17 +72,14 @@ public class TratoM2P extends Trato {
      * @param propiedad1     propiedad que transfiere el receptor
      * @return si se ha podido llevar a cabo el trato
      */
-    public boolean aceptar(Jugador emisor, Jugador receptor, int cantidadDinero, Propiedad propiedad1) {
+    public boolean aceptar(Jugador emisor, Jugador receptor, int cantidadDinero, Propiedad propiedad1) throws
+            NoLiquidezException, NoSerPropietarioException {
 
-        if (emisor.balanceNegativoTrasPago(cantidadDinero)) {
-            Output.sugerencia("El emisor no dispone de liquidez suficiente para aceptar el trato");
-            return (false);
-        }
+        if (emisor.balanceNegativoTrasPago(cantidadDinero))
+            throw new NoLiquidezException("El emisor no dispone de liquidez suficiente para aceptar el trato");
 
-        if (!propiedad1.getPropietario().equals(receptor)) {
-            Output.respuesta("La propiedad 2 no le pertenece");
-            return (false);
-        }
+        if (!propiedad1.getPropietario().equals(receptor))
+            throw new NoSerPropietarioException("La propiedad 2 no le pertenece");
 
         // Se añade la cantidad de dinero establecida del emisor al receptor
         receptor.setFortuna(receptor.getFortuna() + cantidadDinero);
