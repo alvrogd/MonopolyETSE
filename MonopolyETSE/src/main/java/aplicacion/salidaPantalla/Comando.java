@@ -6,10 +6,12 @@ import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
-import monopoly.tablero.TipoEdificio;
+import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.Carta;
 import monopoly.tablero.jerarquiaCasillas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -32,11 +34,9 @@ public class Comando implements IComando {
             System.exit(-1);
         }
 
-        this.argv = new ArrayList<>();
-
         this.app = app;
 
-        separarEspacios(linea);
+        this.argv = separarEspacios(linea);
 
     }
 
@@ -75,7 +75,34 @@ public class Comando implements IComando {
         if (tipoComando == null) {
             numEspacios = -1; //-1 porque no tiene el nombre de una casilla.
         } else {
-            numEspacios = tipoComando.getEspaciosCasilla() - 1; //-1 porque ya se ha contado un espacio
+
+            boolean contieneCasilla = true;
+
+            //En caso de que pueda que no sea un comando que contenga casillas
+            if(tipoComando.isPuedeContenerCasilla()){
+                boolean espacio = true;
+                String segundaPalabra = "";
+
+                for(int i = comienzo + 2; espacio && i < tamChar; i++){
+
+                    if(arrayChar[i] == ' '){
+                        espacio = false;
+                        if(segundaPalabra.equals("jugador") || segundaPalabra.equals("avatar"))
+                            contieneCasilla = false;
+
+                    } else {
+                        segundaPalabra += arrayChar[i];
+                    }
+
+                }
+
+            }
+
+            if(contieneCasilla)
+                numEspacios = tipoComando.getEspaciosCasilla() - 1; //-1 porque ya se ha contado un espacio
+            else
+                numEspacios = -1;
+
         }
 
         //Variable para saber si se han buscado más palabras.
@@ -113,7 +140,7 @@ public class Comando implements IComando {
         return app;
     }
 
-    public void ejecutarComando() {
+    public void ejecutarComando() throws Exception{
 
         int size = getArgv().size();
 
@@ -143,6 +170,7 @@ public class Comando implements IComando {
                         Output.errorComando("Argumentos del comando -crear jugador- incorrectos.");
 
                 }
+                break;
 
             case "iniciar":
                 iniciarJuego();
@@ -310,10 +338,12 @@ public class Comando implements IComando {
             case "pagar":
                 if(size > 1)
                     pagar(getArgv().get(1));
+                break;
 
             case "mover":
                 if(size > 1)
                     mover(getArgv().get(1));
+                break;
 
             default:
                 Output.errorComando("Comando incorrecto");
@@ -323,7 +353,7 @@ public class Comando implements IComando {
 
     }
 
-    private void mover(String aumento){
+    private void mover(String aumento) throws Exception{
 
         getApp().getJuego().getTurno().getAvatar().mover(Integer.parseInt(aumento), true);
 
@@ -343,7 +373,8 @@ public class Comando implements IComando {
 
     }
 
-    private void ejecutarSuerte(){
+    private void ejecutarSuerte() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
+            ImposibleMoverseException{
 
         int count = 0, opc, size;
         Scanner entrada = new Scanner(System.in);
@@ -360,11 +391,14 @@ public class Comando implements IComando {
         Aplicacion.consola.imprimir("(*) Opción: ");
         opc = entrada.nextInt();
 
-        getApp().getJuego().getTurno().leerCarta(getApp().getJuego().getCartasSuerte().get(opc%size));
+        Carta carta = getApp().getJuego().getCartasComunidad().get(opc%size);
+
+        carta.accion();
 
     }
 
-    private void ejecutarComunidad(){
+    private void ejecutarComunidad() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
+            ImposibleMoverseException{
 
         int count = 0, opc, size;
         Scanner entrada = new Scanner(System.in);
@@ -381,7 +415,9 @@ public class Comando implements IComando {
         Aplicacion.consola.imprimir("(*) Opción: ");
         opc = entrada.nextInt();
 
-        getApp().getJuego().getTurno().leerCarta(getApp().getJuego().getCartasComunidad().get(opc%size));
+        Carta carta = getApp().getJuego().getCartasComunidad().get(opc%size);
+
+        carta.accion();
 
     }
 
@@ -407,7 +443,7 @@ public class Comando implements IComando {
 
         TipoAvatar tipoAvatar = TipoAvatar.toAvatar(avatar);
 
-        if (avatar == null) {
+        if (tipoAvatar == null) {
 
             Output.errorComando("Avatar incorrecto en la opción -crear-");
 
@@ -707,7 +743,9 @@ public class Comando implements IComando {
 
     }
 
-    public void lanzarDados() {
+    public void lanzarDados() throws EstarPenalizadoException, ImposibleMoverseException,
+            EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
+            ImposibleCambiarModoException{
 
         if (!getApp().getJuego().isIniciado()) {
             Output.errorComando("El juego no se ha iniciado.");
@@ -743,7 +781,8 @@ public class Comando implements IComando {
 
     }
 
-    public void salirCarcel() {
+    public void salirCarcel() throws NoEstarEncarceladoException, SeHanLanzadoDadosException, NoLiquidezException,
+            EstarBancarrotaException, NoSerPropietarioException{
 
         if (!getApp().getJuego().isIniciado()) {
             Output.errorComando("El juego no se ha iniciado.");
@@ -802,7 +841,8 @@ public class Comando implements IComando {
         Output.respuesta(Output.toArrayString(avatar1.toString()));
     }
 
-    public void comprar(String nombreSolar) {
+    public void comprar(String nombrePropiedad) throws NoEncontrarseEnPropiedadException, NoComprarABancaException,
+            NoLiquidezException, NoSerPropietarioException{
         if (!getApp().getJuego().isIniciado()) {
             Output.errorComando("El juego no se ha iniciado.");
             return;
@@ -814,14 +854,19 @@ public class Comando implements IComando {
             return;
         }
 
-        Casilla casilla1 = getApp().getJuego().getTablero().getCasillasTablero().get((nombreSolar));
+        Casilla casilla = getApp().getJuego().getTablero().getCasillasTablero().get((nombrePropiedad));
 
-        if (casilla1 == null) {
+        if (casilla == null) {
             Output.errorComando("Esa casilla no existe.");
             return;
         }
 
-        getApp().getJuego().getTurno().comprar(getApp().getJuego().getBanca(), casilla1);
+        if(!(casilla instanceof Propiedad)){
+            Output.errorComando("La casilla " + nombrePropiedad + " no es una propiedad.");
+            return;
+        }
+
+        getApp().getJuego().getTurno().comprar(getApp().getJuego().getBanca(), (Propiedad) casilla);
     }
 
     public void listarEnVenta() {
@@ -865,7 +910,7 @@ public class Comando implements IComando {
         }
     }
 
-    public void edificar(String tipoEdificio) {
+    public void edificar(String tipoEdificio) throws NoSerPropietarioException, HipotecaPropiedadException {
         if (!getApp().getJuego().isIniciado()) {
             Output.errorComando("El juego no se ha iniciado.");
             return;
@@ -873,13 +918,23 @@ public class Comando implements IComando {
 
         TipoEdificio edificio = TipoEdificio.toEdificio(tipoEdificio);
 
-        if (edificio != null)
-            getApp().getJuego().getTurno().crearEdificio(edificio);
-        else
-            Output.errorComando("Opción del comando -edificar- incorrecta, tipo de edificio incorrecto.");
+        Jugador turno = getApp().getJuego().getTurno();
+
+        if(turno.getAvatar().getPosicion() instanceof Solar){
+
+            if (edificio != null)
+                getApp().getJuego().getTurno().crearEdificio(edificio, (Solar)getApp().getJuego().getTurno().getAvatar().getPosicion());
+            else
+                Output.errorComando("Opción del comando -edificar- incorrecta, tipo de edificio incorrecto.");
+
+        } else {
+
+            Output.sugerencia("La casilla no es un solar.");
+
+        }
     }
 
-    public void cambiarModo() {
+    public void cambiarModo() throws ImposibleCambiarModoException {
         boolean isEstandar;
 
         if (!getApp().getJuego().isIniciado()) {
@@ -890,7 +945,8 @@ public class Comando implements IComando {
         getApp().getJuego().getTurno().getAvatar().switchMovimiento();
     }
 
-    public void hipotecar(String nombrePropiedad) {
+    public void hipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException,
+            EdificiosSolarException {
         Casilla casilla = getApp().getJuego().getTablero().getCasillasTablero().get(nombrePropiedad);
 
         if (casilla == null) {
@@ -898,10 +954,16 @@ public class Comando implements IComando {
             return;
         }
 
-        getApp().getJuego().getTurno().hipotecar(casilla);
+        if(!(casilla instanceof Propiedad)){
+            Output.errorComando("La casilla " + nombrePropiedad + " no es una propiedad.");
+            return;
+        }
+
+        getApp().getJuego().getTurno().hipotecar((Propiedad)casilla);
     }
 
-    public void deshipotecar(String nombrePropiedad) {
+    public void deshipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException,
+            NoLiquidezException {
         Casilla casilla = getApp().getJuego().getTablero().getCasillasTablero().get(nombrePropiedad);
 
         if (casilla == null) {
@@ -909,10 +971,16 @@ public class Comando implements IComando {
             return;
         }
 
-        getApp().getJuego().getTurno().deshipotecar(casilla);
+        if(!(casilla instanceof Propiedad)){
+            Output.errorComando("La casilla " + nombrePropiedad + " no es una propiedad.");
+            return;
+        }
+
+        getApp().getJuego().getTurno().deshipotecar((Propiedad)casilla);
     }
 
-    public void vender(String tipoEdificio, String numero, String nombrePropiedad) {
+    public void vender(String tipoEdificio, String numero, String nombrePropiedad) throws NoSerPropietarioException,
+            HipotecaPropiedadException, EdificiosSolarException, InputUsuarioException{
         if (!getApp().getJuego().isIniciado()) {
             Output.errorComando("El juego no se ha iniciado.");
             return;
@@ -932,12 +1000,18 @@ public class Comando implements IComando {
             return;
         }
 
+        if(!(casillaV instanceof Solar)){
+            Output.errorComando("La casilla " + nombrePropiedad + " no es un solar.");
+            return;
+        }
+
         int cantidad = Integer.parseInt(numero);
 
-        getApp().getJuego().getTurno().venderEdificio(edificio, cantidad, casillaV);
+        getApp().getJuego().getTurno().venderEdificio(edificio, cantidad, (Solar)casillaV);
     }
 
-    public void avanzar() {
+    public void avanzar() throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException,
+            ImposibleCambiarModoException{
         int casillasPorMoverse = getApp().getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
 
         if (!getApp().getJuego().isIniciado()) {

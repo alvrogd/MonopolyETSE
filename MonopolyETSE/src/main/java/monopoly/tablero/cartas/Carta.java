@@ -9,7 +9,8 @@ import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.jugadores.excepciones.ImposibleMoverseException;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Parking;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
@@ -165,10 +166,10 @@ public abstract class Carta {
                 jugador.incrementarPagoTasasEImpuestos(importe);
 
                 // Se incrementa el bote en el parking
-                final Casilla parking = jugador.getAvatar().getTablero().getCasillas().get(
+                final Parking parking = (Parking) jugador.getAvatar().getTablero().getCasillas().get(
                         Constantes.POSICION_PARKING / 10).get(Constantes.POSICION_PARKING % 10);
 
-                parking.setAlquiler(parking.getAlquiler() + importe);
+                parking.incrementarDinero(importe);
             }
 
         }

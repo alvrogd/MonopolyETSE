@@ -1,4 +1,4 @@
-package monopoly.tablero;
+package monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios;
 
 import monopoly.Constantes;
 

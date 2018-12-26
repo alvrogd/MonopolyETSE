@@ -3,9 +3,11 @@ package monopoly.jugadores;
 import monopoly.Constantes;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.cartas.Suerte;
 import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -699,18 +701,8 @@ public abstract class Avatar {
     private void caerEnSuerte() throws NoSerPropietarioException, EstarBancarrotaException,
             ImposibleCambiarModoException, ImposibleMoverseException {
 
-        Scanner scanner = new Scanner(System.in);
-        int numeroCarta;
-
-        // Se pide el número de carta
-        Output.imprimirEntradaComando("¡Carta de suerte! Introduzca un número del 1 al " +
-                Constantes.NUM_CARTAS_SUERTE);
-
-        do {
-            numeroCarta = scanner.nextInt();
-        } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_SUERTE);
-
-        getTablero().getJuego().barajarSuerte(numeroCarta).accion();
+        final SuerteCasilla suerte = (SuerteCasilla) getPosicion();
+        suerte.ejecutarAccion(getJugador());
     }
 
 
@@ -720,18 +712,8 @@ public abstract class Avatar {
     private void caerEnComunidad() throws EstarBancarrotaException, NoSerPropietarioException,
             ImposibleCambiarModoException, ImposibleMoverseException {
 
-        Scanner scanner = new Scanner(System.in);
-        int numeroCarta;
-
-        // Se pide el número de carta
-        Output.imprimirEntradaComando("¡Carta de comunidad! Introduzca un número del 1 al " +
-                Constantes.NUM_CARTAS_COMUNIDAD);
-
-        do {
-            numeroCarta = scanner.nextInt();
-        } while (numeroCarta <= 0 || numeroCarta > Constantes.NUM_CARTAS_COMUNIDAD);
-
-        getTablero().getJuego().barajarComunidad(numeroCarta).accion();
+        final ComunidadCasilla comunidad = (ComunidadCasilla) getPosicion();
+        comunidad.ejecutarAccion(getJugador());
     }
 
 
@@ -846,9 +828,10 @@ public abstract class Avatar {
             getJugador().incrementarPagoTasasEImpuestos(impuesto);
 
             // Se añade la cantidad pagada al "alquiler" del parking
-            final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+            final Parking parking = (Parking) getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
                     Constantes.POSICION_PARKING % 10);
-            parking.setAlquiler(parking.getAlquiler() + impuesto);
+
+            parking.incrementarDinero(impuesto);
         }
     }
 
@@ -859,31 +842,11 @@ public abstract class Avatar {
     public void caerEnIrACarcel() {
 
         // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-        getPosicion().getAvataresContenidos().remove(getIdentificador());
+       final Especial irCarcel = (Especial) getTablero().getCasillas().get((Constantes.POSICION_PARKING+10)/10).get(
+               (Constantes.POSICION_PARKING+10)%10);
 
-        getJugador().incrementarVecesEnLaCarcel(1);
+       irCarcel.ejecutarAccion(getJugador());
 
-        setPosicion(getTablero().getCasillas().get(Constantes.POSICION_CARCEL / 10).get(Constantes.POSICION_CARCEL % 10));
-        sethaMovidoCasillasTirada(true);
-        getTablero().getJuego().setHaLanzadoDados(true);
-        setCasillasRestantesPorMoverse(0);
-        setEncarcelado(true);
-        setHaEstadoCarcel(true);
-
-        // Y se añade el avatar al listado de avatares contenidos en la cárcel
-        getPosicion().getAvataresContenidos().put(getIdentificador(), this);
-
-        Output.mensaje(
-                "          ,",
-                " __  _.-\"` `'-.",
-                "/||\\'._ __{}_(",
-                "||||  |'--.__\\",
-                "|  L.(   ^_\\^     ¡Has sido encarcelado!",
-                "\\ .-' |   _ |",
-                "| |   )\\___/",
-                "|  \\-'`:._]",
-                "\\__/;      '-.", ""
-        );
     }
 
 
@@ -893,19 +856,10 @@ public abstract class Avatar {
     private void caerEnParking() {
 
         // Se añaden a la fortuna del jugador los impuestos recaudados
-        final Casilla parking = getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
+        final Parking parking = (Parking) getTablero().getCasillas().get(Constantes.POSICION_PARKING / 10).get(
                 Constantes.POSICION_PARKING % 10);
-        getJugador().setFortuna(getJugador().getFortuna() + parking.getAlquiler());
 
-        Output.respuesta("¡Has cobrado el valor acumulado por los impuestos!");
-        // Y se resetea el valor del "alquiler" del parking
-
-        getJugador().incrementarPremiosInversionesOBote(parking.getAlquiler());
-
-        // Se registra el pago obtenido
-        getJugador().getAcciones().add(new TransferenciaMonetaria(parking.getAlquiler(), getTablero().getBanca(), getJugador()));
-
-        parking.setAlquiler(0);
+        parking.ejecutarAccion(getJugador());
     }
 
 
@@ -919,15 +873,8 @@ public abstract class Avatar {
 
         // Si no ha estado en la carcel y se permite, se le suma el correspondiente importe a su fortuna
         if (!isHaEstadoCarcel() && cobrarSalida) {
-
-            int importe = (importeSalidaEstandar ? Constantes.DINERO_SALIDA : Constantes.DINERO_SALIDA_CARTA);
-
-            getJugador().setFortuna(getJugador().getFortuna() + importe);
-            getJugador().incrementarPasarPorCasillaDeSalida(importe);
-            Output.respuesta("Has cobrado el importe de la casilla de salida.");
-
-            // Se registra el pago obtenido
-            getJugador().getAcciones().add(new TransferenciaMonetaria(importe, getTablero().getBanca(), getJugador()));
+            final Salida salida = (Salida) getTablero().getCasillas().get(0).get(0);
+            salida.ejecutarAccion(getJugador(), importeSalidaEstandar);
         }
 
         setHaEstadoCarcel(false);

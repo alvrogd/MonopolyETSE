@@ -1,7 +1,7 @@
 package monopoly.jugadores.acciones;
 
 import monopoly.jugadores.Jugador;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.HashMap;
@@ -107,7 +107,7 @@ public class Edificacion implements IAccionJugador {
     // todo es posible que sea necesario un atributo para forzar las acciones por el tema de restricciones entre tipos de edificios al construir
     public void revertirAccion() {
 
-        final Jugador propietario = getSolar().getPropietario();
+        final Jugador propietario = (Jugador) getSolar().getPropietario();
 
         // Para cada tipo de edificio
         for (TipoEdificio tipoEdificio : getBalances().keySet()) {

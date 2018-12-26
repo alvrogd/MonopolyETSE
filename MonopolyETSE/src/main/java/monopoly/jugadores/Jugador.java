@@ -11,6 +11,8 @@ import monopoly.jugadores.excepciones.*;
 import monopoly.jugadores.tratos.*;
 import monopoly.tablero.*;
 import monopoly.tablero.jerarquiaCasillas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;

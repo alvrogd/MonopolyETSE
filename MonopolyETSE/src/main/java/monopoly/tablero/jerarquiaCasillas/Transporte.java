@@ -2,6 +2,7 @@ package monopoly.tablero.jerarquiaCasillas;
 
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
@@ -9,17 +10,23 @@ import monopoly.tablero.jerarquiaCasillas.Propiedad;
 
 public class Transporte extends Propiedad {
 
-    public Transporte(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario, Tablero tablero){
+    public Transporte(String nombre, Grupo grupo, boolean comprable, int posicion, Participante propietario, Tablero tablero){
         super(nombre, grupo, comprable, posicion, propietario, tablero);
+        setPrecioInicial(grupo.getPrecio());
+    }
+
+    @Override
+    public int getPrecioActual(){
+        return(getGrupo().getPrecio());
     }
 
     @Override
     public void actualizarAlquiler(){
 
-        int importe = (int)(Constantes.COEF_ALQUILER * getImporteCompra());
+        int importe = (int)(getImporteCompra());
 
         if(importe == 0)
-            importe = (int)(Constantes.COEF_ALQUILER * getPrecioActual());
+            importe = (int)(getPrecioActual());
 
         int numTransportes = getPropietario().numeroCasillasObtenidas(TipoGrupo.transporte);
 

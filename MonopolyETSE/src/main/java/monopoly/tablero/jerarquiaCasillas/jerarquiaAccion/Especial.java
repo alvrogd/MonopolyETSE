@@ -6,17 +6,15 @@ import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.jugadores.excepciones.ImposibleMoverseException;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
 
-public abstract class Accion extends Casilla {
+public abstract class Especial extends Accion{
 
-    public Accion(String nombre, int posicion, Tablero tablero){
+    public Especial(String nombre, int posicion, Tablero tablero){
 
         super(nombre, posicion, tablero);
 
     }
 
-    public abstract void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException;
+    public abstract void ejecutarAccion(Jugador jugador);
 
 }

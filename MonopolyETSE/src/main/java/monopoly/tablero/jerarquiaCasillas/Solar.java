@@ -2,9 +2,9 @@ package monopoly.tablero.jerarquiaCasillas;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
-import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class Solar extends Propiedad{
 
     private HashMap<TipoEdificio, ArrayList<Edificio>> edificiosContenidos;
 
-    public Solar(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario, Tablero tablero){
+    public Solar(String nombre, Grupo grupo, boolean comprable, int posicion, Participante propietario, Tablero tablero){
 
         super(nombre, grupo, comprable, posicion, propietario, tablero);
 
@@ -51,7 +51,7 @@ public class Solar extends Propiedad{
      */
     public int edificar(TipoEdificio tipoEdificio, boolean splash){
 
-        Edificio edificacion;
+        Edificio edificacion = null;
         int precio;
         int numHoteles, numCasas, numPiscinas, numPistas, numCasillasGrupo;
         boolean maximo;
@@ -90,7 +90,7 @@ public class Solar extends Propiedad{
                         Output.respuesta("No se pueden construir más casas en esta casilla.");
                     return 0;
                 }
-
+                edificacion = new Casa(this, getGrupo().getTipo());
                 break;
 
             case hotel:
@@ -107,6 +107,7 @@ public class Solar extends Propiedad{
                 }
 
                 destruirEdificio(TipoEdificio.casa, 4);
+                edificacion = new Hotel(this, getGrupo().getTipo());
 
                 break;
 
@@ -123,6 +124,7 @@ public class Solar extends Propiedad{
                     return 0;
                 }
 
+                edificacion = new Piscina(this, getGrupo().getTipo());
 
                 break;
 
@@ -137,11 +139,12 @@ public class Solar extends Propiedad{
                         Output.respuesta("No se pueden edificar más pistas de deporte en esta casilla.");
                     return 0;
                 }
+
+                edificacion = new PistaDeporte(this, getGrupo().getTipo());
+
                 break;
 
         }
-
-        edificacion = new Edificio(this, tipoEdificio, getGrupo().getTipo());
 
         getEdificiosContenidos().get(tipoEdificio).add(edificacion);
 

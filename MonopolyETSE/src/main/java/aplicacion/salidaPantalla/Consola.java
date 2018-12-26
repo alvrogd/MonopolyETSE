@@ -6,4 +6,6 @@ public interface Consola {
 
     String leer(String descripcion);
 
+    int leer(String descripcion, boolean integer);
+
 }

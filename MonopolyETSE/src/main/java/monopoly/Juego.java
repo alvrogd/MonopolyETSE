@@ -65,9 +65,9 @@ public class Juego {
     // Si ha comprado una propiedad en el turno (por el avatar coche)
     private boolean haCompradoPropiedad;
 
-    private ArrayList<Carta> cartasSuerte;
+    private ArrayList<Suerte> cartasSuerte;
 
-    private ArrayList<Carta> cartasComunidad;
+    private ArrayList<CajaComunidad> cartasComunidad;
 
     /* Constructores */
 
@@ -126,31 +126,31 @@ public class Juego {
         cartasComunidad = new ArrayList<>();
         cartasSuerte = new ArrayList<>();
 
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCadiz));
-        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCaceres));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
-        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarLoteria));
-        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMatriculaColegio));
-        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarBienesInmuebles));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverLeganes));
-        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarPresidente));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTrafico));
-        cartasSuerte.add(new Carta(TipoAccion.pago, TipoPago.pagarMovil));
-        cartasSuerte.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarAcciones));
-        cartasSuerte.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverTransporte));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCadiz,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCaceres,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCarcel,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarLoteria,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMatriculaColegio,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarBienesInmuebles,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverLeganes,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarPresidente,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTrafico,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMovil,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarAcciones,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTransporte,getTablero()));
 
-        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarBalneario));
-        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverCarcel));
-        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverSalida));
-        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarInternet));
-        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarViajeLeon));
-        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarHacienda));
-        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverValencia));
-        cartasComunidad.add(new Carta(TipoAccion.pago, TipoPago.pagarAlquilerCannes));
-        cartasComunidad.add(new Carta(TipoAccion.cobro, TipoCobro.cobrarJet));
-        cartasComunidad.add(new Carta(TipoAccion.movimiento, TipoMovimiento.moverPamplona));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarBalneario,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverCarcel,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverSalida,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarInternet,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarViajeLeon,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarHacienda,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverValencia,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarAlquilerCannes,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarJet,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverPamplona,getTablero()));
 
     }
 
@@ -254,19 +254,19 @@ public class Juego {
         this.haCompradoPropiedad = haCompradoPropiedad;
     }
 
-    public ArrayList<Carta> getCartasSuerte() {
+    public ArrayList<Suerte> getCartasSuerte() {
         return cartasSuerte;
     }
 
-    public void setCartasSuerte(ArrayList<Carta> cartasSuerte) {
+    public void setCartasSuerte(ArrayList<Suerte> cartasSuerte) {
         this.cartasSuerte = cartasSuerte;
     }
 
-    public ArrayList<Carta> getCartasComunidad() {
+    public ArrayList<CajaComunidad> getCartasComunidad() {
         return cartasComunidad;
     }
 
-    public void setCartasComunidad(ArrayList<Carta> cartasComunidad) {
+    public void setCartasComunidad(ArrayList<CajaComunidad> cartasComunidad) {
         this.cartasComunidad = cartasComunidad;
     }
 
@@ -337,14 +337,17 @@ public class Juego {
 
                 //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
                 //desde el HashMap
-                if (this.iterador.hasNext())
+                if (this.iterador.hasNext()) {
                     this.turno = getJugadores().get(this.iterador.next());
+                    this.turno.reducirInmunidad();
+                }
 
                     //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
                     //jugador.
                 else {
                     this.iterador = getNombresJugadores().iterator();
                     this.turno = getJugadores().get(this.iterador.next());
+                    this.turno.reducirInmunidad();
                 }
 
                 //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
@@ -589,7 +592,7 @@ public class Juego {
         for(String nombreJugador : getNombresJugadores()){
 
             Jugador jugadorActual = getJugador(nombreJugador);
-            int dadosAux = jugadorActual.getValorDados();
+            int dadosAux = jugadorActual.getNumeroTiradas();
 
             if(dadosMax < dadosAux){
                 dadosMax = dadosAux;

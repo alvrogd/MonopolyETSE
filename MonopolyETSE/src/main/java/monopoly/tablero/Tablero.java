@@ -5,9 +5,11 @@ import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
 import monopoly.jugadores.Banca;
-import monopoly.jugadores.Jugador;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
+import monopoly.tablero.jerarquiaCasillas.Impuesto;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -228,38 +230,29 @@ public class Tablero {
 
         //Salida
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(0); aux.add(Constantes.NOMBRE_SALIDA);
-
-        Grupo salida = new Grupo(TipoGrupo.salida, this, false, aux);
-        this.grupos.put(TipoGrupo.salida, salida);
-
+        Salida salida = new Salida(Constantes.NOMBRE_SALIDA, 0, this);
+        getCasillas().get(salida.getPosicionEnTablero()/10).set(salida.getPosicionEnTablero()%10,salida);
+        getCasillasTablero().put(salida.getNombre(),salida);
 
         //Carcel
 
-        aux = new ArrayList<>();
-        aux.add(1); aux.add(0); aux.add(Constantes.NOMBRE_CARCEL);
-
-        Grupo carcel = new Grupo(TipoGrupo.carcel, this, false, aux);
-        this.grupos.put(TipoGrupo.carcel, carcel);
+        Carcel carcel = new Carcel(Constantes.NOMBRE_CARCEL, 10, this);
+        getCasillas().get(carcel.getPosicionEnTablero()/10).set(carcel.getPosicionEnTablero()%10,carcel);
+        getCasillasTablero().put(carcel.getNombre(),carcel);
 
 
         //Parking
 
-        aux = new ArrayList<>();
-        aux.add(2); aux.add(0); aux.add(Constantes.NOMBRE_PARKING);
-
-        Grupo parking = new Grupo(TipoGrupo.parking, this, false, aux);
-        this.grupos.put(TipoGrupo.parking, parking);
+        Parking parking = new Parking(Constantes.NOMBRE_PARKING, 20, this);
+        getCasillas().get(parking.getPosicionEnTablero()/10).set(parking.getPosicionEnTablero()%10,parking);
+        getCasillasTablero().put(parking.getNombre(),parking);
 
 
         //irCarcel
 
-        aux = new ArrayList<>();
-        aux.add(3);  aux.add(0); aux.add(Constantes.NOMBRE_IR_A_CARCEL);
-
-        Grupo irCarcel = new Grupo(TipoGrupo.irCarcel, this, false, aux); //26
-        this.grupos.put(TipoGrupo.irCarcel, irCarcel);
+        IrCarcel irCarcel = new IrCarcel(Constantes.NOMBRE_IR_A_CARCEL, 30, this);
+        getCasillas().get(irCarcel.getPosicionEnTablero()/10).set(irCarcel.getPosicionEnTablero()%10,irCarcel);
+        getCasillasTablero().put(irCarcel.getNombre(),irCarcel);
 
 
         //Transporte
@@ -294,50 +287,54 @@ public class Tablero {
 
         //Impuesto tipo 1
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(4); aux.add(Constantes.NOMBRE_IMPUESTO_1);
+        Impuesto impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_1, 4, this, Constantes.IMPUESTO_1);
 
-        Grupo impuestos1 = new Grupo(TipoGrupo.impuesto1, this, false, aux);
-        this.grupos.put(TipoGrupo.impuesto1, impuestos1);
+        getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
+        getCasillasTablero().put(impuesto.getNombre(),impuesto);
 
 
         //Impuesto tipo 2
 
-        aux = new ArrayList<>();
-        aux.add(3); aux.add(8); aux.add(Constantes.NOMBRE_IMPUESTO_2);
+        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_1, 38, this, Constantes.IMPUESTO_1);
 
-        Grupo impuestos2 = new Grupo(TipoGrupo.impuesto2, this, false, aux);//34
-        this.grupos.put(TipoGrupo.impuesto2, impuestos2);
+        getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
+        getCasillasTablero().put(impuesto.getNombre(),impuesto);
 
 
         //Casillas suerte
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(7); aux.add(Constantes.NOMBRE_SUERTE_1);
+        SuerteCasilla suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_1, 7, this);
 
-        aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(2); aux2.add(Constantes.NOMBRE_SUERTE_2);
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
 
-        aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(6); aux3.add(Constantes.NOMBRE_SUERTE_3);
+        suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_2, 22, this);
 
-        Grupo suerte = new Grupo(TipoGrupo.suerte, this, false, aux, aux2, aux3);
-        this.grupos.put(TipoGrupo.suerte, suerte);
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
+
+        suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_3, 36, this);
+
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
 
 
         //Casillas comunidad
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(2); aux.add(Constantes.NOMBRE_COMUNIDAD_1);
+        ComunidadCasilla comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_1, 2, this);
 
-        aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(7); aux2.add(Constantes.NOMBRE_COMUNIDAD_2);
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
 
-        aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(3); aux3.add(Constantes.NOMBRE_COMUNIDAD_3);
+        comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_2, 17, this);
 
-        Grupo comunidad = new Grupo(TipoGrupo.comunidad, this, false, aux, aux2, aux3);
-        this.grupos.put(TipoGrupo.comunidad, comunidad);
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
+
+        comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_3, 33, this);
+
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
 
     }
 

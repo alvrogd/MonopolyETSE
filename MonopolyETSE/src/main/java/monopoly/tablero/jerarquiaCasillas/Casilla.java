@@ -98,7 +98,7 @@ public abstract class Casilla {
 
         salida += "(*) Casilla: " + getNombre() + "\n";
 
-        return toString();
+        return salida;
     }
 
     @Override

@@ -18,4 +18,11 @@ public class ConsolaNormal implements Consola{
         return(entrada.nextLine());
     }
 
+    @Override
+    public int leer(String descripcion, boolean integer){
+
+        Scanner entrada = new Scanner(System.in);
+        Output.imprimirEntradaComando(descripcion);
+        return(entrada.nextInt());
+    }
 }

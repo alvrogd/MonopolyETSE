@@ -2,6 +2,7 @@ package aplicacion.salidaPantalla;
 
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
+import monopoly.jugadores.excepciones.*;
 
 public interface IComando {
 
@@ -12,21 +13,24 @@ public interface IComando {
     void listarAvatares();
     void listarEdificios();
     void listarEdificiosGrupo(String grupo);
-    void lanzarDados();
+    void lanzarDados() throws EstarPenalizadoException, ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
+            ImposibleCambiarModoException;
     void finalizarTurno();
-    void salirCarcel();
+    void salirCarcel() throws NoEstarEncarceladoException, SeHanLanzadoDadosException, NoLiquidezException,
+            EstarBancarrotaException, NoSerPropietarioException;
     void describirCasilla(String nombreCasilla);
     void describirJugador(String nombreJugador);
     void describirAvatar(String idAvatar);
-    void comprar(String nombreSolar);
+    void comprar(String nombrePropiedad) throws NoEncontrarseEnPropiedadException, NoComprarABancaException, NoLiquidezException, NoSerPropietarioException;
     void listarEnVenta();
     void verTablero();
-    void edificar(String tipoEdificio);
-    void cambiarModo();
-    void hipotecar(String nombrePropiedad);
-    void deshipotecar(String nombrePropiedad);
-    void vender(String tipoEdificio, String numero, String nombrePropiedad);
-    void avanzar();
+    void edificar(String tipoEdificio) throws NoSerPropietarioException, HipotecaPropiedadException;
+    void cambiarModo() throws ImposibleCambiarModoException;
+    void hipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException, EdificiosSolarException;
+    void deshipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException, NoLiquidezException;
+    void vender(String tipoEdificio, String numero, String nombrePropiedad) throws NoSerPropietarioException,
+            HipotecaPropiedadException, EdificiosSolarException, InputUsuarioException;
+    void avanzar() throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException;
     void estadisticasJugadores(String nombreJugador);
     void estadisticasGlobales();
     void ayuda();

@@ -1,10 +1,10 @@
-package monopoly.tablero.jerarquiaCasillas;
+package monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios;
 
 import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 
-public class Edificio {
+public abstract class Edificio {
 
     /* Atributos */
     private final TipoEdificio tipo;
@@ -60,10 +60,6 @@ public class Edificio {
     }
 
     /* Getters */
-    public TipoEdificio getTipo() {
-        return tipo;
-    }
-
     public int getPrecioCompra() {
         return precioCompra;
     }

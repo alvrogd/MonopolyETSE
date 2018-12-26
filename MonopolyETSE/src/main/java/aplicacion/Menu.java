@@ -55,7 +55,11 @@ public class Menu {
 
         app.imprimirBuffer();
 
-        Aplicacion.consola.leer("Acción");
+        try {
+            app.introducirComando(Aplicacion.consola.leer("Acción"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while(true){
 
@@ -63,8 +67,11 @@ public class Menu {
                 Output.imprimirCabeceraJugador(app.getJuego().getTurno());
             }
 
-            Output.imprimirEntradaComando();
-            app.introducirComando(Aplicacion.consola.leer("Acción"));
+            try {
+                app.introducirComando(Aplicacion.consola.leer("Acción"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
     }

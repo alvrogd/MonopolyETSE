@@ -2,10 +2,10 @@ package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.excepciones.*;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
-import monopoly.tablero.Transporte;
 import monopoly.tablero.jerarquiaCasillas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 
 import java.util.ArrayList;
 
