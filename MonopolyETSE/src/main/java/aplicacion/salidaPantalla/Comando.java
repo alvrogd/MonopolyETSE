@@ -7,6 +7,8 @@ import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.TipoAvatar;
 import monopoly.jugadores.excepciones.*;
+import monopoly.jugadores.tratos.Inmunidad;
+import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.Carta;
@@ -15,6 +17,7 @@ import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Comando implements IComando {
 
@@ -353,7 +356,27 @@ public class Comando implements IComando {
                 break;
 
             case "trato":
-                ejecutarTrato(getLinea());
+                ejecutarTrato();
+                break;
+
+            case "aceptar":
+                if(size < 2){
+                    Output.errorComando("Comando <<aceptar>> incorrecto.");
+                    return;
+                }
+                aceptarTrato(getArgv().get(1));
+                break;
+
+            case "eliminar":
+                if(size < 2){
+                    Output.errorComando("Comando <<eliminar>> incorrecto.");
+                    return;
+                }
+                eliminarTrato(getArgv().get(1));
+                break;
+
+            case "tratos":
+                listarTrato();
                 break;
 
             default:
@@ -1304,7 +1327,8 @@ public class Comando implements IComando {
      * Función para interpretar la línea de comando del trato introducido.
      * @param linea línea del comando introducido por el usuario
      * @return devuelve un ArrayList que contendrá lo siguiente: (ArrayList con propiedades a dar, Integer de dinero a dar,
-     * ArrayList propiedades a recibir, Integer dinero a recibir, ArrayList que contiene tuplas (propiedad, turno) de inmunidad)
+     * ArrayList propiedades a recibir, Integer dinero a recibir, ArrayList que contiene tuplas (propiedad, turno) de inmunidad,
+     * Jugador receptor)
      * En caso de que alguna de estas características no sean introducidas en el comando se introducirá un null en su
      * correspondiente lugar, por lo tanto es necesario realizar una comprobación previa.
      */
@@ -1317,7 +1341,7 @@ public class Comando implements IComando {
         ArrayList<Propiedad> propiedadRecibir = new ArrayList<>();
 
         //Cada elemento contiene una tupla (propiedad, turnos)
-        ArrayList<ArrayList<Object>> propiedadesInmune = new ArrayList<>();
+        ArrayList<Inmunidad> propiedadesInmune = new ArrayList<>();
 
         ArrayList<String> separacionEspacio = separar(linea, ' ');
 
@@ -1425,12 +1449,9 @@ public class Comando implements IComando {
 
                     for(Object propiedad : propiedades){
 
-                        ArrayList<Object> auxiliarObject = new ArrayList<>();
+                        Inmunidad inmunidad = new Inmunidad((Propiedad)propiedad, (Integer)auxNoAlquiler.get(1));
 
-                        auxiliarObject.add(propiedad);
-                        auxiliarObject.add(auxNoAlquiler.get(1));
-
-                        propiedadesInmune.add(auxiliarObject);
+                        propiedadesInmune.add(inmunidad);
 
                     }
 
@@ -1450,69 +1471,150 @@ public class Comando implements IComando {
         salida.add(propiedadRecibir);
         salida.add(dineroRecibir);
         salida.add(propiedadesInmune);
+        salida.add(jugador);
 
         return salida;
     }
 
-    public void ejecutarTrato(String linea){
+    public void ejecutarTrato() throws NoLiquidezException, NoSerPropietarioException{
 
-        ArrayList<Object> argumentos = interpretarTrato(linea);
+        if(!getApp().getJuego().isIniciado()){
+            Output.errorComando("El juego no se ha iniciado");
+            return;
+        }
+
+        Jugador emisor = getApp().getJuego().getTurno();
+        Jugador receptor = null;
+        ArrayList<Object> argumentos = interpretarTrato(getLinea());
+        ArrayList<Propiedad> propiedadesDar, propiedadesRecibir;
+        Integer dineroDar, dineroRecibir;
 
         if(argumentos == null){
             return;
         }
 
-        ArrayList<Propiedad> propiedadesDar, propiedadesRecibir;
-        Integer dineroDar, dineroRecibir;
-
         propiedadesDar = (ArrayList<Propiedad>)argumentos.get(0);
         propiedadesRecibir = (ArrayList<Propiedad>)argumentos.get(2);
         dineroDar = (Integer) argumentos.get(1);
         dineroRecibir = (Integer) argumentos.get(3);
-        ArrayList<ArrayList<Object>> propiedadesInmunidad = (ArrayList<ArrayList<Object>>) argumentos.get(4);
+        receptor = (Jugador) argumentos.get(5);
+        ArrayList<Inmunidad> propiedadesInmunidad = (ArrayList<Inmunidad>) argumentos.get(4);
 
-        if(propiedadesDar != null) {
+        if(propiedadesDar == null){
+            propiedadesDar = new ArrayList<>();
+        }
 
-            for (Propiedad propiedad : propiedadesDar) {
+        if(propiedadesRecibir == null){
+            propiedadesRecibir = new ArrayList<>();
+        }
 
-                System.out.println(propiedad.getNombre());
+        if(dineroDar == null){
+            dineroDar = 0;
+        }
 
-            }
+        if(dineroRecibir == null){
+            dineroRecibir = 0;
+        }
+
+        if(propiedadesInmunidad == null){
+            propiedadesInmunidad = new ArrayList<>();
+        }
+
+        if(emisor.balanceNegativoTrasPago(dineroDar))
+            throw new NoLiquidezException("El jugador " + emisor.getNombre() + " no dispone de liquidez suficiente para proponer el trato.");
+
+        for(Propiedad propiedad : propiedadesDar){
+            if(!propiedad.getPropietario().equals(emisor))
+                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a " + emisor.getNombre());
 
         }
 
-        if(dineroDar != null) {
-
-            System.out.println("Por: " + dineroDar);
-
+        for(Propiedad propiedad : propiedadesRecibir){
+            if(!propiedad.getPropietario().equals(receptor))
+                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a " + receptor.getNombre());
         }
 
-        System.out.println("A cambiar por...");
-
-        if(propiedadesRecibir != null) {
-            for (Propiedad propiedad : propiedadesRecibir) {
-
-                System.out.println(propiedad.getNombre());
-
-            }
+        for(Inmunidad inmunidad : propiedadesInmunidad) {
+            if (!inmunidad.getPropiedad().getPropietario().equals(receptor))
+                throw new NoSerPropietarioException("La propiedad " + inmunidad.getPropiedad().getNombre() + " no pertenece a " + receptor.getNombre());
         }
 
-        if(dineroRecibir != null) {
-            System.out.println("Por: " + dineroRecibir);
-        }
+        getApp().getJuego().incrementarNumTratos(1);
 
-        if(propiedadesInmunidad != null){
 
-            for(ArrayList<Object> tupla : propiedadesInmunidad){
+        String idTrato = "trato"+getApp().getJuego().getNumTratos();
 
-                System.out.println("{Propiedad: " + ((Propiedad)tupla.get(0)).getNombre());
-                System.out.println("    Turnos: " + ((Integer) tupla.get(1)) + "}");
+        Trato trato = new Trato(emisor, receptor, propiedadesDar, propiedadesRecibir, dineroDar, dineroRecibir, propiedadesInmunidad, idTrato);
 
-            }
+        getApp().getJuego().getTurno().getTratosEmitidos().put(trato.getId(), trato);
+        receptor.proponerTrato(trato);
 
-        }
+        Output.respuesta(Output.toArrayString(trato.toString()));
 
     }
 
+    @Override
+    public void aceptarTrato(String idTrato) throws NoLiquidezException, NoSerPropietarioException{
+        if(!getApp().getJuego().isIniciado()){
+            Output.errorComando("El juego no está iniciado");
+            return;
+        }
+        getApp().getJuego().getTurno().aceptarTrato(idTrato);
+    }
+
+    @Override
+    public void eliminarTrato(String idTrato) {
+        if(!getApp().getJuego().isIniciado()){
+            Output.errorComando("El juego no está iniciado");
+            return;
+        }
+        getApp().getJuego().getTurno().eliminarTrato(idTrato);
+    }
+
+    @Override
+    public void listarTrato() {
+        if(!getApp().getJuego().isIniciado()){
+            Output.errorComando("El juego no está iniciado");
+            return;
+        }
+
+        Set<String> tratos = getApp().getJuego().getTurno().getTratosEmitidos().keySet();
+
+        String salida = "";
+        boolean emitido = false;
+        boolean recibido = false;
+
+        salida += "\n(!) Tratos emitidos pendientes: \n";
+
+        int contador = 0;
+
+        for(String idTrato : tratos){
+            emitido = true;
+            contador++;
+            salida += "(Trato "+contador+")────────────────────────────────────────────()";
+            salida += getApp().getJuego().getTurno().getTratosEmitidos().get(idTrato).toString();
+        }
+
+        if(!emitido)
+            salida += " (-) Sin tratos emitidos.\n";
+
+        salida += "\n(!) Tratos recibidos: \n";
+
+        tratos = getApp().getJuego().getTurno().getTratosRecibidos().keySet();
+
+        contador = 0;
+
+        for(String idTrato : tratos){
+            recibido = true;
+            contador++;
+            salida += "(Trato "+contador+")────────────────────────────────────────────()\n";
+            salida += getApp().getJuego().getTurno().getTratosRecibidos().get(idTrato).toString();
+        }
+
+        if(!recibido)
+            salida += " (-) Sin tratos recibidos.\n";
+
+        Output.respuesta(Output.toArrayString(salida));
+    }
 }
 

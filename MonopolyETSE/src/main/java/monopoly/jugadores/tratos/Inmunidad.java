@@ -53,4 +53,11 @@ public class Inmunidad {
 
         this.numeroTurnos = numeroTurnos;
     }
+
+    @Override
+    public String toString(){
+
+        return("("+propiedad.getNombre()+", "+numeroTurnos+")");
+
+    }
 }

@@ -4,6 +4,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
 import monopoly.tablero.Tablero;
@@ -69,6 +70,9 @@ public class Juego {
 
     private ArrayList<CajaComunidad> cartasComunidad;
 
+    //Para los tratos
+    private int numTratos;
+
     /* Constructores */
 
     /**
@@ -92,6 +96,7 @@ public class Juego {
         haAcabadoMovimiento = false;
         haCompradoPropiedad = false;
         anadirCartas();
+        numTratos = 0;
 
     }
 
@@ -152,6 +157,27 @@ public class Juego {
         cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarJet,getTablero()));
         cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverPamplona,getTablero()));
 
+    }
+
+    public int getNumTratos() {
+        return numTratos;
+    }
+
+    public void setNumTratos(int numTratos) {
+        if(numTratos < 0){
+            System.err.println("Número de tratos no puede ser negativo");
+            System.exit(1);
+        }
+        this.numTratos = numTratos;
+    }
+
+    public void incrementarNumTratos(int incremento){
+
+        if(incremento < 0){
+            System.err.println("Incremento no puede ser negativo.");
+            System.exit(1);
+        }
+        setNumTratos(getNumTratos()+incremento);
     }
 
     private void barajarCarta(String tipo) {

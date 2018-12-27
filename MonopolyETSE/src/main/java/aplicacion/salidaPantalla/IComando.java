@@ -34,6 +34,9 @@ public interface IComando {
     void estadisticasJugadores(String nombreJugador);
     void estadisticasGlobales();
     void ayuda();
-    void ejecutarTrato(String linea);
+    void ejecutarTrato() throws NoLiquidezException, NoSerPropietarioException;
+    void aceptarTrato(String idTrato) throws NoLiquidezException, NoSerPropietarioException;
+    void eliminarTrato(String idTrato);
+    void listarTrato();
 
 }
