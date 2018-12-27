@@ -34,5 +34,6 @@ public interface IComando {
     void estadisticasJugadores(String nombreJugador);
     void estadisticasGlobales();
     void ayuda();
+    void ejecutarTrato(String linea);
 
 }

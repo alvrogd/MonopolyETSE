@@ -177,6 +177,25 @@ public class Juego {
 
     }
 
+    public boolean isPropiedad(String nombre){
+
+        boolean resultado;
+        Casilla casilla;
+
+        if((casilla = getTablero().getCasillasTablero().get(nombre)) == null){
+            resultado = false;
+        } else{
+            if(casilla instanceof Propiedad){
+                resultado = true;
+            } else {
+                resultado = false;
+            }
+        }
+
+        return resultado;
+
+    }
+
     public Carta barajarComunidad(int numCarta) {
 
         if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {

@@ -20,6 +20,7 @@ public class Comando implements IComando {
 
     private ArrayList<String> argv;
     private Aplicacion app;
+    private String linea;
 
     /**
      * Genera los argumentos del comando además de asignar el tipo de comando que es
@@ -38,6 +39,12 @@ public class Comando implements IComando {
 
         this.argv = separarEspacios(linea);
 
+        this.linea = linea;
+
+    }
+
+    public String getLinea() {
+        return linea;
     }
 
     /**
@@ -343,6 +350,10 @@ public class Comando implements IComando {
             case "mover":
                 if(size > 1)
                     mover(getArgv().get(1));
+                break;
+
+            case "trato":
+                ejecutarTrato(getLinea());
                 break;
 
             default:
@@ -1005,7 +1016,14 @@ public class Comando implements IComando {
             return;
         }
 
-        int cantidad = Integer.parseInt(numero);
+        int cantidad;
+
+        if(Aplicacion.consola.isInteger(numero))
+            cantidad = Integer.parseInt(numero);
+        else{
+            Output.errorComando("El número introducido es incorrecto.");
+            return;
+        }
 
         getApp().getJuego().getTurno().venderEdificio(edificio, cantidad, (Solar)casillaV);
     }
@@ -1070,6 +1088,430 @@ public class Comando implements IComando {
 
     public void ayuda() {
         Output.imprimirAyuda();
+    }
+
+    /**
+     * Pasa el array de Char introducido a un String, sin incluir los caracteres '\0'
+     */
+    private String arrayCharToString(char[] array){
+
+        String salida = "";
+
+        for(char letra : array){
+            if(letra != '\0')
+                salida += letra;
+        }
+
+        return salida;
+    }
+
+    private ArrayList<String> separar(String linea, char separacion){
+
+        String aux = "";
+        char[] array = linea.toCharArray();
+        boolean modificado = false;
+        ArrayList<String> salida = new ArrayList<>();
+
+        for(char letra : array){
+
+            if(letra != separacion) {
+                aux += letra;
+                modificado = true;
+            }
+            else{
+                if(modificado)
+                    salida.add(eliminarEspacioInicialFinal(aux));
+                aux = "";
+                modificado = false;
+            }
+        }
+
+        if(modificado)
+            salida.add(eliminarEspacioInicialFinal(aux));
+
+        return salida;
+    }
+
+    private String eliminarEspacioInicialFinal(String linea){
+
+        char[] array = linea.toCharArray();
+
+        if(array[0] == ' '){
+
+            array[0] = '\0';
+
+        }
+
+        if(array[array.length-1] == ' '){
+
+            array[array.length-1] = '\0';
+
+        }
+
+        if(array[array.length - 1] == ')'){
+
+            array[array.length-1] = '\0';
+
+        }
+
+        return(arrayCharToString(array));
+
+    }
+
+    /**
+     * Función para interpretar los argumentos del subcomando cambiar del trato
+     * @param linea argumentos del subcomando, sin paréntesis '('
+     * @return devuelve el siguiente Array: (Array con propiedades a dar, Integer de dinero a dar, Array con propiedades
+     * a recibir, Integer dinero a recibir)
+     * En caso de que alguna de estas características no sean introducidas en el comando se introducirá un null en su
+     * correspondiente lugar, por lo tanto es necesario realizar una comprobación previa.
+     */
+    private ArrayList<Object> interpretarCambiar(String linea){
+
+        //Se van a separar los argumentos mediante ',' para diferenciar la parte a dar por el usuario, de la parte que
+        //recibe.
+
+        ArrayList<Object> salida = new ArrayList<>();
+        Integer dineroDar = 0;
+        Integer dineroRecibir = 0;
+        ArrayList<Propiedad> propiedadDar = new ArrayList<>();
+        ArrayList<Propiedad> propiedadRecibir = new ArrayList<>();
+
+        linea = eliminarEspacioInicialFinal(linea);
+
+        ArrayList<String> partes = separar(linea, ',');
+
+        //Se comprueba que solo haya una única coma, por lo tanto dos Strings
+
+        if(partes.size() != 2){
+            Output.errorComando("Error en <<cambiar>> del comando trato.");
+            return null;
+        }
+
+        String argumentoDar = partes.get(0);
+        String argumentoRecibir = partes.get(1);
+
+        //A continuación se separa cada uno de ellos mediante 'y' para determinar las cosas a cambiar.
+        ArrayList<String> separacionDar = separar(argumentoDar, '&');
+
+        //Se interpretan los argumentos introducidos para dar al usuario
+        for(String arg : separacionDar){
+
+            //Para cada argumentos se eliminan los posibles espacios iniciales y finales que se hayan quedado
+            String auxiliar = eliminarEspacioInicialFinal(arg);
+
+            if(Aplicacion.consola.isInteger(auxiliar)){
+                dineroDar+=(Integer.parseInt(auxiliar));
+            } else if(getApp().getJuego().isPropiedad(auxiliar)){
+                propiedadDar.add((Propiedad)getApp().getJuego().getTablero().getCasillasTablero().get(auxiliar));
+            } else {
+                Output.errorComando(auxiliar+" no es ni un entero ni una propiedad.");
+                return null;
+            }
+
+        }
+
+        //Se elimina el ')' del subcomando en caso de que exista.
+        argumentoRecibir = separar(argumentoRecibir, ')').get(0);
+        ArrayList<String> separacionRecibir = separar(argumentoRecibir, '&');
+
+        for(String arg : separacionRecibir){
+
+            //Para cada argumentos se eliminan los posibles espacios iniciales y finales que se hayan quedado
+            String auxiliar = eliminarEspacioInicialFinal(arg);
+
+            if(Aplicacion.consola.isInteger(auxiliar)){
+                dineroRecibir+=(Integer.parseInt(auxiliar));
+            } else if(getApp().getJuego().isPropiedad(auxiliar)){
+                propiedadRecibir.add((Propiedad)getApp().getJuego().getTablero().getCasillasTablero().get(auxiliar));
+            } else {
+                Output.errorComando(auxiliar+" no es ni un entero ni una propiedad.");
+                return null;
+            }
+
+        }
+
+        salida.add(propiedadDar);
+        salida.add(dineroDar);
+        salida.add(propiedadRecibir);
+        salida.add(dineroRecibir);
+
+        return salida;
+
+    }
+
+    /**
+     * Función para interpretar los argumentos del subcomando noalquiler del trato
+     * @param linea argumentos del subcomando, sin paréntesis '('
+     * @return devuelve el siguiente Array: (Array con propiedades a las que será inmune, Integer turnos de inmunidad)
+     */
+    private ArrayList<Object> interpretarNoAlquiler(String linea){
+
+        ArrayList<Object> salida = new ArrayList<>();
+        ArrayList<Propiedad> propiedadesInmune = new ArrayList<>();
+        Integer numTurnos;
+
+        linea = eliminarEspacioInicialFinal(linea);
+
+        ArrayList<String> partes = separar(linea, ',');
+
+        //Solo puede haber dos partes, la de las propiedades y la del número de turnos
+        if(partes.size() != 2){
+
+            Output.errorComando("Error en <<noalquiler>> del comando trato.");
+            return null;
+
+        }
+
+        ArrayList<String> nombrePropiedades = separar(partes.get(0), '&');
+
+        for(String nombre : nombrePropiedades){
+
+            if(getApp().getJuego().isPropiedad(nombre)){
+
+                propiedadesInmune.add((Propiedad) getApp().getJuego().getTablero().getCasillasTablero().get(nombre));
+
+            } else {
+
+                Output.errorComando(nombre + " no es una propiedad.");
+                return null;
+
+            }
+
+        }
+
+        if(Aplicacion.consola.isInteger(partes.get(1))){
+
+            numTurnos = Integer.parseInt(partes.get(1));
+            if(numTurnos < 0){
+                Output.errorComando(partes.get(1) + " no es un número válido.");
+                return null;
+            }
+
+        } else {
+            Output.errorComando(partes.get(1) + " no es un número válido.");
+            return null;
+        }
+
+        salida.add(propiedadesInmune);
+        salida.add(numTurnos);
+
+        return salida;
+
+    }
+
+    /**
+     * Función para interpretar la línea de comando del trato introducido.
+     * @param linea línea del comando introducido por el usuario
+     * @return devuelve un ArrayList que contendrá lo siguiente: (ArrayList con propiedades a dar, Integer de dinero a dar,
+     * ArrayList propiedades a recibir, Integer dinero a recibir, ArrayList que contiene tuplas (propiedad, turno) de inmunidad)
+     * En caso de que alguna de estas características no sean introducidas en el comando se introducirá un null en su
+     * correspondiente lugar, por lo tanto es necesario realizar una comprobación previa.
+     */
+    private ArrayList<Object> interpretarTrato(String linea){
+
+        ArrayList<Object> salida = new ArrayList<>();
+        Integer dineroDar = 0;
+        Integer dineroRecibir = 0;
+        ArrayList<Propiedad> propiedadDar = new ArrayList<>();
+        ArrayList<Propiedad> propiedadRecibir = new ArrayList<>();
+
+        //Cada elemento contiene una tupla (propiedad, turnos)
+        ArrayList<ArrayList<Object>> propiedadesInmune = new ArrayList<>();
+
+        ArrayList<String> separacionEspacio = separar(linea, ' ');
+
+        if(separacionEspacio.size() <= 2){
+            Output.errorComando("El trato introducido es incorrecto.");
+            return null;
+        }
+
+        String aux = separacionEspacio.get(0); //se va a comprobar que la primera palabra sea igual a "trato"
+        if(!(aux.equals("trato") || aux.equals(("Trato")))){
+            Output.errorComando("El trato introducido es incorrecto.");
+            return null;
+        }
+
+        //A continuación se separa la línea entera en mediante los ':', el primera obtendremos "trato <jugador>" y en la
+        //segunda los argumentos
+
+        ArrayList<String> separacionDosPuntos = separar(linea, ':');
+
+        //En el comando solo deberían aparecer los ":" una única vez, generando dos strings, en caso de que haya más o menos
+        //será un error.
+        if(separacionDosPuntos.size() != 2){
+            Output.errorComando("Comando <<trato>> incorrecto.");
+            return null;
+        }
+
+        //A continuación se separa la primera componente por espacios para obtener el jugador
+        //Ya no es necesario realizar la comprobación debido a que ya se ha separado antes por espacios
+        aux = separar(separacionDosPuntos.get(0), ' ').get(1);
+
+        Jugador jugador; //Ahora se va a comprobar que el jugador introducido exista.
+
+        if((jugador = getApp().getJuego().getJugadores().get(aux)) == null){
+            Output.errorComando("El jugador introducido no existe.");
+            return null;
+        }
+
+        //Ahora se va a proceder a separar la segunda componente, la de los argumentos, a partir de 'y'.
+        //En caso de que no haya ninguna 'y' y solo se realice un cambio habrá un elemento en el array.
+
+        ArrayList<String> argumentosSeparados = separar(separacionDosPuntos.get(1), '+');
+
+        for(String argumento : argumentosSeparados){
+
+            //Se va a separar el argumento por '(' para obtener el nombre del subcomando y sus argumentos
+
+            ArrayList<String> subComando = separar(argumento, '(');
+
+            //En el subcomando solo debería aparecer un '(', o sea dos nuevos Strings
+            if(subComando.size() != 2){
+                Output.errorComando("Trato introducido incorrecto.");
+                return null;
+            }
+
+            //Ahora se separa el subComando.get(0) (cambiar o noalquiler) por espacios por si tienen un espacio al inicio
+            //Como el espacio va a ser al inicio, en cualquier caso se generará un Array de un único string.
+            subComando.set(0, eliminarEspacioInicialFinal(subComando.get(0)));
+
+            //A continuación se discrimina en función del subcomando introducido.
+            switch(subComando.get(0)){
+
+                case "cambiar":
+                    ArrayList<Object> auxCambiar = interpretarCambiar(subComando.get(1));
+
+                    //Se obtiene la tupla devuelta por interpretarCambiar y se añade a los arrays correspondientes.
+                    //En caso de que un valor sea null es que no ha sido introducido por el usuario.
+                    //Si el array devuelto es null es porque el comando es incorrecto.
+                    if(auxCambiar == null){
+                        return null;
+                    }
+                    for(int i = 0; i < auxCambiar.size(); i++){
+
+                        if(auxCambiar.get(i) != null){
+                            switch (i) {
+                                case 0:
+                                    propiedadDar.addAll((ArrayList)auxCambiar.get(i));
+                                    break;
+
+                                case 1:
+                                    dineroDar+=(Integer) auxCambiar.get(i);
+                                    break;
+
+                                case 2:
+                                    propiedadRecibir.addAll((ArrayList)auxCambiar.get(i));
+                                    break;
+
+                                case 3:
+                                    dineroRecibir+=((Integer) auxCambiar.get(i));
+                                    break;
+                            }
+                        }
+
+                    }
+                    break;
+
+                case "noalquiler":
+                    ArrayList<Object> auxNoAlquiler = interpretarNoAlquiler(subComando.get(1));
+                    if(auxNoAlquiler == null){
+                        return null;
+                    }
+
+                    ArrayList propiedades = (ArrayList) auxNoAlquiler.get(0);
+
+                    //Se crea una tupla (propiedad, turno) para cada propiedad
+
+                    for(Object propiedad : propiedades){
+
+                        ArrayList<Object> auxiliarObject = new ArrayList<>();
+
+                        auxiliarObject.add(propiedad);
+                        auxiliarObject.add(auxNoAlquiler.get(1));
+
+                        propiedadesInmune.add(auxiliarObject);
+
+                    }
+
+                    break;
+
+
+                default:
+                    Output.errorComando(subComando.get(0) + " no es un subcomando de trato");
+                    break;
+
+            }
+
+        }
+
+        salida.add(propiedadDar);
+        salida.add(dineroDar);
+        salida.add(propiedadRecibir);
+        salida.add(dineroRecibir);
+        salida.add(propiedadesInmune);
+
+        return salida;
+    }
+
+    public void ejecutarTrato(String linea){
+
+        ArrayList<Object> argumentos = interpretarTrato(linea);
+
+        if(argumentos == null){
+            return;
+        }
+
+        ArrayList<Propiedad> propiedadesDar, propiedadesRecibir;
+        Integer dineroDar, dineroRecibir;
+
+        propiedadesDar = (ArrayList<Propiedad>)argumentos.get(0);
+        propiedadesRecibir = (ArrayList<Propiedad>)argumentos.get(2);
+        dineroDar = (Integer) argumentos.get(1);
+        dineroRecibir = (Integer) argumentos.get(3);
+        ArrayList<ArrayList<Object>> propiedadesInmunidad = (ArrayList<ArrayList<Object>>) argumentos.get(4);
+
+        if(propiedadesDar != null) {
+
+            for (Propiedad propiedad : propiedadesDar) {
+
+                System.out.println(propiedad.getNombre());
+
+            }
+
+        }
+
+        if(dineroDar != null) {
+
+            System.out.println("Por: " + dineroDar);
+
+        }
+
+        System.out.println("A cambiar por...");
+
+        if(propiedadesRecibir != null) {
+            for (Propiedad propiedad : propiedadesRecibir) {
+
+                System.out.println(propiedad.getNombre());
+
+            }
+        }
+
+        if(dineroRecibir != null) {
+            System.out.println("Por: " + dineroRecibir);
+        }
+
+        if(propiedadesInmunidad != null){
+
+            for(ArrayList<Object> tupla : propiedadesInmunidad){
+
+                System.out.println("{Propiedad: " + ((Propiedad)tupla.get(0)).getNombre());
+                System.out.println("    Turnos: " + ((Integer) tupla.get(1)) + "}");
+
+            }
+
+        }
+
     }
 
 }
