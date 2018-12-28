@@ -3,10 +3,7 @@ package monopoly.tablero.jerarquiaCasillas.jerarquiaAccion;
 import aplicacion.Aplicacion;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.cartas.Carta;
 
@@ -20,7 +17,7 @@ public class ComunidadCasilla extends Accion{
 
     @Override
     public void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException {
+            ImposibleMoverseException, EdificiosSolarException {
 
         if(jugador == null){
             System.err.println("Jugador referencia a null");

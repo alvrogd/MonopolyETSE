@@ -58,7 +58,7 @@ public class Menu {
         try {
             app.introducirComando(Aplicacion.consola.leer("Acción"));
         } catch (Exception e) {
-            e.printStackTrace();
+            Output.errorComando(e.getMessage());
         }
 
         while(true){
@@ -70,7 +70,8 @@ public class Menu {
             try {
                 app.introducirComando(Aplicacion.consola.leer("Acción"));
             } catch (Exception e) {
-                e.printStackTrace();
+                Output.errorComando(e.getMessage());
+                app.imprimirBuffer();
             }
 
         }

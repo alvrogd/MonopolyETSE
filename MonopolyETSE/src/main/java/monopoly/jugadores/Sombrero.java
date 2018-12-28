@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import monopoly.jugadores.excepciones.EdificiosSolarException;
 import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.Tablero;
@@ -87,7 +88,7 @@ public class Sombrero extends Avatar {
      * @param numeroCasillas número de casillas a moverse
      * @return posición de la casilla destino
      */
-    public int calcularNuevaPosicion(int numeroCasillas) {
+    public int calcularNuevaPosicion(int numeroCasillas) throws EdificiosSolarException {
 
         // Si el jugador se encuentra en movimiento estándar, se avanza con normalidad
         if (isMovimientoEstandar())
@@ -105,7 +106,7 @@ public class Sombrero extends Avatar {
      * @param numeroCasillas número de casillas a moverse
      * @return posición de la casilla en el tablero a la que el avatar se ha movido
      */
-    public int actualizarPosicionSombrero(int numeroCasillas) {
+    public int actualizarPosicionSombrero(int numeroCasillas) throws EdificiosSolarException {
 
         // Se asigna inicialmente el número de casilla inicial
         int posicionFinal = getPosicion().getPosicionEnTablero();

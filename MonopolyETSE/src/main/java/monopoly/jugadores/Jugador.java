@@ -171,7 +171,7 @@ public class Jugador extends Participante {
     public void setTiradasEnTurno(int tiradasEnTurno) {
 
         if (tiradasEnTurno < 0) {
-            Output.sugerencia("El número de tiradas en un turno no puede ser menor a 0");
+            System.err.println("El número de tiradas en un turno no puede ser menor a 0");
             System.exit(1);
         }
 
@@ -188,7 +188,7 @@ public class Jugador extends Participante {
     public void setTurnosPenalizado(int turnosPenalizado) {
 
         if (turnosPenalizado < 0) {
-            Output.sugerencia("El número de turnos penalizados no puede ser menor a 0");
+            System.err.println("El número de turnos penalizados no puede ser menor a 0");
             System.exit(1);
         }
 
@@ -566,7 +566,7 @@ public class Jugador extends Participante {
      */
     public void lanzarDados(Dado dado) throws EstarPenalizadoException, ImposibleMoverseException,
             EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
-            ImposibleCambiarModoException {
+            ImposibleCambiarModoException, EdificiosSolarException {
 
         if (dado == null) {
             System.err.println("Dado no inicializado");
@@ -698,7 +698,7 @@ public class Jugador extends Participante {
      * @param solar        solar en el que edificar
      */
     public void crearEdificio(TipoEdificio tipoEdificio, Solar solar) throws NoSerPropietarioException,
-            HipotecaPropiedadException {
+            HipotecaPropiedadException, EdificiosSolarException {
 
         if (tipoEdificio == null) {
             System.err.println("Tipo de edificio no inicializado");
@@ -773,7 +773,7 @@ public class Jugador extends Participante {
      * Se deshacen las acciones que han beneficiado al jugador en la última tirada; es decir, el dinero recibido por
      * premios y cobros de tasas, así como todas las compras y ventas efectuadas
      */
-    public void revertirAcciones() {
+    public void revertirAcciones() throws EdificiosSolarException{
 
         for (IAccionJugador iAccionJugador : getAcciones())
             iAccionJugador.revertirAccion();
@@ -799,13 +799,12 @@ public class Jugador extends Participante {
      *
      * @param idTrato id del trato a aceptar
      */
-    public void aceptarTrato(String idTrato) throws NoLiquidezException, NoSerPropietarioException {
+    public void aceptarTrato(String idTrato) throws NoLiquidezException, NoSerPropietarioException, NoExisteTratoException {
 
         Trato trato = getTratosRecibidos().get(idTrato);
 
         if(trato == null){
-            Output.errorComando("Ese trato no existe.");
-            return;
+            throw new NoExisteTratoException("Ese trato no existe.");
         }
 
         trato.aceptar();
@@ -813,12 +812,12 @@ public class Jugador extends Participante {
         trato.getEmisor().getTratosEmitidos().remove(idTrato);
     }
 
-    public void eliminarTrato(String idTrato){
+    public void eliminarTrato(String idTrato) throws NoExisteTratoException{
 
         Trato trato = getTratosEmitidos().remove(idTrato);
 
         if(trato == null){
-            Output.errorComando("Ese trato no existe.");
+            throw new NoExisteTratoException("Ese trato no existe.");
         } else {
             trato.getReceptor().getTratosRecibidos().remove(idTrato);
             Output.respuesta("El trato "+idTrato+" se ha eliminado.");

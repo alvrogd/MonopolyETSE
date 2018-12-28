@@ -1,6 +1,7 @@
 package monopoly.jugadores.acciones;
 
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.EdificiosSolarException;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 
@@ -105,7 +106,7 @@ public class Edificacion implements IAccionJugador {
      */
     @Override
     // todo es posible que sea necesario un atributo para forzar las acciones por el tema de restricciones entre tipos de edificios al construir
-    public void revertirAccion() {
+    public void revertirAccion() throws EdificiosSolarException {
 
         final Jugador propietario = (Jugador) getSolar().getPropietario();
 

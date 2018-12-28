@@ -1,10 +1,7 @@
 package monopoly.tablero.jerarquiaCasillas.jerarquiaAccion;
 
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 
@@ -16,7 +13,6 @@ public abstract class Accion extends Casilla {
 
     }
 
-    public abstract void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException;
+    public abstract void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException;
 
 }

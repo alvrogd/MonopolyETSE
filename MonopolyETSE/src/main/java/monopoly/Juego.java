@@ -15,7 +15,7 @@ import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.*;
 
-public class Juego {
+public class Juego{
 
     /* Atributos */
 
@@ -373,7 +373,7 @@ public class Juego {
             if( !isFinalizado() ) {
 
                 if (this.iterador == null) {
-                    System.out.println("No se ha añadido ningún jugador.");
+                    System.err.println("No se ha añadido ningún jugador.");
                     System.exit(1);
                 }
 
@@ -412,8 +412,8 @@ public class Juego {
 
         } else {
 
-            System.out.println("Juego no iniciado.");
-            return;
+            System.err.println("Juego no iniciado.");
+            System.exit(1);
         }
 
     }

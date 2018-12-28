@@ -3,6 +3,7 @@ package monopoly.tablero.jerarquiaCasillas;
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.Participante;
+import monopoly.jugadores.excepciones.EdificiosSolarException;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.*;
 
@@ -49,7 +50,7 @@ public class Solar extends Propiedad{
      * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
      * @param tipoEdificio tipo del edificio a edificar
      */
-    public int edificar(TipoEdificio tipoEdificio, boolean splash){
+    public int edificar(TipoEdificio tipoEdificio, boolean splash) throws EdificiosSolarException{
 
         Edificio edificacion = null;
         int precio;
@@ -72,7 +73,7 @@ public class Solar extends Propiedad{
                 numPistas == numCasillasGrupo){
 
             if(splash)
-                Output.respuesta("No se pueden realizar más edificaciones en esta casilla.");
+                throw new EdificiosSolarException("No se pueden realizar más edificaciones en esta casilla.");
             return 0;
 
         }
@@ -82,12 +83,12 @@ public class Solar extends Propiedad{
             case casa:
                 if(numCasas == 4){
                     if(splash)
-                        Output.respuesta("No se pueden construir más casas en esta casilla.");
+                        throw new EdificiosSolarException("No se pueden construir más casas en esta casilla.");
                     return 0;
                 }
                 if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo){
                     if(splash)
-                        Output.respuesta("No se pueden construir más casas en esta casilla.");
+                        throw new EdificiosSolarException("No se pueden construir más casas en esta casilla.");
                     return 0;
                 }
                 edificacion = new Casa(this, getGrupo().getTipo());
@@ -97,12 +98,12 @@ public class Solar extends Propiedad{
 
                 if(numCasas != 4){
                     if(splash)
-                        Output.respuesta("Se necesitan cuatro casas para poder construir un hotel.");
+                        throw new EdificiosSolarException("Se necesitan cuatro casas para poder construir un hotel.");
                     return 0;
                 }
                 if(numHoteles == numCasillasGrupo){
                     if(splash)
-                        Output.respuesta("No se pueden edificar más hoteles en esta casilla.");
+                        throw new EdificiosSolarException("No se pueden edificar más hoteles en esta casilla.");
                     return 0;
                 }
 
@@ -114,13 +115,13 @@ public class Solar extends Propiedad{
             case piscina:
                 if(numHoteles < 1 || numCasas < 2){
                     if(splash)
-                        Output.respuesta("Para construir una piscina se necesita al menos un hotel y dos casas.");
+                        throw new EdificiosSolarException("Para construir una piscina se necesita al menos un hotel y dos casas.");
                     return 0;
                 }
 
                 if(numPiscinas == numCasillasGrupo){
                     if(splash)
-                        Output.respuesta("No se pueden edificar más piscinas en esta casilla.");
+                        throw new EdificiosSolarException("No se pueden edificar más piscinas en esta casilla.");
                     return 0;
                 }
 
@@ -131,12 +132,12 @@ public class Solar extends Propiedad{
             case pistaDeporte:
                 if(numHoteles < 2){
                     if(splash)
-                        Output.respuesta("Para construir una pista de deporte se necesitan al menos dos hoteles.");
+                        throw new EdificiosSolarException("Para construir una pista de deporte se necesitan al menos dos hoteles.");
                     return 0;
                 }
                 if(numPistas == numCasillasGrupo){
                     if(splash)
-                        Output.respuesta("No se pueden edificar más pistas de deporte en esta casilla.");
+                        throw new EdificiosSolarException("No se pueden edificar más pistas de deporte en esta casilla.");
                     return 0;
                 }
 
@@ -163,7 +164,7 @@ public class Solar extends Propiedad{
      * Método para añadir a la casilla un edificio del tipo pasado por parámetro.
      * @param tipoEdificio tipo del edificio a edificar
      */
-    public int edificar(TipoEdificio tipoEdificio){
+    public int edificar(TipoEdificio tipoEdificio) throws EdificiosSolarException{
         return(edificar(tipoEdificio,true));
     }
 

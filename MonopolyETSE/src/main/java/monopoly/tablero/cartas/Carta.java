@@ -4,10 +4,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Parking;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
@@ -75,7 +72,7 @@ public abstract class Carta {
      * Se actúa sobre el jugador actual en función de lo que indica la carta
      */
     public void accion() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException {
+            ImposibleMoverseException, EdificiosSolarException {
 
         switch (getTipoAccion()) {
 
@@ -194,7 +191,7 @@ public abstract class Carta {
      * @param tipoMovimiento tipo de movimiento a procesar
      */
     private void moverCarta(TipoMovimiento tipoMovimiento) throws ImposibleCambiarModoException,
-            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException {
+            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, EdificiosSolarException {
 
         final Jugador jugador = getTablero().getJuego().getTurno();
 
