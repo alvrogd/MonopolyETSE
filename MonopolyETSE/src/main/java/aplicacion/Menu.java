@@ -73,6 +73,8 @@ public class Menu {
                 Output.errorComando(e.getMessage());
                 app.imprimirBuffer();
             }
+            if(getApp().getJuego().isIniciado())
+                Aplicacion.consola.imprimir(Integer.toString(getApp().getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse()));
 
         }
     }

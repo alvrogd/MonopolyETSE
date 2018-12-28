@@ -29,7 +29,7 @@ public interface IComando {
     void listarEnVenta() throws JuegoNoIniciadoException;
     void verTablero() throws JuegoNoIniciadoException;
     void edificar(String tipoEdificio) throws JuegoNoIniciadoException, NoSerPropietarioException, HipotecaPropiedadException,
-            ArgComandoIncorrectoException, NoSerSolarException, EdificiosSolarException;
+            ArgComandoIncorrectoException, NoSerSolarException, EdificiosSolarException, NoLiquidezException;
     void hipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException,
             EdificiosSolarException, JuegoNoIniciadoException, NoExisteCasillaException, NoSerPropiedadException ;
     void deshipotecar(String nombrePropiedad) throws NoSerPropietarioException, HipotecaPropiedadException,

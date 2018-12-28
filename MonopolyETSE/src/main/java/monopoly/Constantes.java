@@ -85,6 +85,12 @@ public final class Constantes {
     // Cantidad de cartas de suerte disponibles
     public final static int NUM_CARTAS_COMUNIDAD = 10;
 
+    // Movimientos avatares
+    public final static int NORTE = 2;
+    public final static int SUR = 0;
+    public final static int OESTE = 1;
+    public final static int ESTE = 3;
+
     // Nombres de las casillas
     public final static String NOMBRE_NEGRO_1 = "Platform 9 3/4";
     public final static String NOMBRE_NEGRO_2 = "Diagon Alley";

@@ -317,7 +317,7 @@ public class Solar extends Propiedad{
             //En caso de que no haya edificios y el propietario haya obtenido todos los solares del grupo
             //se multiplica el alquiler actual por 2.
             if((alquilerNuevo == 0) && getPropietario().haObtenidoSolaresGrupo(getGrupo())){
-                alquilerNuevo = 2 * super.getAlquiler();
+                alquilerNuevo = 2 * (int)(getPrecioActual() * Constantes.COEF_ALQUILER);
             }
 
             //En caso de que el alquilerNuevo no sea cero, bien por los edificios o por haber obtenido los solares

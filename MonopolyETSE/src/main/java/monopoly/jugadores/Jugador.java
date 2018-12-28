@@ -698,7 +698,7 @@ public class Jugador extends Participante {
      * @param solar        solar en el que edificar
      */
     public void crearEdificio(TipoEdificio tipoEdificio, Solar solar) throws NoSerPropietarioException,
-            HipotecaPropiedadException, EdificiosSolarException {
+            HipotecaPropiedadException, EdificiosSolarException, NoLiquidezException {
 
         if (tipoEdificio == null) {
             System.err.println("Tipo de edificio no inicializado");
@@ -717,7 +717,15 @@ public class Jugador extends Participante {
                 haObtenidoSolaresGrupo(solar.getGrupo())) {
 
             // Se resta a la fortuna el importe de edificar
-            setFortuna(getFortuna() - solar.edificar(tipoEdificio));
+            Integer dinero = Edificio.calcularPrecioCompra(tipoEdificio, solar.getGrupo().getTipo());
+
+            if(balanceNegativoTrasPago(dinero))
+                throw new NoLiquidezException("No dispones de suficiente dinero para edificar");
+
+            dinero = solar.edificar(tipoEdificio);
+            setFortuna(getFortuna() - dinero);
+
+            Output.respuesta("Se creado el edificio por " +dinero+"K €");
 
             // Se registra la acción
             getAcciones().add(new Edificacion(solar, tipoEdificio, 1));
@@ -762,8 +770,11 @@ public class Jugador extends Participante {
             throw new InputUsuarioException("Debe venderse al menos un edificio");
 
         // Se suma a la fortuna el importe de eliminar los edificios
-        setFortuna(getFortuna() + solar.venderEdificio(tipoEdificio, cantidad));
+        Integer dinero = solar.venderEdificio(tipoEdificio, cantidad);
+        setFortuna(getFortuna() + dinero);
 
+        Output.respuesta("Se ha(n) vendido " + cantidad + " edificio(s).",
+                "    -> Dinero recibido: " + dinero + "K €.");
         // Se registra la acción
         getAcciones().add(new Edificacion(solar, tipoEdificio, -cantidad));
     }

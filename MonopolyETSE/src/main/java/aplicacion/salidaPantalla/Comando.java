@@ -914,7 +914,7 @@ public class Comando implements IComando {
     }
 
     public void edificar(String tipoEdificio) throws JuegoNoIniciadoException, NoSerPropietarioException, HipotecaPropiedadException,
-            ArgComandoIncorrectoException, NoSerSolarException, EdificiosSolarException {
+            ArgComandoIncorrectoException, NoSerSolarException, EdificiosSolarException, NoLiquidezException {
         if (!getApp().getJuego().isIniciado()) {
             throw new JuegoNoIniciadoException();
         }
