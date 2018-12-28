@@ -1529,14 +1529,14 @@ public class Comando implements IComando {
         for (String idTrato : tratos) {
             emitido = true;
             contador++;
-            salida += "(Trato " + contador + ")────────────────────────────────────────────()";
-            salida += getApp().getJuego().getTurno().getTratosEmitidos().get(idTrato).toString();
+            salida += "(Trato " + contador + ")────────────────────────────────────────────────()\n\n";
+            salida += getApp().getJuego().getTurno().getTratosEmitidos().get(idTrato).toString() + "\n\n";
         }
 
         if (!emitido)
-            salida += " (-) Sin tratos emitidos.\n";
+            salida += " (-) Sin tratos emitidos.\n\n\n";
 
-        salida += "\n(!) Tratos recibidos: \n";
+        salida += "\n(!) Tratos recibidos: \n\n";
 
         tratos = getApp().getJuego().getTurno().getTratosRecibidos().keySet();
 
@@ -1545,12 +1545,12 @@ public class Comando implements IComando {
         for (String idTrato : tratos) {
             recibido = true;
             contador++;
-            salida += "(Trato " + contador + ")────────────────────────────────────────────()\n";
+            salida += "(Trato " + contador + ")────────────────────────────────────────────────()\n\n";
             salida += getApp().getJuego().getTurno().getTratosRecibidos().get(idTrato).toString();
         }
 
         if (!recibido)
-            salida += " (-) Sin tratos recibidos.\n";
+            salida += " (-) Sin tratos recibidos.\n\n\n";
 
         Output.respuesta(Output.toArrayString(salida));
     }

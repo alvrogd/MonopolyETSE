@@ -376,7 +376,7 @@ public class Solar extends Propiedad{
         aux = Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, getGrupo().getTipo());
         salida += "        -> Valor pista de deporte:            " + aux + "K €" + "\n\n";
 
-        int alquiler = getAlquiler();
+        int alquiler = (int) (getPrecioInicial() * Constantes.COEF_ALQUILER);
 
         salida += "        -> Alquiler con una casa:             " + Constantes.ALQ_UNACASA*alquiler + "K €\n";
         salida += "        -> Alquiler con dos casas:            " + Constantes.ALQ_DOSCASA*alquiler + "K €\n";

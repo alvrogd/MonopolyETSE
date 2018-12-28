@@ -295,7 +295,7 @@ public class Tablero {
 
         //Impuesto tipo 2
 
-        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_1, 38, this, Constantes.IMPUESTO_1);
+        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_2, 38, this, Constantes.IMPUESTO_1);
 
         getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
         getCasillasTablero().put(impuesto.getNombre(),impuesto);
