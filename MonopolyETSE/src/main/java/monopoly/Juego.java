@@ -366,7 +366,7 @@ public class Juego{
     public void finalizarTurno() {
 
         //Para poder pasar el turno el juego debe haberse iniciado.
-        if (isIniciado() && !isFinalizado()) {
+        if (isIniciado()) {
 
             if( !isFinalizado() ) {
 

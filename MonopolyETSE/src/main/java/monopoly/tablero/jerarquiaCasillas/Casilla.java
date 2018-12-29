@@ -3,6 +3,7 @@ package monopoly.tablero.jerarquiaCasillas;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.Tablero;
 
+import java.rmi.ServerError;
 import java.util.HashMap;
 
 public abstract class Casilla {
@@ -89,6 +90,16 @@ public abstract class Casilla {
 
     public Tablero getTablero() {
         return tablero;
+    }
+
+    public boolean estaAvatar( Avatar avatar ) {
+
+        if( avatar == null ) {
+            System.err.println("Avatar no inicializado");
+            System.exit(1);
+        }
+
+        return( getAvataresContenidos().containsKey(avatar.getIdentificador()));
     }
 
     @Override
