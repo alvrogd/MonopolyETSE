@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.excepciones.EdificiosSolarException;
 import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
@@ -121,9 +122,6 @@ public class Sombrero extends Avatar {
      */
     public int actualizarPosicionEsfinge(int numeroCasillas, boolean recursivo) throws EdificiosSolarException {
 
-        // Se asigna inicialmente el número de casilla inicial
-        int posicionFinal = getPosicion().getPosicionEnTablero();
-
         if (numeroCasillas >= 4 || recursivo) {
 
             int linea = getPosicion().getPosicionEnTablero()/10;
@@ -187,6 +185,7 @@ public class Sombrero extends Avatar {
         // obtenidos por premios en el último turno
         else {
             getJugador().revertirAcciones();
+            Output.respuesta( "Ohoh! Se han deshecho las acciones que te convienen de la última tirada :(");
             setCasillasRestantesPorMoverse(0);
             return (getPosicion().getPosicionEnTablero());
         }

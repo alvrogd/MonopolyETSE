@@ -23,7 +23,8 @@ public class Trato {
     private String id;
 
 
-    /* Constructor */
+
+    /* Constructores */
 
     public Trato( Jugador emisor, Jugador receptor ) {
 
@@ -96,15 +97,19 @@ public class Trato {
         this.id = id;
     }
 
+
+
     /* Getters y setters */
 
     public ArrayList<Propiedad> getPropiedadesDar() {
         return propiedadesDar;
     }
 
+
     public String getId() {
         return id;
     }
+
 
     public void setPropiedadesDar(ArrayList<Propiedad> propiedadesDar) {
         if(propiedadesDar == null){
@@ -114,11 +119,14 @@ public class Trato {
         this.propiedadesDar = propiedadesDar;
     }
 
+
     public ArrayList<Propiedad> getPropiedadesRecibir() {
         return propiedadesRecibir;
     }
 
+
     public void setPropiedadesRecibir(ArrayList<Propiedad> propiedadesRecibir) {
+
         if(propiedadesRecibir == null){
             System.err.println("Propiedades a recibir referencia a null");
             System.exit( 1 );
@@ -126,21 +134,27 @@ public class Trato {
         this.propiedadesRecibir = propiedadesRecibir;
     }
 
+
     public Integer getDineroDar() {
         return dineroDar;
     }
 
+
     public void setDineroDar(Integer dineroDar) {
+
         if(dineroDar < 0){
             System.err.println("Dinero a dar no puede ser negativo");
             System.exit( 1 );
         }
+
         this.dineroDar = dineroDar;
     }
+
 
     public Integer getDineroRecibir() {
         return dineroRecibir;
     }
+
 
     public void setDineroRecibir(Integer dineroRecibir) {
         if(dineroRecibir < 0){
@@ -150,9 +164,11 @@ public class Trato {
         this.dineroRecibir = dineroRecibir;
     }
 
+
     public ArrayList<Inmunidad> getInmunidades() {
         return inmunidades;
     }
+
 
     public void setInmunidades(ArrayList<Inmunidad> inmunidades) {
         if(inmunidades == null){
@@ -161,6 +177,7 @@ public class Trato {
         }
         this.inmunidades = inmunidades;
     }
+
 
     public Jugador getEmisor() {
         return emisor;
@@ -182,25 +199,30 @@ public class Trato {
     public boolean aceptar() throws NoLiquidezException, NoSerPropietarioException{
 
         if(getEmisor().balanceNegativoTrasPago(getDineroDar()))
-            throw new NoLiquidezException("El jugador " + getEmisor().getNombre() + " no dispone de liquidez suficiente para aceptar el trato.");
+            throw new NoLiquidezException("El jugador " + getEmisor().getNombre() + " no dispone de liquidez " +
+                    "suficiente para aceptar el trato.");
 
         for(Propiedad propiedad : getPropiedadesDar()){
             if(!propiedad.getPropietario().equals(getEmisor()))
-                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a " + getEmisor().getNombre());
+                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a "
+                        + getEmisor().getNombre());
 
         }
 
         if (getReceptor().balanceNegativoTrasPago(getDineroRecibir()))
-            throw new NoLiquidezException("El jugador " + getReceptor().getNombre() + " no dispone de liquidez suficiente para aceptar el trato");
+            throw new NoLiquidezException("El jugador " + getReceptor().getNombre() + " no dispone de liquidez " +
+                    "suficiente para aceptar el trato");
 
         for(Propiedad propiedad : getPropiedadesRecibir()){
             if(!propiedad.getPropietario().equals(getReceptor()))
-                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a " + getReceptor().getNombre());
+                throw new NoSerPropietarioException("La propiedad " + propiedad.getNombre() + " no pertenece a "
+                        + getReceptor().getNombre());
         }
 
         for(Inmunidad inmunidad : getInmunidades()) {
             if (!inmunidad.getPropiedad().getPropietario().equals(receptor))
-                throw new NoSerPropietarioException("La propiedad " + inmunidad.getPropiedad().getNombre() + " no pertenece a " + receptor.getNombre());
+                throw new NoSerPropietarioException("La propiedad " + inmunidad.getPropiedad().getNombre() +
+                        " no pertenece a " + receptor.getNombre());
         }
 
         getEmisor().transferirPropiedades(getEmisor(), getReceptor(), getPropiedadesDar());
@@ -230,12 +252,14 @@ public class Trato {
 
     }
 
+
     @Override
     public String toString(){
 
         String salida = "";
 
-        salida += "(*) El jugador " + getEmisor().getNombre() + " propone el siguiente trato a " + getReceptor().getNombre() + ".\n\n";
+        salida += "(*) El jugador " + getEmisor().getNombre() + " propone el siguiente trato a " +
+                getReceptor().getNombre() + ".\n\n";
 
         salida += "(!) Id del trato: " + getId()+"\n";
 
