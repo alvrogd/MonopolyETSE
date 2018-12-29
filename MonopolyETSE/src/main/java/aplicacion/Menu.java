@@ -59,6 +59,7 @@ public class Menu {
             app.introducirComando(Aplicacion.consola.leer("Acción"));
         } catch (Exception e) {
             Output.errorComando(e.getMessage());
+            Output.vaciarBuffer();
         }
 
         while(true){
@@ -71,6 +72,7 @@ public class Menu {
                 app.introducirComando(Aplicacion.consola.leer("Acción"));
             } catch (Exception e) {
                 Output.errorComando(e.getMessage());
+                e.printStackTrace();
                 app.imprimirBuffer();
             }
             if(getApp().getJuego().isIniciado())

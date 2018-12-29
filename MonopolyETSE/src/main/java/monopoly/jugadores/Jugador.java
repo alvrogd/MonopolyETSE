@@ -811,8 +811,8 @@ public class Jugador extends Participante {
     public void revertirAcciones() throws EdificiosSolarException{
 
         // todo comprobar que se deshagan las estadísticas
-        for (IAccionJugador iAccionJugador : getAcciones())
-            iAccionJugador.revertirAccion();
+        for( int i = getAcciones().size() - 1; i >= 0; i-- )
+            getAcciones().get(i).revertirAccion();
     }
 
 
