@@ -157,6 +157,7 @@ public class Trato {
 
 
     public void setDineroRecibir(Integer dineroRecibir) {
+
         if(dineroRecibir < 0){
             System.err.println("Dinero a recibir no puede ser negativo");
             System.exit( 1 );
@@ -171,6 +172,7 @@ public class Trato {
 
 
     public void setInmunidades(ArrayList<Inmunidad> inmunidades) {
+
         if(inmunidades == null){
             System.err.println("Inmunidades referencia a null");
             System.exit( 1 );
@@ -232,7 +234,7 @@ public class Trato {
         //En ningún momento se da el caso de que vaya a estar en bancarrota, por eso no se trata.
         if(getDineroDar() > 0) {
             try {
-                getEmisor().pagar(getReceptor(), getDineroDar());
+                getEmisor().pagar(getReceptor(), getDineroDar(), false);
             } catch (EstarBancarrotaException e) {
                 return false;
             }
@@ -240,7 +242,7 @@ public class Trato {
 
         if(getDineroRecibir() > 0) {
             try {
-                getReceptor().pagar(getEmisor(), getDineroRecibir());
+                getReceptor().pagar(getEmisor(), getDineroRecibir(), false);
             } catch (EstarBancarrotaException e) {
                 return false;
             }

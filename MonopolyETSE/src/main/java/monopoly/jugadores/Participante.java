@@ -261,7 +261,6 @@ public abstract class Participante {
             }
         }
 
-        // todo EXITS EN TODAS LAS CLASES DEL PAQUETE MONOPOLY
         if (importe < 0) {
             System.err.println("No se puede pagar a un participante una cantidad menor a 0");
             System.exit( 1 );

@@ -177,8 +177,7 @@ public abstract class Carta {
 
             final Collection<Jugador> jugadores = getTablero().getJuego().getJugadores().values();
 
-            // todo se está incrementando el cobro por alquileres
-            int numeroPagos = jugador.pagar(new ArrayList<>(jugadores), importe);
+            int numeroPagos = jugador.pagar(new ArrayList<>(jugadores), importe, false);
 
             jugador.incrementarPagoTasasEImpuestos(importe * numeroPagos);
         }

@@ -453,6 +453,14 @@ public class Jugador extends Participante {
 
     /* Métodos */
 
+    @Override
+    public boolean pagar(Participante receptor, int importe) throws EstarBancarrotaException,
+            NoSerPropietarioException {
+
+        return( pagar( receptor, importe, true) );
+    }
+
+
     /**
      * Se paga a otro participante una cantidad dada; en caso de no disponer de suficiente liquidez, el participante
      * cae en bancarrota y sus propiedades se transfieren al deudor; se actualizan además las correspondientes
@@ -460,10 +468,11 @@ public class Jugador extends Participante {
      *
      * @param receptor participante al que pagar el importe
      * @param importe  cantidad a pagar
+     * @param alquiler si el pago se encuentra relacionado con un alquiler
      * @return si se ha efectuado el pago correctamente
      */
-    @Override
-    public boolean pagar(Participante receptor, int importe) throws EstarBancarrotaException, NoSerPropietarioException {
+    public boolean pagar(Participante receptor, int importe, boolean alquiler) throws EstarBancarrotaException,
+            NoSerPropietarioException {
 
         if (super.pagar(receptor, importe)) {
 
@@ -471,8 +480,12 @@ public class Jugador extends Participante {
             if (!(receptor instanceof Banca)) {
 
                 final Jugador jugador = (Jugador) receptor;
-                incrementarPagoDeAlquileres(importe);
-                jugador.incrementarCobroDeAlquileres(importe);
+                // Si es un pago por alquiler
+                if( alquiler ) {
+
+                    incrementarPagoDeAlquileres(importe);
+                    jugador.incrementarCobroDeAlquileres(importe);
+                }
 
             }
 
@@ -483,6 +496,13 @@ public class Jugador extends Participante {
     }
 
 
+    @Override
+    public int pagar(ArrayList<Participante> participantes, int importe) throws EstarBancarrotaException,
+            NoSerPropietarioException {
+        return( pagar(participantes, importe, true));
+    }
+
+
     /**
      * Se paga a varios participantes una cantidad dada; en caso de no disponer de suficiente liquidez, el participante
      * cae en bancarrota y sus propiedades se transfieren al deudor; se actualizan además las correspondientes
@@ -490,25 +510,29 @@ public class Jugador extends Participante {
      *
      * @param participantes participantes a los que pagar el importe
      * @param importe       cantidad a pagar
+     * @param alquiler      si el pago está relacionado con un alquiler
      * @return número de pagos efectuados correctamente
      */
-    @Override
-    public int pagar(ArrayList<Participante> participantes, int importe) throws EstarBancarrotaException,
-            NoSerPropietarioException {
+    public int pagar(ArrayList<Participante> participantes, int importe, boolean alquiler) throws
+            EstarBancarrotaException, NoSerPropietarioException {
 
         int pagosExitosos = super.pagar(participantes, importe);
 
 
         // Se incrementan las estadísticas del deudor
-        incrementarPagoDeAlquileres(importe * pagosExitosos);
+        if( alquiler )
+            incrementarPagoDeAlquileres(importe * pagosExitosos);
 
         // Se incrementan las estadísticas de los receptores
-        for (int i = 0; i < pagosExitosos; i++) {
+        if (alquiler) {
 
-            if (participantes.get(i) instanceof Jugador) {
+            for (int i = 0; i < pagosExitosos; i++) {
 
-                final Jugador jugador = (Jugador) participantes.get(i);
-                jugador.incrementarCobroDeAlquileres(importe);
+                if (participantes.get(i) instanceof Jugador) {
+
+                    final Jugador jugador = (Jugador) participantes.get(i);
+                    jugador.incrementarCobroDeAlquileres(importe);
+                }
             }
         }
 
@@ -824,6 +848,11 @@ public class Jugador extends Participante {
         trato.getEmisor().getTratosEmitidos().remove(idTrato);
     }
 
+
+    /**
+     * Se elimina un trato dado
+     * @param idTrato id del trato a eliminar
+     */
     public void eliminarTrato(String idTrato) throws NoExisteTratoException{
 
         Trato trato = getTratosEmitidos().remove(idTrato);
