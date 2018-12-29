@@ -55,7 +55,11 @@ public class Menu {
 
         app.imprimirBuffer();
 
-        Aplicacion.consola.leer("Acción");
+        try {
+            app.introducirComando(Aplicacion.consola.leer("Acción"));
+        } catch (Exception e) {
+            Output.errorComando(e.getMessage());
+        }
 
         while(true){
 
@@ -63,8 +67,14 @@ public class Menu {
                 Output.imprimirCabeceraJugador(app.getJuego().getTurno());
             }
 
-            Output.imprimirEntradaComando();
-            app.introducirComando(Aplicacion.consola.leer("Acción"));
+            try {
+                app.introducirComando(Aplicacion.consola.leer("Acción"));
+            } catch (Exception e) {
+                Output.errorComando(e.getMessage());
+                app.imprimirBuffer();
+            }
+            if(getApp().getJuego().isIniciado())
+                Aplicacion.consola.imprimir(Integer.toString(getApp().getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse()));
 
         }
     }

@@ -2,6 +2,7 @@ package monopoly.tablero.jerarquiaCasillas;
 
 
 import monopoly.Constantes;
+import monopoly.jugadores.Participante;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 

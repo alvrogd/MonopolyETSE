@@ -1,5 +1,6 @@
 package monopoly.tablero.jerarquiaCasillas;
 
+import monopoly.jugadores.Jugador;
 import monopoly.tablero.Tablero;
 
 public class Impuesto extends Casilla {
@@ -16,4 +17,5 @@ public class Impuesto extends Casilla {
     public int getImpuesto() {
         return impuesto;
     }
+
 }

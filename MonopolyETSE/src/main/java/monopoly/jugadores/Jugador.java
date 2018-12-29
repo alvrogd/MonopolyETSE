@@ -11,6 +11,8 @@ import monopoly.jugadores.excepciones.*;
 import monopoly.jugadores.tratos.*;
 import monopoly.tablero.*;
 import monopoly.tablero.jerarquiaCasillas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +33,10 @@ public class Jugador extends Participante {
     private ArrayList<IAccionJugador> acciones;
 
     // Tratos que ha recibido
-    private ArrayList<Trato> tratosRecibidos;
+    private HashMap<String, Trato> tratosRecibidos;
+
+    //Tratos que ha emitido
+    private HashMap<String, Trato> tratosEmitidos;
 
     // Inmunidades de las que goza
     private ArrayList<Inmunidad> inmunidades;
@@ -103,7 +108,8 @@ public class Jugador extends Participante {
 
         this.acciones = new ArrayList<>();
 
-        this.tratosRecibidos = new ArrayList<>();
+        this.tratosRecibidos = new HashMap<>();
+        this.tratosEmitidos = new HashMap<>();
 
         this.inmunidades = new ArrayList<>();
 
@@ -165,7 +171,7 @@ public class Jugador extends Participante {
     public void setTiradasEnTurno(int tiradasEnTurno) {
 
         if (tiradasEnTurno < 0) {
-            Output.sugerencia("El número de tiradas en un turno no puede ser menor a 0");
+            System.err.println("El número de tiradas en un turno no puede ser menor a 0");
             System.exit(1);
         }
 
@@ -182,7 +188,7 @@ public class Jugador extends Participante {
     public void setTurnosPenalizado(int turnosPenalizado) {
 
         if (turnosPenalizado < 0) {
-            Output.sugerencia("El número de turnos penalizados no puede ser menor a 0");
+            System.err.println("El número de turnos penalizados no puede ser menor a 0");
             System.exit(1);
         }
 
@@ -206,15 +212,15 @@ public class Jugador extends Participante {
     }
 
 
-    public ArrayList<Trato> getTratosRecibidos() {
+    public HashMap<String,Trato> getTratosRecibidos() {
         return tratosRecibidos;
     }
 
 
-    public void setTratosRecibidos(ArrayList<Trato> tratosRecibidos) {
+    public void setTratosRecibidos(HashMap<String, Trato> tratosRecibidos) {
 
         if (tratosRecibidos == null) {
-            System.err.println("ArrayList de tratos recibidos no inicializado");
+            System.err.println("HashMap de tratos recibidos no inicializado");
             System.exit(1);
         }
 
@@ -226,6 +232,9 @@ public class Jugador extends Participante {
         return inmunidades;
     }
 
+    public HashMap<String, Trato> getTratosEmitidos() {
+        return tratosEmitidos;
+    }
 
     public void setInmunidades(ArrayList<Inmunidad> inmunidades) {
 
@@ -557,7 +566,7 @@ public class Jugador extends Participante {
      */
     public void lanzarDados(Dado dado) throws EstarPenalizadoException, ImposibleMoverseException,
             EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
-            ImposibleCambiarModoException {
+            ImposibleCambiarModoException, EdificiosSolarException {
 
         if (dado == null) {
             System.err.println("Dado no inicializado");
@@ -689,7 +698,7 @@ public class Jugador extends Participante {
      * @param solar        solar en el que edificar
      */
     public void crearEdificio(TipoEdificio tipoEdificio, Solar solar) throws NoSerPropietarioException,
-            HipotecaPropiedadException {
+            HipotecaPropiedadException, EdificiosSolarException, NoLiquidezException {
 
         if (tipoEdificio == null) {
             System.err.println("Tipo de edificio no inicializado");
@@ -708,7 +717,15 @@ public class Jugador extends Participante {
                 haObtenidoSolaresGrupo(solar.getGrupo())) {
 
             // Se resta a la fortuna el importe de edificar
-            setFortuna(getFortuna() - solar.edificar(tipoEdificio));
+            Integer dinero = Edificio.calcularPrecioCompra(tipoEdificio, solar.getGrupo().getTipo());
+
+            if(balanceNegativoTrasPago(dinero))
+                throw new NoLiquidezException("No dispones de suficiente dinero para edificar");
+
+            dinero = solar.edificar(tipoEdificio);
+            setFortuna(getFortuna() - dinero);
+
+            Output.respuesta("Se creado el edificio por " +dinero+"K €");
 
             // Se registra la acción
             getAcciones().add(new Edificacion(solar, tipoEdificio, 1));
@@ -753,8 +770,11 @@ public class Jugador extends Participante {
             throw new InputUsuarioException("Debe venderse al menos un edificio");
 
         // Se suma a la fortuna el importe de eliminar los edificios
-        setFortuna(getFortuna() + solar.venderEdificio(tipoEdificio, cantidad));
+        Integer dinero = solar.venderEdificio(tipoEdificio, cantidad);
+        setFortuna(getFortuna() + dinero);
 
+        Output.respuesta("Se ha(n) vendido " + cantidad + " edificio(s).",
+                "    -> Dinero recibido: " + dinero + "K €.");
         // Se registra la acción
         getAcciones().add(new Edificacion(solar, tipoEdificio, -cantidad));
     }
@@ -764,7 +784,7 @@ public class Jugador extends Participante {
      * Se deshacen las acciones que han beneficiado al jugador en la última tirada; es decir, el dinero recibido por
      * premios y cobros de tasas, así como todas las compras y ventas efectuadas
      */
-    public void revertirAcciones() {
+    public void revertirAcciones() throws EdificiosSolarException{
 
         // todo comprobar que se deshagan las estadísticas
         for (IAccionJugador iAccionJugador : getAcciones())
@@ -774,242 +794,46 @@ public class Jugador extends Participante {
 
     /**
      * Se propone a un jugador un trato de intercambio de una propiedad por otra
-     *
-     * @param receptor   receptor del trato
-     * @param propiedad1 propiedad a intercambiar por parte del emisor
-     * @param propiedad2 propiedad a intercambiar por parte del receptor
      */
-    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2) throws
-            NoSerPropietarioException {
+    public void proponerTrato(Trato trato) throws NoSerPropietarioException {
 
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
+        if(trato == null){
+            System.err.println("Trato referencia a null");
             System.exit(1);
         }
 
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (propiedad2 == null) {
-            System.err.println("Propiedad 2 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no le pertenece");
-
-        if (!propiedad2.getPropietario().equals(receptor))
-            throw new NoSerPropietarioException("La propiedad 2 no pertenece al receptor del trato");
-
-        receptor.getTratosRecibidos().add(new TratoP2P(this, receptor, propiedad1, propiedad2));
-    }
-
-
-    /**
-     * Se propone a un jugador un trato de intercambio de una propiedad por una cantidad de dinero especificada
-     *
-     * @param receptor       receptor del trato
-     * @param propiedad1     propiedad a intercambiar por parte del emisor
-     * @param cantidadDinero cantidad de dinero a intercambiar por parte del receptor
-     */
-    public void proponerTrato(Jugador receptor, Propiedad propiedad1, int cantidadDinero) throws
-            NoSerPropietarioException, InputUsuarioException {
-
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
-            System.exit(1);
-        }
-
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no le pertenece");
-
-        if (cantidadDinero < 0)
-            throw new InputUsuarioException("La cantidad de dinero de un trato no puede ser menor a 0");
-
-        receptor.getTratosRecibidos().add(new TratoP2M(this, receptor, propiedad1, cantidadDinero));
-    }
-
-
-    /**
-     * Se propone a un jugador un trato de intercambio de una cantidad de dinero especificada por una propiedad
-     *
-     * @param receptor       receptor del trato
-     * @param cantidadDinero cantidad de dinero a intercambiar por parte del emisor
-     * @param propiedad1     propiedad a intercambiar por parte del receptor
-     */
-    public void proponerTrato(Jugador receptor, int cantidadDinero, Propiedad propiedad1) throws InputUsuarioException,
-            NoSerPropietarioException {
-
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
-            System.exit(1);
-        }
-
-        if (cantidadDinero < 0)
-            throw new InputUsuarioException("La cantidad de dinero de un trato no puede ser menor a 0");
-
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no pertenece al receptor del trato");
-
-        receptor.getTratosRecibidos().add(new TratoM2P(this, receptor, cantidadDinero, propiedad1));
-    }
-
-
-    /**
-     * Se propone a un jugador un trato de intercambio de una propiedad por otra y una cantidad de dinero especificada
-     *
-     * @param receptor       receptor del trato
-     * @param propiedad1     propiedad a intercambiar por parte del emisor
-     * @param propiedad2     propiedad a intercambiar por parte del receptor
-     * @param cantidadDinero cantidad de dinero a intercambiar por parte del receptor
-     */
-    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, int cantidadDinero) throws
-            NoSerPropietarioException, InputUsuarioException {
-
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
-            System.exit(1);
-        }
-
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (propiedad2 == null) {
-            System.err.println("Propiedad 2 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no le pertenece");
-
-        if (!propiedad2.getPropietario().equals(receptor))
-            throw new NoSerPropietarioException("La propiedad 2 no pertenece al receptor del trato");
-
-        if (cantidadDinero < 0)
-            throw new InputUsuarioException("La cantidad de dinero de un trato no puede ser menor a 0");
-
-        receptor.getTratosRecibidos().add(new TratoP2PM(this, receptor, propiedad1, propiedad2, cantidadDinero));
-    }
-
-
-    /**
-     * Se propone a un jugador un trato de intercambio de una propiedad y una cantidad de dinero especificada por una
-     * propiedad
-     *
-     * @param receptor       receptor del trato
-     * @param propiedad1     propiedad a intercambiar por parte del emisor
-     * @param cantidadDinero cantidad de dinero a intercambiar por parte del emisor
-     * @param propiedad2     propiedad a intercambiar por parte del receptor
-     */
-    public void proponerTrato(Jugador receptor, Propiedad propiedad1, int cantidadDinero, Propiedad propiedad2) throws
-            InputUsuarioException, NoSerPropietarioException {
-
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
-            System.exit(1);
-        }
-
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (cantidadDinero < 0)
-            throw new InputUsuarioException("La cantidad de dinero de un trato no puede ser menor a 0");
-
-        if (propiedad2 == null) {
-            System.err.println("Propiedad 2 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no le pertenece");
-
-        if (!propiedad2.getPropietario().equals(receptor))
-            throw new NoSerPropietarioException("La propiedad 2 no pertenece al receptor del trato");
-
-        receptor.getTratosRecibidos().add(new TratoPM2P(this, receptor, propiedad1, cantidadDinero, propiedad2));
-    }
-
-
-    /**
-     * Se propone a un jugador un trato de intercambio de una propiedad por otra e inmunidad a pago de alquileres en
-     * una propiedad especificada
-     *
-     * @param receptor     receptor del trato
-     * @param propiedad1   propiedad a intercambiar por parte del emisor
-     * @param propiedad2   propiedad a intercambiar por parte del receptor
-     * @param propiedad3   propiedad especificada para la inmunidad ante el pago de alquileres
-     * @param numeroTurnos número de turnos en los que el emisor gozará de inmunidad ante pagos de alquiler en la
-     *                     propiedad especificada
-     */
-    public void proponerTrato(Jugador receptor, Propiedad propiedad1, Propiedad propiedad2, Propiedad propiedad3, int
-            numeroTurnos) throws NoSerPropietarioException, InputUsuarioException {
-
-        if (receptor == null) {
-            System.err.println("Receptor no inicializado");
-            System.exit(1);
-        }
-
-        if (propiedad1 == null) {
-            System.err.println("Propiedad 1 no inicializada");
-            System.exit(1);
-        }
-
-        if (propiedad2 == null) {
-            System.err.println("Propiedad 2 no inicializada");
-            System.exit(1);
-        }
-
-        if (propiedad3 == null) {
-            System.err.println("Propiedad 3 no inicializada");
-            System.exit(1);
-        }
-
-        if (!propiedad1.getPropietario().equals(this))
-            throw new NoSerPropietarioException("La propiedad 1 no le pertenece");
-
-        if (!propiedad2.getPropietario().equals(receptor))
-            throw new NoSerPropietarioException("La propiedad 2 no pertenece al receptor del trato");
-
-        if (!propiedad3.getPropietario().equals(receptor))
-            throw new NoSerPropietarioException("La propiedad 3 no pertenece al receptor del trato");
-
-        if (numeroTurnos < 0)
-            throw new InputUsuarioException("El número de turnos de inmunidad no puede ser negativo");
-
-        receptor.getTratosRecibidos().add(new TratoP2PA(this, receptor, propiedad1, propiedad2, propiedad3,
-                numeroTurnos));
+        getTratosRecibidos().put(trato.getId(), trato);
     }
 
 
     /**
      * Se acepta un trato dado
      *
-     * @param trato trato a aceptar
+     * @param idTrato id del trato a aceptar
      */
-    public void aceptarTrato(Trato trato) throws NoLiquidezException, NoSerPropietarioException {
+    public void aceptarTrato(String idTrato) throws NoLiquidezException, NoSerPropietarioException, NoExisteTratoException {
 
-        if (trato == null) {
-            System.err.println("Trato no inicializado");
-            System.exit(1);
+        Trato trato = getTratosRecibidos().get(idTrato);
+
+        if(trato == null){
+            throw new NoExisteTratoException("Ese trato no existe.");
         }
 
         trato.aceptar();
+        getTratosRecibidos().remove(idTrato);
+        trato.getEmisor().getTratosEmitidos().remove(idTrato);
+    }
+
+    public void eliminarTrato(String idTrato) throws NoExisteTratoException{
+
+        Trato trato = getTratosEmitidos().remove(idTrato);
+
+        if(trato == null){
+            throw new NoExisteTratoException("Ese trato no existe.");
+        } else {
+            trato.getReceptor().getTratosRecibidos().remove(idTrato);
+            Output.respuesta("El trato "+idTrato+" se ha eliminado.");
+        }
     }
 
 

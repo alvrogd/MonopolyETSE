@@ -2,10 +2,10 @@ package monopoly.jugadores;
 
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.excepciones.*;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.TipoGrupo;
-import monopoly.tablero.Transporte;
 import monopoly.tablero.jerarquiaCasillas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 
 import java.util.ArrayList;
 
@@ -447,6 +447,56 @@ public abstract class Participante {
         while (!propiedades.isEmpty()) {
 
             Propiedad propiedad = propiedades.get(0);
+            propiedad.setPropietario(receptor);
+            receptor.getPropiedades().add(propiedad);
+            emisor.getPropiedades().remove(propiedad);
+            transferidas.append(propiedad.getNombre()).append("  ");
+
+        }
+
+        Output.respuesta("Se han transferido las propiedades:",
+                "        -> Receptor: " + receptor.getNombre(),
+                "        -> Propiedades: " + transferidas.toString());
+
+    }
+
+    /**
+     * Se transfiere un conjunto de propiedades dadas de un participante a otro
+     *
+     * @param emisor      participante que posee las propiedades a transferir
+     * @param receptor    participante que va a obtener laz propiedades
+     * @param propiedades propiedades a transferir
+     */
+    public void transferirPropiedades(Participante emisor, Participante receptor, ArrayList<Propiedad> propiedades)
+            throws NoSerPropietarioException {
+
+        if (emisor == null) {
+            System.err.println("Emisor no inicializado");
+            System.exit(1);
+        }
+
+        if (receptor == null) {
+            System.err.println("Receptor no inicializado");
+            System.exit(1);
+        }
+
+        if (propiedades == null) {
+            System.err.println("ArrayList de propiedades no inicializado");
+            System.exit(1);
+        }
+
+        StringBuilder transferidas = new StringBuilder();
+
+        for(Propiedad propiedad : propiedades) {
+
+            if (propiedad == null) {
+                System.err.println("Propiedad no inicializada");
+                System.exit(1);
+            }
+
+            if (!propiedad.getPropietario().equals(emisor))
+                throw new NoSerPropietarioException("La propiedad no pertenece al emisor");
+
             propiedad.setPropietario(receptor);
             receptor.getPropiedades().add(propiedad);
             emisor.getPropiedades().remove(propiedad);

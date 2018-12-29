@@ -2,13 +2,20 @@ package monopoly.tablero.jerarquiaCasillas;
 
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 
 public class Servicio extends Propiedad{
 
-    public Servicio(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario, Tablero tablero){
+    public Servicio(String nombre, Grupo grupo, boolean comprable, int posicion, Participante propietario, Tablero tablero){
         super(nombre, grupo, comprable, posicion, propietario, tablero);
+        setPrecioInicial(grupo.getPrecio());
+    }
+
+    @Override
+    public int getPrecioActual(){
+        return(getGrupo().getPrecio());
     }
 
     @Override

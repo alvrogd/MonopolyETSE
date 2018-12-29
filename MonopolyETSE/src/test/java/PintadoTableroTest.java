@@ -9,8 +9,8 @@ public class PintadoTableroTest {
 
     private Juego juego;
 
-    @Before
-    public void setUp()
+
+   /* public void setUp()
     {
         juego = new Juego();
         juego.addJugador(new Jugador( "Pepe", juego.getTablero(), TipoAvatar.coche,
