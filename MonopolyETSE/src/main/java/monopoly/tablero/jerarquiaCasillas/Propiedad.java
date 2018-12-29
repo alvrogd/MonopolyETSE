@@ -3,6 +3,10 @@ package monopoly.tablero.jerarquiaCasillas;
 import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.Participante;
+import monopoly.jugadores.excepciones.NoComprarABancaException;
+import monopoly.jugadores.excepciones.NoEncontrarseEnPropiedadException;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
 public abstract class Propiedad extends Casilla{
@@ -201,7 +205,30 @@ public abstract class Propiedad extends Casilla{
     }
 
     public boolean perteneceAJugador(Jugador jugador){
+
         return(jugador.equals(getPropietario()));
+    }
+
+    public int alquiler() {
+
+        return( getAlquiler() );
+    }
+
+    public int valor() {
+
+        return( getPrecioActual() );
+    }
+
+    public int comprar( Participante comprador ) throws NoSerPropietarioException, NoComprarABancaException,
+            NoEncontrarseEnPropiedadException, NoLiquidezException {
+
+        if( comprador == null ) {
+
+            System.err.println("Comprador no inicializado");
+            System.exit(1);
+        }
+
+        return(comprador.comprar(getPropietario(), this));
     }
 
     @Override

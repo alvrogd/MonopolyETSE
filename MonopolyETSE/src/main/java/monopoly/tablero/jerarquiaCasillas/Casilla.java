@@ -102,6 +102,11 @@ public abstract class Casilla {
         return( getAvataresContenidos().containsKey(avatar.getIdentificador()));
     }
 
+    public int frecuenciaVisita() {
+
+        return( getFrecuencia() );
+    }
+
     @Override
     public String toString(){
 
