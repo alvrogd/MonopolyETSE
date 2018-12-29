@@ -17,7 +17,7 @@ public class ComunidadCasilla extends Accion{
 
     @Override
     public void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException, EdificiosSolarException {
+            ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         if(jugador == null){
             System.err.println("Jugador referencia a null");

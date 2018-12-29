@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoSuficientesJugadoresException extends Exception{
+public class NoSuficientesJugadoresException extends AplicacionException {
 
     public NoSuficientesJugadoresException() {
         super("No hay suficientes jugadores para empezar el juego.");

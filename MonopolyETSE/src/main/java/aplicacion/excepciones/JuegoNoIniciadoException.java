@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class JuegoNoIniciadoException extends Exception{
+public class JuegoNoIniciadoException extends AplicacionException {
 
     public JuegoNoIniciadoException() {
         super("El juego no está iniciado.");

@@ -13,6 +13,6 @@ public abstract class Accion extends Casilla {
 
     }
 
-    public abstract void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException;
+    public abstract void ejecutarAccion(Jugador jugador) throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException;
 
 }

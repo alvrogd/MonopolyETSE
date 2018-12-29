@@ -1,5 +1,6 @@
 package monopoly.jugadores;
 
+import aplicacion.excepciones.InputUsuarioException;
 import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.Dado;
@@ -590,7 +591,7 @@ public class Jugador extends Participante {
      */
     public void lanzarDados(Dado dado) throws EstarPenalizadoException, ImposibleMoverseException,
             EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
-            ImposibleCambiarModoException, EdificiosSolarException {
+            ImposibleCambiarModoException, EdificiosSolarException, NumeroIncorrectoException {
 
         if (dado == null) {
             System.err.println("Dado no inicializado");

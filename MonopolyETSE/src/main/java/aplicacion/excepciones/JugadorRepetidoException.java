@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class JugadorRepetidoException extends Exception{
+public class JugadorRepetidoException extends AplicacionException {
 
     public JugadorRepetidoException() {
         super("Ese jugador ya pertenece al juego.");

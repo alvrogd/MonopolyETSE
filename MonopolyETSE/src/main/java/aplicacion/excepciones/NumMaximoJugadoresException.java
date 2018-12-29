@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NumMaximoJugadoresException extends Exception{
+public class NumMaximoJugadoresException extends AplicacionException {
 
     public NumMaximoJugadoresException() {
         super("Has alcanzado el número máximo de jugadores.");

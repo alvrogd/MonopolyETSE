@@ -1,5 +1,7 @@
 package aplicacion;
 
+import aplicacion.excepciones.AplicacionException;
+import aplicacion.excepciones.MonopolyETSEException;
 import aplicacion.salidaPantalla.*;
 import monopoly.Juego;
 
@@ -81,7 +83,7 @@ public class Aplicacion {
 
     }
 
-    public void introducirComando(String linea) throws Exception {
+    public void introducirComando(String linea) throws MonopolyETSEException {
 
         Comando comando = new Comando(linea,this);
 

@@ -174,8 +174,10 @@ public class Sombrero extends Avatar {
                     if((10-posicion) % 2 != 0){
                         if(linea == Constantes.OESTE){
                             linea = Constantes.ESTE+1;
+                            linea %= 4;
                         } else if (linea == Constantes.ESTE){
                             linea = Constantes.OESTE+1;
+                            linea %= 4;
                         }
                     }
 

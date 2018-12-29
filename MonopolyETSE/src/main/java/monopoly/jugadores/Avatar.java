@@ -560,7 +560,7 @@ public abstract class Avatar {
      * @param dobles         si los dados han dado el mismo valor
      */
     public void mover(int numeroCasillas, boolean dobles) throws ImposibleMoverseException, EstarBancarrotaException,
-            NoSerPropietarioException, NoEstarEncarceladoException, ImposibleCambiarModoException, EdificiosSolarException {
+            NoSerPropietarioException, NoEstarEncarceladoException, ImposibleCambiarModoException, EdificiosSolarException, NumeroIncorrectoException {
 
         /*if (numeroCasillas < 2) {
             Output.sugerencia("El número sacado en una tirada no puede ser menor que 2");
@@ -597,7 +597,7 @@ public abstract class Avatar {
      * @param numeroCasillas número de casillas a moverse
      */
     public void avanzar(int numeroCasillas) throws ImposibleMoverseException, EstarBancarrotaException,
-            NoSerPropietarioException, ImposibleCambiarModoException, EdificiosSolarException {
+            NoSerPropietarioException, ImposibleCambiarModoException, EdificiosSolarException, NumeroIncorrectoException {
 
         avanzar(numeroCasillas, true, true, 1);
     }
@@ -615,7 +615,7 @@ public abstract class Avatar {
      */
     public void avanzar(int numeroCasillas, boolean cobrarSalida, boolean importeSalidaEstandar, int multiplicador)
             throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException,
-            ImposibleCambiarModoException, EdificiosSolarException {
+            ImposibleCambiarModoException, EdificiosSolarException, NumeroIncorrectoException {
 
         if (ishaMovidoCasillasTirada())
             throw new ImposibleMoverseException("Ya se ha movido todas las casillas correspondientes a la tirada");
@@ -699,7 +699,7 @@ public abstract class Avatar {
      * Se escoge una carta de suerte
      */
     private void caerEnSuerte() throws NoSerPropietarioException, EstarBancarrotaException,
-            ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException {
+            ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         final SuerteCasilla suerte = (SuerteCasilla) getPosicion();
         suerte.ejecutarAccion(getJugador());
@@ -710,7 +710,8 @@ public abstract class Avatar {
      * Se escoge una carta de comunidad
      */
     private void caerEnComunidad() throws EstarBancarrotaException, NoSerPropietarioException,
-            ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException {
+            ImposibleCambiarModoException, ImposibleMoverseException, EdificiosSolarException,
+            NumeroIncorrectoException {
 
         final ComunidadCasilla comunidad = (ComunidadCasilla) getPosicion();
         comunidad.ejecutarAccion(getJugador());

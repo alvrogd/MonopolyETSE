@@ -2,7 +2,7 @@ package aplicacion.salidaPantalla;
 
 import aplicacion.Aplicacion;
 import aplicacion.TipoComando;
-import com.sun.org.apache.xpath.internal.Arg;
+import aplicacion.excepciones.*;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
@@ -375,7 +375,7 @@ public class Comando implements IComando {
 
     }
 
-    private void mover(String aumento) throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException, ImposibleCambiarModoException, EdificiosSolarException {
+    private void mover(String aumento) throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException, ImposibleCambiarModoException, EdificiosSolarException, NumeroIncorrectoException {
 
         getApp().getJuego().getTurno().getAvatar().mover(Integer.parseInt(aumento), true);
 
@@ -396,7 +396,7 @@ public class Comando implements IComando {
     }
 
     private void ejecutarSuerte() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException, EdificiosSolarException {
+            ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         int count = 0, opc, size;
         Scanner entrada = new Scanner(System.in);
@@ -420,7 +420,7 @@ public class Comando implements IComando {
     }
 
     private void ejecutarComunidad() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException, EdificiosSolarException {
+            ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         int count = 0, opc, size;
         Scanner entrada = new Scanner(System.in);
@@ -764,7 +764,7 @@ public class Comando implements IComando {
 
     public void lanzarDados() throws EstarPenalizadoException, ImposibleMoverseException,
             EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
-            ImposibleCambiarModoException, JuegoNoIniciadoException, SeHanLanzadoDadosException, EdificiosSolarException {
+            ImposibleCambiarModoException, JuegoNoIniciadoException, SeHanLanzadoDadosException, EdificiosSolarException, NumeroIncorrectoException {
 
         if (!getApp().getJuego().isIniciado()) {
             throw new JuegoNoIniciadoException();
@@ -1018,7 +1018,7 @@ public class Comando implements IComando {
     }
 
     public void avanzar() throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException,
-            ImposibleCambiarModoException, JuegoNoIniciadoException, EdificiosSolarException {
+            ImposibleCambiarModoException, JuegoNoIniciadoException, EdificiosSolarException, NumeroIncorrectoException {
         int casillasPorMoverse = getApp().getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
 
         if (!getApp().getJuego().isIniciado()) {

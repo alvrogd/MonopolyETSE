@@ -182,7 +182,8 @@ public class Pelota extends Avatar {
      */
     @Override
     public void mover(int numeroCasillas, boolean dobles) throws ImposibleMoverseException, NoSerPropietarioException,
-            EstarBancarrotaException, NoEstarEncarceladoException, ImposibleCambiarModoException, EdificiosSolarException {
+            EstarBancarrotaException, NoEstarEncarceladoException, ImposibleCambiarModoException,
+            EdificiosSolarException, NumeroIncorrectoException {
 
         // Se indica que aún no se ha movido las 4 casillas iniciales
         setHaMovido4Casillas(false);

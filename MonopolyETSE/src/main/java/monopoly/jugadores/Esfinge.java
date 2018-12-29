@@ -159,8 +159,10 @@ public class Esfinge extends Avatar {
                     if((10-posicion) % 2 != 0){
                         if(linea == Constantes.NORTE){
                             linea = Constantes.SUR+1;
+                            linea %= 4;
                         } else if (linea == Constantes.SUR){
                             linea = Constantes.NORTE+1;
+                            linea %= 4;
                         }
                     }
 

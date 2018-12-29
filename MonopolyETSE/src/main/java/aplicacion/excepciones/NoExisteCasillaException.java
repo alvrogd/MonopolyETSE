@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoExisteCasillaException extends ArgComandoIncorrectoException{
+public class NoExisteCasillaException extends ArgComandoIncorrectoException {
 
     public NoExisteCasillaException(String nombreComando) {
         super(nombreComando, "la casilla introducida no existe.");

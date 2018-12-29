@@ -72,7 +72,7 @@ public abstract class Carta {
      * Se actúa sobre el jugador actual en función de lo que indica la carta
      */
     public void accion() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException, EdificiosSolarException {
+            ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         switch (getTipoAccion()) {
 
@@ -190,7 +190,7 @@ public abstract class Carta {
      * @param tipoMovimiento tipo de movimiento a procesar
      */
     private void moverCarta(TipoMovimiento tipoMovimiento) throws ImposibleCambiarModoException,
-            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, EdificiosSolarException {
+            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, EdificiosSolarException, NumeroIncorrectoException {
 
         final Jugador jugador = getTablero().getJuego().getTurno();
 

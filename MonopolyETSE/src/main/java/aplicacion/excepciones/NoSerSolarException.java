@@ -1,6 +1,8 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoSerSolarException extends ArgComandoIncorrectoException{
+import aplicacion.excepciones.ArgComandoIncorrectoException;
+
+public class NoSerSolarException extends ArgComandoIncorrectoException {
 
     public NoSerSolarException(String nombreComando) {
         super(nombreComando, "la casilla introducida no es un solar.");

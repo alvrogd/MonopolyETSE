@@ -1,7 +1,7 @@
 package aplicacion.salidaPantalla;
 
+import aplicacion.excepciones.*;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.TipoAvatar;
 import monopoly.jugadores.excepciones.*;
 
 public interface IComando {
@@ -16,7 +16,7 @@ public interface IComando {
     void listarEdificiosGrupo(String grupo);
     void lanzarDados() throws EstarPenalizadoException, ImposibleMoverseException,
             EstarBancarrotaException, NoSerPropietarioException, NoEstarEncarceladoException,
-            ImposibleCambiarModoException, JuegoNoIniciadoException, SeHanLanzadoDadosException, EdificiosSolarException;
+            ImposibleCambiarModoException, JuegoNoIniciadoException, SeHanLanzadoDadosException, EdificiosSolarException, NumeroIncorrectoException;
     void finalizarTurno() throws JuegoNoIniciadoException, NoSeHanLanzadoDadosException;
     void salirCarcel() throws NoEstarEncarceladoException, SeHanLanzadoDadosException, NoLiquidezException,
             EstarBancarrotaException, NoSerPropietarioException, JuegoNoIniciadoException;
@@ -38,7 +38,7 @@ public interface IComando {
             HipotecaPropiedadException, EdificiosSolarException, InputUsuarioException, JuegoNoIniciadoException,
             ArgComandoIncorrectoException, NoExisteCasillaException, NoSerSolarException, NumeroIncorrectoException;
     void avanzar() throws ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException,
-            ImposibleCambiarModoException, JuegoNoIniciadoException, EdificiosSolarException;
+            ImposibleCambiarModoException, JuegoNoIniciadoException, EdificiosSolarException, NumeroIncorrectoException;
     void estadisticasJugadores(String nombreJugador) throws JuegoNoIniciadoException, NoExisteJugadorException;
     void estadisticasGlobales() throws JuegoNoIniciadoException;
     void ayuda();

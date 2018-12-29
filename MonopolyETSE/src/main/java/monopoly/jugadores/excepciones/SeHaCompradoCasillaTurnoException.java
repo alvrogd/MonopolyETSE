@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class SeHaCompradoCasillaTurnoException extends Exception{
+public class SeHaCompradoCasillaTurnoException extends JugadorException {
 
     public SeHaCompradoCasillaTurnoException() {
         super("Ya has comprado una casilla en este turno.");

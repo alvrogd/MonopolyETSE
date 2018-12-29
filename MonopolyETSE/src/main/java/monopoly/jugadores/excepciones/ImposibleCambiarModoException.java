@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class ImposibleCambiarModoException extends Exception {
+public class ImposibleCambiarModoException extends AvatarException {
 
     public ImposibleCambiarModoException( String mensaje ) {
 

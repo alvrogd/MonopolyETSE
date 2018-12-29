@@ -1,5 +1,6 @@
 package aplicacion;
 
+import aplicacion.excepciones.MonopolyETSEException;
 import aplicacion.salidaPantalla.ConsolaNormal;
 import aplicacion.salidaPantalla.Output;
 import aplicacion.salidaPantalla.TableroASCII;
@@ -70,9 +71,9 @@ public class Menu {
 
             try {
                 app.introducirComando(Aplicacion.consola.leer("Acción"));
-            } catch (Exception e) {
+            } catch (MonopolyETSEException e) {
                 Output.errorComando(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 app.imprimirBuffer();
             }
             if(getApp().getJuego().isIniciado())
@@ -80,5 +81,4 @@ public class Menu {
 
         }
     }
-
 }

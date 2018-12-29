@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class EstarBancarrotaException extends Exception {
+public class EstarBancarrotaException extends JugadorException {
 
     public EstarBancarrotaException( String mensaje ) {
 

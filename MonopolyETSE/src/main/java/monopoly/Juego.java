@@ -4,6 +4,7 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NumeroIncorrectoException;
 import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
@@ -191,16 +192,14 @@ public class Juego{
         }
     }
 
-    public Carta barajarSuerte(int numCarta) {
+    public Carta barajarSuerte(int numCarta) throws  NumeroIncorrectoException {
 
-        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
-            Output.errorComando("Ha introducido un número incorrecto.");
-            return null;
-        }
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE)
+            throw new NumeroIncorrectoException(Integer.toString(numCarta));
+
         barajarCarta("suerte");
 
         return (getCartasSuerte().get(numCarta - 1));
-
     }
 
     public boolean isPropiedad(String nombre){
@@ -222,16 +221,15 @@ public class Juego{
 
     }
 
-    public Carta barajarComunidad(int numCarta) {
+    public Carta barajarComunidad(int numCarta) throws NumeroIncorrectoException  {
 
-        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE) {
-            Output.errorComando("Ha introducido un número incorrecto.");
-            return null;
-        }
+        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_COMUNIDAD)
+            throw new NumeroIncorrectoException(Integer.toString(numCarta));
+
+
         barajarCarta("comunidad");
 
         return (getCartasComunidad().get(numCarta - 1));
-
     }
 
     /* Getters */

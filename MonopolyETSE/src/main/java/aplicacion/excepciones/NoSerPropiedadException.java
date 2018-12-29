@@ -1,6 +1,8 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoSerPropiedadException extends ArgComandoIncorrectoException{
+import aplicacion.excepciones.ArgComandoIncorrectoException;
+
+public class NoSerPropiedadException extends ArgComandoIncorrectoException {
 
     public NoSerPropiedadException(String nombreComando) {
         super(nombreComando, "la casilla introducida no es una propiedad.");

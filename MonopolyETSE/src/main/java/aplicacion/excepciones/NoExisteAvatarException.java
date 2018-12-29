@@ -1,6 +1,8 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoExisteAvatarException extends ArgComandoIncorrectoException{
+import aplicacion.excepciones.ArgComandoIncorrectoException;
+
+public class NoExisteAvatarException extends ArgComandoIncorrectoException {
 
         public NoExisteAvatarException(String nombreComando) {
             super(nombreComando, "el avatar introducido no existe.");

@@ -1,6 +1,8 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class NoExisteJugadorException extends ArgComandoIncorrectoException{
+import aplicacion.excepciones.ArgComandoIncorrectoException;
+
+public class NoExisteJugadorException extends ArgComandoIncorrectoException {
 
     public NoExisteJugadorException(String nombreComando) {
         super(nombreComando, "el jugador introducido no existe.");

@@ -1,6 +1,6 @@
-package monopoly.jugadores.excepciones;
+package aplicacion.excepciones;
 
-public class ArgComandoIncorrectoException extends Exception{
+public class ArgComandoIncorrectoException extends AplicacionException {
 
     private String nombreComando;
     private String mensaje;
