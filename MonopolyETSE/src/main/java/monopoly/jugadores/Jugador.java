@@ -766,6 +766,7 @@ public class Jugador extends Participante {
      */
     public void revertirAcciones() {
 
+        // todo comprobar que se deshagan las estadísticas
         for (IAccionJugador iAccionJugador : getAcciones())
             iAccionJugador.revertirAccion();
     }
