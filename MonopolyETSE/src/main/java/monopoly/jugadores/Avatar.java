@@ -504,7 +504,7 @@ public abstract class Avatar {
 
         // Si no ha acabado de moverse las casillas correspondientes a una tirada, no puede cambiarse el modo de
         // movimiento
-        boolean noEsPosible = !haMovidoCasillasTirada && !forzar;
+        boolean noEsPosible = !ishaMovidoCasillasTirada() && !forzar;
 
         if (noEsPosible)
             throw new ImposibleCambiarModoException("No puede cambiarse el modo de movimiento hasta moverse el nº " +

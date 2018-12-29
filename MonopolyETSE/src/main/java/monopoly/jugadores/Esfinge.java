@@ -32,6 +32,22 @@ public class Esfinge extends Avatar {
     /* Métodos */
 
     /**
+     * Se comprueba si el avatar puede cambiar su modo de movimiento
+     *
+     * @return si el avatar puede cambiar el modo de movimiento
+     */
+    public boolean noPoderCambiarMovimiento(boolean forzar) throws ImposibleCambiarModoException {
+
+        // Si está en movimiento avanzado y ya ha lanzado los dados
+        if( !isMovimientoEstandar() && getTablero().getJuego().isHaHechoUnaTirada() )
+            throw new ImposibleCambiarModoException("No puede cambiarse el modo de movimiento después de haber " +
+                    "tirado los dados en el modo avanzado");
+
+        return (false);
+    }
+
+
+    /**
      * Se comprueba, en función de la tirada obtenida, si no es posible realizar otra nueva tirada más tarde
      * @param primeraTirada valor del primer dado
      * @param segundaTirada valor del segundo dado
