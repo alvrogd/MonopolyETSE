@@ -1,6 +1,7 @@
 package monopoly.tablero.jerarquiaCasillas;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.Participante;
 import monopoly.jugadores.excepciones.NoComprarABancaException;
@@ -91,6 +92,10 @@ public abstract class Propiedad extends Casilla{
     }
 
     public boolean isComprable() {
+
+        if(getPropietario() instanceof Banca)
+            return true;
+
         return comprable;
     }
 
