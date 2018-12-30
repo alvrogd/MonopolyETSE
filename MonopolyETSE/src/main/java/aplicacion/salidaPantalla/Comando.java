@@ -789,6 +789,11 @@ public class Comando implements IComando {
 
         Output.respuesta("El jugador actual es " + getApp().getJuego().getTurno().getNombre());
 
+        if(!getApp().getJuego().getTurno().getTratosRecibidos().isEmpty()){
+            Output.mensaje("¡Tienes " + getApp().getJuego().getTurno().getTratosRecibidos().size() + " tratos pendientes!");
+            listarTrato();
+        }
+
     }
 
     public void salirCarcel() throws NoEstarEncarceladoException, SeHanLanzadoDadosException, NoLiquidezException,
