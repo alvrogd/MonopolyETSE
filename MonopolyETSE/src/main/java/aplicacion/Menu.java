@@ -1,5 +1,6 @@
 package aplicacion;
 
+import aplicacion.excepciones.ArgComandoIncorrectoException;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacion.salidaPantalla.ConsolaNormal;
 import aplicacion.salidaPantalla.Output;
@@ -58,9 +59,9 @@ public class Menu {
 
         try {
             app.introducirComando(Aplicacion.consola.leer("Acción"));
-        } catch (Exception e) {
+        } catch (MonopolyETSEException e) {
             Output.errorComando(e.getMessage());
-            Output.vaciarBuffer();
+            app.imprimirBuffer();
         }
 
         while(true){
@@ -71,9 +72,16 @@ public class Menu {
 
             try {
                 app.introducirComando(Aplicacion.consola.leer("Acción"));
+            } catch(ArgComandoIncorrectoException arg){
+
+                if(arg.isHaySugerencia())
+                    Output.sugerencia(Output.toArrayString(arg.getSugerencia()));
+
+                Output.errorComando(arg.getMessage());
+                app.imprimirBuffer();
+
             } catch (MonopolyETSEException e) {
                 Output.errorComando(e.getMessage());
-                //e.printStackTrace();
                 app.imprimirBuffer();
             }
             if(getApp().getJuego().isIniciado())

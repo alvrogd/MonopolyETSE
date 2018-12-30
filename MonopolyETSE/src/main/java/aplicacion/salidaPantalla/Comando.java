@@ -465,20 +465,15 @@ public class Comando implements IComando {
 
         if (tipoAvatar == null) {
 
-            throw new ArgComandoIncorrectoException("crear jugador", "avatar incorrecto.");
+            ArgComandoIncorrectoException excepcion = new ArgComandoIncorrectoException("crear jugador", "avatar incorrecto.");
 
-            //todo esto lo metemos al tratar la excepción.
+            excepcion.setSugerencia("Los avatares disponibles son los siguientes:\n" +
+                    "    -> Coche.\n" +
+                    "    -> Esfinge.\n" +
+                    "    -> Pelota.\n" +
+                    "    -> Sombrero.\n");
 
-            /*ArrayList<String> sugerencia = new ArrayList<>();
-
-            sugerencia.add("Los avatares disponibles son los siguientes:");
-            sugerencia.add("    -> Coche.");
-            sugerencia.add("    -> Esfinge.");
-            sugerencia.add("    -> Pelota.");
-            sugerencia.add("    -> Sombrero.");
-
-            Output.sugerencia(sugerencia);*/
-
+            throw excepcion;
 
         }
 

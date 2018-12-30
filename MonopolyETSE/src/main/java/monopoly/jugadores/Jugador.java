@@ -894,7 +894,7 @@ public class Jugador extends Participante {
      * Se reduce en un turno la inmunidad de todas las inmunidades del jugador, siendo eliminadas aquellas que alcanzan
      * los 0 turnos
      */
-¡    public void reducirInmunidad() {
+    public void reducirInmunidad() {
 
         for (int i = 0; i < getInmunidades().size(); i++) {
 
