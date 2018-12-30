@@ -436,7 +436,7 @@ public class Juego{
         avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());
 
         if (getNombresJugadores().size() == 1) {
-            Output.mensaje("¡" + getTurno().getNombre() + " ha ganado el juego!");
+            Output.mensaje("¡" + getNombresJugadores().get(0) + " ha ganado el juego!");
             this.finalizado = true;
         }
 

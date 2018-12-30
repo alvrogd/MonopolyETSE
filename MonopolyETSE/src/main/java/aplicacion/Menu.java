@@ -68,7 +68,12 @@ public class Menu {
         while(true){
 
             if(app.getJuego().isIniciado()){
-                Output.imprimirCabeceraJugador(app.getJuego().getTurno());
+                if(!app.getJuego().isFinalizado())
+                    Output.imprimirCabeceraJugador(app.getJuego().getTurno());
+                else{
+                    app.imprimirBuffer();
+                    System.exit(1);
+                }
             }
 
             try {
