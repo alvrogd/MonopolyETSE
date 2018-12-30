@@ -413,7 +413,7 @@ public class Comando implements IComando {
         Aplicacion.consola.imprimir("(*) Opción: ");
         opc = entrada.nextInt();
 
-        Carta carta = getApp().getJuego().getCartasComunidad().get(opc % size);
+        Carta carta = getApp().getJuego().getCartasSuerte().get(opc % size);
 
         carta.accion();
 

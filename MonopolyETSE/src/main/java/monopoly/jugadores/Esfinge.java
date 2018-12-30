@@ -38,6 +38,9 @@ public class Esfinge extends Avatar {
      */
     public boolean noPoderCambiarMovimiento(boolean forzar) throws ImposibleCambiarModoException {
 
+        if(forzar)
+            return (false);
+
         // Si está en movimiento avanzado y ya ha lanzado los dados
         if( !isMovimientoEstandar() && getTablero().getJuego().isHaHechoUnaTirada() )
             throw new ImposibleCambiarModoException("No puede cambiarse el modo de movimiento después de haber " +
