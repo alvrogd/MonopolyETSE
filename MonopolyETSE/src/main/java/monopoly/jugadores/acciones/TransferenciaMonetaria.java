@@ -1,6 +1,7 @@
 package monopoly.jugadores.acciones;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.Jugador;
 import monopoly.jugadores.Participante;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
     /* Atributos */
 
     private int importe;
+    boolean inversion;
     private Participante emisor;
     private ArrayList<Participante> receptores;
 
@@ -18,7 +20,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
 
     /* Constructor */
 
-    public TransferenciaMonetaria(int importe, Participante emisor, Participante... receptores ) {
+    public TransferenciaMonetaria(int importe, boolean inversion, Participante emisor, Participante... receptores ) {
 
         if (emisor == null) {
             System.err.println("Emisor no inicializado");
@@ -49,6 +51,7 @@ public class TransferenciaMonetaria implements IAccionJugador {
         this.receptores.addAll(Arrays.asList(receptores));
 
         this.importe = importe;
+        this.inversion = inversion;
     }
 
 
@@ -68,6 +71,18 @@ public class TransferenciaMonetaria implements IAccionJugador {
         }
 
         this.importe = importe;
+    }
+
+
+    public boolean isInversion() {
+
+        return inversion;
+    }
+
+
+    public void setInversion(boolean inversion) {
+
+        this.inversion = inversion;
     }
 
 
@@ -122,6 +137,16 @@ public class TransferenciaMonetaria implements IAccionJugador {
 
         // Se devuelve al emisor el importe transferido
         getEmisor().setFortuna( getEmisor().getFortuna() + getImporte() * getReceptores().size() );
+
+        // Y se resta de sus inversiones de ser el caso
+        if( isInversion() ) {
+            if( getEmisor() instanceof Jugador) {
+
+                final Jugador jugador = (Jugador) getEmisor();
+                jugador.setDineroInvertido(jugador.getDineroInvertido() - getImporte() * getReceptores().size());
+            }
+        }
+
 
         // Se resta a los emisores el importe recibido
         for( Participante receptor : getReceptores() )

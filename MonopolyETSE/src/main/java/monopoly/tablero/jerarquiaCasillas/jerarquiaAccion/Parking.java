@@ -56,7 +56,7 @@ public class Parking extends Especial{
         jugador.incrementarPremiosInversionesOBote(getDinero());
 
         // Se registra el pago obtenido
-        jugador.getAcciones().add(new TransferenciaMonetaria(getDinero(), getTablero().getBanca(), jugador));
+        jugador.getAcciones().add(new TransferenciaMonetaria(getDinero(), false, getTablero().getBanca(), jugador));
 
         setDinero(0);
 

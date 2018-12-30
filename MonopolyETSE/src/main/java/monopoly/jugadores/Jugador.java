@@ -575,7 +575,7 @@ public class Jugador extends Participante {
             getAvatar().getTablero().getJuego().setHaCompradoPropiedad(true);
 
             // Se registra la acción
-            getAcciones().add(new TransferenciaMonetaria(importe, this, vendedor));
+            getAcciones().add(new TransferenciaMonetaria(importe, true,this, vendedor));
             getAcciones().add(new TransferenciaPropiedad(vendedor, this, propiedad));
         }
 
@@ -749,6 +749,7 @@ public class Jugador extends Participante {
 
             dinero = solar.edificar(tipoEdificio);
             setFortuna(getFortuna() - dinero);
+            incrementarDineroInvertido(dinero);
 
             Output.respuesta("Se creado el edificio por " +dinero+"K €");
 
@@ -894,7 +895,7 @@ public class Jugador extends Participante {
      * Se reduce en un turno la inmunidad de todas las inmunidades del jugador, siendo eliminadas aquellas que alcanzan
      * los 0 turnos
      */
-¡    public void reducirInmunidad() {
+     public void reducirInmunidad() {
 
         for (int i = 0; i < getInmunidades().size(); i++) {
 

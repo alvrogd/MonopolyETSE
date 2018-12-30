@@ -111,7 +111,7 @@ public abstract class Carta {
         Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
 
         // Se registra la acción
-        jugador.getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(),
+        jugador.getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(), false,
                 jugador.getAvatar().getTablero().getBanca(), jugador));
 
     }

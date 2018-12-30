@@ -28,7 +28,7 @@ public class Salida extends Especial{
         Output.respuesta("Has cobrado el importe de la casilla de salida.");
 
         // Se registra el pago obtenido
-        jugador.getAcciones().add(new TransferenciaMonetaria(importe, getTablero().getBanca(), jugador));
+        jugador.getAcciones().add(new TransferenciaMonetaria(importe, false, getTablero().getBanca(), jugador));
 
     }
 
@@ -46,7 +46,7 @@ public class Salida extends Especial{
         Output.respuesta("Has cobrado el importe de la casilla de salida.");
 
         // Se registra el pago obtenido
-        jugador.getAcciones().add(new TransferenciaMonetaria(importe, getTablero().getBanca(), jugador));
+        jugador.getAcciones().add(new TransferenciaMonetaria(importe, false, getTablero().getBanca(), jugador));
 
     }
 

@@ -126,7 +126,9 @@ public class Edificacion implements IAccionJugador {
                 if ( tipoEdificio.equals(TipoEdificio.hotel))
                     importe *= 5;
                 propietario.setFortuna(propietario.getFortuna() + importe );
-                System.out.println("recibir " + importe);
+
+                // Se resta el dinero invertido en la creación de los edificios
+                propietario.setDineroInvertido(propietario.getDineroInvertido() - importe);
             }
 
 
@@ -141,10 +143,7 @@ public class Edificacion implements IAccionJugador {
                     // sólo dicha cantidad
                     int importe = ( int )(0.5 * getSolar().edificar(tipoEdificio, false));
                     propietario.setFortuna((int) (propietario.getFortuna() - importe));
-                    System.out.println("pagar " + importe);
-
                 }
-
             }
         }
     }
