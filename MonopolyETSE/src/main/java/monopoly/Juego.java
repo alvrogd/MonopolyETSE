@@ -194,12 +194,12 @@ public class Juego{
 
     public Carta barajarSuerte(int numCarta) throws  NumeroIncorrectoException {
 
-        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_SUERTE)
+        if (numCarta < 0 || numCarta >= Constantes.NUM_CARTAS_SUERTE)
             throw new NumeroIncorrectoException(Integer.toString(numCarta));
 
         barajarCarta("suerte");
 
-        return (getCartasSuerte().get(numCarta - 1));
+        return (getCartasSuerte().get(numCarta));
     }
 
     public boolean isPropiedad(String nombre){
@@ -223,13 +223,13 @@ public class Juego{
 
     public Carta barajarComunidad(int numCarta) throws NumeroIncorrectoException  {
 
-        if (numCarta < 1 || numCarta > Constantes.NUM_CARTAS_COMUNIDAD)
+        if (numCarta < 0 || numCarta >= Constantes.NUM_CARTAS_COMUNIDAD)
             throw new NumeroIncorrectoException(Integer.toString(numCarta));
 
 
         barajarCarta("comunidad");
 
-        return (getCartasComunidad().get(numCarta - 1));
+        return (getCartasComunidad().get(numCarta));
     }
 
     /* Getters */

@@ -32,6 +32,17 @@ public class Esfinge extends Avatar {
     /* Métodos */
 
     /**
+     * Se comprueba si se ha sacado el número máximo de dobles permitidos para el avatar del jugador
+     * @return si se ha sacado el número máximo de dobles permitidos
+     */
+    @Override
+    public boolean doblesMaximos(){
+
+        return( getJugador().getTiradasEnTurno() == 3 && isMovimientoEstandar());
+    }
+
+
+    /**
      * Se comprueba si el avatar puede cambiar su modo de movimiento
      *
      * @return si el avatar puede cambiar el modo de movimiento

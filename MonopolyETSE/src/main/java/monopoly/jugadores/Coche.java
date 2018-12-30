@@ -33,7 +33,7 @@ public class Coche extends Avatar {
     @Override
     public boolean doblesMaximos(){
 
-        return( getJugador().getTiradasEnTurno() == 3 && !isMovimientoEstandar());
+        return( getJugador().getTiradasEnTurno() == 3 && isMovimientoEstandar());
     }
 
 

@@ -498,7 +498,7 @@ public abstract class Avatar {
     /**
      * Se comprueba si el avatar puede cambiar su modo de movimiento
      *
-     * @return si el avatar puede cambiar el modo de movimiento
+     * @return si el avatar no puede cambiar el modo de movimiento
      */
     public boolean noPoderCambiarMovimiento(boolean forzar) throws ImposibleCambiarModoException {
 
@@ -525,6 +525,13 @@ public abstract class Avatar {
             return;
 
         setMovimientoEstandar(!isMovimientoEstandar());
+
+        // Se resetea el número de tiradas hechas si se pasa a avanzado (por el máximo de tiradas en avanzado para el
+        // avatar)
+        if( !isMovimientoEstandar() ) {
+            getTablero().getJuego().setHaHechoUnaTirada(false);
+            getJugador().setTiradasEnTurno(0);
+        }
 
         if (splash)
             Output.respuesta("El nuevo modo de movimiento es: " + (isMovimientoEstandar() ? "estándar" : "avanzado"));
