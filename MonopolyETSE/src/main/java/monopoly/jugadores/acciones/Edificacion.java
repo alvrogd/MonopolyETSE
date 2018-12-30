@@ -1,7 +1,8 @@
 package monopoly.jugadores.acciones;
 
 import monopoly.jugadores.Jugador;
-import monopoly.tablero.TipoEdificio;
+import monopoly.jugadores.excepciones.EdificiosSolarException;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.HashMap;
@@ -105,31 +106,44 @@ public class Edificacion implements IAccionJugador {
      */
     @Override
     // todo es posible que sea necesario un atributo para forzar las acciones por el tema de restricciones entre tipos de edificios al construir
-    public void revertirAccion() {
+    public void revertirAccion() throws EdificiosSolarException {
 
-        final Jugador propietario = getSolar().getPropietario();
+        final Jugador propietario = (Jugador) getSolar().getPropietario();
 
         // Para cada tipo de edificio
         for (TipoEdificio tipoEdificio : getBalances().keySet()) {
 
             // Si se han construido edificios, se eliminan
-            if (getBalances().get(tipoEdificio) > 0)
+            if (getBalances().get(tipoEdificio) > 0) {
+
                 // Debe multiplicarse por 2 el precio devuelto al vender los edificios dado que tan śolo se devuelve la
                 // mitad del importe invertido, lo cual tiene sentido en el juego normal pero no al revertir las
                 // acciones
-                propietario.setFortuna(propietario.getFortuna() + 2 *
-                        getSolar().venderEdificio(tipoEdificio, getBalances().get(tipoEdificio), false));
+                int importe = 2 * getSolar().venderEdificio(tipoEdificio, getBalances().get(tipoEdificio), false);
+
+                // Si además se trata de un hotel, debe multiplicarse el importe x5 dado que no se generan casas nuevas,
+                // por lo cual las 4 empleadas en la creación del hotel no serán vendidas y no se obtendrá su importe
+                if ( tipoEdificio.equals(TipoEdificio.hotel))
+                    importe *= 5;
+                propietario.setFortuna(propietario.getFortuna() + importe );
+
+                // Se resta el dinero invertido en la creación de los edificios
+                propietario.setDineroInvertido(propietario.getDineroInvertido() - importe);
+            }
+
 
                 // Si se han destruido edificios, se vuelven a crear
             else if (getBalances().get(tipoEdificio) < 0) {
 
-                for (int i = 0; i > getBalances().get(tipoEdificio); i--)
+                for (int i = 0; i > getBalances().get(tipoEdificio); i--) {
+
                     // Se reduce a la mitad el importe a restar a la fortuna del propietario dado que, mientras que en
                     // condiciones normales tendría sentido, al revertir las acciones se habrá obtenido al vender los
                     // edificios la mitad del importe invertido para crearlos, por lo que ahora deberá restarse tan
                     // sólo dicha cantidad
-                    propietario.setFortuna((int) (propietario.getFortuna() - 0.5 *
-                            getSolar().edificar(tipoEdificio, false)));
+                    int importe = ( int )(0.5 * getSolar().edificar(tipoEdificio, false));
+                    propietario.setFortuna((int) (propietario.getFortuna() - importe));
+                }
             }
         }
     }

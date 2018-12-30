@@ -14,7 +14,7 @@ public enum TipoComando {
     lanzarDados("lanzar dados"),
     finalizarTurno("acabar turno"),
     salirCarcel("salir carcel"),
-    describirCasilla(true, "describir"),
+    describirCasilla(true, "describir", true), //puede no contener una casilla por ejemplo describir jugador
     describirJugador("describir jugador"),
     describirAvatar("describir avatar"),
     comprarPropiedad(true, "comprar"),
@@ -36,25 +36,36 @@ public enum TipoComando {
     //Atributos para saber si el comando va a tener el nombre de una casilla y de ser así,
     //indicar cuantos espacios hay de la primera palabra del comando a la que aparece la casilla.
     private final boolean contieneCasilla;
+    private final boolean puedeContenerCasilla;
     private final int espaciosCasilla;
 
     /*Constructores*/
     private TipoComando(String comando) {
         this.comando = comando;
         this.contieneCasilla = false;
+        this.puedeContenerCasilla = false;
         this.espaciosCasilla = 1;
     }
 
     private TipoComando(boolean contieneCasilla, String comando) {
         this.comando = comando;
         this.contieneCasilla = contieneCasilla;
+        this.puedeContenerCasilla = false;
         this.espaciosCasilla = 1;
     }
 
     private TipoComando(boolean contieneCasilla, int espaciosCasilla, String comando) {
         this.comando = comando;
         this.contieneCasilla = contieneCasilla;
+        this.puedeContenerCasilla = false;
         this.espaciosCasilla = espaciosCasilla;
+    }
+
+    private TipoComando(boolean contieneCasilla, String comando, boolean puedeContenerCasilla) {
+        this.comando = comando;
+        this.contieneCasilla = contieneCasilla;
+        this.puedeContenerCasilla = puedeContenerCasilla;
+        this.espaciosCasilla = 1;
     }
 
     /*Métodos*/
@@ -68,6 +79,10 @@ public enum TipoComando {
 
     public int getEspaciosCasilla() {
         return espaciosCasilla;
+    }
+
+    public boolean isPuedeContenerCasilla() {
+        return puedeContenerCasilla;
     }
 
     public static TipoComando toComandoCasilla(String palabra) {

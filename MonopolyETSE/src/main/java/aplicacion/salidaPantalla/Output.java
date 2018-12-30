@@ -1,17 +1,9 @@
 package aplicacion.salidaPantalla;
 
 import aplicacion.Aplicacion;
-import monopoly.Constantes;
-import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
-import monopoly.tablero.jerarquiaCasillas.Edificio;
-import monopoly.tablero.TipoEdificio;
-import monopoly.tablero.TipoGrupo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 public class Output {
 

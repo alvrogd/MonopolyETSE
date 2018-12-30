@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class SeHanLanzadoDadosException extends Exception {
+public class SeHanLanzadoDadosException extends JugadorException {
 
     public SeHanLanzadoDadosException(String mensaje ) {
 

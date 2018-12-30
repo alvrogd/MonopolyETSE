@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class ImposibleMoverseException extends Exception {
+public class ImposibleMoverseException extends JugadorException {
 
     public ImposibleMoverseException( String mensaje ) {
 

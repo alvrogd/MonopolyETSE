@@ -216,8 +216,11 @@ public class TableroASCII {
         insertarLimites(stringBuilder, posicion);
 
         // Se inserta su nombre
-        // todo necesito un método para obtener su color
-        insertarNombre(stringBuilder, posicion, casilla.getNombre(), casilla.getGrupo().getTipo().getColor());
+        if(casilla instanceof Propiedad){
+            insertarNombre(stringBuilder, posicion, casilla.getNombre(), ((Propiedad) casilla).getGrupo().getTipo().getColor());
+        } else {
+            insertarNombre(stringBuilder, posicion, casilla.getNombre(), TipoColor.resetAnsi);
+        }
 
         // Se insertan los jugadores contenidos
         insertarJugadores(stringBuilder, posicion, casilla.getAvataresContenidos());

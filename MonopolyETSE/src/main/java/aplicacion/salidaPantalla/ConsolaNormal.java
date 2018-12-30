@@ -18,4 +18,26 @@ public class ConsolaNormal implements Consola{
         return(entrada.nextLine());
     }
 
+    public boolean isInteger(String string){
+
+        boolean resultado;
+        try {
+
+            Integer.parseInt(string);
+            resultado = true;
+
+        } catch (NumberFormatException excepcion) {
+            resultado = false;
+        }
+
+        return resultado;
+    }
+
+    @Override
+    public int leer(String descripcion, boolean integer){
+
+        Scanner entrada = new Scanner(System.in);
+        Output.imprimirEntradaComando(descripcion);
+        return(entrada.nextInt());
+    }
 }

@@ -1,18 +1,11 @@
 package aplicacion;
 
+import aplicacion.excepciones.AplicacionException;
+import aplicacion.excepciones.MonopolyETSEException;
 import aplicacion.salidaPantalla.*;
 import monopoly.Juego;
-import monopoly.jugadores.Avatar;
-import monopoly.jugadores.Jugador;
-import monopoly.jugadores.TipoAvatar;
-import monopoly.tablero.*;
-import monopoly.tablero.cartas.Carta;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
-import monopoly.tablero.jerarquiaCasillas.Edificio;
-import monopoly.tablero.jerarquiaCasillas.Grupo;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Aplicacion {
 
@@ -90,11 +83,13 @@ public class Aplicacion {
 
     }
 
-    public void introducirComando(String linea){
+    public void introducirComando(String linea) throws MonopolyETSEException {
 
         Comando comando = new Comando(linea,this);
 
         comando.ejecutarComando();
+
+        imprimirBuffer();
 
     }
 

@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class EstarPenalizadoException extends Exception {
+public class EstarPenalizadoException extends JugadorException {
 
     public EstarPenalizadoException( String mensaje ) {
 

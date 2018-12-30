@@ -4,12 +4,10 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.TipoEdificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Parking;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
@@ -74,7 +72,7 @@ public abstract class Carta {
      * Se actúa sobre el jugador actual en función de lo que indica la carta
      */
     public void accion() throws EstarBancarrotaException, NoSerPropietarioException, ImposibleCambiarModoException,
-            ImposibleMoverseException {
+            ImposibleMoverseException, EdificiosSolarException, NumeroIncorrectoException {
 
         switch (getTipoAccion()) {
 
@@ -113,7 +111,7 @@ public abstract class Carta {
         Output.respuesta("Se han cobrado " + tipoCobro.getImporte() + "K €");
 
         // Se registra la acción
-        jugador.getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(),
+        jugador.getAcciones().add(new TransferenciaMonetaria(tipoCobro.getImporte(), false,
                 jugador.getAvatar().getTablero().getBanca(), jugador));
 
     }
@@ -165,10 +163,10 @@ public abstract class Carta {
                 jugador.incrementarPagoTasasEImpuestos(importe);
 
                 // Se incrementa el bote en el parking
-                final Casilla parking = jugador.getAvatar().getTablero().getCasillas().get(
+                final Parking parking = (Parking) jugador.getAvatar().getTablero().getCasillas().get(
                         Constantes.POSICION_PARKING / 10).get(Constantes.POSICION_PARKING % 10);
 
-                parking.setAlquiler(parking.getAlquiler() + importe);
+                parking.incrementarDinero(importe);
             }
 
         }
@@ -179,8 +177,7 @@ public abstract class Carta {
 
             final Collection<Jugador> jugadores = getTablero().getJuego().getJugadores().values();
 
-            // todo se está incrementando el cobro por alquileres
-            int numeroPagos = jugador.pagar(new ArrayList<>(jugadores), importe);
+            int numeroPagos = jugador.pagar(new ArrayList<>(jugadores), importe, false);
 
             jugador.incrementarPagoTasasEImpuestos(importe * numeroPagos);
         }
@@ -193,7 +190,7 @@ public abstract class Carta {
      * @param tipoMovimiento tipo de movimiento a procesar
      */
     private void moverCarta(TipoMovimiento tipoMovimiento) throws ImposibleCambiarModoException,
-            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException {
+            ImposibleMoverseException, EstarBancarrotaException, NoSerPropietarioException, EdificiosSolarException, NumeroIncorrectoException {
 
         final Jugador jugador = getTablero().getJuego().getTurno();
 

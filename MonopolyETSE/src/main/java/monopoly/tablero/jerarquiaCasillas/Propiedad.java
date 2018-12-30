@@ -1,18 +1,24 @@
 package monopoly.tablero.jerarquiaCasillas;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Participante;
+import monopoly.jugadores.excepciones.NoComprarABancaException;
+import monopoly.jugadores.excepciones.NoEncontrarseEnPropiedadException;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
 public abstract class Propiedad extends Casilla{
 
     private final Grupo grupo;
 
-    private Jugador propietario;
+    private Participante propietario;
     private boolean hipotecada;
 
     //Precio inicial de la casilla
-    private final int precioInicial;
+    private int precioInicial;
 
     //Importe por el cual se ha comprado la propiedad
     private int importeCompra;
@@ -30,7 +36,7 @@ public abstract class Propiedad extends Casilla{
 
 
 
-    public Propiedad(String nombre, Grupo grupo, boolean comprable, int posicion, Jugador propietario, Tablero tablero){
+    public Propiedad(String nombre, Grupo grupo, boolean comprable, int posicion, Participante propietario, Tablero tablero){
 
         super(nombre, posicion, tablero);
 
@@ -61,15 +67,23 @@ public abstract class Propiedad extends Casilla{
 
     }
 
+    public void setPrecioInicial(int precioInicial) {
+        if(precioInicial < 0){
+            System.err.println("Precio inicial no puede ser negativo.");
+            System.exit(1);
+        }
+        this.precioInicial = precioInicial;
+    }
+
     public Grupo getGrupo() {
         return grupo;
     }
 
-    public Jugador getPropietario() {
+    public Participante getPropietario() {
         return propietario;
     }
 
-    public void setPropietario(Jugador propietario) {
+    public void setPropietario(Participante propietario) {
         if(propietario == null){
             System.err.println("El propietario referencia a null");
             return;
@@ -78,6 +92,10 @@ public abstract class Propiedad extends Casilla{
     }
 
     public boolean isComprable() {
+
+        if(getPropietario() instanceof Banca)
+            return true;
+
         return comprable;
     }
 
@@ -191,13 +209,40 @@ public abstract class Propiedad extends Casilla{
         return;
     }
 
+    public boolean perteneceAJugador(Jugador jugador){
+
+        return(jugador.equals(getPropietario()));
+    }
+
+    public int alquiler() {
+
+        return( getAlquiler() );
+    }
+
+    public int valor() {
+
+        return( getPrecioActual() );
+    }
+
+    public int comprar( Participante comprador ) throws NoSerPropietarioException, NoComprarABancaException,
+            NoEncontrarseEnPropiedadException, NoLiquidezException {
+
+        if( comprador == null ) {
+
+            System.err.println("Comprador no inicializado");
+            System.exit(1);
+        }
+
+        return(comprador.comprar(getPropietario(), this));
+    }
+
     @Override
     public String toString(){
 
         String salida = super.toString();
 
         salida += "\n";
-        salida += "        -> Tipo       : " + getGrupo().getTipo().getTipoCasilla();
+        salida += "        -> Tipo       : " + getGrupo().getTipo().getTipoCasilla() + "\n";
         salida += "        -> Propietario: " + getPropietario().getNombre() + "\n\n";
         salida += "        -> Valor      : " + getPrecioActual() + "K €\n";
         salida += "        -> Alquiler   : " + getAlquiler() + "K €\n";

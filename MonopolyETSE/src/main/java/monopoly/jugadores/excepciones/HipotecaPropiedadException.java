@@ -1,6 +1,6 @@
 package monopoly.jugadores.excepciones;
 
-public class HipotecaPropiedadException extends Exception {
+public class HipotecaPropiedadException extends JugadorException {
 
     public HipotecaPropiedadException(String mensaje ) {
 
