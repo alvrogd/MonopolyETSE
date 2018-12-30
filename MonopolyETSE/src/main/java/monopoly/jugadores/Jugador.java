@@ -601,8 +601,6 @@ public class Jugador extends Participante {
         if (getTurnosPenalizado() > 0)
             throw new EstarPenalizadoException("El jugador se encuentra penalizado durante " + getTurnosPenalizado() +
                     " turno(s)");
-        // todo meter esto al capturar esta excepción
-        //getAvatar().getTablero().getJuego().setHaLanzadoDados(true);
 
 
         // Se eliminan las acciones almacenadas
@@ -895,7 +893,11 @@ public class Jugador extends Participante {
      * Se reduce en un turno la inmunidad de todas las inmunidades del jugador, siendo eliminadas aquellas que alcanzan
      * los 0 turnos
      */
+<<<<<<< HEAD
      public void reducirInmunidad() {
+=======
+    public void reducirInmunidad() {
+>>>>>>> 60de939fdefda7c5467a2c43ec515e51c041e26c
 
         for (int i = 0; i < getInmunidades().size(); i++) {
 

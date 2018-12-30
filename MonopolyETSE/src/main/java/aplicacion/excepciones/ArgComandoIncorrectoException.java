@@ -4,12 +4,16 @@ public class ArgComandoIncorrectoException extends AplicacionException {
 
     private String nombreComando;
     private String mensaje;
+    private String sugerencia;
+    private boolean haySugerencia;
 
     public ArgComandoIncorrectoException(String nombreComando) {
 
         super("Argumentos del comando «" + nombreComando + "» incorrectos.");
         this.nombreComando = nombreComando;
         this.mensaje = "";
+        this.sugerencia = "";
+        this.haySugerencia = false;
 
     }
 
@@ -18,6 +22,8 @@ public class ArgComandoIncorrectoException extends AplicacionException {
         super("Argumentos del comando «" + nombreComando + "» incorrectos: "+mensaje);
         this.nombreComando = nombreComando;
         this.mensaje = mensaje;
+        this.sugerencia = "";
+        this.haySugerencia = false;
 
     }
 
@@ -27,6 +33,8 @@ public class ArgComandoIncorrectoException extends AplicacionException {
 
         this.nombreComando = "";
         this.mensaje = "";
+        this.sugerencia = "";
+        this.haySugerencia = false;
 
     }
 
@@ -38,4 +46,16 @@ public class ArgComandoIncorrectoException extends AplicacionException {
         this.nombreComando = nombreComando;
     }
 
+    public boolean isHaySugerencia() {
+        return haySugerencia;
+    }
+
+    public String getSugerencia() {
+        return sugerencia;
+    }
+
+    public void setSugerencia(String sugerencia){
+        this.haySugerencia = true;
+        this.sugerencia = sugerencia;
+    }
 }
