@@ -13,6 +13,8 @@ public final class Constantes {
     public final static double INCREMENTO_VUELTAS = 0.05;
     public final static int NUMERO_VUELTAS_INCREMENTO = 4;
 
+    // Número de casillas
+    public final static int NUMERO_CASILLAS = 40;
     // Número de solares
     public final static int NUMERO_SOLARES = 25;
     // Incremento del precio de un grupo de solares respecto al grupo previo
@@ -44,15 +46,17 @@ public final class Constantes {
     public final static int ALQ_PISTADEPORTE = 25;
 
     // Suma del precio de todos los solares
-    public final static int SUMA_PRECIO_SOLARES = (2 * PRECIO_INICIAL_GRUPO_0 + 3 * PRECIO_INICIAL_GRUPO_1 + 3 *
-            PRECIO_INICIAL_GRUPO_2 + 3 * PRECIO_INICIAL_GRUPO_4 + 3 * PRECIO_INICIAL_GRUPO_5 + 3 *
-            PRECIO_INICIAL_GRUPO_6 + 3 * PRECIO_INICIAL_GRUPO_7);
+    public final static int SUMA_PRECIO_SOLARES = (PRECIO_INICIAL_GRUPO_0 + PRECIO_INICIAL_GRUPO_1 +
+            PRECIO_INICIAL_GRUPO_2 + PRECIO_INICIAL_GRUPO_4 + PRECIO_INICIAL_GRUPO_5 +
+            PRECIO_INICIAL_GRUPO_6 + PRECIO_INICIAL_GRUPO_7);
 
     // Dinero inicial para cada jugador
     public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / (double) 3);
 
     // Dinero de la casilla de salida
     public final static int DINERO_SALIDA = (int) (SUMA_PRECIO_SOLARES / (double) NUMERO_SOLARES);
+    // Dinero de la casilla de salida en caso de moverse por una carta
+    public final static int DINERO_SALIDA_CARTA = 2000;
 
     // Factor con el que determinar el precio de una casilla de servicio
     public final static int FACTOR_SERVICIO = (int) (DINERO_SALIDA / (double) 200);
@@ -76,4 +80,72 @@ public final class Constantes {
     // Máximo número de turnos en la cárcel
     public final static int MAX_TURNOS_CARCEL = 3;
 
+    // Cantidad de cartas de suerte disponibles
+    public final static int NUM_CARTAS_SUERTE = 14;
+    // Cantidad de cartas de suerte disponibles
+    public final static int NUM_CARTAS_COMUNIDAD = 10;
+
+    // Movimientos avatares
+    public final static int NORTE = 2;
+    public final static int SUR = 0;
+    public final static int OESTE = 1;
+    public final static int ESTE = 3;
+
+    // Nombres de las casillas
+    public final static String NOMBRE_NEGRO_1 = "Platform 9 3/4";
+    public final static String NOMBRE_NEGRO_2 = "Diagon Alley";
+
+    public final static String NOMBRE_CYAN_1 = "Godric's Hollow";
+    public final static String NOMBRE_CYAN_2 = "Hogsmeade";
+    public final static String NOMBRE_CYAN_3 = "Hogwarts";
+
+    public final static String NOMBRE_ROSA_1 = "Tatooine";
+    public final static String NOMBRE_ROSA_2 = "Alderaan";
+    public final static String NOMBRE_ROSA_3 = "Coruscant";
+
+    public final static String NOMBRE_NARANJA_1 = "Endor";
+    public final static String NOMBRE_NARANJA_2 = "Hoth";
+    public final static String NOMBRE_NARANJA_3 = "Mustafar";
+
+    public final static String NOMBRE_ROJO_1 = "Meereen";
+    public final static String NOMBRE_ROJO_2 = "Casterly Rock";
+    public final static String NOMBRE_ROJO_3 = "Braavos";
+
+    public final static String NOMBRE_MARRON_1 = "Winterfell";
+    public final static String NOMBRE_MARRON_2 = "Night's Watch";
+    public final static String NOMBRE_MARRON_3 = "Beyond the Wall";
+
+    public final static String NOMBRE_VERDE_1 = "The Shire";
+    public final static String NOMBRE_VERDE_2 = "Moria";
+    public final static String NOMBRE_VERDE_3 = "Helm's Deep";
+
+    public final static String NOMBRE_AZUL_1 = "Isengard";
+    public final static String NOMBRE_AZUL_2 = "Mordor";
+
+    public final static String NOMBRE_SALIDA = "malloc(game)";
+
+    public final static String NOMBRE_CARCEL = "Azkaban";
+
+    public final static String NOMBRE_PARKING = "Death Star";
+
+    public final static String NOMBRE_IR_A_CARCEL = "goto(Azkaban)";
+
+    public final static String NOMBRE_TRANSPORTE_1 = "Hogwarts Express";
+    public final static String NOMBRE_TRANSPORTE_2 = "Imperial Destroyer";
+    public final static String NOMBRE_TRANSPORTE_3 = "King's Landing";
+    public final static String NOMBRE_TRANSPORTE_4 = "Gwaihir";
+
+    public final static String NOMBRE_SERVICIO_1 = "servicio1";
+    public final static String NOMBRE_SERVICIO_2 = "servicio2";
+
+    public final static String NOMBRE_IMPUESTO_1 = "Sméagol's Tax";
+    public final static String NOMBRE_IMPUESTO_2 = "Smaug's Tax";
+
+    public final static String NOMBRE_SUERTE_1 = "suerte1";
+    public final static String NOMBRE_SUERTE_2 = "suerte2";
+    public final static String NOMBRE_SUERTE_3 = "suerte3";
+
+    public final static String NOMBRE_COMUNIDAD_1 = "comunidad1";
+    public final static String NOMBRE_COMUNIDAD_2 = "comunidad2";
+    public final static String NOMBRE_COMUNIDAD_3 = "comunidad3";
 }

@@ -1,9 +1,15 @@
 package monopoly.tablero;
 
+import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
-import monopoly.jugadores.Jugador;
+import monopoly.jugadores.Banca;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Grupo;
+import monopoly.tablero.jerarquiaCasillas.Impuesto;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,18 +19,40 @@ public class Tablero {
     /* Atributos */
     private Dado dado;
 
-    private Jugador banca;
+    //La banca
+    private Banca banca;
+
+    //El juego actual
     private Juego juego;
 
+    //ArrayList bidimensional para las casillas
     private ArrayList<ArrayList<Casilla>> casillas;
+
+    //HashMap con las casillas, para acceder de forma directa a través de la clave.
     private HashMap<String, Casilla> casillasTablero;
+
+    //HashMao con los grupos
     private HashMap<TipoGrupo, Grupo> grupos;
+
+    //HashMap con los avatares que contiene el tablero
     private HashMap<Character, Avatar> avataresContenidos;
+
+    //HashMap que contiene el numero de edificios que contiene el tablero de un mismo tipo
+    private HashMap<TipoEdificio, Integer> numEdificios;
+
 
 
 
     /* Constructores */
-    public Tablero(Jugador banca, Juego juego) {
+
+    /**
+     * Único constructor, se le pasa la banca y el juego para inicializar todos los atributos. Crea las casillas y los
+     * grupos.
+     *
+     * @param banca el jugador que tomará el rol de banca en el juego
+     * @param juego juego al que pertenecerá el tablero
+     */
+    public Tablero(Banca banca, Juego juego) {
 
         if(banca == null){
             System.err.println("banca hace referencia a null");
@@ -36,257 +64,277 @@ public class Tablero {
             System.exit(1);
         }
 
-        dado = new Dado();
+        //Se crea un nuevo dado
+        this.dado = new Dado();
 
         this.banca = banca;
         this.juego = juego;
 
-        casillas = new ArrayList<>();
+        this.casillas = new ArrayList<>();
 
         //Se inicializan las filas de casillas mediante un bucle for
 
         for(int i = 0; i < 4; i++){
             casillas.add(new ArrayList<Casilla>(10));
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < 10; j++) {
+
+                //Se inicializa a null los elementos del ArrayList para que cuando cada grupo cree sus casillas se
+                //calcule de forma correcta el alquiler, que va en función del número de casillas por grupo.
                 casillas.get(i).add(null);
+            }
         }
 
         casillasTablero = new HashMap<String, Casilla>();
 
         grupos = new HashMap<>();
+
+        numEdificios = new HashMap<>();
+
+        for(TipoEdificio aux : TipoEdificio.values()){
+            numEdificios.put(aux, 0);
+        }
+
+        //La función crearGrupos crea los correspondientes grupos y sus correspondientes casillas.
         crearGrupos();
 
         avataresContenidos = new HashMap<>();
 
     }
 
+    public HashMap<TipoEdificio, Integer> getNumEdificios() {
+        return numEdificios;
+    }
+
+    /**
+     * Función llamada por el constructor del tablero que lo que hace es inicializar cada grupo y las respectivas
+     * casillas de este.
+     */
     private void crearGrupos(){
+
         //Casillas negras
 
         ArrayList<Object> aux = new ArrayList<>();
-        aux.add(0); aux.add(1); aux.add("negro1");
+
+        //Se añaden los nombres de las casillas en orden fila - posición
+        aux.add(0); aux.add(1); aux.add(Constantes.NOMBRE_NEGRO_1);
 
         ArrayList<Object> aux2 = new ArrayList<>();
-        aux2.add(0); aux2.add(3); aux2.add("negro2");
+        aux2.add(0); aux2.add(3); aux2.add(Constantes.NOMBRE_NEGRO_2);
 
+        //Se introduce el tipo de grupo, el tablero, si es comprable y los nombres de las casillas
         Grupo negro = new Grupo(TipoGrupo.negro, this, true, aux, aux2);
-        grupos.put(TipoGrupo.negro, negro);
+        this.grupos.put(TipoGrupo.negro, negro);
 
 
         //Casillas cyan
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(6); aux.add("cyan1");
+        aux.add(0); aux.add(6); aux.add(Constantes.NOMBRE_CYAN_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(0); aux2.add(8); aux2.add("cyan2");
+        aux2.add(0); aux2.add(8); aux2.add(Constantes.NOMBRE_CYAN_2);
 
         ArrayList<Object> aux3 = new ArrayList<>();
-        aux3.add(0); aux3.add(9); aux3.add("cyan3");
+        aux3.add(0); aux3.add(9); aux3.add(Constantes.NOMBRE_CYAN_3);
 
         Grupo cyan = new Grupo(TipoGrupo.cyan, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.cyan, cyan);
-
-
-        //Casillas naranja
-
-        aux = new ArrayList<>();
-        aux.add(1); aux.add(6); aux.add("naranja1");
-
-        aux2 = new ArrayList<>();
-        aux2.add(1);aux2.add(8); aux2.add("naranja2");
-
-        aux3 = new ArrayList<>();
-        aux3.add(1); aux3.add(9); aux3.add("naranja3");
-
-        Grupo naranja = new Grupo(TipoGrupo.naranja, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.naranja, naranja);
+        this.grupos.put(TipoGrupo.cyan, cyan);
 
 
         //Casillas rosa
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(1); aux.add("rosa1");
+        aux.add(1); aux.add(1); aux.add(Constantes.NOMBRE_ROSA_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(3); aux2.add("rosa2");
+        aux2.add(1); aux2.add(3); aux2.add(Constantes.NOMBRE_ROSA_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(1); aux3.add(4); aux3.add("rosa3");
+        aux3.add(1); aux3.add(4); aux3.add(Constantes.NOMBRE_ROSA_3);
 
         Grupo rosa = new Grupo(TipoGrupo.rosa, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.rosa, rosa);
+        this.grupos.put(TipoGrupo.rosa, rosa);
+
+
+        //Casillas naranja
+
+        aux = new ArrayList<>();
+        aux.add(1); aux.add(6); aux.add(Constantes.NOMBRE_NARANJA_1);
+
+        aux2 = new ArrayList<>();
+        aux2.add(1);aux2.add(8); aux2.add(Constantes.NOMBRE_NARANJA_2);
+
+        aux3 = new ArrayList<>();
+        aux3.add(1); aux3.add(9); aux3.add(Constantes.NOMBRE_NARANJA_3);
+
+        Grupo naranja = new Grupo(TipoGrupo.naranja, this, true, aux, aux2, aux3);
+        this.grupos.put(TipoGrupo.naranja, naranja);
 
 
         //Casillas rojo
 
         aux = new ArrayList<>();
-        aux.add(2); aux.add(1); aux.add("rojo1");
+        aux.add(2); aux.add(1); aux.add(Constantes.NOMBRE_ROJO_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(3); aux2.add("rojo2");
+        aux2.add(2); aux2.add(3); aux2.add(Constantes.NOMBRE_ROJO_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(4); aux3.add("rojo3");
+        aux3.add(2); aux3.add(4); aux3.add(Constantes.NOMBRE_ROJO_3);
 
         Grupo rojo = new Grupo(TipoGrupo.rojo, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.rojo, rojo);
-
-
-        //Casillas verde
-
-        aux = new ArrayList<>();
-        aux.add(3); aux.add(1); aux.add("verde1");
-
-        aux2 = new ArrayList<>();
-        aux2.add(3); aux2.add(2); aux2.add("verde2");
-
-        aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(4); aux3.add("verde3");
-
-        Grupo verde = new Grupo(TipoGrupo.verde, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.verde, verde);
-
-
-        //Casilla azul
-
-        aux = new ArrayList<>();
-        aux.add(3); aux.add(7); aux.add("azul1");
-
-        aux2 = new ArrayList<>();
-        aux2.add(3); aux2.add(9); aux2.add("azul2");
-
-        Grupo azul = new Grupo(TipoGrupo.azul, this, true, aux, aux2);
-        grupos.put(TipoGrupo.azul, azul);
+        this.grupos.put(TipoGrupo.rojo, rojo);
 
 
         //Casilla marron
 
         aux = new ArrayList<>();
-        aux.add(2); aux.add(6); aux.add("marron1");
+        aux.add(2); aux.add(6); aux.add(Constantes.NOMBRE_MARRON_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(7); aux2.add("marron2");
+        aux2.add(2); aux2.add(7); aux2.add(Constantes.NOMBRE_MARRON_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(9); aux3.add("marron3");
+        aux3.add(2); aux3.add(9); aux3.add(Constantes.NOMBRE_MARRON_3);
 
         Grupo marron = new Grupo(TipoGrupo.marron, this, true, aux, aux2, aux3);
-        grupos.put(TipoGrupo.marron, marron);
+        this.grupos.put(TipoGrupo.marron, marron);
+
+
+        //Casillas verde
+
+        aux = new ArrayList<>();
+        aux.add(3); aux.add(1); aux.add(Constantes.NOMBRE_VERDE_1);
+
+        aux2 = new ArrayList<>();
+        aux2.add(3); aux2.add(2); aux2.add(Constantes.NOMBRE_VERDE_2);
+
+        aux3 = new ArrayList<>();
+        aux3.add(3); aux3.add(4); aux3.add(Constantes.NOMBRE_VERDE_3);
+
+        Grupo verde = new Grupo(TipoGrupo.verde, this, true, aux, aux2, aux3);
+        this.grupos.put(TipoGrupo.verde, verde);
+
+
+        //Casilla azul
+
+        aux = new ArrayList<>();
+        aux.add(3); aux.add(7); aux.add(Constantes.NOMBRE_AZUL_1);
+
+        aux2 = new ArrayList<>();
+        aux2.add(3); aux2.add(9); aux2.add(Constantes.NOMBRE_AZUL_2);
+
+        Grupo azul = new Grupo(TipoGrupo.azul, this, true, aux, aux2);
+        this.grupos.put(TipoGrupo.azul, azul);
 
 
         //Salida
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(0); aux.add("salida");
-
-        Grupo salida = new Grupo(TipoGrupo.salida, this, false, aux);
-        grupos.put(TipoGrupo.salida, salida);
-
+        Salida salida = new Salida(Constantes.NOMBRE_SALIDA, 0, this);
+        getCasillas().get(salida.getPosicionEnTablero()/10).set(salida.getPosicionEnTablero()%10,salida);
+        getCasillasTablero().put(salida.getNombre(),salida);
 
         //Carcel
 
-        aux = new ArrayList<>();
-        aux.add(1); aux.add(0); aux.add("carcel");
-
-        Grupo carcel = new Grupo(TipoGrupo.carcel, this, false, aux);
-        grupos.put(TipoGrupo.carcel, carcel);
+        Carcel carcel = new Carcel(Constantes.NOMBRE_CARCEL, 10, this);
+        getCasillas().get(carcel.getPosicionEnTablero()/10).set(carcel.getPosicionEnTablero()%10,carcel);
+        getCasillasTablero().put(carcel.getNombre(),carcel);
 
 
         //Parking
 
-        aux = new ArrayList<>();
-        aux.add(2); aux.add(0); aux.add("parking");
-
-        Grupo parking = new Grupo(TipoGrupo.parking, this, false, aux);
-        grupos.put(TipoGrupo.parking, parking);
+        Parking parking = new Parking(Constantes.NOMBRE_PARKING, 20, this);
+        getCasillas().get(parking.getPosicionEnTablero()/10).set(parking.getPosicionEnTablero()%10,parking);
+        getCasillasTablero().put(parking.getNombre(),parking);
 
 
         //irCarcel
 
-        aux = new ArrayList<>();
-        aux.add(3);  aux.add(0); aux.add("irCarcel");
-
-        Grupo irCarcel = new Grupo(TipoGrupo.irCarcel, this, false, aux); //26
-        grupos.put(TipoGrupo.irCarcel, irCarcel);
+        IrCarcel irCarcel = new IrCarcel(Constantes.NOMBRE_IR_A_CARCEL, 30, this);
+        getCasillas().get(irCarcel.getPosicionEnTablero()/10).set(irCarcel.getPosicionEnTablero()%10,irCarcel);
+        getCasillasTablero().put(irCarcel.getNombre(),irCarcel);
 
 
         //Transporte
 
         aux = new ArrayList<>();
-        aux.add(0); aux.add(5); aux.add("transporte1");
+        aux.add(0); aux.add(5); aux.add(Constantes.NOMBRE_TRANSPORTE_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(5); aux2.add("transporte2");
+        aux2.add(1); aux2.add(5); aux2.add(Constantes.NOMBRE_TRANSPORTE_2);
 
         aux3 = new ArrayList<>();
-        aux3.add(2); aux3.add(5); aux3.add("transporte3");
+        aux3.add(2); aux3.add(5); aux3.add(Constantes.NOMBRE_TRANSPORTE_3);
 
         ArrayList<Object> aux4 = new ArrayList<>();
-        aux4.add(3); aux4.add(5); aux4.add("transporte4");
+        aux4.add(3); aux4.add(5); aux4.add(Constantes.NOMBRE_TRANSPORTE_4);
 
         Grupo transporte = new Grupo(TipoGrupo.transporte, this, true, aux, aux2, aux3, aux4); //30
-        grupos.put(TipoGrupo.transporte, transporte);
+        this.grupos.put(TipoGrupo.transporte, transporte);
 
 
         //Casillas servicio
 
         aux = new ArrayList<>();
-        aux.add(1); aux.add(2); aux.add("servicio1");
+        aux.add(1); aux.add(2); aux.add(Constantes.NOMBRE_SERVICIO_1);
 
         aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(8); aux2.add("servicio2");
+        aux2.add(2); aux2.add(8); aux2.add(Constantes.NOMBRE_SERVICIO_2);
 
         Grupo servicios = new Grupo(TipoGrupo.servicios, this, true, aux, aux2); //32
-        grupos.put(TipoGrupo.servicios, servicios);
+        this.grupos.put(TipoGrupo.servicios, servicios);
 
 
         //Impuesto tipo 1
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(4); aux.add("impuesto1");
+        Impuesto impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_1, 4, this, Constantes.IMPUESTO_1);
 
-        Grupo impuestos1 = new Grupo(TipoGrupo.impuesto1, this, false, aux);
-        grupos.put(TipoGrupo.impuesto1, impuestos1);
+        getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
+        getCasillasTablero().put(impuesto.getNombre(),impuesto);
 
 
         //Impuesto tipo 2
 
-        aux = new ArrayList<>();
-        aux.add(3); aux.add(8); aux.add("impuesto2");
+        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_2, 38, this, Constantes.IMPUESTO_1);
 
-        Grupo impuestos2 = new Grupo(TipoGrupo.impuesto2, this, false, aux);//34
-        grupos.put(TipoGrupo.impuesto2, impuestos2);
+        getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
+        getCasillasTablero().put(impuesto.getNombre(),impuesto);
 
 
         //Casillas suerte
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(7); aux.add("suerte1");
+        SuerteCasilla suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_1, 7, this);
 
-        aux2 = new ArrayList<>();
-        aux2.add(2); aux2.add(2); aux2.add("suerte2");
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
 
-        aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(6); aux3.add("suerte3");
+        suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_2, 22, this);
 
-        Grupo suerte = new Grupo(TipoGrupo.suerte, this, false, aux, aux2, aux3);
-        grupos.put(TipoGrupo.suerte, suerte);
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
+
+        suerte = new SuerteCasilla(Constantes.NOMBRE_SUERTE_3, 36, this);
+
+        getCasillas().get(suerte.getPosicionEnTablero()/10).set(suerte.getPosicionEnTablero()%10,suerte);
+        getCasillasTablero().put(suerte.getNombre(),suerte);
 
 
         //Casillas comunidad
 
-        aux = new ArrayList<>();
-        aux.add(0); aux.add(2); aux.add("comunidad1");
+        ComunidadCasilla comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_1, 2, this);
 
-        aux2 = new ArrayList<>();
-        aux2.add(1); aux2.add(7); aux2.add("comunidad2");
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
 
-        aux3 = new ArrayList<>();
-        aux3.add(3); aux3.add(3); aux3.add("comunidad3");
+        comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_2, 17, this);
 
-        Grupo comunidad = new Grupo(TipoGrupo.comunidad, this, false, aux, aux2, aux3);
-        grupos.put(TipoGrupo.comunidad, comunidad);
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
+
+        comunidad = new ComunidadCasilla(Constantes.NOMBRE_COMUNIDAD_3, 33, this);
+
+        getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
+        getCasillasTablero().put(comunidad.getNombre(),comunidad);
 
     }
 
@@ -307,7 +355,7 @@ public class Tablero {
         return casillasTablero;
     }
 
-    public Jugador getBanca(){
+    public Banca getBanca(){
         return banca;
     }
 
@@ -315,4 +363,7 @@ public class Tablero {
         return dado;
     }
 
+    public HashMap<TipoGrupo, Grupo> getGrupos() {
+        return grupos;
+    }
 }
