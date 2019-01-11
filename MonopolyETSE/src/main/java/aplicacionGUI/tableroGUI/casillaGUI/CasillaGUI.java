@@ -9,6 +9,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
+import resources.casillas.FondosCasillas;
 
 public class CasillaGUI {
 
@@ -40,7 +41,7 @@ public class CasillaGUI {
         }
 
         this.casilla = casilla;
-        this.fondo = new Image(ficheroFondo);
+        this.fondo = new Image(FondosCasillas.class.getResource(ficheroFondo).toString());
     }
 
     
@@ -70,14 +71,17 @@ public class CasillaGUI {
     public void render(GraphicsContext gc) {
 
         renderFondo(gc);
-        renderNombre(gc);
-        renderContenido(gc);
+        System.out.println(fondo.getHeight());
+        System.out.println(fondo.getWidth());
+        System.out.println(fondo.toString());
+        //renderNombre(gc);
+        //renderContenido(gc);
     }
 
     public void renderFondo(GraphicsContext gc) {
 
         // Se añade la imagen
-        gc.drawImage(fondo, 100, 100);
+        gc.drawImage(fondo, 0, 0);
     }
 
     public void renderNombre(GraphicsContext gc) {

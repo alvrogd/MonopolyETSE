@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aplicacion;
+package resources.casillas;
 
 /**
  *
  * @author alvrogd
  */
-public class Loop {
+public class FondosCasillas {
     
 }

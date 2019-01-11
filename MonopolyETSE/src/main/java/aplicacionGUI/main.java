@@ -43,23 +43,30 @@ public class main extends Application {
         ventana.setScene( escena );
         
         // Se crea un canvas en el que representar la GUI
-        Canvas canvas = new Canvas( 1920, 1000 );
+        Canvas canvas = new Canvas( 1920, 800 );
+        
+        raiz.getChildren().add(canvas);
         
         // Se crea un entorno que manipular a partir del canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        // Se crea un segundo canvas para pintar la parte superior
+        Canvas superior = new Canvas( 1920, 800 );
+        raiz.getChildren().add(superior);
+        GraphicsContext gcSuperior = superior.getGraphicsContext2D();
         
         Aplicacion app;
         
         try {
             
             app = new Aplicacion();
-            app.getMenu().iniciarAplicacion();
+            //app.getMenu().iniciarAplicacion();
             app.introducirComando("crear jugador alvaro coche");
             app.introducirComando("crear jugador fran pelota");
             app.introducirComando("iniciar");
             
             TableroGUI tableroGUI = new TableroGUI( app.getJuego().getTablero());
-            CasillaGUI casillaGUI = new CasillaGUI(app.getJuego().getTablero().getCasillas().get(0).get(0), "Endor.png");
+            CasillaGUI casillaGUI = new CasillaGUI(app.getJuego().getTablero().getCasillas().get(0).get(6), "Endor.png");
 
             // Se inicia el game loop
             new AnimationTimer() {
@@ -69,7 +76,9 @@ public class main extends Application {
 
                     // Render
                     //TableroGUI.render(gc);
-                    CasillaGUI.render(gc);
+                    casillaGUI.render(gcSuperior);
+                    
+                    //gc.fillRect(500, 900, 50, 50);
                 }
             }.start();
 
