@@ -1,5 +1,6 @@
 package aplicacionGUI.tableroGUI;
 
+import aplicacionGUI.ConstantesGUI;
 import java.util.ArrayList;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
@@ -69,16 +70,69 @@ public class TableroGUI {
         return casillasGUI;        
     }
 
+    
+    
     /* Métodos */
+    
     public void render(GraphicsContext gc) {
         
-        int desplazamiento;
+        // Se renderiza la fila superior
+        //renderFila(true, gc);
+        // La fila inferior
+        renderFila(false, gc);
+    }
+    
+    private void renderFila(boolean superior, GraphicsContext gc) {
+
+        // Posición X en el canvas
+        int posicionX;
+        // Posición Y en el canvas
+        int posicionY;
+        // Posición de la casilla a iterar en el conjunto de estas
+        int posicionCasillaIterada;
+        // Representación de una casilla iterada
+        CasillaGUI casillaIterada;
+
+        // Si es la fila superior
+        if (superior) {
+            // Se comienza a insertar desde el inicio
+            posicionY = 0;
+            posicionCasillaIterada = 20;
+        }
         
-        for( ArrayList<CasillaGUI> filaGUI : getCasillasGUI() ) {
-            
-            for( CasillaGUI casillaGUI : filaGUI ) {
-                casillaGUI.render(gc);
-            }
-        }  
+        // En caso contrario, es la fila inferior
+        else {
+            // Se salta desde el inicio la suma de todas las casillas de un lado menos la última
+            posicionY = ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ConstantesGUI.ALTO_CASILLA);
+            posicionCasillaIterada = 10;
+        }
+        
+        // Se comienzan a insertar las casillas desde la izquierda
+        posicionX = 0;
+        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
+                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
+
+        // Se renderiza la casilla izquierda
+        casillaIterada.render(gc, posicionX, posicionY);
+
+        // Se suma el ancho de la casilla
+        posicionX += ConstantesGUI.ANCHO_CASILLA;
+        // En función de si es la fila superior o no, la casilla de la derecha será la siguiente o la anterior
+        posicionCasillaIterada += superior ? 1 : -1;
+        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
+                posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
+
+        // Se insertan las casillas intermedias
+        for (int i = 1; i < ConstantesGUI.CASILLAS_POR_FILA; i++) {
+            casillaIterada.render(gc, posicionX, posicionY);
+
+            posicionX += ConstantesGUI.ANCHO_CASILLA;
+            posicionCasillaIterada += superior ? 1 : -1;
+            casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
+                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
+        }
+
+        // Se inserta la casilla derecha
+        casillaIterada.render(gc, posicionX, posicionY);
     }
 }

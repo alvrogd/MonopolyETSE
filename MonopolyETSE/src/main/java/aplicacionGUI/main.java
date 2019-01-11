@@ -4,6 +4,8 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.tableroGUI.TableroGUI;
 import aplicacionGUI.tableroGUI.casillaGUI.CasillaGUI;
+import aplicacionGUI.tableroGUI.casillaGUI.PropiedadGUI;
+import aplicacionGUI.tableroGUI.casillaGUI.SolarGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -11,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,7 +47,7 @@ public class main extends Application {
         ventana.setScene( escena );
         
         // Se crea un canvas en el que representar la GUI
-        Canvas canvas = new Canvas( 1920, 800 );
+        Canvas canvas = new Canvas( 1920, 1000 );
         
         raiz.getChildren().add(canvas);
         
@@ -66,7 +70,7 @@ public class main extends Application {
             app.introducirComando("iniciar");
             
             TableroGUI tableroGUI = new TableroGUI( app.getJuego().getTablero());
-            CasillaGUI casillaGUI = new CasillaGUI(app.getJuego().getTablero().getCasillas().get(0).get(6), "Endor.png");
+            SolarGUI solarGUI = new SolarGUI((Solar)app.getJuego().getTablero().getCasillas().get(0).get(6), "Endor.png");
 
             // Se inicia el game loop
             new AnimationTimer() {
@@ -75,8 +79,8 @@ public class main extends Application {
                 public void handle( long currentNanoTime ) {
 
                     // Render
-                    //TableroGUI.render(gc);
-                    casillaGUI.render(gcSuperior);
+                    tableroGUI.render(gcSuperior);
+                    //solarGUI.render(gcSuperior);
                     
                     //gc.fillRect(500, 900, 50, 50);
                 }

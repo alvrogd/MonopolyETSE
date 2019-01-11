@@ -68,28 +68,28 @@ public class CasillaGUI {
     
     /* Métodos */
     
-    public void render(GraphicsContext gc) {
+    public void render(GraphicsContext gc, int x, int y) {
 
-        renderFondo(gc);
+        renderFondo(gc, x, y);
         System.out.println(fondo.getHeight());
         System.out.println(fondo.getWidth());
         System.out.println(fondo.toString());
-        //renderNombre(gc);
-        //renderContenido(gc);
+        renderNombre(gc, x, y);
+        renderContenido(gc, x, y);
     }
 
-    public void renderFondo(GraphicsContext gc) {
+    public void renderFondo(GraphicsContext gc, int x, int y) {
 
         // Se añade la imagen
-        gc.drawImage(fondo, 0, 0);
+        gc.drawImage(fondo, x, y);
     }
 
-    public void renderNombre(GraphicsContext gc) {
+    public void renderNombre(GraphicsContext gc, int x, int y) {
 
         // Se añade el color a la casilla en la posición del nombre
         gc.setStroke(Color.TRANSPARENT);
         gc.setFill(Color.rgb(128, 128, 128, 0.85));
-        gc.fillRect(3, 3, getANCHO() - 6, 13);
+        gc.fillRect(x + 3, y + 3, getANCHO() - 6, 14);
 
         // Se establece la tipografía
         gc.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
@@ -99,20 +99,20 @@ public class CasillaGUI {
         gc.setLineWidth(1);
 
         // Se añade el nombre de la casilla (la posición es la parte central inferior)
-        gc.fillText(getCasilla().getNombre(), ANCHO / 2, 14);
+        gc.fillText(getCasilla().getNombre(), x + ANCHO / 2, y + 14);
     }
 
-    public void renderContenido(GraphicsContext gc) {
+    public void renderContenido(GraphicsContext gc, int x, int y) {
 
         // Se añade un fondo transparente sobre el que introducir la información de la casilla
         gc.setFill(Color.rgb(128, 128, 128, 0.7));
-        gc.fillRect(3, 18, ANCHO - 6, 44);
+        gc.fillRect(x + 3, y + 19, ANCHO - 6, 43);
 
         // Se renderiza el contenido
-        renderAvataresContenidos(gc);
+        renderAvataresContenidos(gc, x, y);
     }
 
-    public void renderAvataresContenidos(GraphicsContext gc) {
+    public void renderAvataresContenidos(GraphicsContext gc, int x, int y) {
 
         // Se establece la tipografía
         gc.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
@@ -125,7 +125,7 @@ public class CasillaGUI {
 
         for (Avatar avatar : getCasilla().getAvataresContenidos().values()) {
 
-            gc.fillText(String.valueOf(avatar.getIdentificador()), 4 + desplazamiento, 24);
+            gc.fillText(String.valueOf(avatar.getIdentificador()), x + 4 + desplazamiento, y + 24);
         }
     }
 }

@@ -27,13 +27,13 @@ public class SolarGUI extends PropiedadGUI {
     }
     
     @Override
-    public void renderContenido(GraphicsContext gc ) {
+    public void renderContenido(GraphicsContext gc, int x, int y) {
         
-        super.renderContenido(gc);
-        renderEdificiosContenidos(gc);
+        super.renderContenido(gc, x, y);
+        renderEdificiosContenidos(gc, x, y);
     }
     
-    public void renderEdificiosContenidos(GraphicsContext gc) {
+    public void renderEdificiosContenidos(GraphicsContext gc, int x, int y) {
         
         // Se establece la tipografía
         gc.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
@@ -75,7 +75,7 @@ public class SolarGUI extends PropiedadGUI {
             // Se añade un identificador por cada edificio contenido del tipo iterado
             for( int i = 0; i < numeroEdificios; i++ ) {
                 
-                gc.fillText(identificador, 4 + desplazamiento, 35);
+                gc.fillText(identificador, x + 4 + desplazamiento, y + 35);
                 desplazamiento += 10;
             }
         }
