@@ -1,6 +1,7 @@
 package aplicacionGUI.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.tableroGUI.ColorCasillaGUI;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -9,6 +10,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import resources.casillas.FondosCasillas;
 
 public class CasillaGUI {
@@ -88,7 +90,15 @@ public class CasillaGUI {
 
         // Se añade el color a la casilla en la posición del nombre
         gc.setStroke(Color.TRANSPARENT);
-        gc.setFill(Color.rgb(128, 128, 128, 0.85));
+        
+        if(getCasilla() instanceof Propiedad){
+            gc.setFill(ColorCasillaGUI.tipoColorToColorTransparente(((Propiedad) getCasilla()).getGrupo().getTipo().getColor()));
+        }
+        
+        else {
+            gc.setFill(Color.rgb(128, 128, 128, 0.85));
+        }
+        
         gc.fillRect(x + 3, y + 3, getANCHO() - 6, 14);
 
         // Se establece la tipografía
@@ -125,7 +135,8 @@ public class CasillaGUI {
 
         for (Avatar avatar : getCasilla().getAvataresContenidos().values()) {
 
-            gc.fillText(String.valueOf(avatar.getIdentificador()), x + 4 + desplazamiento, y + 24);
+            gc.fillText(String.valueOf(avatar.getIdentificador()), x + 10 + desplazamiento, y + 32);
+            desplazamiento += 18;
         }
     }
 }

@@ -55,7 +55,7 @@ public class main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         // Se crea un segundo canvas para pintar la parte superior
-        Canvas superior = new Canvas( 1920, 800 );
+        Canvas superior = new Canvas( 1650, 715 );
         raiz.getChildren().add(superior);
         GraphicsContext gcSuperior = superior.getGraphicsContext2D();
         
