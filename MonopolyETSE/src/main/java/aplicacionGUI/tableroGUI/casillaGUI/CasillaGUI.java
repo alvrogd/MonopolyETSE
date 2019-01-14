@@ -73,9 +73,6 @@ public class CasillaGUI {
     public void render(GraphicsContext gc, int x, int y) {
 
         renderFondo(gc, x, y);
-        System.out.println(fondo.getHeight());
-        System.out.println(fondo.getWidth());
-        System.out.println(fondo.toString());
         renderNombre(gc, x, y);
         renderContenido(gc, x, y);
     }

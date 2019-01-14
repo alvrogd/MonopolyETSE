@@ -59,8 +59,10 @@ public class main extends Application {
         raiz.getChildren().add(superior);
         GraphicsContext gcSuperior = superior.getGraphicsContext2D();
         
-        //superior.setTranslateX(( 1920 - ));
-        
+        // Se mueve el tablero a su posición correspondiente
+        superior.setTranslateX(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X);
+        superior.setTranslateY(ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y);
+
         Aplicacion app;
         
         try {

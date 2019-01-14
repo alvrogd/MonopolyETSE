@@ -10,6 +10,14 @@ public class ConstantesGUI {
     public final static int TABLERO_ANCHO = 1650;
     public final static int TABLERO_ALTO = 715;
     
+    // Dimensiones de la sección de los controles
+    public final static int CONTROLES_ANCHO = 1920;
+    public final static int CONTROLES_ALTO = 250;
+    
+    // Dimensiones de los márgenes del tablero
+    public final static int TABLERO_DESPLAZAMIENTO_X = (VENTANA_ANCHO - TABLERO_ANCHO) / 2;
+    public final static int TABLERO_DESPLAZAMIENTO_Y = (VENTANA_ALTO - TABLERO_ALTO - CONTROLES_ALTO) / 2;
+    
     // Dimensiones de las representaciones de las casillas
     public final static int CASILLA_ANCHO = 150;
     public final static int CASILLA_ALTO = 65;
