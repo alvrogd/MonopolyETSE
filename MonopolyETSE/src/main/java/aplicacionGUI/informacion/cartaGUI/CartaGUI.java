@@ -6,7 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import resources.casillas.FondosCasillas;
+import resources.cartas.ImagenesCartas;
 
 public abstract class CartaGUI {
     
@@ -53,7 +53,7 @@ public abstract class CartaGUI {
         this.gc = this.canvas.getGraphicsContext2D();
         
         // Se obtiene la imagen correspondiente
-        this.imagen = new Image(FondosCasillas.class.getResource(imagen).toString());
+        this.imagen = new Image(ImagenesCartas.class.getResource(imagen).toString());
     }  
     
     

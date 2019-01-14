@@ -1,6 +1,7 @@
 package aplicacionGUI.informacion;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.transform.Translate;
@@ -15,6 +16,9 @@ public class Informacion {
     
     // Representación del tablero
     private final TableroGUI tableroGUI;
+    
+    // Representación de las cartas de suerte
+    private final SuerteGUI suerteGUI;
     
 
     
@@ -42,21 +46,29 @@ public class Informacion {
 
         // Se crea la representación del tablero
         this.tableroGUI = new TableroGUI(this.nodo, tablero);
+        
+        // Se crea la representación de las cartas de suerte
+        this.suerteGUI = new SuerteGUI(this.nodo);
     }
 
     
     
     /* Getters */
+
+    public Group getNodo() {
+        return nodo;
+    }
+
     
     public TableroGUI getTableroGUI() {
         return tableroGUI;
     }
 
     
-    public Group getNodoInformacion() {
-        return nodo;
+    public SuerteGUI getSuerteGUI() {
+        return suerteGUI;
     }
-
+    
     
     
     /* Métodos */
@@ -64,5 +76,6 @@ public class Informacion {
     public void render() {
 
         getTableroGUI().render();
+        getSuerteGUI().render();
     }
 }

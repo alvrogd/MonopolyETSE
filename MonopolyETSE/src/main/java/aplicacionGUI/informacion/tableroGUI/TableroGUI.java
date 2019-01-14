@@ -52,7 +52,7 @@ public class TableroGUI {
         
         // Se establece su correspondiente posición en la ventana
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X,
-                ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y));
+                ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y));
         
         // Se crea un canvas en el nuevo nodo para representar el tablero
         this.canvas = new Canvas( ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
@@ -60,10 +60,6 @@ public class TableroGUI {
         
         // Se genera un contexto a partir del canvas para insertar la representación del tablero
         this.gc = this.canvas.getGraphicsContext2D();
-        
-        // Se mueve el tablero a su posición correspondiente
-        this.canvas.setTranslateX(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X);
-        this.canvas.setTranslateY(ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y);
         
         
         // Se obtienen las casillas del tablero

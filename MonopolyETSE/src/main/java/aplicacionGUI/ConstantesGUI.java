@@ -18,11 +18,11 @@ public class ConstantesGUI {
     public final static int CONTROLES_ANCHO = 1920;
     public final static int CONTROLES_ALTO = 250;
     
-    // Dimensiones del desplazamiento de la sección de información
+    // Desplazamientos de la sección de información
     public final static int INFORMACION_DESPLAZAMIENTO_X = (VENTANA_ANCHO - INFORMACION_ANCHO) / 2;
     public final static int INFORMACION_DESPLAZAMIENTO_Y = (VENTANA_ALTO - INFORMACION_ALTO - CONTROLES_ALTO) / 2;
     
-    // Dimensiones del desplazamiento del tablero
+    // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;
     public final static int TABLERO_DESPLAZAMIENTO_Y = (INFORMACION_ALTO - TABLERO_ALTO) / 2;
     
@@ -83,5 +83,11 @@ public class ConstantesGUI {
     
     // Nombres de las imágenes de las cartas
     public final static String CARTA_SUERTE = "Suerte.jpeg";
+    
+    // Desplazamientos de las cartas
+    public final static int SUERTE_DESPLAZAMIENTO_X = CASILLA_ANCHO + 100;
+    // El -14 es un ajuste porque en realidad las casillas se imprimen más juntas para evitar que los bordes entre
+    // ellas sean enormes
+    public final static int SUERTE_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
     
 }
