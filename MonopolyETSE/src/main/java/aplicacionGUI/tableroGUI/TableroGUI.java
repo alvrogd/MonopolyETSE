@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import aplicacionGUI.tableroGUI.casillaGUI.*;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Translate;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 
@@ -13,18 +16,53 @@ public class TableroGUI {
     
     /* Atributos */
     
+    // Nodo propiedad del tablero
+    private final Group nodo;
+    
+    // Canvas contenido en el nodo
+    private final Canvas canvas;
+    
+    // Contexto en el que representar objetos
+    private final GraphicsContext gc;
+    
+    // Representaciones de las casillas
     private final ArrayList<ArrayList<CasillaGUI>> casillasGUI;
     
     
     
     /* Constructor */
     
-    public TableroGUI( Tablero tablero ) {
+    public TableroGUI( Group raiz, Tablero tablero ) {
+        
+        if( raiz == null ) {
+            System.err.println("Raíz no inicializada");
+            System.exit(1);
+        }
         
         if( tablero == null ) {
             System.err.println("Tablero no inicializado");
             System.exit(1);
         }
+        
+        // Se añade al nodo dado un nuevo nodo de uso para el tablero
+        this.nodo = new Group();
+        raiz.getChildren().add( this.nodo );
+        
+        // Se establece su correspondiente posición en la ventana
+        this.nodo.getTransforms().add(new Translate(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X,
+                ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y));
+        
+        // Se crea un canvas en el nuevo nodo para representar el tablero
+        this.canvas = new Canvas( ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
+        this.nodo.getChildren().add(canvas);
+        
+        // Se genera un contexto a partir del canvas para insertar la representación del tablero
+        this.gc = this.canvas.getGraphicsContext2D();
+        
+        // Se mueve el tablero a su posición correspondiente
+        this.canvas.setTranslateX(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X);
+        this.canvas.setTranslateY(ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y);
+        
         
         // Se obtienen las casillas del tablero
         ArrayList<ArrayList<Casilla>> casillas = tablero.getCasillas();
@@ -69,25 +107,41 @@ public class TableroGUI {
     
     
     /* Getters y setters */
-    
-    public ArrayList<ArrayList<CasillaGUI>> getCasillasGUI( ) {
-        return casillasGUI;        
+
+    public Group getNodo() {
+        return nodo;
     }
 
+    
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    
+    public ArrayList<ArrayList<CasillaGUI>> getCasillasGUI() {
+        return casillasGUI;
+    }
+    
     
     
     /* Métodos */
     
-    public void render(GraphicsContext gc) {
+    public void render() {
         
         // Se renderiza la fila superior
         renderFila(true, gc);
-        // La fila inferior
+        // Se renderiza la fila inferior
         renderFila(false, gc);
         
         // Se renderizan las columnas
         renderColumnas(gc);
     }
+    
     
     private void renderFila(boolean superior, GraphicsContext gc) {
 

@@ -2,6 +2,7 @@ package aplicacionGUI;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
+import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.tableroGUI.TableroGUI;
 import aplicacionGUI.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.tableroGUI.casillaGUI.PropiedadGUI;
@@ -46,23 +47,16 @@ public class main extends Application {
         // Se añade la escena a la ventana
         ventana.setScene( escena );
         
-        // Se crea un canvas en el que representar la GUI
+        // Se crea un canvas en el que representar la GUI y se añade a la raíz
+        // todo al final creo que este canvas será completamente innecesario si la parte de arriba y la de abajo tienen
+        // sus respectivos canvas
         Canvas canvas = new Canvas( ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO );
-        
         raiz.getChildren().add(canvas);
         
         // Se crea un entorno que manipular a partir del canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        // Se crea un segundo canvas para pintar la parte superior
-        Canvas superior = new Canvas( ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
-        raiz.getChildren().add(superior);
-        GraphicsContext gcSuperior = superior.getGraphicsContext2D();
-        
-        // Se mueve el tablero a su posición correspondiente
-        superior.setTranslateX(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X);
-        superior.setTranslateY(ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y);
 
+        // Se crea una aplicación Monopoly
         Aplicacion app;
         
         try {
@@ -73,7 +67,8 @@ public class main extends Application {
             app.introducirComando("crear jugador fran pelota");
             app.introducirComando("iniciar");
             
-            TableroGUI tableroGUI = new TableroGUI( app.getJuego().getTablero());
+            // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
+            Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
 
             // Se inicia el game loop
             new AnimationTimer() {
@@ -82,7 +77,7 @@ public class main extends Application {
                 public void handle( long currentNanoTime ) {
 
                     // Render
-                    tableroGUI.render(gcSuperior);
+                    informacion.render();
                     
                 }
             }.start();
