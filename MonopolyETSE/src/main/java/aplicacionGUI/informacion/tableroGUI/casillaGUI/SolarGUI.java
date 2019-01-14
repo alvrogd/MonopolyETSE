@@ -26,12 +26,14 @@ public class SolarGUI extends PropiedadGUI {
         return ((Solar) getCasilla());
     }
     
+    
     @Override
     public void renderContenido(GraphicsContext gc, int x, int y) {
         
         super.renderContenido(gc, x, y);
         renderEdificiosContenidos(gc, x, y);
     }
+    
     
     public void renderEdificiosContenidos(GraphicsContext gc, int x, int y) {
         

@@ -77,4 +77,11 @@ public class ConstantesGUI {
                                                       "SmaugsTax.png",
                                                       "Mordor.png"};
     
+    // Tamaño de las cartas
+    public final static int CARTA_ANCHO = 170;
+    public final static int CARTA_ALTO = 275;
+    
+    // Nombres de las imágenes de las cartas
+    public final static String CARTA_SUERTE = "Suerte.jpeg";
+    
 }

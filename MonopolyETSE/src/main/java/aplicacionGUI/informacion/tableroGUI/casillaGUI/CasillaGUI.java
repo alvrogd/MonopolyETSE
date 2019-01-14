@@ -23,6 +23,7 @@ public class CasillaGUI {
 
     // La casilla asociada
     private final Casilla casilla;
+    
     // Imagen de fondo de la casilla asociada
     private final Image fondo;
 
@@ -42,7 +43,10 @@ public class CasillaGUI {
             System.exit(1);
         }
 
+        // Se guarda la referencia a la casilla asociada
         this.casilla = casilla;
+        
+        // Se obtiene el fondo correspondiente
         this.fondo = new Image(FondosCasillas.class.getResource(ficheroFondo).toString());
     }
 
@@ -54,13 +58,16 @@ public class CasillaGUI {
         return ANCHO;
     }
 
+    
     public int getALTO() {
         return ALTO;
     }
 
+    
     public Casilla getCasilla() {
         return casilla;
     }
+    
 
     public Image getFondo() {
         return fondo;
@@ -77,12 +84,14 @@ public class CasillaGUI {
         renderContenido(gc, x, y);
     }
 
+    
     public void renderFondo(GraphicsContext gc, int x, int y) {
 
         // Se añade la imagen
-        gc.drawImage(fondo, x, y);
+        gc.drawImage(getFondo(), x, y);
     }
 
+    
     public void renderNombre(GraphicsContext gc, int x, int y) {
 
         // Se añade el color a la casilla en la posición del nombre
@@ -109,6 +118,7 @@ public class CasillaGUI {
         gc.fillText(getCasilla().getNombre(), x + ANCHO / 2, y + 14);
     }
 
+    
     public void renderContenido(GraphicsContext gc, int x, int y) {
 
         // Se añade un fondo transparente sobre el que introducir la información de la casilla
@@ -119,6 +129,7 @@ public class CasillaGUI {
         renderAvataresContenidos(gc, x, y);
     }
 
+    
     public void renderAvataresContenidos(GraphicsContext gc, int x, int y) {
 
         // Se establece la tipografía

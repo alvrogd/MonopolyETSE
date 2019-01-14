@@ -136,12 +136,12 @@ public class TableroGUI {
     public void render() {
         
         // Se renderiza la fila superior
-        renderFila(true, gc);
+        renderFila(true, getGc());
         // Se renderiza la fila inferior
-        renderFila(false, gc);
+        renderFila(false, getGc());
         
         // Se renderizan las columnas
-        renderColumnas(gc);
+        renderColumnas(getGc());
     }
     
     

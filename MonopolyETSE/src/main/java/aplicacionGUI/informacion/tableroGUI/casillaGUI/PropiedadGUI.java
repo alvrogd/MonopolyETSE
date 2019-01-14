@@ -26,12 +26,14 @@ public class PropiedadGUI extends CasillaGUI {
         return ((Propiedad) getCasilla());
     }
     
+    
     @Override
     public void renderContenido(GraphicsContext gc, int x, int y ) {
         
         super.renderContenido(gc, x, y);
         renderPropietario(gc, x, y);
     }
+    
     
     public void renderPropietario(GraphicsContext gc, int x, int y) {
         
