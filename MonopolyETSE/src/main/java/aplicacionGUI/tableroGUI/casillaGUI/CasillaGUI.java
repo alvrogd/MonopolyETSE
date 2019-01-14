@@ -18,8 +18,8 @@ public class CasillaGUI {
     /* Atributos */
     
     // Dimensiones de la representación
-    public final int ANCHO = ConstantesGUI.ANCHO_CASILLA;
-    public final int ALTO = ConstantesGUI.ALTO_CASILLA;
+    public final int ANCHO = ConstantesGUI.CASILLA_ANCHO;
+    public final int ALTO = ConstantesGUI.CASILLA_ALTO;
 
     // La casilla asociada
     private final Casilla casilla;

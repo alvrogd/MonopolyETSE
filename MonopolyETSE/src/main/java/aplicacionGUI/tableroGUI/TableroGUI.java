@@ -49,16 +49,16 @@ public class TableroGUI {
                 if( casilla instanceof Propiedad) {
                 
                     if( casilla instanceof Solar ) {
-                        filaGUI.add(new SolarGUI((Solar)casilla, ConstantesGUI.IMAGENES_CASILLAS[contador]));
+                        filaGUI.add(new SolarGUI((Solar)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
                     }
                     
                     else {
-                        filaGUI.add(new PropiedadGUI((Propiedad)casilla, ConstantesGUI.IMAGENES_CASILLAS[contador]));
+                        filaGUI.add(new PropiedadGUI((Propiedad)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
                     }
                 }
                 
                 else {
-                    filaGUI.add(new CasillaGUI(casilla, ConstantesGUI.IMAGENES_CASILLAS[contador]));
+                    filaGUI.add(new CasillaGUI(casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
                 } 
                 
                 contador++;
@@ -110,7 +110,7 @@ public class TableroGUI {
         // En caso contrario, es la fila inferior
         else {
             // Se salta desde el inicio la suma de todas las casillas de un lado menos la última
-            posicionY = ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.ALTO_CASILLA - 3));
+            posicionY = ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ALTO - 3));
             posicionCasillaIterada = 10;
         }
         
@@ -123,7 +123,7 @@ public class TableroGUI {
         casillaIterada.render(gc, posicionX, posicionY);
 
         // Se suma el ancho de la casilla
-        posicionX += ConstantesGUI.ANCHO_CASILLA - 3;
+        posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
         // En función de si es la fila superior o no, la casilla de la derecha será la siguiente o la anterior
         posicionCasillaIterada += superior ? 1 : -1;
         casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
@@ -133,7 +133,7 @@ public class TableroGUI {
         for (int i = 1; i < ConstantesGUI.CASILLAS_POR_FILA; i++) {
             casillaIterada.render(gc, posicionX, posicionY);
 
-            posicionX += ConstantesGUI.ANCHO_CASILLA - 3;
+            posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
             posicionCasillaIterada += superior ? 1 : -1;
             casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
                     posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
@@ -148,7 +148,7 @@ public class TableroGUI {
 
         // Se comienzan a insertar las columnas desde el límite que comparten con la fila superior
         int posicionX = 0;
-        int posicionY = ConstantesGUI.ALTO_CASILLA - 3;
+        int posicionY = ConstantesGUI.CASILLA_ALTO - 3;
         // Representación de una casilla iterada
         CasillaGUI casillaIterada;
 
@@ -165,13 +165,13 @@ public class TableroGUI {
             // Casilla derecha
 
             // Se desplaza la posición en el número de casillas de un lado menos la última
-            posicionX += ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.ANCHO_CASILLA - 3));
+            posicionX += ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ANCHO - 3));
             casillaIterada = getCasillasGUI().get(3).get(ConstantesGUI.CASILLAS_POR_FILA - i);
             casillaIterada.render(gc, posicionX, posicionY);
 
             // Se sitúa en la siguiente casilla izquierda a insertar
             posicionX = 0;
-            posicionY += ConstantesGUI.ALTO_CASILLA - 3;
+            posicionY += ConstantesGUI.CASILLA_ALTO - 3;
         }
     }
 }

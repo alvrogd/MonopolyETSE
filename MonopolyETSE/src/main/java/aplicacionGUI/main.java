@@ -47,7 +47,7 @@ public class main extends Application {
         ventana.setScene( escena );
         
         // Se crea un canvas en el que representar la GUI
-        Canvas canvas = new Canvas( 1920, 1000 );
+        Canvas canvas = new Canvas( ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO );
         
         raiz.getChildren().add(canvas);
         
@@ -55,9 +55,11 @@ public class main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         // Se crea un segundo canvas para pintar la parte superior
-        Canvas superior = new Canvas( 1650, 715 );
+        Canvas superior = new Canvas( ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
         raiz.getChildren().add(superior);
         GraphicsContext gcSuperior = superior.getGraphicsContext2D();
+        
+        //superior.setTranslateX(( 1920 - ));
         
         Aplicacion app;
         
