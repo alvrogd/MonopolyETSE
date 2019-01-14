@@ -70,7 +70,6 @@ public class main extends Application {
             app.introducirComando("iniciar");
             
             TableroGUI tableroGUI = new TableroGUI( app.getJuego().getTablero());
-            SolarGUI solarGUI = new SolarGUI((Solar)app.getJuego().getTablero().getCasillas().get(0).get(6), "Endor.png");
 
             // Se inicia el game loop
             new AnimationTimer() {
@@ -80,9 +79,7 @@ public class main extends Application {
 
                     // Render
                     tableroGUI.render(gcSuperior);
-                    //solarGUI.render(gcSuperior);
                     
-                    //gc.fillRect(500, 900, 50, 50);
                 }
             }.start();
 

@@ -19,11 +19,11 @@ public class ColorCasillaGUI {
 
             case resetAnsi:
             case Negrita:
-                color = Color.TRANSPARENT;
+                color = Color.rgb(128, 128, 128, 0.85);
                 break;
 
             case negroANSI:
-                color = Color.rgb(0, 0, 0, 0.85);
+                color = Color.rgb(153, 76, 0, 0.85);
                 break;
                 
             case rojoANSI:
