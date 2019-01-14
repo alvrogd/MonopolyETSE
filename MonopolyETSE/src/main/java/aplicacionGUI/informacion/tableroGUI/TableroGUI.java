@@ -1,10 +1,12 @@
-package aplicacionGUI.tableroGUI;
+package aplicacionGUI.informacion.tableroGUI;
 
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import aplicacionGUI.ConstantesGUI;
 import java.util.ArrayList;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
-import aplicacionGUI.tableroGUI.casillaGUI.*;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

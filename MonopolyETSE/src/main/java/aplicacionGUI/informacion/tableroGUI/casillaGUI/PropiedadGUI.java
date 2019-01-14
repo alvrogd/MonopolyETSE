@@ -1,4 +1,4 @@
-package aplicacionGUI.tableroGUI.casillaGUI;
+package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

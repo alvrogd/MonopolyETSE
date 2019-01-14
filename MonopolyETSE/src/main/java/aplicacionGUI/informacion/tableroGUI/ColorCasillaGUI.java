@@ -1,4 +1,4 @@
-package aplicacionGUI.tableroGUI;
+package aplicacionGUI.informacion.tableroGUI;
 
 import aplicacion.salidaPantalla.TipoColor;
 import javafx.scene.paint.Color;

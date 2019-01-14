@@ -1,7 +1,7 @@
 package aplicacionGUI.informacion;
 
 import aplicacionGUI.ConstantesGUI;
-import aplicacionGUI.tableroGUI.TableroGUI;
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.transform.Translate;
 import monopoly.tablero.Tablero;
