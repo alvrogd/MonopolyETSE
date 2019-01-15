@@ -155,7 +155,7 @@ public class CasillaGUI {
     
     /* Métodos */
     
-    public boolean contieneClickDerecho(double x, double y) {
+    public boolean contienePosicion(double x, double y) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();

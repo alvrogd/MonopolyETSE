@@ -99,7 +99,7 @@ public class Informacion {
     
     /* Métodos */
     
-    public boolean contieneClickDerecho(double x, double y) {
+    public boolean contienePosicion(double x, double y) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
@@ -108,22 +108,29 @@ public class Informacion {
     }
     
     
+    public void handleClickIzquierdo(double x, double y) {
+        
+        double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
+        
+        if( getSuerteGUI().contienePosicion(posicionX, posicionY)) {
+            getSuerteGUI().handleClickIzquierdo(posicionX, posicionY);
+        }
+        
+        else if( getComunidadGUI().contienePosicion(posicionX, posicionY)) {
+            getComunidadGUI().handleClickIzquierdo(posicionX, posicionY);
+        }    
+    }
+    
+    
     public void handleClickDerecho(double x, double y) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
         
-        if( getTableroGUI().contieneClickDerecho(posicionX, posicionY)) {
+        if( getTableroGUI().contienePosicion(posicionX, posicionY)) {
             getTableroGUI().handleClickDerecho(posicionX, posicionY);
-        }
-        
-        else if( getSuerteGUI().contieneClickDerecho(posicionX, posicionY)) {
-            getSuerteGUI().handleClickDerecho(posicionX, posicionY);
-        }
-        
-        else if( getComunidadGUI().contieneClickDerecho(posicionX, posicionY)) {
-            getComunidadGUI().handleClickDerecho(posicionX, posicionY);
-        }    
+        }   
     }
     
     

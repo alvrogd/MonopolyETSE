@@ -236,7 +236,7 @@ public class TableroGUI {
     }
     
     
-    public boolean contieneClickDerecho(double x, double y) {
+    public boolean contienePosicion(double x, double y) {
         
         double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
@@ -258,7 +258,7 @@ public class TableroGUI {
             
             for( CasillaGUI casillaGUI : fila ) {
             
-                if( casillaGUI.contieneClickDerecho(posicionX, posicionY)) {
+                if( casillaGUI.contienePosicion(posicionX, posicionY)) {
                     casillaGUI.handleClickDerecho(posicionX, posicionY);
                 }
             }

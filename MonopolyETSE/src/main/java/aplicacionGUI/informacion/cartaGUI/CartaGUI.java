@@ -147,7 +147,7 @@ public abstract class CartaGUI {
     
     /* Métodos */
     
-    public boolean contieneClickDerecho(double x, double y) {
+    public boolean contienePosicion(double x, double y) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
@@ -156,7 +156,7 @@ public abstract class CartaGUI {
     }
     
     
-    public void handleClickDerecho(double x, double y) {
+    public void handleClickIzquierdo(double x, double y) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();

@@ -3,6 +3,7 @@ package aplicacionGUI;
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.informacion.Informacion;
+import java.io.File;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -12,6 +13,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import resources.fondo.Fondo;
 
@@ -100,8 +106,23 @@ public class main extends Application {
                     double x = e.getX();
                     double y = e.getY();
 
-                    if( informacion.contieneClickDerecho(x, y)) {
+                    if( informacion.contienePosicion(x, y)) {
                         informacion.handleClickDerecho(x, y);
+                    }
+                }
+            });
+            
+            // Se define la acción ante un click izquierdo
+            escena.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                
+                @Override
+                public void handle( MouseEvent e ) {
+                    
+                    double x = e.getX();
+                    double y = e.getY();
+
+                    if( informacion.contienePosicion(x, y)) {
+                        informacion.handleClickIzquierdo(x, y);
                     }
                 }
             });
