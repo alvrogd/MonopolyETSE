@@ -4,9 +4,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -148,7 +146,8 @@ public class CasillaGUI {
         gc.setStroke(Color.TRANSPARENT);
         
         if(getCasilla() instanceof Propiedad){
-            gc.setFill(ColorCasillaGUI.tipoColorToColorTransparente(((Propiedad) getCasilla()).getGrupo().getTipo().getColor()));
+            gc.setFill(ColorCasillaGUI.tipoColorToColorTransparente(((Propiedad) getCasilla()).getGrupo().getTipo(
+                    ).getColor()));
         }
         
         else {

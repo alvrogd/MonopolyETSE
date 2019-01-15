@@ -13,7 +13,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.stage.Stage;
-import resources.casillas.FondosCasillas;
 import resources.fondo.Fondo;
 
 /*
@@ -68,12 +67,26 @@ public class main extends Application {
             app.introducirComando("crear jugador alvaro coche");
             app.introducirComando("crear jugador fran pelota");
             app.introducirComando("iniciar");
+            app.introducirComando("pasta 100000");
             app.introducirComando("mover 1");
             app.introducirComando("comprar Platform 9 3/4");
             app.introducirComando("mover 2");
             app.introducirComando("comprar Diagon Alley");
             app.introducirComando("edificar casa");
-            
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar hotel");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar hotel");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar casa");
+            app.introducirComando("edificar pista");
+            app.introducirComando("edificar piscina");
+
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
             
@@ -105,7 +118,7 @@ public class main extends Application {
         }
         
         catch( MonopolyETSEException e ) {
-            
+            e.toString();
         }
     }
 }

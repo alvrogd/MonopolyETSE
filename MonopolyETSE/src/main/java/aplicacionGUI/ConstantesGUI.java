@@ -77,6 +77,12 @@ public class ConstantesGUI {
                                                       "SmaugsTax.png",
                                                       "Mordor.png"};
     
+    // Nombres de las imágenes de los edificios
+    public final static String CASA = "casa.png";
+    public final static String HOTEL = "hotel.png";
+    public final static String PISCINA = "piscina.png";
+    public final static String PISTA = "pista.png";
+    
     // Tamaño de las cartas
     public final static int CARTA_ANCHO = 170;
     public final static int CARTA_ALTO = 275;

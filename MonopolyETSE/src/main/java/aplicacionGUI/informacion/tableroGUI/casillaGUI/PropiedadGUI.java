@@ -46,7 +46,7 @@ public class PropiedadGUI extends CasillaGUI {
         // Si el propietario es la banca, se añade el precio de la casilla
         if( getPropiedad().getPropietario() instanceof Banca ) {
             
-            gc.fillText(getPropiedad().getPrecioActual()+ " K €", x + 5, y + 55 );
+            gc.fillText(getPropiedad().getPrecioActual()+ " K €", x + 5, y + 58 );
         }
         
         // En caso contrario, se indica el propietario
