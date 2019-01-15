@@ -10,8 +10,8 @@ import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
@@ -28,6 +28,9 @@ public class TableroGUI {
     
     // Contexto en el que representar objetos
     private final GraphicsContext gc;
+    
+    // Sensor asociado a esta sección
+    private final Rectangle sensor;
     
     // Representaciones de las casillas
     private final ArrayList<ArrayList<CasillaGUI>> casillasGUI;
@@ -62,6 +65,10 @@ public class TableroGUI {
         
         // Se genera un contexto a partir del canvas para insertar la representación del tablero
         this.gc = this.canvas.getGraphicsContext2D();
+        
+        // Se crea el sensor correspondiente
+        this.sensor = new Rectangle(0, 0, ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
+        this.sensor.setFill(Color.TRANSPARENT);
         
         
         // Se obtienen las casillas del tablero
@@ -127,6 +134,11 @@ public class TableroGUI {
     }
 
     
+    public Rectangle getSensor() {
+        return sensor;
+    }
+           
+    
     public ArrayList<ArrayList<CasillaGUI>> getCasillasGUI() {
         return casillasGUI;
     }
@@ -134,6 +146,19 @@ public class TableroGUI {
     
     
     /* Métodos */
+    
+    /*private ArrayList<Integer[]> calcularPosiciones() {
+        
+    }*/
+    
+    public boolean contieneClickDerecho(double x, double y) {
+        
+        double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
+        
+        return(getSensor().contains(posicionX, posicionY));
+    }
+
     
     public final void initSensores() {
         

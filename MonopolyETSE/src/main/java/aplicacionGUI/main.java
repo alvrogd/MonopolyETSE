@@ -96,8 +96,13 @@ public class main extends Application {
 
                 @Override
                 public void handle(ContextMenuEvent e ) {
+                    
+                    double x = e.getX();
+                    double y = e.getY();
 
-                    informacion.handleClickDerecho(e.getX(), e.getY());
+                    if( informacion.contieneClickDerecho(x, y)) {
+                        informacion.handleClickDerecho(x, y);
+                    }
                 }
             });
 

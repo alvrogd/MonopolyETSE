@@ -4,6 +4,8 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.tablero.Tablero;
 
@@ -19,6 +21,9 @@ public class Informacion {
     
     // Representación de las cartas de suerte
     private final SuerteGUI suerteGUI;
+    
+    // Sensor asociado a esta sección
+    private final Rectangle sensor;
     
 
     
@@ -43,6 +48,10 @@ public class Informacion {
         // Se establece para la región la posición correspondiente en la ventana
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X,
                 ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y));
+        
+        // Se crea el sensor correspondiente
+        this.sensor = new Rectangle(0, 0, ConstantesGUI.INFORMACION_ANCHO, ConstantesGUI.INFORMACION_ALTO);
+        this.sensor.setFill(Color.TRANSPARENT);
 
         // Se crea la representación del tablero
         this.tableroGUI = new TableroGUI(this.nodo, tablero);
@@ -60,6 +69,11 @@ public class Informacion {
     }
 
     
+    public Rectangle getSensor() {
+        return sensor;
+    }
+
+    
     public TableroGUI getTableroGUI() {
         return tableroGUI;
     }
@@ -73,12 +87,23 @@ public class Informacion {
     
     /* Métodos */
     
+    public boolean contieneClickDerecho(double x, double y) {
+        
+        double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
+        
+        return(getSensor().contains(posicionX, posicionY));
+    }
+    
     public void handleClickDerecho(double x, double y) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
         
-        getTableroGUI().handleClickDerecho(posicionX, posicionY);
+        if( getTableroGUI().contieneClickDerecho(posicionX, posicionY)) {
+            getTableroGUI().handleClickDerecho(posicionX, posicionY);
+        }
+        
     }
     
     public void render() {
