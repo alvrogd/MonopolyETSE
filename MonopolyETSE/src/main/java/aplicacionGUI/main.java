@@ -97,7 +97,8 @@ public class main extends Application {
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
             
             // Se define la acción ante un click derecho
-            // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas
+            // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
+            // crear más adelante la clase aparte porque a Penín no le ha de de parecer buena idea
             escena.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 
                 @Override
