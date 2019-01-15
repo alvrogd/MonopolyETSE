@@ -3,7 +3,6 @@ package aplicacionGUI.informacion.cartaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
-import javafx.scene.transform.Translate;
 
 public class SuerteGUI extends CartaGUI {
     
