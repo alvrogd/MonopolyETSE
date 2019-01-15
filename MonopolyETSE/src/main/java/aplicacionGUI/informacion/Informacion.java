@@ -1,6 +1,7 @@
 package aplicacionGUI.informacion;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.informacion.cartaGUI.ComunidadGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
@@ -21,6 +22,9 @@ public class Informacion {
     
     // Representación de las cartas de suerte
     private final SuerteGUI suerteGUI;
+    
+    // Representación de las cartas de comunidad
+    private final ComunidadGUI comunidadGUI;
     
     // Sensor asociado a esta sección
     private final Rectangle sensor;
@@ -58,6 +62,9 @@ public class Informacion {
         
         // Se crea la representación de las cartas de suerte
         this.suerteGUI = new SuerteGUI(this.nodo);
+        
+        // Se crea la representación de las cartas de comunidad
+        this.comunidadGUI = new ComunidadGUI(this.nodo);
     }
 
     
@@ -82,6 +89,11 @@ public class Informacion {
     public SuerteGUI getSuerteGUI() {
         return suerteGUI;
     }
+
+    
+    public ComunidadGUI getComunidadGUI() {
+        return comunidadGUI;
+    }
     
     
     
@@ -95,6 +107,7 @@ public class Informacion {
         return(getSensor().contains(posicionX, posicionY));
     }
     
+    
     public void handleClickDerecho(double x, double y) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
@@ -104,11 +117,20 @@ public class Informacion {
             getTableroGUI().handleClickDerecho(posicionX, posicionY);
         }
         
+        else if( getSuerteGUI().contieneClickDerecho(posicionX, posicionY)) {
+            getSuerteGUI().handleClickDerecho(posicionX, posicionY);
+        }
+        
+        else if( getComunidadGUI().contieneClickDerecho(posicionX, posicionY)) {
+            getComunidadGUI().handleClickDerecho(posicionX, posicionY);
+        }    
     }
+    
     
     public void render() {
 
         getTableroGUI().render();
         getSuerteGUI().render();
+        getComunidadGUI().render();
     }
 }

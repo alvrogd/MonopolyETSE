@@ -88,12 +88,19 @@ public class ConstantesGUI {
     public final static int CARTA_ALTO = 275;
     
     // Nombres de las imágenes de las cartas
-    public final static String CARTA_SUERTE = "Suerte.jpeg";
+    public final static String CARTA_SUERTE = "Suerte.png";
+    public final static String CARTA_COMUNIDAD = "Comunidad.png";
+    public final static String CARTA_REVERSO = "Reverso.png";
     
     // Desplazamientos de las cartas
     public final static int SUERTE_DESPLAZAMIENTO_X = CASILLA_ANCHO + 100;
     // El -14 es un ajuste porque en realidad las casillas se imprimen más juntas para evitar que los bordes entre
     // ellas sean enormes
     public final static int SUERTE_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
+    // El ajuste final es por el motivo anterior; además, debe considerarse que la posición dada es la de la esquina
+    // superior izquierda de la imagen
+    public final static int COMUNIDAD_DESPLAZAMIENTO_X = TABLERO_ANCHO -CARTA_ANCHO - CASILLA_ANCHO - 100 -
+            CASILLAS_POR_LADO * 3;
+    public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
     
 }

@@ -25,6 +25,9 @@ public class TableroGUI {
     // Sensor asociado al tablero
     private final Rectangle sensor;
     
+    // Diferencia para el sensor del tablero
+    private final Rectangle diferencia;
+    
     // Representaciones de las casillas
     private final ArrayList<ArrayList<CasillaGUI>> casillasGUI;
     
@@ -56,6 +59,11 @@ public class TableroGUI {
         this.sensor = new Rectangle(0, 0, ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
         
+        // Y su diferencia (es necesario el ajuste de juntar las casillas)
+        this.diferencia = new Rectangle(ConstantesGUI.CASILLA_ANCHO, ConstantesGUI.CASILLA_ALTO,
+                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ANCHO - 3 ),
+                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ALTO - 3 ));
+        this.diferencia.setFill(Color.TRANSPARENT);
         
         // Se obtienen las casillas del tablero
         ArrayList<ArrayList<Casilla>> casillas = tablero.getCasillas();
@@ -119,6 +127,11 @@ public class TableroGUI {
     
     public ArrayList<ArrayList<CasillaGUI>> getCasillasGUI() {
         return casillasGUI;
+    }
+
+    
+    public Rectangle getDiferencia() {
+        return diferencia;
     }
     
     
@@ -228,7 +241,7 @@ public class TableroGUI {
         double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
         
-        return(getSensor().contains(posicionX, posicionY));
+        return(getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY));
     }
     
     

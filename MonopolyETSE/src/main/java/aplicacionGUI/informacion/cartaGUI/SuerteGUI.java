@@ -12,10 +12,7 @@ public class SuerteGUI extends CartaGUI {
     public SuerteGUI( Group raiz ) {
         
         // Se crea la representación de la carta
-        super( raiz, ConstantesGUI.CARTA_SUERTE );
-        
-        // Se mueve la carta a su posición adecuada (interior del tablero, izquierda)
-        super.getNodo().getTransforms().add(new Translate(ConstantesGUI.SUERTE_DESPLAZAMIENTO_X,
-                ConstantesGUI.SUERTE_DESPLAZAMIENTO_Y));
+        super( raiz, ConstantesGUI.CARTA_SUERTE, ConstantesGUI.SUERTE_DESPLAZAMIENTO_X,
+                ConstantesGUI.SUERTE_DESPLAZAMIENTO_Y );
     }
 }
