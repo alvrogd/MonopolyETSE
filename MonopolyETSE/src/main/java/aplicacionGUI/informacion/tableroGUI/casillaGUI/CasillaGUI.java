@@ -2,9 +2,13 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
+import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -26,7 +30,9 @@ public class CasillaGUI {
     
     // Imagen de fondo de la casilla asociada
     private final Image fondo;
-
+    
+    // Sensor de la casilla
+    private Rectangle sensor;
     
     
     /* Constructor */
@@ -74,8 +80,52 @@ public class CasillaGUI {
     }
 
     
+    public Rectangle getSensor() {
+        return sensor;
+    }
+
+    
+    public void setSensor(Rectangle sensor) {
+        this.sensor = sensor;
+    }
+    
+    
     
     /* Métodos */
+    
+    public void initSensor(Group raiz, int x, int y) {
+        
+        // Se crea un sensor para la casilla en la posición indicada
+        Rectangle rectangle = new Rectangle(x, y, getANCHO(), getALTO());
+        
+        rectangle.setFill(Color.TRANSPARENT);
+        
+        // Se añade el sensor al nodo raíz
+        raiz.getChildren().add(rectangle);
+        
+        // Se guarda el sensor de la casilla
+        setSensor(rectangle);
+    }
+    
+    
+    public boolean contieneClickDerecho(double x, double y) {
+        
+        // Si la posición del click es contenida por el sensor de la casilla
+        if( getSensor().contains( x, y ) ) {
+            return( true );
+        }
+        
+        else {
+            return( false );
+        } 
+    }
+    
+    
+    public void handleClickDerecho(double x, double y) {
+        
+        System.out.println("Si" + getCasilla().getNombre());
+    }
+    
     
     public void render(GraphicsContext gc, int x, int y) {
 
@@ -83,7 +133,7 @@ public class CasillaGUI {
         renderNombre(gc, x, y);
         renderContenido(gc, x, y);
     }
-
+    
     
     public void renderFondo(GraphicsContext gc, int x, int y) {
 
@@ -122,7 +172,7 @@ public class CasillaGUI {
     public void renderContenido(GraphicsContext gc, int x, int y) {
 
         // Se añade un fondo transparente sobre el que introducir la información de la casilla
-        gc.setFill(Color.rgb(128, 128, 128, 0.7));
+        gc.setFill(Color.rgb(128, 128, 128, 0.6));
         gc.fillRect(x + 3, y + 19, ANCHO - 6, 43);
 
         // Se renderiza el contenido

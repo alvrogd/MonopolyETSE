@@ -55,12 +55,12 @@ public class PropiedadGUI extends CasillaGUI {
             // Se diferencia entre estar hipotecada o no
             if( getPropiedad().isHipotecada() ) {
                 
-                gc.fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 55 );
+                gc.fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 58 );
             }
             
             else {
                 
-                gc.fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 55 );
+                gc.fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 58 );
             }     
         }
     }

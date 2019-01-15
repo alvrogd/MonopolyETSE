@@ -73,6 +73,14 @@ public class Informacion {
     
     /* Métodos */
     
+    public void handleClickDerecho(double x, double y) {
+        
+        double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
+        
+        getTableroGUI().handleClickDerecho(posicionX, posicionY);
+    }
+    
     public void render() {
 
         getTableroGUI().render();

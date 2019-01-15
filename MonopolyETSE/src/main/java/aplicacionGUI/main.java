@@ -3,19 +3,18 @@ package aplicacionGUI;
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.informacion.Informacion;
-import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
-import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
-import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.stage.Stage;
-import monopoly.tablero.jerarquiaCasillas.Propiedad;
-import monopoly.tablero.jerarquiaCasillas.Solar;
+import resources.casillas.FondosCasillas;
+import resources.fondo.Fondo;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -46,7 +45,7 @@ public class main extends Application {
         Scene escena = new Scene( raiz );
         // Se añade la escena a la ventana
         ventana.setScene( escena );
-        
+                        
         // Se crea un canvas en el que representar la GUI y se añade a la raíz
         // todo al final creo que este canvas será completamente innecesario si la parte de arriba y la de abajo tienen
         // sus respectivos canvas
@@ -55,6 +54,9 @@ public class main extends Application {
         
         // Se crea un entorno que manipular a partir del canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        // Se imprime el fondo de la GUI
+        gc.drawImage(new Image(Fondo.class.getResource("fondo.jpg").toString()), 0, 0);
 
         // Se crea una aplicación Monopoly
         Aplicacion app;
@@ -66,9 +68,25 @@ public class main extends Application {
             app.introducirComando("crear jugador alvaro coche");
             app.introducirComando("crear jugador fran pelota");
             app.introducirComando("iniciar");
+            app.introducirComando("mover 1");
+            app.introducirComando("comprar Platform 9 3/4");
+            app.introducirComando("mover 2");
+            app.introducirComando("comprar Diagon Alley");
+            app.introducirComando("edificar casa");
             
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
+            
+            // Se define la acción ante un click derecho
+            // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas
+            escena.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+
+                @Override
+                public void handle(ContextMenuEvent e ) {
+
+                    informacion.handleClickDerecho(e.getX(), e.getY());
+                }
+            });
 
             // Se inicia el game loop
             new AnimationTimer() {

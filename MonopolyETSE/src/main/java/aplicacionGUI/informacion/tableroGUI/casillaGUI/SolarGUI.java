@@ -77,7 +77,7 @@ public class SolarGUI extends PropiedadGUI {
             // Se añade un identificador por cada edificio contenido del tipo iterado
             for( int i = 0; i < numeroEdificios; i++ ) {
                 
-                gc.fillText(identificador, x + 4 + desplazamiento, y + 35);
+                gc.fillText(identificador, x + 4 + desplazamiento, y + 45);
                 desplazamiento += 10;
             }
         }
