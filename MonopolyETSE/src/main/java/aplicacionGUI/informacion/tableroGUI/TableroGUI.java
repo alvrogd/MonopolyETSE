@@ -5,11 +5,10 @@ import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import aplicacionGUI.ConstantesGUI;
 import java.util.ArrayList;
+import java.util.Collections;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -23,13 +22,7 @@ public class TableroGUI {
     // Nodo propiedad del tablero
     private final Group nodo;
     
-    // Canvas contenido en el nodo
-    private final Canvas canvas;
-    
-    // Contexto en el que representar objetos
-    private final GraphicsContext gc;
-    
-    // Sensor asociado a esta sección
+    // Sensor asociado al tablero
     private final Rectangle sensor;
     
     // Representaciones de las casillas
@@ -59,13 +52,6 @@ public class TableroGUI {
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.TABLERO_DESPLAZAMIENTO_X,
                 ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y));
         
-        // Se crea un canvas en el nuevo nodo para representar el tablero
-        this.canvas = new Canvas( ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
-        this.nodo.getChildren().add(canvas);
-        
-        // Se genera un contexto a partir del canvas para insertar la representación del tablero
-        this.gc = this.canvas.getGraphicsContext2D();
-        
         // Se crea el sensor correspondiente
         this.sensor = new Rectangle(0, 0, ConstantesGUI.TABLERO_ANCHO, ConstantesGUI.TABLERO_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
@@ -73,6 +59,9 @@ public class TableroGUI {
         
         // Se obtienen las casillas del tablero
         ArrayList<ArrayList<Casilla>> casillas = tablero.getCasillas();
+        
+        // Se obtienen las correspondientes posiciones de las casillas en la ventana
+        ArrayList<int[]> posiciones = calcularPosiciones();
         
         // Se inicializa el array de representaciones
         this.casillasGUI = new ArrayList<>();
@@ -91,28 +80,27 @@ public class TableroGUI {
             // Se itera sobre las casillas de la fila
             for( Casilla casilla : fila ) {
                 
-                if( casilla instanceof Propiedad) {
+                if(casilla instanceof Propiedad) {
                 
                     if( casilla instanceof Solar ) {
-                        filaGUI.add(new SolarGUI((Solar)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
+                        filaGUI.add(new SolarGUI(this.nodo, (Solar)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
+                                posiciones.get(contador)[0], posiciones.get(contador)[1]));
                     }
                     
                     else {
-                        filaGUI.add(new PropiedadGUI((Propiedad)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
+                        filaGUI.add(new PropiedadGUI(this.nodo, (Propiedad)casilla, ConstantesGUI.CASILLAS_IMAGENES[
+                                contador], posiciones.get(contador)[0], posiciones.get(contador)[1]));
                     }
                 }
                 
                 else {
-                    filaGUI.add(new CasillaGUI(casilla, ConstantesGUI.CASILLAS_IMAGENES[contador]));
+                    filaGUI.add(new CasillaGUI(this.nodo, casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
+                            posiciones.get(contador)[0], posiciones.get(contador)[1]));
                 } 
                 
                 contador++;
             }
         }
-        
-        
-        // Se inicializan los sensores de las casillas
-        initSensores();
     }
     
     
@@ -121,16 +109,6 @@ public class TableroGUI {
 
     public Group getNodo() {
         return nodo;
-    }
-
-    
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
-    
-    public GraphicsContext getGc() {
-        return gc;
     }
 
     
@@ -147,9 +125,103 @@ public class TableroGUI {
     
     /* Métodos */
     
-    /*private ArrayList<Integer[]> calcularPosiciones() {
+    private ArrayList<int[]> calcularPosiciones() {
         
-    }*/
+        // Array final de posiciones
+        ArrayList<int[]> posiciones = new ArrayList<>();
+        
+        // Array auxiliar
+        ArrayList<int[]> aux;
+        
+        // Se calculan en orden las posiciones de las casillas, comenzando por la fila inferior (es necesario darle la
+        // vuelta puesto que las posiciones se comienzan a calcular desde el lado izquierdo)
+        aux = calcularPosicionesFila(false);
+        Collections.reverse(aux);
+        posiciones.addAll(aux);
+        
+        // Las posiciones de la fila izquierda (también es necesario darles la vuelta al calcularlas de arriba abajo)
+        aux = calcularPosicionesColumna(true);
+        Collections.reverse(aux);
+        posiciones.addAll(aux);
+        
+        // Las posiciones de la fila superior
+        aux = calcularPosicionesFila(true);
+        posiciones.addAll(aux);
+        
+        // Las posiciones de la columna derecha
+        aux = calcularPosicionesColumna(false);
+        posiciones.addAll(aux);
+     
+        return( posiciones );
+    }
+    
+    
+    private ArrayList<int[]> calcularPosicionesFila(boolean superior) {
+        
+        ArrayList<int[]> posiciones = new ArrayList<>();
+        
+        // Posición X en el canvas; se comienzan a insertar las casillas desde la izquierda
+        int posicionX = 0;
+        // Posición Y en el canvas
+        int posicionY;
+
+        // Si es la fila superior
+        if (superior) {
+            // Se comienza a insertar desde el inicio
+            posicionY = 0;
+        }
+        
+        // En caso contrario, es la fila inferior
+        else {
+            // Se salta desde el inicio la suma de todas las casillas de un lado menos la última
+            posicionY = (ConstantesGUI.CASILLAS_POR_LADO - 1) * (ConstantesGUI.CASILLA_ALTO - 3);
+        }
+        
+        // Se calculan las correspondientes posiciones
+        for (int i = 0; i < ConstantesGUI.CASILLAS_POR_LADO; i++, posicionX += ConstantesGUI.CASILLA_ANCHO - 3) {
+            
+            // Se guarda la posición
+            posiciones.add(new int[]{posicionX, posicionY});
+
+        }
+        
+        return( posiciones );
+    }
+    
+    
+    private ArrayList<int[]> calcularPosicionesColumna(boolean izquierda) {
+        
+        ArrayList<int[]> posiciones = new ArrayList<>();
+        
+        // Posición X en el canvas; se comienzan a insertar las casillas desde la izquierda
+        int posicionX;
+        // Posición Y en el canvas; comienzan a insertar las columnas desde el límite que comparten con la fila
+        // superior
+        int posicionY = ConstantesGUI.CASILLA_ALTO - 3;
+
+        // Si es la columna izquierda
+        if (izquierda) {
+            // Se comienza a insertar desde el lado izquierdo
+            posicionX = 0;
+        }
+        
+        // En caso contrario, es la columna derecha
+        else {
+            // Se desplaza la posición en el número de casillas de un lado menos la última
+            posicionX = (ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ANCHO - 3);
+        }
+        
+        // Se calculan las correspondientes posiciones
+        for (int i = 0; i < ConstantesGUI.CASILLAS_POR_LADO - 2; i++, posicionY += ConstantesGUI.CASILLA_ALTO - 3) {
+            
+            // Se guarda la posición
+            posiciones.add(new int[]{posicionX, posicionY});
+
+        }
+        
+        return( posiciones );
+    }
+    
     
     public boolean contieneClickDerecho(double x, double y) {
         
@@ -157,106 +229,6 @@ public class TableroGUI {
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
         
         return(getSensor().contains(posicionX, posicionY));
-    }
-
-    
-    public final void initSensores() {
-        
-        // La fila superior
-        initSensoresFila(true);
-        // La fila inferior
-        initSensoresFila(false);
-        
-        // Las columnas
-        initSensoresColumnas();
-    }
-    
-    
-    private void initSensoresFila(boolean superior) {
-        
-        // Posición X en el canvas
-        int posicionX;
-        // Posición Y en el canvas
-        int posicionY;
-        // Posición de la casilla a iterar en el conjunto de estas
-        int posicionCasillaIterada;
-        // Representación de una casilla iterada
-        CasillaGUI casillaIterada;
-
-        // Si es la fila superior
-        if (superior) {
-            // Se comienza a insertar desde el inicio
-            posicionY = 0;
-            posicionCasillaIterada = 20;
-        }
-        
-        // En caso contrario, es la fila inferior
-        else {
-            // Se salta desde el inicio la suma de todas las casillas de un lado menos la última
-            posicionY = ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ALTO - 3));
-            posicionCasillaIterada = 10;
-        }
-        
-        // Se comienzan a insertar las casillas desde la izquierda
-        posicionX = 0;
-        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-
-        // Se inicializa el sensor de la casilla iterada
-        casillaIterada.initSensor(getNodo(), posicionX, posicionY);
-
-        // Se suma el ancho de la casilla
-        posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
-        // En función de si es la fila superior o no, la casilla de la derecha será la siguiente o la anterior
-        posicionCasillaIterada += superior ? 1 : -1;
-        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-
-        // Se insertan las casillas intermedias
-        for (int i = 1; i < ConstantesGUI.CASILLAS_POR_FILA; i++) {
-            casillaIterada.initSensor(getNodo(), posicionX, posicionY);
-
-            posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
-            posicionCasillaIterada += superior ? 1 : -1;
-            casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-        }
-
-        // Se inserta la casilla derecha
-        casillaIterada.initSensor(getNodo(), posicionX, posicionY);
-    }
-    
-    
-    private void initSensoresColumnas() {
-        
-        // Se comienzan a insertar las columnas desde el límite que comparten con la fila superior
-        int posicionX = 0;
-        int posicionY = ConstantesGUI.CASILLA_ALTO - 3;
-        // Representación de una casilla iterada
-        CasillaGUI casillaIterada;
-
-        // Cada iteración inserta una fila de las columnas
-        for (int i = 9; i > 0; i--) {
-
-            // Casilla izquierda
-
-            // Las casillas izquierdas son insertadas de mayor a menor en función del orden del tablero; las derechas
-            // son insertadas de menor a mayor
-            casillaIterada = getCasillasGUI().get(1).get(i);
-            casillaIterada.initSensor(getNodo(), posicionX, posicionY);
-
-
-            // Casilla derecha
-
-            // Se desplaza la posición en el número de casillas de un lado menos la última
-            posicionX += ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ANCHO - 3));
-            casillaIterada = getCasillasGUI().get(3).get(ConstantesGUI.CASILLAS_POR_FILA - i);
-            casillaIterada.initSensor(getNodo(), posicionX, posicionY);
-
-            // Se sitúa en la siguiente casilla izquierda a insertar
-            posicionX = 0;
-            posicionY += ConstantesGUI.CASILLA_ALTO - 3;
-        }
     }
     
     
@@ -283,99 +255,11 @@ public class TableroGUI {
     
     public void render() {
         
-        // Se renderiza la fila superior
-        renderFila(true, getGc());
-        // Se renderiza la fila inferior
-        renderFila(false, getGc());
-        
-        // Se renderizan las columnas
-        renderColumnas(getGc());
-    }
-    
-    
-    private void renderFila(boolean superior, GraphicsContext gc) {
-
-        // Posición X en el canvas
-        int posicionX;
-        // Posición Y en el canvas
-        int posicionY;
-        // Posición de la casilla a iterar en el conjunto de estas
-        int posicionCasillaIterada;
-        // Representación de una casilla iterada
-        CasillaGUI casillaIterada;
-
-        // Si es la fila superior
-        if (superior) {
-            // Se comienza a insertar desde el inicio
-            posicionY = 0;
-            posicionCasillaIterada = 20;
-        }
-        
-        // En caso contrario, es la fila inferior
-        else {
-            // Se salta desde el inicio la suma de todas las casillas de un lado menos la última
-            posicionY = ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ALTO - 3));
-            posicionCasillaIterada = 10;
-        }
-        
-        // Se comienzan a insertar las casillas desde la izquierda
-        posicionX = 0;
-        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-
-        // Se renderiza la casilla izquierda
-        casillaIterada.render(gc, posicionX, posicionY);
-
-        // Se suma el ancho de la casilla
-        posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
-        // En función de si es la fila superior o no, la casilla de la derecha será la siguiente o la anterior
-        posicionCasillaIterada += superior ? 1 : -1;
-        casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-
-        // Se insertan las casillas intermedias
-        for (int i = 1; i < ConstantesGUI.CASILLAS_POR_FILA; i++) {
-            casillaIterada.render(gc, posicionX, posicionY);
-
-            posicionX += ConstantesGUI.CASILLA_ANCHO - 3;
-            posicionCasillaIterada += superior ? 1 : -1;
-            casillaIterada = getCasillasGUI().get(posicionCasillaIterada / ConstantesGUI.CASILLAS_POR_FILA).get(
-                    posicionCasillaIterada % ConstantesGUI.CASILLAS_POR_FILA);
-        }
-
-        // Se inserta la casilla derecha
-        casillaIterada.render(gc, posicionX, posicionY);
-    }
-    
-    
-    private void renderColumnas(GraphicsContext gc) {
-
-        // Se comienzan a insertar las columnas desde el límite que comparten con la fila superior
-        int posicionX = 0;
-        int posicionY = ConstantesGUI.CASILLA_ALTO - 3;
-        // Representación de una casilla iterada
-        CasillaGUI casillaIterada;
-
-        // Cada iteración inserta una fila de las columnas
-        for (int i = 9; i > 0; i--) {
-
-            // Casilla izquierda
-
-            // Las casillas izquierdas son insertadas de mayor a menor en función del orden del tablero; las derechas
-            // son insertadas de menor a mayor
-            casillaIterada = getCasillasGUI().get(1).get(i);
-            casillaIterada.render(gc, posicionX, posicionY);
-
-            // Casilla derecha
-
-            // Se desplaza la posición en el número de casillas de un lado menos la última
-            posicionX += ((ConstantesGUI.CASILLAS_POR_LADO - 1) * ( ConstantesGUI.CASILLA_ANCHO - 3));
-            casillaIterada = getCasillasGUI().get(3).get(ConstantesGUI.CASILLAS_POR_FILA - i);
-            casillaIterada.render(gc, posicionX, posicionY);
-
-            // Se sitúa en la siguiente casilla izquierda a insertar
-            posicionX = 0;
-            posicionY += ConstantesGUI.CASILLA_ALTO - 3;
+        for( ArrayList<CasillaGUI> fila : getCasillasGUI() ) {
+            
+            for( CasillaGUI casillaGUI : fila ) {
+                casillaGUI.render();
+            }
         }
     }
 }

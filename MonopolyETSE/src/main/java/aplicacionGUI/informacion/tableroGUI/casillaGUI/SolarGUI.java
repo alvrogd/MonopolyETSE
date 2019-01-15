@@ -1,7 +1,7 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,9 +24,9 @@ public class SolarGUI extends PropiedadGUI {
     
     /* Constructor */
     
-    public SolarGUI(Solar solar, String ficheroFondo) {
+    public SolarGUI(Group raiz, Solar solar, String ficheroFondo, int posicionX, int posicionY) {
 
-        super(solar, ficheroFondo);
+        super(raiz, solar, ficheroFondo, posicionX, posicionY);
     }
 
     
@@ -63,20 +63,20 @@ public class SolarGUI extends PropiedadGUI {
     /* Métodos */
     
     @Override
-    public void renderContenido(GraphicsContext gc, int x, int y) {
+    public void renderContenido() {
         
-        super.renderContenido(gc, x, y);
-        renderEdificiosContenidos(gc, x, y);
+        super.renderContenido();
+        renderEdificiosContenidos();
     }
     
     
-    public void renderEdificiosContenidos(GraphicsContext gc, int x, int y) {
+    public void renderEdificiosContenidos() {
         
         // Se establece la tipografía
-        gc.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-        gc.setStroke(Color.TRANSPARENT);
-        gc.setFill(Color.BLACK);
-        gc.setTextAlign(TextAlignment.LEFT);
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
+        getGc().setStroke(Color.TRANSPARENT);
+        getGc().setFill(Color.BLACK);
+        getGc().setTextAlign(TextAlignment.LEFT);
         
         // Se añaden los edificos contenidos
         int desplazamiento = 0;
@@ -112,7 +112,7 @@ public class SolarGUI extends PropiedadGUI {
             // Se añade un identificador por cada edificio contenido del tipo iterado
             for( int i = 0; i < numeroEdificios; i++ ) {
                 
-                gc.drawImage( imagen, x + 4 + desplazamiento, y + 37 );
+                getGc().drawImage( imagen, 4 + desplazamiento, 37 );
                 desplazamiento += 10;
             }
         }

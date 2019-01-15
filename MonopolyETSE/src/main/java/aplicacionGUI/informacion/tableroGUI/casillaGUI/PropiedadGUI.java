@@ -1,6 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -12,9 +12,9 @@ public class PropiedadGUI extends CasillaGUI {
 
     /* Constructor */
     
-    public PropiedadGUI(Propiedad propiedad, String ficheroFondo) {
+    public PropiedadGUI(Group raiz, Propiedad propiedad, String ficheroFondo, int posicionX, int posicionY) {
 
-        super(propiedad, ficheroFondo);
+        super(raiz, propiedad, ficheroFondo, posicionX, posicionY);
     }
 
     
@@ -28,25 +28,25 @@ public class PropiedadGUI extends CasillaGUI {
     
     
     @Override
-    public void renderContenido(GraphicsContext gc, int x, int y ) {
+    public void renderContenido() {
         
-        super.renderContenido(gc, x, y);
-        renderPropietario(gc, x, y);
+        super.renderContenido();
+        renderPropietario();
     }
     
     
-    public void renderPropietario(GraphicsContext gc, int x, int y) {
+    public void renderPropietario() {
         
         // Se establece la tipografía
-        gc.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-        gc.setStroke(Color.TRANSPARENT);
-        gc.setFill(Color.BLACK);
-        gc.setTextAlign(TextAlignment.LEFT);
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
+        getGc().setStroke(Color.TRANSPARENT);
+        getGc().setFill(Color.BLACK);
+        getGc().setTextAlign(TextAlignment.LEFT);
         
         // Si el propietario es la banca, se añade el precio de la casilla
         if( getPropiedad().getPropietario() instanceof Banca ) {
             
-            gc.fillText(getPropiedad().getPrecioActual()+ " K €", x + 5, y + 58 );
+            getGc().fillText(getPropiedad().getPrecioActual()+ " K €", 5, 58 );
         }
         
         // En caso contrario, se indica el propietario
@@ -55,12 +55,12 @@ public class PropiedadGUI extends CasillaGUI {
             // Se diferencia entre estar hipotecada o no
             if( getPropiedad().isHipotecada() ) {
                 
-                gc.fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 58 );
+                getGc().fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), 5, 58 );
             }
             
             else {
                 
-                gc.fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), x + 5, y + 58 );
+                getGc().fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), 5, 58 );
             }     
         }
     }
