@@ -92,6 +92,11 @@ public class main extends Application {
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
             
+            // Se añade texto de prueba al marco de información
+            informacion.getMarcoInformacion().actualizarContenido(new String[]{"Hola", "Qué", "Tal"});
+            // Se activo
+            informacion.getMarcoInformacion().setActivo(true);
+            
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
             // crear más adelante la clase aparte porque a Penín no le ha de de parecer buena idea
