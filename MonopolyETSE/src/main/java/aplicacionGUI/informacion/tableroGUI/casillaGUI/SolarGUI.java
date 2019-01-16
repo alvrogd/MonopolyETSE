@@ -2,7 +2,13 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -64,9 +70,9 @@ public class SolarGUI extends PropiedadGUI {
     /* Métodos */
     
     @Override
-    public void renderContenido() {
+    public void renderContenido(double t) {
         
-        super.renderContenido();
+        super.renderContenido(t);
         renderEdificiosContenidos();
     }
     
@@ -117,5 +123,64 @@ public class SolarGUI extends PropiedadGUI {
                 desplazamiento += 10;
             }
         }
+    }
+    
+    
+    public ContextMenu generarMenuContextual() {
+        
+        // Se crea el menú de opciones para a partir del padre
+        ContextMenu menu = super.generarMenuContextual();
+        
+        
+        // Se crea un submenú para las opciones de vender edificios
+        Menu item1 = new Menu( "Vender edificicaciones" );
+        
+        // Se añade la opción para vender casas
+        MenuItem item2 = new MenuItem( "Casas" );
+        item2.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion vender casas");
+            }
+        });
+        
+        // Se añade la opción para vender hoteles
+        MenuItem item3 = new MenuItem( "Hoteles" );
+        item3.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion vender hoteles");
+            }
+        });
+        
+        // Se añade la opción para vender piscinas
+        MenuItem item4 = new MenuItem( "Piscinas" );
+        item4.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion vender piscinas");
+            }
+        });
+        
+        // Se añade la opción para vender hoteles
+        MenuItem item5 = new MenuItem( "Pistas" );
+        item3.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion vender pistas");
+            }
+        });
+        
+        // Se añaden los items al submenú
+        item1.getItems().addAll(item2, item3, item4, item5);
+        
+        // Se añade el submenú al menú contextual junto con un separador
+        menu.getItems().addAll(new SeparatorMenuItem(), item1);
+        
+        return( menu );
     }
 }

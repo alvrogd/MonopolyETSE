@@ -109,5 +109,11 @@ public class ConstantesGUI {
                                                       "Esfinge.png",
                                                       "Hamburguesa.png",
                                                       "Pelota.png",
-                                                      "Sombrero.png" };
+                                                      "Sombrero.png"};
+    
+    // Nombre de los frames de la animación del modo avanzado
+    public final static String[] AVATARES_AVANZADO_FRAMES = {"Destello_0.png",
+                                                             "Destello_1.png",
+                                                             "Destello_2.png",
+                                                             "Destello_3.png"};
 }

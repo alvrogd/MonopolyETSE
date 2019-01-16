@@ -1,12 +1,20 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -16,9 +24,8 @@ import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
-import resources.avatares.ImagenesAvatares;
+import resources.avatares.modoAvanzado.AnimacionAvataresModoAvanzado;
 import resources.casillas.FondosCasillas;
-import resources.edificios.ImagenesEdificios;
 
 public class CasillaGUI {
 
@@ -52,6 +59,11 @@ public class CasillaGUI {
     
     // Sensor de la casilla
     private Rectangle sensor;
+    
+    // Animación de movimiento avanzado para los avatares
+    private final static ImagenAnimada ANIMACION_MODO_AVANZADO = new ImagenAnimada(new AnimacionAvataresModoAvanzado(),
+            ConstantesGUI.AVATARES_AVANZADO_FRAMES, 0.25);
+    
     
     
     /* Constructor */
@@ -170,6 +182,11 @@ public class CasillaGUI {
     public int getDesplazamientoY() {
         return desplazamientoY;
     }
+
+    
+    public static ImagenAnimada getANIMACION_MODO_AVANZADO() {
+        return ANIMACION_MODO_AVANZADO;
+    }
     
     
     
@@ -184,20 +201,22 @@ public class CasillaGUI {
     }
     
     
-    public void handleClickDerecho(double x, double y) {
+    public void handleClickDerecho(double x, double y, Group nodoRaiz, ContextMenuEvent e) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
         
-        System.out.println("Si" + getCasilla().getNombre());
+        System.out.println(getCasilla().getNombre());
+        
+        generarMenuContextual().show(nodoRaiz, e.getScreenX(), e.getScreenY());
     }
     
     
-    public void render() {
+    public void render(double t) {
 
         renderFondo();
         renderNombre();
-        renderContenido();
+        renderContenido(t);
     }
     
     
@@ -236,18 +255,18 @@ public class CasillaGUI {
     }
 
     
-    public void renderContenido() {
+    public void renderContenido(double t) {
 
         // Se añade un fondo transparente sobre el que introducir la información de la casilla
         getGc().setFill(Color.rgb(128, 128, 128, 0.6));
         getGc().fillRect(3, 19, ancho - 6, 43);
 
         // Se renderiza el contenido
-        renderAvataresContenidos();
+        renderAvataresContenidos(t);
     }
 
     
-    public void renderAvataresContenidos() {
+    public void renderAvataresContenidos(double t) {
 
         // Se insertan los identificadores de los avatares contenidos
         int desplazamiento = 0;
@@ -256,8 +275,35 @@ public class CasillaGUI {
 
             getGc().drawImage(getTableroGUI().getRepresentacionesAvatares().get(avatar.getIdentificador()), 6 +
                     desplazamiento, 22);
+            
+            // Y, si se encuentra en modo avanzado, se añade la animación
+            if( !avatar.isMovimientoEstandar()) {
+                getGc().drawImage(getANIMACION_MODO_AVANZADO().getFrame(t), 3 + desplazamiento, 20);
+            }
 
             desplazamiento += 18;
         }
+    }
+    
+    
+    public ContextMenu generarMenuContextual() {
+        
+        // Se crea el menú de opciones para la casilla
+        ContextMenu menu = new ContextMenu();
+        
+        // Se añade la opción de describir
+        MenuItem item1 = new MenuItem( "Describir" );
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion describir");
+            }
+        });
+        
+        // Se añade la opción al menú
+        menu.getItems().add(item1);
+        
+        return( menu );
     }
 }

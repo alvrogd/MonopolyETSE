@@ -87,6 +87,7 @@ public class main extends Application {
             app.introducirComando("edificar casa");
             app.introducirComando("edificar pista");
             app.introducirComando("edificar piscina");
+            app.introducirComando("cambiar modo");
 
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
@@ -103,7 +104,7 @@ public class main extends Application {
                     double y = e.getY();
 
                     if( informacion.contienePosicion(x, y)) {
-                        informacion.handleClickDerecho(x, y);
+                        informacion.handleClickDerecho(x, y, raiz, e);
                     }
                 }
             });
@@ -122,15 +123,21 @@ public class main extends Application {
                     }
                 }
             });
+            
+            // Se registra el momento de inicio del juego
+            final long tiempoInicio = System.nanoTime();
 
             // Se inicia el game loop
             new AnimationTimer() {
 
                 @Override
                 public void handle( long currentNanoTime ) {
+                    
+                    // Tiempo que ha transcurrido desde el inicio del juego
+                    double t = (currentNanoTime - tiempoInicio) / 1000000000.0; 
 
                     // Render
-                    informacion.render();
+                    informacion.render(t);
                     
                 }
             }.start();

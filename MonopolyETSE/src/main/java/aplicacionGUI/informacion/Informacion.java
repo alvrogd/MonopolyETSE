@@ -5,6 +5,8 @@ import aplicacionGUI.informacion.cartaGUI.ComunidadGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -123,20 +125,20 @@ public class Informacion {
     }
     
     
-    public void handleClickDerecho(double x, double y) {
+    public void handleClickDerecho(double x, double y, Group nodoRaiz, ContextMenuEvent e) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
         
         if( getTableroGUI().contienePosicion(posicionX, posicionY)) {
-            getTableroGUI().handleClickDerecho(posicionX, posicionY);
+            getTableroGUI().handleClickDerecho(posicionX, posicionY, nodoRaiz, e);
         }   
     }
     
     
-    public void render() {
+    public void render(double t) {
 
-        getTableroGUI().render();
+        getTableroGUI().render(t);
         getSuerteGUI().render();
         getComunidadGUI().render();
     }

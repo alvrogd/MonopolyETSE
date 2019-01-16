@@ -1,7 +1,13 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,9 +36,9 @@ public class PropiedadGUI extends CasillaGUI {
     
     
     @Override
-    public void renderContenido() {
+    public void renderContenido(double t) {
         
-        super.renderContenido();
+        super.renderContenido(t);
         renderPropietario();
     }
     
@@ -65,5 +71,37 @@ public class PropiedadGUI extends CasillaGUI {
                 getGc().fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), 5, 58 );
             }     
         }
+    }
+    
+    
+    public ContextMenu generarMenuContextual() {
+        
+        // Se crea el menú de opciones para a partir del padre
+        ContextMenu menu = super.generarMenuContextual();
+        
+        // Se añade la opción de hipotecar
+        MenuItem item1 = new MenuItem( "Hipotecar" );
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion hipotecar");
+            }
+        });
+        
+        // Se añade la opción de deshipotecar
+        MenuItem item2 = new MenuItem( "Deshipotecar" );
+        item2.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle( ActionEvent event ) {
+                System.out.println("Escogida opcion deshipotecar");
+            }
+        });
+        
+        // Se añaden los items junto con un separador
+        menu.getItems().addAll(new SeparatorMenuItem(), item1, item2);
+        
+        return( menu );
     }
 }

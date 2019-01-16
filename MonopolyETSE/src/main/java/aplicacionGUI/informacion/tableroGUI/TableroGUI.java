@@ -11,6 +11,7 @@ import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -18,7 +19,6 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import resources.avatares.ImagenesAvatares;
-import resources.casillas.FondosCasillas;
 
 public class TableroGUI {
     
@@ -280,7 +280,7 @@ public class TableroGUI {
     }
     
     
-    public void handleClickDerecho(double x, double y) {
+    public void handleClickDerecho(double x, double y, Group nodoRaiz, ContextMenuEvent e) {
         
         double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
@@ -294,19 +294,19 @@ public class TableroGUI {
             for( CasillaGUI casillaGUI : fila ) {
             
                 if( casillaGUI.contienePosicion(posicionX, posicionY)) {
-                    casillaGUI.handleClickDerecho(posicionX, posicionY);
+                    casillaGUI.handleClickDerecho(posicionX, posicionY, nodoRaiz, e);
                 }
             }
         }
     }
     
     
-    public void render() {
+    public void render(double t) {
         
         for( ArrayList<CasillaGUI> fila : getCasillasGUI() ) {
             
             for( CasillaGUI casillaGUI : fila ) {
-                casillaGUI.render();
+                casillaGUI.render(t);
             }
         }
     }
