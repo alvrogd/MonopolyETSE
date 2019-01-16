@@ -103,4 +103,11 @@ public class ConstantesGUI {
             CASILLAS_POR_LADO * 3;
     public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
     
+    // Nombres de las imágenes de los avatares
+    public final static String[] AVATARES_IMAGENES = {"Avion.png",
+                                                      "Coche.png",
+                                                      "Esfinge.png",
+                                                      "Hamburguesa.png",
+                                                      "Pelota.png",
+                                                      "Sombrero.png" };
 }

@@ -6,14 +6,19 @@ import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import aplicacionGUI.ConstantesGUI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
+import resources.avatares.ImagenesAvatares;
+import resources.casillas.FondosCasillas;
 
 public class TableroGUI {
     
@@ -30,6 +35,9 @@ public class TableroGUI {
     
     // Representaciones de las casillas
     private final ArrayList<ArrayList<CasillaGUI>> casillasGUI;
+    
+    // Representaciones asignadas a los avatares de los jugadores
+    private final HashMap<Character, Image> representacionesAvatares;
     
     
     
@@ -91,23 +99,45 @@ public class TableroGUI {
                 if(casilla instanceof Propiedad) {
                 
                     if( casilla instanceof Solar ) {
-                        filaGUI.add(new SolarGUI(this.nodo, (Solar)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
+                        // todo ya no es necesario this y this.nodo
+                        filaGUI.add(new SolarGUI(this, this.nodo, (Solar)casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
                                 posiciones.get(contador)[0], posiciones.get(contador)[1]));
                     }
                     
                     else {
-                        filaGUI.add(new PropiedadGUI(this.nodo, (Propiedad)casilla, ConstantesGUI.CASILLAS_IMAGENES[
+                        filaGUI.add(new PropiedadGUI(this, this.nodo, (Propiedad)casilla, ConstantesGUI.CASILLAS_IMAGENES[
                                 contador], posiciones.get(contador)[0], posiciones.get(contador)[1]));
                     }
                 }
                 
                 else {
-                    filaGUI.add(new CasillaGUI(this.nodo, casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
+                    filaGUI.add(new CasillaGUI(this, this.nodo, casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
                             posiciones.get(contador)[0], posiciones.get(contador)[1]));
                 } 
                 
                 contador++;
             }
+        }
+        
+        
+        // Se crea inicialmente un ArrayList con todas las imágenes disponibles para los avatares
+        ArrayList<Image> avatares = new ArrayList<>();
+        
+        for( String string : ConstantesGUI.AVATARES_IMAGENES ) {
+            avatares.add(new Image(ImagenesAvatares.class.getResource(string).toString()));
+        }
+        
+        // A continuación, se asocia a cada uno de los avatares de los jugadores una de las representaciones de los
+        // avatares
+        this.representacionesAvatares = new HashMap<>();
+
+        for( Avatar avatar : tablero.getAvataresContenidos().values() ) {
+            
+            // Se bajaran las representaciones disponibles
+            Collections.shuffle(avatares);
+            
+            this.representacionesAvatares.put(avatar.getIdentificador(), avatares.get(0));
+            avatares.remove(0);
         }
     }
     
@@ -132,6 +162,11 @@ public class TableroGUI {
     
     public Rectangle getDiferencia() {
         return diferencia;
+    }
+
+    
+    public HashMap<Character, Image> getRepresentacionesAvatares() {
+        return representacionesAvatares;
     }
     
     

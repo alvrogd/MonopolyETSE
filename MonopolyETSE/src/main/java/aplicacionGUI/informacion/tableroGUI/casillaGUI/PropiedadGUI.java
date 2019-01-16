@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -12,9 +13,10 @@ public class PropiedadGUI extends CasillaGUI {
 
     /* Constructor */
     
-    public PropiedadGUI(Group raiz, Propiedad propiedad, String ficheroFondo, int posicionX, int posicionY) {
+    public PropiedadGUI(TableroGUI tableroGUI, Group raiz, Propiedad propiedad, String ficheroFondo, int posicionX,
+            int posicionY) {
 
-        super(raiz, propiedad, ficheroFondo, posicionX, posicionY);
+        super(tableroGUI, raiz, propiedad, ficheroFondo, posicionX, posicionY);
     }
 
     

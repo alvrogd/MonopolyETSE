@@ -2,6 +2,7 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,11 +16,16 @@ import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import resources.avatares.ImagenesAvatares;
 import resources.casillas.FondosCasillas;
+import resources.edificios.ImagenesEdificios;
 
 public class CasillaGUI {
 
     /* Atributos */
+    
+    // Representación del tablero asociada
+    private final TableroGUI tableroGUI;
     
     // Nodo propiedad de la casilla
     private final Group nodo;
@@ -50,7 +56,13 @@ public class CasillaGUI {
     
     /* Constructor */
     
-    public CasillaGUI(Group raiz, Casilla casilla, String ficheroFondo, int posicionX, int posicionY) {
+    public CasillaGUI(TableroGUI tableroGUI, Group raiz, Casilla casilla, String ficheroFondo, int posicionX,
+            int posicionY) {
+        
+        if( tableroGUI == null ) {
+            System.err.println("TableroGUI no inicializado");
+            System.exit(1);
+        }
         
         if( raiz == null ) {
             System.err.println("Raíz no inicializada");
@@ -66,6 +78,9 @@ public class CasillaGUI {
             System.err.println("Nombre del fichero de fondo no inicializado");
             System.exit(1);
         }
+        
+        // Se registra la representación del tablero a la que pertenece
+        this.tableroGUI = tableroGUI;
         
         // Se añade al nodo dado un nuevo nodo de uso para la casilla
         this.nodo = new Group();
@@ -97,6 +112,11 @@ public class CasillaGUI {
     
     
     /* Getters y setters */
+           
+    public TableroGUI getTableroGUI() {
+        return tableroGUI;
+    }
+
     
     public int getAncho() {
         return ancho;
@@ -229,18 +249,14 @@ public class CasillaGUI {
     
     public void renderAvataresContenidos() {
 
-        // Se establece la tipografía
-        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-        getGc().setStroke(Color.TRANSPARENT);
-        getGc().setFill(Color.BLACK);
-        getGc().setTextAlign(TextAlignment.LEFT);
-
         // Se insertan los identificadores de los avatares contenidos
         int desplazamiento = 0;
 
         for (Avatar avatar : getCasilla().getAvataresContenidos().values()) {
 
-            getGc().fillText(String.valueOf(avatar.getIdentificador()), 10 + desplazamiento, 32);
+            getGc().drawImage(getTableroGUI().getRepresentacionesAvatares().get(avatar.getIdentificador()), 6 +
+                    desplazamiento, 22);
+
             desplazamiento += 18;
         }
     }

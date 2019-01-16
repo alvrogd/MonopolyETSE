@@ -1,6 +1,7 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -24,9 +25,9 @@ public class SolarGUI extends PropiedadGUI {
     
     /* Constructor */
     
-    public SolarGUI(Group raiz, Solar solar, String ficheroFondo, int posicionX, int posicionY) {
+    public SolarGUI(TableroGUI tableroGUI, Group raiz, Solar solar, String ficheroFondo, int posicionX, int posicionY) {
 
-        super(raiz, solar, ficheroFondo, posicionX, posicionY);
+        super(tableroGUI, raiz, solar, ficheroFondo, posicionX, posicionY);
     }
 
     
