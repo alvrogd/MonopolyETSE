@@ -27,8 +27,8 @@ public class ConstantesGUI {
     public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - 30 - CONTROLES_ALTO);
 
     // Desplazamientos para la sección de los botones
-    public final static int BOTONES_DESPLAZAMIENTO_X = VENTANA_ANCHO;
-    public final static int BOTONES_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
+    public final static int BOTONES_DESPLAZAMIENTO_X = 0;
+    public final static int BOTONES_DESPLAZAMIENTO_Y = 0;
 
     // Dimensiones de la sección de botones
     public final static int BOTONES_ANCHO = 480;
@@ -41,14 +41,30 @@ public class ConstantesGUI {
     // Dimensiones de la sección de jugadores
     public final static int JUGADORES_ANCHO = 672;
     public final static int JUGADORES_ALTO = BOTONES_ALTO;
+    public final static int JUGADORES_SEPARACION = 10;
+
+    // Dimensiones de la barra del jugador
+    public final static int BARRA_DESPLAZAMIENTO_X = 5;
+    public final static int BARRA_DESPLAZAMIENTO_Y = 20;
+    public final static int BARRA_DESPLAZAMIENTO_NOMBRE_X = 65;
+    public final static int BARRA_DESPLAZAMIENTO_NOMBRE_Y = 19;
+    public final static int BARRA_DESPLAZAMIENTO_DINERO_X = 465;
+    public final static int BARRA_DESPLAZAMIENTO_DINERO_Y = 19;
+
+    public final static int BARRA_DESPLAZAMIENTO_AVATAR_X = 7;
+    public final static int BARRA_DESPLAZAMIENTO_AVATAR_Y = 9;
+
+    public final static int BARRA_JUGADOR_ANCHO = 650;
+    public final static int BARRA_JUGADOR_ALTO = 30;
+    public final static String BARRA_NOMBRE = "barraJugador.png";
 
     // Desplazamientos para la sección de impresión
     public final static int IMPRESION_DESPLAZAMIENTO_X = BOTONES_DESPLAZAMIENTO_X + BOTONES_ANCHO;
-    public final static int IMPRESION_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
+    public final static int IMPRESION_DESPLAZAMIENTO_Y = 0;
 
     // Desplazamientos para la sección de los jugadores
-    public final static int JUGADORES_DESPLAZAMIENTO_X = INFORMACION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
-    public final static int JUGADORES_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
+    public final static int JUGADORES_DESPLAZAMIENTO_X = IMPRESION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
+    public final static int JUGADORES_DESPLAZAMIENTO_Y = 0;
     
     // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;

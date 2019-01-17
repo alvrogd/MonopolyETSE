@@ -1,6 +1,9 @@
 package aplicacionGUI.MenuGUI;
 
+import aplicacion.Aplicacion;
+import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,7 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Juego;
+import monopoly.jugadores.Jugador;
 import resources.MenuGUI.Jugadores.JugadoresImagen;
+
+import java.util.ArrayList;
 
 public class JugadoresGUI {
 
@@ -24,21 +30,22 @@ public class JugadoresGUI {
     //Juego
     private Juego juego;
 
-    // Contexto en el que representar objetos
-    private final GraphicsContext gc;
+    //ArrayList que almacena cada Jugador
+    private ArrayList<JugadorGUI> jugadores;
 
-    // Imagen de fondo para el menú
-    private final Image imagen;
-
-    // Canvas para la representación del menú
-    private final Canvas canvas;
-
+    //Representación del tablero
+    private final TableroGUI tableroGUI;
 
     /* Constructor */
-    public JugadoresGUI(Group raiz, Juego juego){
+    public JugadoresGUI(Group raiz, Juego juego, TableroGUI tableroGUI){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
+            System.exit(1);
+        }
+
+        if(tableroGUI == null){
+            System.err.println("Tablero no inicializado");
             System.exit(1);
         }
 
@@ -54,33 +61,43 @@ public class JugadoresGUI {
         // Se establece su correspondiente posición en la ventana
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.JUGADORES_DESPLAZAMIENTO_X, ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y));
 
-        // Se crea un canvas en el nuevo nodo para representar los jugadores
-        this.canvas = new Canvas( ConstantesGUI.JUGADORES_ANCHO, ConstantesGUI.JUGADORES_ALTO);
-        this.nodo.getChildren().add(canvas);
-
-        // Se genera un contexto a partir del canvas para insertar la representación
-        this.gc = this.canvas.getGraphicsContext2D();
-
         // Se crea el correspondiente sensor
         this.sensor = new Rectangle(0, 0, ConstantesGUI.JUGADORES_ANCHO, ConstantesGUI.JUGADORES_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
-        //Se obtiene la imagen correspondiente
-        this.imagen = new Image(JugadoresImagen.class.getResource("jugador.png").toString());
+        this.jugadores = new ArrayList<>();
+        this.tableroGUI = tableroGUI;
     }
 
-    public GraphicsContext getGc() {
-        return gc;
+    public ArrayList<JugadorGUI> getJugadores() {
+        return jugadores;
     }
 
-    public Image getImagen() {
-        return imagen;
+    public TableroGUI getTableroGUI() {
+        return tableroGUI;
+    }
+
+    public void nuevoJugador(Jugador jugador){
+
+        if(jugador == null){
+            System.err.println("Jugador no inicializado");
+            System.exit(1);
+        }
+
+        if(jugadores.size() == 6){
+            System.err.println("No se pueden añadir más de 6 jugadores");
+            System.exit(1);
+        }
+
+        getJugadores().add(new JugadorGUI(this.nodo, jugador, jugadores.size()+1, getTableroGUI()));
     }
 
     public void render() {
 
-        // Se muestra la imagen
-        getGc().drawImage(getImagen(), 0, 0);
+        for(JugadorGUI jugadorGUI : getJugadores()){
+            jugadorGUI.render();
+        }
+
     }
 
 }

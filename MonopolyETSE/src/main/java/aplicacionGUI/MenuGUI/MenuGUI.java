@@ -1,5 +1,7 @@
 package aplicacionGUI.MenuGUI;
+import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Juego;
+import monopoly.jugadores.Jugador;
 import monopoly.tablero.Tablero;
 import resources.MenuGUI.MenuGUIFondo;
 
@@ -35,13 +38,23 @@ public class MenuGUI{
     // Canvas para la representación del menú
     private final Canvas canvas;
 
+    // Representación de la zona de los jugadores
+    private final JugadoresGUI jugadoresGUI;
+
+    // Número de jugadores
+    private int numJugadores;
 
     /* Constructor */
 
-    public MenuGUI(Group raiz, Juego juego, String imagen){
+    public MenuGUI(Group raiz, Juego juego, String imagen, TableroGUI tableroGUI){
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
+            System.exit(1);
+        }
+
+        if(tableroGUI == null){
+            System.err.println("TableroGUI no inicializado");
             System.exit(1);
         }
 
@@ -76,7 +89,17 @@ public class MenuGUI{
         this.gc = this.canvas.getGraphicsContext2D();
 
         this.fondo = new Image(MenuGUIFondo.class.getResource(imagen).toString());
+        this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
 
+        this.numJugadores = 0;
+    }
+
+    public void anadirJugador(Jugador jugador){
+        if(jugador == null){
+            System.err.println("Jugador no inicializado");
+            System.exit(1);
+        }
+        getJugadoresGUI().nuevoJugador(jugador);
     }
 
     public GraphicsContext getGc() {
@@ -87,12 +110,46 @@ public class MenuGUI{
         return fondo;
     }
 
-    public void render() {
+    public JugadoresGUI getJugadoresGUI() {
+        return jugadoresGUI;
+    }
+
+    public Juego getJuego() {
+        return juego;
+    }
+
+    public int getNumJugadores() {
+        return numJugadores;
+    }
+
+    public void setNumJugadores(int numJugadores) {
+        if(numJugadores < 0){
+            System.err.println("Número de jugadores no puede ser negativo");
+            System.exit(1);
+        }
+        this.numJugadores = numJugadores;
+    }
+
+    public void incrementarJugadores(int incremento){
+        this.numJugadores += incremento;
+    }
+
+    public void render(){
+
+        if(getJuego().getNombresJugadores().size() > getNumJugadores()){
+            int jugadoresNuevos = getJuego().getNombresJugadores().size() - getNumJugadores();
+
+            for(int i = getNumJugadores(); i < getJuego().getNombresJugadores().size(); i++){
+                anadirJugador(getJuego().getJugador(getJuego().getNombresJugadores().get(i)));
+            }
+
+            incrementarJugadores(jugadoresNuevos);
+        }
 
         // Se muestra la imagen
+        getJugadoresGUI().render();
         getGc().drawImage(getFondo(), 0, 0);
-        JugadoresGUI iJug = new JugadoresGUI(this.nodo, this.juego);
-        iJug.render();
+
     }
 
 

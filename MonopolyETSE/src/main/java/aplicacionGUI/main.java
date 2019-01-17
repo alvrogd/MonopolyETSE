@@ -94,7 +94,7 @@ public class main extends Application {
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
 
             // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
-            MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png");
+            MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
             
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
@@ -135,7 +135,7 @@ public class main extends Application {
             new AnimationTimer() {
 
                 @Override
-                public void handle( long currentNanoTime ) {
+                public void handle( long currentNanoTime ){
                     
                     // Tiempo que ha transcurrido desde el inicio del juego
                     double t = (currentNanoTime - tiempoInicio) / 1000000000.0; 
