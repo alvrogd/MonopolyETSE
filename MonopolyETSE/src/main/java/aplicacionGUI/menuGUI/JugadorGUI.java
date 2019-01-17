@@ -24,7 +24,8 @@ public class JugadorGUI {
     private final GraphicsContext gc;
 
     private final Image barra;
-    private final Image barraOscura;
+    private final Image barraTratoOscuro;
+    private final Image barraDescribirOscuro;
 
     private Image barraActual;
     private final Image avatar;
@@ -36,6 +37,8 @@ public class JugadorGUI {
 
     private Rectangle sensor;
     private Rectangle boton;
+    private Rectangle botonDescribir;
+    private Rectangle botonAvatar;
 
     /* Constructor */
 
@@ -83,13 +86,23 @@ public class JugadorGUI {
 
         // Sensor para el botón
         this.boton = new Rectangle(ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_Y,
-                ConstantesGUI.BARRA_JUGADOR_ANCHO, ConstantesGUI.BARRA_JUGADOR_ALTO);
+                ConstantesGUI.BARRA_JUGADOR_ALTO, ConstantesGUI.BARRA_JUGADOR_ALTO);
         this.boton.setFill(Color.TRANSPARENT);
+
+        this.botonDescribir = new Rectangle(ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_DES_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_DES_Y,
+                ConstantesGUI.BARRA_JUGADOR_ALTO, ConstantesGUI.BARRA_JUGADOR_ALTO);
+        this.botonDescribir.setFill(Color.TRANSPARENT);
+
+        this.botonAvatar = new Rectangle(0, 0,
+                ConstantesGUI.BARRA_JUGADOR_ALTO, ConstantesGUI.BARRA_JUGADOR_ALTO);
+        this.botonAvatar.setFill(Color.TRANSPARENT);
 
         this.barra = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE).toString());
         this.barraActual = this.barra;
 
-        this.barraOscura = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_OSCURA).toString());
+        this.barraTratoOscuro = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_TRATO_OSCURO).toString());
+        this.barraDescribirOscuro = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_DESCRIBIR_OSCURO).toString());
+
         this.avatar = tableroGUI.getRepresentacionesAvatares().get(jugador.getAvatar().getIdentificador());
 
     }
@@ -122,8 +135,20 @@ public class JugadorGUI {
         return barraActual;
     }
 
-    public Image getBarraOscura() {
-        return barraOscura;
+    public Image getBarraTratoOscuro() {
+        return barraTratoOscuro;
+    }
+
+    public Image getBarraDescribirOscuro() {
+        return barraDescribirOscuro;
+    }
+
+    public Rectangle getBotonDescribir() {
+        return botonDescribir;
+    }
+
+    public Rectangle getBotonAvatar() {
+        return botonAvatar;
     }
 
     public void setBarraActual(Image barraActual) {
@@ -172,11 +197,25 @@ public class JugadorGUI {
         return(getSensor().contains(posicionX, posicionY));
     }
 
-    public boolean pulsandoBoton(double x, double y){
+    public boolean pulsandoBotonTrato(double x, double y){
         double posicionX = x;
         double posicionY = y;
 
         return(getBoton().contains(posicionX, posicionY));
+    }
+
+    public boolean pulsandoAvatar(double x, double y){
+        double posicionX = x;
+        double posicionY = y;
+
+        return(getBotonAvatar().contains(posicionX, posicionY));
+    }
+
+    public boolean pulsandoBotonDescribir(double x, double y){
+        double posicionX = x;
+        double posicionY = y;
+
+        return(getBotonDescribir().contains(posicionX, posicionY));
     }
 
     public void handleClickIzquierdo(double x, double y) {
@@ -184,8 +223,12 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(pulsandoBoton(posicionX, posicionY)){
+        if(pulsandoBotonTrato(posicionX, posicionY)){
             System.out.println("Se ha pulsado el botón TRATO");
+        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
+            System.out.println("Se ha pulsado el botón DESCRIBIR");
+        } else if(pulsandoAvatar(posicionX, posicionY)){
+            System.out.println("Se ha pulsado el AVATAR");
         }
     }
 
@@ -194,8 +237,10 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(pulsandoBoton(posicionX, posicionY)){
-            setBarraActual(getBarraOscura());
+        if(pulsandoBotonTrato(posicionX, posicionY)){
+            setBarraActual(getBarraTratoOscuro());
+        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
+            setBarraActual(getBarraDescribirOscuro());
         }
     }
 
@@ -204,7 +249,9 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(pulsandoBoton(posicionX, posicionY)){
+        if(pulsandoBotonTrato(posicionX, posicionY)){
+            setBarraActual(getBarra());
+        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
             setBarraActual(getBarra());
         }
     }

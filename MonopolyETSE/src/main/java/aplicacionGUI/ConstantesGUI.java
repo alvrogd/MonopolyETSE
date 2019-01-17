@@ -59,10 +59,14 @@ public class ConstantesGUI {
     public final static int BARRA_DESPLAZAMIENTO_BOTON_X = 620;
     public final static int BARRA_DESPLAZAMIENTO_BOTON_Y = 0;
 
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_DES_X = 590;
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_DES_Y = 0;
+
     public final static int BARRA_JUGADOR_ANCHO = 650;
     public final static int BARRA_JUGADOR_ALTO = 30;
     public final static String BARRA_NOMBRE = "barraJugador.png";
-    public final static String BARRA_NOMBRE_OSCURA = "barraJugadorOscuro.png";
+    public final static String BARRA_NOMBRE_TRATO_OSCURO= "barraJugadorTratoOscuro.png";
+    public final static String BARRA_NOMBRE_DESCRIBIR_OSCURO = "barraJugadorDescribirOscuro.png";
 
     // Desplazamientos para la sección de impresión
     public final static int IMPRESION_DESPLAZAMIENTO_X = BOTONES_DESPLAZAMIENTO_X + BOTONES_ANCHO;

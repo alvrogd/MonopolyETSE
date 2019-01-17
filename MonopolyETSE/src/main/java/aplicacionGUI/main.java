@@ -96,7 +96,7 @@ public class main extends Application {
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
 
             // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
-            //MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
+            MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
             
             // Se añade texto de prueba al marco de información
             informacion.getMarcoInformacion().actualizarContenido(new String[]{
@@ -134,11 +134,12 @@ public class main extends Application {
 
                     if( informacion.contienePosicion(x, y)) {
                         informacion.handleClickIzquierdo(x, y);
-                    }/*else if(menuGUI.contienePosicion(x, y)){
+                    
+                    } else if(menuGUI.contienePosicion(x, y)){
                         //Solo en caso de que el botón presionado sea el primario (izquierdo)
                         if(e.getButton().equals(MouseButton.PRIMARY))
                             menuGUI.handleClickIzquierdo(x, y);
-                    }*/
+                    }
                 }
             });
 
@@ -157,9 +158,9 @@ public class main extends Application {
                     xPresionado[0] = x;
                     yPresionado[0] = y;
 
-                    /*if(menuGUI.contienePosicion(x, y)){
+                    if(menuGUI.contienePosicion(x, y)){
                         menuGUI.handleClickPulsado(x, y);
-                    }*/
+                    }
 
                 }
             });
@@ -171,9 +172,9 @@ public class main extends Application {
 
                     //Se utiliza xPresionado para que en vez de detectar la acción en la posición donde se suelta el click
                     //lo detecte en la posición donde se empezó a presionar
-                    /*if(menuGUI.contienePosicion(xPresionado[0], yPresionado[0])){
+                    if(menuGUI.contienePosicion(xPresionado[0], yPresionado[0])){
                         menuGUI.handleClickSoltado(xPresionado[0], yPresionado[0]);
-                    }*/
+                    }
 
                 }
             });
@@ -196,7 +197,7 @@ public class main extends Application {
                     // Render
                     gc.drawImage(fondo, 0, 0);
                     informacion.render(t);
-                    //menuGUI.render();
+                    menuGUI.render();
                     
                 }
             }.start();
