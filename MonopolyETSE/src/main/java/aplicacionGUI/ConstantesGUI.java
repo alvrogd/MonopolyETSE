@@ -9,18 +9,68 @@ public class ConstantesGUI {
     // Dimensiones de la sección de información
     public final static int INFORMACION_ANCHO = 1650;
     public final static int INFORMACION_ALTO = 715;
-    
+
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
     public final static int TABLERO_ALTO = 715;
     
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
-    public final static int CONTROLES_ALTO = 250;
+    public final static int CONTROLES_ALTO = 270;
     
     // Desplazamientos de la sección de información
     public final static int INFORMACION_DESPLAZAMIENTO_X = (VENTANA_ANCHO - INFORMACION_ANCHO) / 2;
     public final static int INFORMACION_DESPLAZAMIENTO_Y = (VENTANA_ALTO - INFORMACION_ALTO - CONTROLES_ALTO) / 2;
+
+    // Desplazamientos de la sección de menú
+    public final static int MENU_DESPLAZAMIENTO_X = (VENTANA_ANCHO - CONTROLES_ANCHO)/2;
+    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - 30 - CONTROLES_ALTO);
+
+    // Desplazamientos para la sección de los botones
+    public final static int BOTONES_DESPLAZAMIENTO_X = 0;
+    public final static int BOTONES_DESPLAZAMIENTO_Y = 0;
+
+    // Dimensiones de la sección de botones
+    public final static int BOTONES_ANCHO = 480;
+    public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
+
+    // Dimensiones de la sección de información
+    public final static int IMPRESION_ANCHO = 768;
+    public final static int IMPRESION_ALTO = BOTONES_ALTO;
+
+    // Dimensiones de la sección de jugadores
+    public final static int JUGADORES_ANCHO = 672;
+    public final static int JUGADORES_ALTO = BOTONES_ALTO;
+    public final static int JUGADORES_SEPARACION = 10;
+
+    // Dimensiones de la barra del jugador
+    public final static int BARRA_DESPLAZAMIENTO_X = 5;
+    public final static int BARRA_DESPLAZAMIENTO_Y = 20;
+
+    public final static int BARRA_DESPLAZAMIENTO_NOMBRE_X = 65;
+    public final static int BARRA_DESPLAZAMIENTO_NOMBRE_Y = 19;
+
+    public final static int BARRA_DESPLAZAMIENTO_DINERO_X = 465;
+    public final static int BARRA_DESPLAZAMIENTO_DINERO_Y = 19;
+
+    public final static int BARRA_DESPLAZAMIENTO_AVATAR_X = 7;
+    public final static int BARRA_DESPLAZAMIENTO_AVATAR_Y = 9;
+
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_X = 620;
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_Y = 0;
+
+    public final static int BARRA_JUGADOR_ANCHO = 650;
+    public final static int BARRA_JUGADOR_ALTO = 30;
+    public final static String BARRA_NOMBRE = "barraJugador.png";
+    public final static String BARRA_NOMBRE_OSCURA = "barraJugadorOscuro.png";
+
+    // Desplazamientos para la sección de impresión
+    public final static int IMPRESION_DESPLAZAMIENTO_X = BOTONES_DESPLAZAMIENTO_X + BOTONES_ANCHO;
+    public final static int IMPRESION_DESPLAZAMIENTO_Y = 0;
+
+    // Desplazamientos para la sección de los jugadores
+    public final static int JUGADORES_DESPLAZAMIENTO_X = IMPRESION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
+    public final static int JUGADORES_DESPLAZAMIENTO_Y = 0;
     
     // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;
