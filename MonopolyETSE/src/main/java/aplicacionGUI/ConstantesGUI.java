@@ -33,6 +33,16 @@ public class ConstantesGUI {
     // Dimensiones de la sección de botones
     public final static int BOTONES_ANCHO = 480;
     public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
+    
+    // Dimesiones de un botón
+    public final static int BOTON_ANCHO = 75;
+    public final static int BOTON_ALTO = 75;
+    public final static int BOTON_SEPARACION_X = 5;
+    public final static int BOTON_SEPARACION_Y = 5;
+
+    public final static int BOTONES_POR_FILA = 5;
+    public final static int BOTONES_COLUMNAS = 3;
+
 
     // Dimensiones de la sección de impresión
     public final static int IMPRESION_ANCHO = 768;
@@ -193,6 +203,6 @@ public class ConstantesGUI {
     public final static int REGISTRO_ALTO = 230;
     
     // Desplazamiento del registro
-    public final static int REGISTRO_DESPLAZAMIENTO_X = 484;
+    public final static int REGISTRO_DESPLAZAMIENTO_X = 485;
     public final static int REGISTRO_DESPLAZAMIENTO_Y = 10;
 }

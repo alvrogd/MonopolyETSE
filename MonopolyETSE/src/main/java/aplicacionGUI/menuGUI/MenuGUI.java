@@ -2,6 +2,8 @@ package aplicacionGUI.menuGUI;
 import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.menuGUI.BotonesGUI.BotoneraGUI;
+import aplicacionGUI.menuGUI.JugadoresGUI.JugadoresGUI;
 import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -44,6 +46,9 @@ public class MenuGUI{
 
     // Representación de la zona de los jugadores
     private final JugadoresGUI jugadoresGUI;
+
+    // Representación de la botonera
+    private final BotoneraGUI botonera;
 
     // Número de jugadores
     private int numJugadores;
@@ -100,7 +105,13 @@ public class MenuGUI{
         // Se crea la representación de los jugadores (parte derecha)
         this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
 
+        this.botonera = new BotoneraGUI(this.nodo, juego);
+
         this.numJugadores = 0;
+    }
+
+    public BotoneraGUI getBotonera() {
+        return botonera;
     }
 
     public void anadirJugador(Jugador jugador){
@@ -164,8 +175,10 @@ public class MenuGUI{
         double posicionX = x - ConstantesGUI.MENU_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.MENU_DESPLAZAMIENTO_Y;
 
-        if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
+        if (getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
             getJugadoresGUI().handleClickIzquierdo(posicionX, posicionY);
+        } else if (getBotonera().contienePosicion(posicionX, posicionY)) {
+            getBotonera().handleClickIzquierdo(posicionX, posicionY);
         }
     }
 
@@ -175,6 +188,8 @@ public class MenuGUI{
 
         if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
             getJugadoresGUI().handleClickPulsado(posicionX, posicionY);
+        } else if(getBotonera().contienePosicion(posicionX, posicionY)){
+            getBotonera().handleClickPulsado(posicionX, posicionY);
         }
     }
 
@@ -184,6 +199,8 @@ public class MenuGUI{
 
         if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
             getJugadoresGUI().handleClickSoltado(posicionX, posicionY);
+        } else if(getBotonera().contienePosicion(posicionX, posicionY)){
+            getBotonera().handleClickSoltado(posicionX, posicionY);
         }
     }
 
@@ -202,6 +219,7 @@ public class MenuGUI{
         // Se muestra la imagen
         getGc().drawImage(getFondo(), 0, 0);
         getJugadoresGUI().render();
+        getBotonera().render();
 
     }
 
