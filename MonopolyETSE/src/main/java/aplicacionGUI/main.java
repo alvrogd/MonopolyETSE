@@ -137,8 +137,9 @@ public class main extends Application {
                     
                     } else if(menuGUI.contienePosicion(x, y)){
                         //Solo en caso de que el botón presionado sea el primario (izquierdo)
-                        if(e.getButton().equals(MouseButton.PRIMARY))
+                        if(e.getButton().equals(MouseButton.PRIMARY)) {
                             menuGUI.handleClickIzquierdo(x, y);
+                        }
                     }
                 }
             });
@@ -181,7 +182,7 @@ public class main extends Application {
             
             // Se registra el momento de inicio del juego
             final long tiempoInicio = System.nanoTime();
-
+            
             // Se inicia el game loop
             new AnimationTimer() {
 
@@ -198,6 +199,7 @@ public class main extends Application {
                     gc.drawImage(fondo, 0, 0);
                     informacion.render(t);
                     menuGUI.render();
+                    
                     
                 }
             }.start();

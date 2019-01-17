@@ -2,6 +2,7 @@ package aplicacionGUI.menuGUI;
 import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -37,6 +38,9 @@ public class MenuGUI{
 
     // Canvas para la representación del menú
     private final Canvas canvas;
+    
+    // Registro del menú
+    private final RegistroGUI registroGUI;
 
     // Representación de la zona de los jugadores
     private final JugadoresGUI jugadoresGUI;
@@ -89,6 +93,9 @@ public class MenuGUI{
         this.gc = this.canvas.getGraphicsContext2D();
 
         this.fondo = new Image(MenuGUIFondo.class.getResource(imagen).toString());
+        
+        // Se crea el registro del medio
+        this.registroGUI = new RegistroGUI(this.nodo);
 
         // Se crea la representación de los jugadores (parte derecha)
         this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
@@ -134,6 +141,10 @@ public class MenuGUI{
             System.exit(1);
         }
         this.numJugadores = numJugadores;
+    }
+
+    public RegistroGUI getRegistroGUI() {
+        return registroGUI;
     }
 
     public void incrementarJugadores(int incremento){

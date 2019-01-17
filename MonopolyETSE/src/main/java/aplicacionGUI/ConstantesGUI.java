@@ -189,10 +189,10 @@ public class ConstantesGUI {
     public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
     
     // Dimensiones del registro
-    public final static int REGISTRO_ANCHO = 768;
-    public final static int REGISTRO_ALTO = 250;
+    public final static int REGISTRO_ANCHO = 737;
+    public final static int REGISTRO_ALTO = 230;
     
     // Desplazamiento del registro
-    public final static int REGISTRO_DESPLAZAMIENTO_X = 480;
-    public final static int REGISTRO_DESPLAZAMIENTO_Y = 0;
+    public final static int REGISTRO_DESPLAZAMIENTO_X = 484;
+    public final static int REGISTRO_DESPLAZAMIENTO_Y = 10;
 }

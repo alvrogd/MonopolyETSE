@@ -39,11 +39,16 @@ public class RegistroGUI {
         this.panel = new ScrollPane();
         
         // Se indica que la barra vertical siempre se encuentre visible
-        panel.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        this.panel.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         
         // Se establece su tamaño
-        panel.setPrefViewportWidth(ConstantesGUI.REGISTRO_ANCHO);
-        panel.setPrefViewportHeight(ConstantesGUI.REGISTRO_ALTO);
+        this.panel.setPrefViewportWidth(ConstantesGUI.REGISTRO_ANCHO);
+        this.panel.setPrefViewportHeight(ConstantesGUI.REGISTRO_ALTO);
+        
+        this.panel.setStyle("-fx-background-color:transparent;");
+        
+        // Se añade el ScrollPane al nodo
+        this.nodo.getChildren().add(this.panel);
         
     }  
     
