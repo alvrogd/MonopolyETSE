@@ -2,7 +2,7 @@ package aplicacionGUI;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
-import aplicacionGUI.MenuGUI.MenuGUI;
+import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -41,6 +41,9 @@ public class main extends Application {
         // Nombre de la ventana
         ventana.setTitle( "MonopolyETSE GUI Casilla" );
         
+        // Fondo de la ventana
+        Image fondo = new Image(Fondo.class.getResource("fondo.jpg").toString());
+        
         // Se crea un nodo raíz
         Group raiz = new Group();
         // Se añade a una escena nueva
@@ -56,9 +59,6 @@ public class main extends Application {
         
         // Se crea un entorno que manipular a partir del canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        // Se imprime el fondo de la GUI
-        gc.drawImage(new Image(Fondo.class.getResource("fondo.jpg").toString()), 0, 0);
 
         // Se crea una aplicación Monopoly
         Aplicacion app;
@@ -96,6 +96,14 @@ public class main extends Application {
 
             // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
             MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
+            
+            // Se añade texto de prueba al marco de información
+            informacion.getMarcoInformacion().actualizarContenido(new String[]{
+                "El Ministerio de Magia te investiga por colaboración con los mortífagos.",
+                "Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida y sin cobrar los 2M€.",
+                "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños."});
+            // Se activa
+            informacion.getMarcoInformacion().setActivo(true);
             
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
@@ -179,11 +187,15 @@ public class main extends Application {
                 public void handle( long currentNanoTime ){
                     
                     // Tiempo que ha transcurrido desde el inicio del juego
-                    double t = (currentNanoTime - tiempoInicio) / 1000000000.0; 
+                    double t = (currentNanoTime - tiempoInicio) / 1000000000.0;
+                    
+                    // Clear
+                    gc.clearRect(0, 0, ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
 
                     // Render
+                    gc.drawImage(fondo, 0, 0);
                     informacion.render(t);
-                    menuGUI.render();
+                    //menuGUI.render();
                     
                 }
             }.start();

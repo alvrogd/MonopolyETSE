@@ -149,7 +149,7 @@ public class ConstantesGUI {
     public final static int SUERTE_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
     // El ajuste final es por el motivo anterior; además, debe considerarse que la posición dada es la de la esquina
     // superior izquierda de la imagen
-    public final static int COMUNIDAD_DESPLAZAMIENTO_X = TABLERO_ANCHO -CARTA_ANCHO - CASILLA_ANCHO - 100 -
+    public final static int COMUNIDAD_DESPLAZAMIENTO_X = TABLERO_ANCHO - CARTA_ANCHO - CASILLA_ANCHO - 100 -
             CASILLAS_POR_LADO * 3;
     public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
     
@@ -166,4 +166,29 @@ public class ConstantesGUI {
                                                              "Destello_1.png",
                                                              "Destello_2.png",
                                                              "Destello_3.png"};
+    
+    // Dimensiones del marco de información
+    public final static int MARCO_INFORMACION_ANCHO = 610;
+    public final static int MARCO_INFORMACION_SUPERIOR_ALTO = 168;
+    public final static int MARCO_INFORMACION_CENTRAL_ALTO = 58;
+    public final static int MARCO_INFORMACION_INFERIOR_ALTO = 175;
+    
+    // Nombres de las imágenes del marco de información
+    public final static String MARCO_INFORMACION_IMAGEN_SUPERIOR = "SeccionSuperior.png";
+    public final static String MARCO_INFORMACION_IMAGEN_CENTRAL = "SeccionCentral.png";
+    public final static String MARCO_INFORMACION_IMAGEN_INFERIOR = "SeccionInferior.png";
+    
+    // Desplazamiento del marco de información
+    public final static int MARCO_INFORMACION_DESPLAZAMIENTO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2;
+    
+    // Tamaño de la fuente del marco de información
+    public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
+    
+    // Dimensiones del registro
+    public final static int REGISTRO_ANCHO = 768;
+    public final static int REGISTRO_ALTO = 250;
+    
+    // Desplazamiento del registro
+    public final static int REGISTRO_DESPLAZAMIENTO_X = 480;
+    public final static int REGISTRO_DESPLAZAMIENTO_Y = VENTANA_ALTO - 250;
 }

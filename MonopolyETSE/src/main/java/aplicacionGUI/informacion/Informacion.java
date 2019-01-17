@@ -3,6 +3,7 @@ package aplicacionGUI.informacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.cartaGUI.ComunidadGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
+import aplicacionGUI.informacion.marcoInformacion.MarcoInformacion;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
@@ -27,6 +28,9 @@ public class Informacion {
     
     // Representación de las cartas de comunidad
     private final ComunidadGUI comunidadGUI;
+    
+    // Marco de información
+    private final MarcoInformacion marcoInformacion;
     
     // Sensor asociado a esta sección
     private final Rectangle sensor;
@@ -67,6 +71,9 @@ public class Informacion {
         
         // Se crea la representación de las cartas de comunidad
         this.comunidadGUI = new ComunidadGUI(this.nodo);
+        
+        // Se crea el marco de información
+        this.marcoInformacion = new MarcoInformacion(this.nodo);
     }
 
     
@@ -96,6 +103,12 @@ public class Informacion {
     public ComunidadGUI getComunidadGUI() {
         return comunidadGUI;
     }
+
+    public MarcoInformacion getMarcoInformacion() {
+        return marcoInformacion;
+    }
+    
+    
     
     
     
@@ -121,7 +134,11 @@ public class Informacion {
         
         else if( getComunidadGUI().contienePosicion(posicionX, posicionY)) {
             getComunidadGUI().handleClickIzquierdo(posicionX, posicionY);
-        }    
+        }
+        
+        else if(getMarcoInformacion().contienePosicion(posicionX, posicionY)) {
+            getMarcoInformacion().handleClickIzquierdo(posicionX, posicionY);
+        }
     }
     
     
@@ -141,5 +158,6 @@ public class Informacion {
         getTableroGUI().render(t);
         getSuerteGUI().render();
         getComunidadGUI().render();
+        getMarcoInformacion().render();
     }
 }

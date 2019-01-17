@@ -1,4 +1,4 @@
-package aplicacionGUI.MenuGUI;
+package aplicacionGUI.menuGUI;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.NumMaximoJugadoresException;
