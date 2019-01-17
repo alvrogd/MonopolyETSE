@@ -1,4 +1,4 @@
-package aplicacionGUI.menuGUI;
+package aplicacionGUI.menuGUI.JugadoresGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;

@@ -34,6 +34,16 @@ public class ConstantesGUI {
     public final static int BOTONES_ANCHO = 480;
     public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
 
+    // Dimesiones de un botón
+    public final static int BOTON_ANCHO = 75;
+    public final static int BOTON_ALTO = 75;
+    public final static int BOTON_SEPARACION_X = 5;
+    public final static int BOTON_SEPARACION_Y = 5;
+
+    public final static int BOTONES_POR_FILA = 5;
+    public final static int BOTONES_COLUMNAS = 3;
+
+
     // Dimensiones de la sección de información
     public final static int IMPRESION_ANCHO = 768;
     public final static int IMPRESION_ALTO = BOTONES_ALTO;

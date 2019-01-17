@@ -1,19 +1,13 @@
-package aplicacionGUI.menuGUI;
+package aplicacionGUI.menuGUI.JugadoresGUI;
 
-import aplicacion.Aplicacion;
-import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
-import resources.menuGUI.jugadores.JugadoresImagen;
 
 import java.util.ArrayList;
 
