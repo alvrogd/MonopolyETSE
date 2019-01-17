@@ -4,6 +4,7 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
+import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -133,7 +134,7 @@ public class main extends Application {
 
                     if( informacion.contienePosicion(x, y)) {
                         informacion.handleClickIzquierdo(x, y);
-                    }/* else if(menuGUI.contienePosicion(x, y)){
+                    }/*else if(menuGUI.contienePosicion(x, y)){
                         //Solo en caso de que el botón presionado sea el primario (izquierdo)
                         if(e.getButton().equals(MouseButton.PRIMARY))
                             menuGUI.handleClickIzquierdo(x, y);

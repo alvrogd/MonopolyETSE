@@ -190,5 +190,5 @@ public class ConstantesGUI {
     
     // Desplazamiento del registro
     public final static int REGISTRO_DESPLAZAMIENTO_X = 480;
-    public final static int REGISTRO_DESPLAZAMIENTO_Y = VENTANA_ALTO - 250;
+    public final static int REGISTRO_DESPLAZAMIENTO_Y = 0;
 }

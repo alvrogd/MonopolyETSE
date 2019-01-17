@@ -7,7 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 
-public abstract class RegistroGUI {
+public class RegistroGUI {
     
     /* Atributos */
     
