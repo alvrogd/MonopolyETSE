@@ -45,7 +45,8 @@ public class RegistroGUI {
         this.panel.setPrefViewportWidth(ConstantesGUI.REGISTRO_ANCHO);
         this.panel.setPrefViewportHeight(ConstantesGUI.REGISTRO_ALTO);
         
-        this.panel.setStyle("-fx-background-color:transparent;");
+       // this.panel.setStyle("RegistroGUICSS.css");
+        
         
         // Se añade el ScrollPane al nodo
         this.nodo.getChildren().add(this.panel);

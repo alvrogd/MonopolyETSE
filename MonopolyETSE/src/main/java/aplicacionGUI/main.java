@@ -51,6 +51,8 @@ public class main extends Application {
         Scene escena = new Scene( raiz );
         // Se añade la escena a la ventana
         ventana.setScene( escena );
+        // Se establece un estilo personalizado para la escena
+        escena.getStylesheets().add("RegistroGUI.css");
                         
         // Se crea un canvas en el que representar la GUI y se añade a la raíz
         // todo al final creo que este canvas será completamente innecesario si la parte de arriba y la de abajo tienen

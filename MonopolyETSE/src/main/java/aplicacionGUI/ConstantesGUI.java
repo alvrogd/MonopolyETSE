@@ -24,7 +24,7 @@ public class ConstantesGUI {
 
     // Desplazamientos de la sección de menú
     public final static int MENU_DESPLAZAMIENTO_X = (VENTANA_ANCHO - CONTROLES_ANCHO)/2;
-    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - 30 - CONTROLES_ALTO);
+    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - CONTROLES_ALTO);
 
     // Desplazamientos para la sección de los botones
     public final static int BOTONES_DESPLAZAMIENTO_X = 0;
@@ -34,7 +34,7 @@ public class ConstantesGUI {
     public final static int BOTONES_ANCHO = 480;
     public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
 
-    // Dimensiones de la sección de información
+    // Dimensiones de la sección de impresión
     public final static int IMPRESION_ANCHO = 768;
     public final static int IMPRESION_ALTO = BOTONES_ALTO;
 
