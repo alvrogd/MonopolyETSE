@@ -2,7 +2,7 @@ package aplicacionGUI;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
-import aplicacionGUI.MenuGUI.MenuGUI;
+import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -103,7 +103,7 @@ public class main extends Application {
                 "Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida y sin cobrar los 2M€.",
                 "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños."});
             // Se activa
-            //informacion.getMarcoInformacion().setActivo(true);
+            informacion.getMarcoInformacion().setActivo(true);
             
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
@@ -195,7 +195,7 @@ public class main extends Application {
                     // Render
                     gc.drawImage(fondo, 0, 0);
                     informacion.render(t);
-                    menuGUI.render();
+                    //menuGUI.render();
                     
                 }
             }.start();
