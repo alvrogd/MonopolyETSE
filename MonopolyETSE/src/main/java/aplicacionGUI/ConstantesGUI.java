@@ -9,18 +9,46 @@ public class ConstantesGUI {
     // Dimensiones de la sección de información
     public final static int INFORMACION_ANCHO = 1650;
     public final static int INFORMACION_ALTO = 715;
-    
+
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
     public final static int TABLERO_ALTO = 715;
     
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
-    public final static int CONTROLES_ALTO = 250;
+    public final static int CONTROLES_ALTO = 270;
     
     // Desplazamientos de la sección de información
     public final static int INFORMACION_DESPLAZAMIENTO_X = (VENTANA_ANCHO - INFORMACION_ANCHO) / 2;
     public final static int INFORMACION_DESPLAZAMIENTO_Y = (VENTANA_ALTO - INFORMACION_ALTO - CONTROLES_ALTO) / 2;
+
+    // Desplazamientos de la sección de menú
+    public final static int MENU_DESPLAZAMIENTO_X = (VENTANA_ANCHO - CONTROLES_ANCHO)/2;
+    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - 30 - CONTROLES_ALTO);
+
+    // Desplazamientos para la sección de los botones
+    public final static int BOTONES_DESPLAZAMIENTO_X = VENTANA_ANCHO;
+    public final static int BOTONES_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
+
+    // Dimensiones de la sección de botones
+    public final static int BOTONES_ANCHO = 480;
+    public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
+
+    // Dimensiones de la sección de información
+    public final static int IMPRESION_ANCHO = 768;
+    public final static int IMPRESION_ALTO = BOTONES_ALTO;
+
+    // Dimensiones de la sección de jugadores
+    public final static int JUGADORES_ANCHO = 672;
+    public final static int JUGADORES_ALTO = BOTONES_ALTO;
+
+    // Desplazamientos para la sección de impresión
+    public final static int IMPRESION_DESPLAZAMIENTO_X = BOTONES_DESPLAZAMIENTO_X + BOTONES_ANCHO;
+    public final static int IMPRESION_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
+
+    // Desplazamientos para la sección de los jugadores
+    public final static int JUGADORES_DESPLAZAMIENTO_X = INFORMACION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
+    public final static int JUGADORES_DESPLAZAMIENTO_Y = MENU_DESPLAZAMIENTO_Y + 20;
     
     // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;

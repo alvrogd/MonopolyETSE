@@ -2,6 +2,7 @@ package aplicacionGUI;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
+import aplicacionGUI.MenuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -91,6 +92,9 @@ public class main extends Application {
 
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
+
+            // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
+            MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png");
             
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
@@ -138,6 +142,7 @@ public class main extends Application {
 
                     // Render
                     informacion.render(t);
+                    menuGUI.render();
                     
                 }
             }.start();
