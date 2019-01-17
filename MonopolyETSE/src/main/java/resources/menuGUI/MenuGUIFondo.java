@@ -1,4 +1,4 @@
-package resources.MenuGUI;
+package resources.menuGUI;
 
 public class MenuGUIFondo {
 }

@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
-import resources.MenuGUI.Jugadores.JugadoresImagen;
+import resources.menuGUI.jugadores.JugadoresImagen;
 
 import java.util.ArrayList;
 
