@@ -4,7 +4,6 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
-import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -99,6 +98,8 @@ public class main extends Application {
 
             // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
             MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
+            
+            menuGUI.getRegistroGUI().actualizarContenido("adadasdasdasdasdasdasdasdasdasdasdasdasdasdasd");
             
             // Se añade texto de prueba al marco de información
             informacion.getMarcoInformacion().actualizarContenido(new String[]{

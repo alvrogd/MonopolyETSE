@@ -4,6 +4,8 @@ package aplicacionGUI.menuGUI.registroGUI;
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 
@@ -76,6 +78,14 @@ public class RegistroGUI {
     
     public void actualizarContenido(String contenido) {
         
-        getPanel().setContent(new Text(contenido));
+        // Se crea un objeto de texto con el contenido
+        // todo que no se pase en tamaño horizontal
+        Text text = new Text(contenido);
+        
+        // Se cambia la tipografía
+        text.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
+        
+        // Se actualiza el contenido
+        getPanel().setContent(text);
     }
 }
