@@ -69,12 +69,63 @@ public class JugadoresGUI {
         this.tableroGUI = tableroGUI;
     }
 
+    public Rectangle getSensor() {
+        return sensor;
+    }
+
     public ArrayList<JugadorGUI> getJugadores() {
         return jugadores;
     }
 
     public TableroGUI getTableroGUI() {
         return tableroGUI;
+    }
+
+    public boolean contienePosicion(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y;
+
+        return(getSensor().contains(posicionX, posicionY));
+    }
+
+    public void handleClickIzquierdo(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y;
+
+        for(JugadorGUI jugadorGUI : getJugadores()){
+            if(jugadorGUI.contienePosicion(posicionX, posicionY)){
+                jugadorGUI.handleClickIzquierdo(posicionX, posicionY);
+                break;
+            }
+        }
+    }
+
+    public void handleClickPulsado(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y;
+
+        for(JugadorGUI jugadorGUI : getJugadores()){
+            if(jugadorGUI.contienePosicion(posicionX, posicionY)){
+                jugadorGUI.handleClickPulsado(posicionX, posicionY);
+                break;
+            }
+        }
+    }
+
+    public void handleClickSoltado(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y;
+
+        for(JugadorGUI jugadorGUI : getJugadores()){
+            if(jugadorGUI.contienePosicion(posicionX, posicionY)){
+                jugadorGUI.handleClickSoltado(posicionX, posicionY);
+                break;
+            }
+        }
     }
 
     public void nuevoJugador(Jugador jugador){

@@ -46,17 +46,23 @@ public class ConstantesGUI {
     // Dimensiones de la barra del jugador
     public final static int BARRA_DESPLAZAMIENTO_X = 5;
     public final static int BARRA_DESPLAZAMIENTO_Y = 20;
+
     public final static int BARRA_DESPLAZAMIENTO_NOMBRE_X = 65;
     public final static int BARRA_DESPLAZAMIENTO_NOMBRE_Y = 19;
+
     public final static int BARRA_DESPLAZAMIENTO_DINERO_X = 465;
     public final static int BARRA_DESPLAZAMIENTO_DINERO_Y = 19;
 
     public final static int BARRA_DESPLAZAMIENTO_AVATAR_X = 7;
     public final static int BARRA_DESPLAZAMIENTO_AVATAR_Y = 9;
 
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_X = 620;
+    public final static int BARRA_DESPLAZAMIENTO_BOTON_Y = 0;
+
     public final static int BARRA_JUGADOR_ANCHO = 650;
     public final static int BARRA_JUGADOR_ALTO = 30;
     public final static String BARRA_NOMBRE = "barraJugador.png";
+    public final static String BARRA_NOMBRE_OSCURA = "barraJugadorOscuro.png";
 
     // Desplazamientos para la sección de impresión
     public final static int IMPRESION_DESPLAZAMIENTO_X = BOTONES_DESPLAZAMIENTO_X + BOTONES_ANCHO;

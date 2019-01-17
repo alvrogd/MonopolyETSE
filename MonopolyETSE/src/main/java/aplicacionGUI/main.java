@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import resources.fondo.Fondo;
@@ -124,7 +125,47 @@ public class main extends Application {
 
                     if( informacion.contienePosicion(x, y)) {
                         informacion.handleClickIzquierdo(x, y);
+                    } else if(menuGUI.contienePosicion(x, y)){
+                        //Solo en caso de que el botón presionado sea el primario (izquierdo)
+                        if(e.getButton().equals(MouseButton.PRIMARY))
+                            menuGUI.handleClickIzquierdo(x, y);
                     }
+                }
+            });
+
+            //todo Lo pongo así por el tema de las inner classes, es la solución que me dio el intellij JAJAJA
+            final double[] xPresionado = {0};
+            final double[] yPresionado = {0};
+
+            escena.setOnMousePressed(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle( MouseEvent e ){
+
+                    double x = e.getX();
+                    double y = e.getY();
+
+                    xPresionado[0] = x;
+                    yPresionado[0] = y;
+
+                    if(menuGUI.contienePosicion(x, y)){
+                        menuGUI.handleClickPulsado(x, y);
+                    }
+
+                }
+            });
+
+            escena.setOnMouseReleased(new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle( MouseEvent e ){
+
+                    //Se utiliza xPresionado para que en vez de detectar la acción en la posición donde se suelta el click
+                    //lo detecte en la posición donde se empezó a presionar
+                    if(menuGUI.contienePosicion(xPresionado[0], yPresionado[0])){
+                        menuGUI.handleClickSoltado(xPresionado[0], yPresionado[0]);
+                    }
+
                 }
             });
             

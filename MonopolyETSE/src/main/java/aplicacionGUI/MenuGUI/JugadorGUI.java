@@ -15,6 +15,7 @@ import javafx.scene.transform.Translate;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 import resources.MenuGUI.Jugadores.JugadoresImagen;
+import resources.MenuGUI.MenuGUIFondo;
 
 public class JugadorGUI {
 
@@ -23,6 +24,9 @@ public class JugadorGUI {
     private final GraphicsContext gc;
 
     private final Image barra;
+    private final Image barraOscura;
+
+    private Image barraActual;
     private final Image avatar;
 
     private final Jugador jugador;
@@ -31,6 +35,7 @@ public class JugadorGUI {
     private final int desplazamientoY;
 
     private Rectangle sensor;
+    private Rectangle boton;
 
     /* Constructor */
 
@@ -72,10 +77,19 @@ public class JugadorGUI {
 
         this.gc = this.canvas.getGraphicsContext2D();
 
+        // Sensor para la zona de jugadores
         this.sensor = new Rectangle(0, 0, ConstantesGUI.BARRA_JUGADOR_ANCHO, ConstantesGUI.BARRA_JUGADOR_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
+        // Sensor para el botón
+        this.boton = new Rectangle(ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_BOTON_Y,
+                ConstantesGUI.BARRA_JUGADOR_ANCHO, ConstantesGUI.BARRA_JUGADOR_ALTO);
+        this.boton.setFill(Color.TRANSPARENT);
+
         this.barra = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE).toString());
+        this.barraActual = this.barra;
+
+        this.barraOscura = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_OSCURA).toString());
         this.avatar = tableroGUI.getRepresentacionesAvatares().get(jugador.getAvatar().getIdentificador());
 
     }
@@ -96,8 +110,36 @@ public class JugadorGUI {
         return jugador;
     }
 
+    public int getDesplazamientoX() {
+        return desplazamientoX;
+    }
+
+    public int getDesplazamientoY() {
+        return desplazamientoY;
+    }
+
+    public Image getBarraActual() {
+        return barraActual;
+    }
+
+    public Image getBarraOscura() {
+        return barraOscura;
+    }
+
+    public void setBarraActual(Image barraActual) {
+        this.barraActual = barraActual;
+    }
+
+    public Rectangle getSensor() {
+        return sensor;
+    }
+
+    public Rectangle getBoton() {
+        return boton;
+    }
+
     public void renderBarra(){
-        getGc().drawImage(getBarra(), 0, 0);
+        getGc().drawImage(getBarraActual(), 0, 0);
     }
 
     public void renderAvatar(){
@@ -120,6 +162,51 @@ public class JugadorGUI {
         getGc().setLineWidth(1);
 
         getGc().fillText(Integer.toString(getJugador().getFortuna()) + "K €", ConstantesGUI.BARRA_DESPLAZAMIENTO_DINERO_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_DINERO_Y);
+    }
+
+    public boolean contienePosicion(double x, double y) {
+
+        double posicionX = x - getDesplazamientoX();
+        double posicionY = y - getDesplazamientoY();
+
+        return(getSensor().contains(posicionX, posicionY));
+    }
+
+    public boolean pulsandoBoton(double x, double y){
+        double posicionX = x;
+        double posicionY = y;
+
+        return(getBoton().contains(posicionX, posicionY));
+    }
+
+    public void handleClickIzquierdo(double x, double y) {
+
+        double posicionX = x - getDesplazamientoX();
+        double posicionY = y - getDesplazamientoY();
+
+        if(pulsandoBoton(posicionX, posicionY)){
+            System.out.println("Se ha pulsado el botón TRATO");
+        }
+    }
+
+    public void handleClickPulsado(double x, double y) {
+
+        double posicionX = x - getDesplazamientoX();
+        double posicionY = y - getDesplazamientoY();
+
+        if(pulsandoBoton(posicionX, posicionY)){
+            setBarraActual(getBarraOscura());
+        }
+    }
+
+    public void handleClickSoltado(double x, double y) {
+
+        double posicionX = x - getDesplazamientoX();
+        double posicionY = y - getDesplazamientoY();
+
+        if(pulsandoBoton(posicionX, posicionY)){
+            setBarraActual(getBarra());
+        }
     }
 
     public void render(){

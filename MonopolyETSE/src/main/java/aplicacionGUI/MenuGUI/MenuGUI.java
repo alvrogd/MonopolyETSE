@@ -89,6 +89,8 @@ public class MenuGUI{
         this.gc = this.canvas.getGraphicsContext2D();
 
         this.fondo = new Image(MenuGUIFondo.class.getResource(imagen).toString());
+
+        // Se crea la representación de los jugadores (parte derecha)
         this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
 
         this.numJugadores = 0;
@@ -118,6 +120,10 @@ public class MenuGUI{
         return juego;
     }
 
+    public Rectangle getSensor() {
+        return sensor;
+    }
+
     public int getNumJugadores() {
         return numJugadores;
     }
@@ -134,6 +140,42 @@ public class MenuGUI{
         this.numJugadores += incremento;
     }
 
+    public boolean contienePosicion(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.MENU_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.MENU_DESPLAZAMIENTO_Y;
+
+        return(getSensor().contains(posicionX, posicionY));
+    }
+
+    public void handleClickIzquierdo(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.MENU_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.MENU_DESPLAZAMIENTO_Y;
+
+        if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
+            getJugadoresGUI().handleClickIzquierdo(posicionX, posicionY);
+        }
+    }
+
+    public void handleClickPulsado(double x, double y){
+        double posicionX = x - ConstantesGUI.MENU_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.MENU_DESPLAZAMIENTO_Y;
+
+        if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
+            getJugadoresGUI().handleClickPulsado(posicionX, posicionY);
+        }
+    }
+
+    public void handleClickSoltado(double x, double y){
+        double posicionX = x - ConstantesGUI.MENU_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.MENU_DESPLAZAMIENTO_Y;
+
+        if( getJugadoresGUI().contienePosicion(posicionX, posicionY)) {
+            getJugadoresGUI().handleClickSoltado(posicionX, posicionY);
+        }
+    }
+
     public void render(){
 
         if(getJuego().getNombresJugadores().size() > getNumJugadores()){
@@ -147,8 +189,8 @@ public class MenuGUI{
         }
 
         // Se muestra la imagen
-        getJugadoresGUI().render();
         getGc().drawImage(getFondo(), 0, 0);
+        getJugadoresGUI().render();
 
     }
 
