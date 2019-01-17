@@ -134,7 +134,11 @@ public class Informacion {
         
         else if( getComunidadGUI().contienePosicion(posicionX, posicionY)) {
             getComunidadGUI().handleClickIzquierdo(posicionX, posicionY);
-        }    
+        }
+        
+        else if(getMarcoInformacion().contienePosicion(posicionX, posicionY)) {
+            getMarcoInformacion().handleClickIzquierdo(posicionX, posicionY);
+        }
     }
     
     
@@ -154,9 +158,6 @@ public class Informacion {
         getTableroGUI().render(t);
         getSuerteGUI().render();
         getComunidadGUI().render();
-        
-        if( getMarcoInformacion().isActivo()) {
-            getMarcoInformacion().render();
-        }
+        getMarcoInformacion().render();
     }
 }

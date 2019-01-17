@@ -130,4 +130,7 @@ public class ConstantesGUI {
     
     // Desplazamiento del marco de información
     public final static int MARCO_INFORMACION_DESPLAZAMIENTO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2;
+    
+    // Tamaño de la fuente del marco de información
+    public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
 }
