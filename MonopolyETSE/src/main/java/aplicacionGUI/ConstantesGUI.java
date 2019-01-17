@@ -183,4 +183,12 @@ public class ConstantesGUI {
     
     // Tamaño de la fuente del marco de información
     public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
+    
+    // Dimensiones del registro
+    public final static int REGISTRO_ANCHO = 768;
+    public final static int REGISTRO_ALTO = 250;
+    
+    // Desplazamiento del registro
+    public final static int REGISTRO_DESPLAZAMIENTO_X = 480;
+    public final static int REGISTRO_DESPLAZAMIENTO_Y = VENTANA_ALTO - 250;
 }
