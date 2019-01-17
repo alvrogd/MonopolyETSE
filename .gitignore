@@ -2,7 +2,6 @@
 .gradle
 .bat
 build
-out
 MonopolyETSE.iml
 /nbproject/private/
 /dist/
