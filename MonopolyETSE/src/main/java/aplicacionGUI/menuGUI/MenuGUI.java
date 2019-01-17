@@ -14,7 +14,7 @@ import javafx.scene.transform.Translate;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.Tablero;
-import resources.MenuGUI.MenuGUIFondo;
+import resources.menuGUI.MenuGUIFondo;
 
 public class MenuGUI{
 

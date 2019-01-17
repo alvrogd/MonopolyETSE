@@ -14,8 +14,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
-import resources.MenuGUI.Jugadores.JugadoresImagen;
-import resources.MenuGUI.MenuGUIFondo;
+import resources.menuGUI.jugadores.JugadoresImagen;
+import resources.menuGUI.MenuGUIFondo;
 
 public class JugadorGUI {
 
