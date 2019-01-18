@@ -4,6 +4,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -13,6 +14,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -61,6 +63,9 @@ public class CasillaGUI {
     // Animación de movimiento avanzado para los avatares
     private final static ImagenAnimada ANIMACION_MODO_AVANZADO = new ImagenAnimada(new AnimacionAvataresModoAvanzado(),
             ConstantesGUI.AVATARES_AVANZADO_FRAMES, 0.25);
+    
+    // Menú contextual mostrado
+    private ContextMenu menu;
     
     
     
@@ -117,6 +122,9 @@ public class CasillaGUI {
         
         // Se obtiene el fondo correspondiente
         this.fondo = new Image(FondosCasillas.class.getResource(ficheroFondo).toString());
+        
+        // Se genera el menú correspondiente
+        this.menu = null;
     }
 
     
@@ -185,6 +193,14 @@ public class CasillaGUI {
     public static ImagenAnimada getANIMACION_MODO_AVANZADO() {
         return ANIMACION_MODO_AVANZADO;
     }
+
+    public ContextMenu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(ContextMenu menu) {
+        this.menu = menu;
+    }
     
     
     
@@ -199,14 +215,22 @@ public class CasillaGUI {
     }
     
     
-    public void handleClickDerecho(double x, double y, Group nodoRaiz, ContextMenuEvent e) {
+    public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
+            menus) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
         
         System.out.println(getCasilla().getNombre());
         
-        generarMenuContextual().show(nodoRaiz, e.getScreenX(), e.getScreenY());
+        // Se genera el menú
+        setMenu(generarMenuContextual());
+        
+        // Se muestra el menú
+        getMenu().show(nodoRaiz, e.getScreenX(), e.getScreenY());
+        
+        // Se añade al listado de menús activos
+        menus.add(getMenu());
     }
     
     

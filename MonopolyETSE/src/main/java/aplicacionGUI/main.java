@@ -4,6 +4,7 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
+import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
@@ -52,7 +54,7 @@ public class main extends Application {
         ventana.setScene( escena );
         // Se establece un estilo personalizado para la escena (para el registro exclusivamente)
         escena.getStylesheets().add(ConstantesGUI.class.getResource("RegistroGUI.css").toExternalForm());
-                        
+                               
         // Se crea un canvas en el que representar la GUI y se añade a la raíz
         // todo al final creo que este canvas será completamente innecesario si la parte de arriba y la de abajo tienen
         // sus respectivos canvas
@@ -61,6 +63,9 @@ public class main extends Application {
         
         // Se crea un entorno que manipular a partir del canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        // Se crea un array en el que registrar menús contextuales abiertos
+        ArrayList<ContextMenu> menus = new ArrayList<>();
 
         // Se crea una aplicación Monopoly
         Aplicacion app;
@@ -128,6 +133,10 @@ public class main extends Application {
             // Se activa
             informacion.getMarcoInformacion().setActivo(true);
             
+            //todo Lo pongo así por el tema de las inner classes, es la solución que me dio el intellij JAJAJA
+            final double[] xPresionado = {0};
+            final double[] yPresionado = {0};
+            
             // Se define la acción ante un click derecho
             // todo lo pongo de este modo puesto que es más fácil de modificar para hacer pruebas; la intención sería
             // crear más adelante la clase aparte porque a Penín no le ha de de parecer buena idea
@@ -139,9 +148,7 @@ public class main extends Application {
                     double x = e.getX();
                     double y = e.getY();
 
-                    if( informacion.contienePosicion(x, y)) {
-                        informacion.handleClickDerecho(x, y, raiz, e);
-                    }
+                    
                 }
             });
             
@@ -153,11 +160,8 @@ public class main extends Application {
                     
                     double x = e.getX();
                     double y = e.getY();
-
-                    if( informacion.contienePosicion(x, y)) {
-                        informacion.handleClickIzquierdo(x, y);
-                    
-                    } else if(menuGUI.contienePosicion(x, y)){
+           
+                    if(menuGUI.contienePosicion(x, y)){
                         //Solo en caso de que el botón presionado sea el primario (izquierdo)
                         if(e.getButton().equals(MouseButton.PRIMARY)) {
                             menuGUI.handleClickIzquierdo(x, y);
@@ -165,10 +169,6 @@ public class main extends Application {
                     }
                 }
             });
-
-            //todo Lo pongo así por el tema de las inner classes, es la solución que me dio el intellij JAJAJA
-            final double[] xPresionado = {0};
-            final double[] yPresionado = {0};
 
             escena.setOnMousePressed(new EventHandler<MouseEvent>(){
 
@@ -180,11 +180,16 @@ public class main extends Application {
 
                     xPresionado[0] = x;
                     yPresionado[0] = y;
+                    
+                    for( ContextMenu contextMenu : menus ) {
+                        contextMenu.hide();
+                    }
+                    
+                    menus.clear();
 
                     if(menuGUI.contienePosicion(x, y)){
                         menuGUI.handleClickPulsado(x, y);
                     }
-
                 }
             });
 
@@ -197,6 +202,15 @@ public class main extends Application {
                     //lo detecte en la posición donde se empezó a presionar
                     if(menuGUI.contienePosicion(xPresionado[0], yPresionado[0])){
                         menuGUI.handleClickSoltado(xPresionado[0], yPresionado[0]);
+                    }
+                                        
+                    if( informacion.contienePosicion(xPresionado[0], yPresionado[0])) {
+                        informacion.handleClickDerecho(xPresionado[0], yPresionado[0], raiz, e, menus);
+                    }
+                    
+                    if( informacion.contienePosicion(xPresionado[0], yPresionado[0])) {
+                        informacion.handleClickIzquierdo(xPresionado[0], yPresionado[0]);
+                    
                     }
 
                 }

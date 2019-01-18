@@ -10,8 +10,10 @@ import java.util.HashMap;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -280,7 +282,8 @@ public class TableroGUI {
     }
     
     
-    public void handleClickDerecho(double x, double y, Group nodoRaiz, ContextMenuEvent e) {
+    public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
+            menus) {
         
         double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
@@ -293,8 +296,8 @@ public class TableroGUI {
             
             for( CasillaGUI casillaGUI : fila ) {
             
-                if( casillaGUI.contienePosicion(posicionX, posicionY)) {
-                    casillaGUI.handleClickDerecho(posicionX, posicionY, nodoRaiz, e);
+                if( casillaGUI.contienePosicion(posicionX, posicionY) ) {
+                    casillaGUI.handleClickDerecho(posicionX, posicionY, nodoRaiz, e, menus);
                 }
             }
         }
