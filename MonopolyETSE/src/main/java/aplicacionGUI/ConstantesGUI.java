@@ -205,4 +205,7 @@ public class ConstantesGUI {
     // Desplazamiento del registro
     public final static int REGISTRO_DESPLAZAMIENTO_X = 485;
     public final static int REGISTRO_DESPLAZAMIENTO_Y = 10;
+    
+    // Tamaño de la fuente del registro
+    public final static int REGISTRO_FUENTE_TAMANO = 12;
 }
