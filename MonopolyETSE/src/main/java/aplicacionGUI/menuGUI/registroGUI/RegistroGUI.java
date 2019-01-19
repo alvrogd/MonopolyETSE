@@ -108,8 +108,11 @@ public class RegistroGUI {
         // Se actualiza el contenido
         getPanel().setContent(text);
         
-        // Y se guarda
+        // Se guarda
         setContenido(contenido);
+        
+        // Se mueve el desplazamiento vertical al final
+        getPanel().setVvalue(1.0);
     }
 
     private String ajustarInformacion(String contenido) {
