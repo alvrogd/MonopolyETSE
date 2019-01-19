@@ -244,7 +244,7 @@ public abstract class Propiedad extends Casilla{
 
         if(isHipotecada()){
             funciones.add(TipoFuncion.deshipotecar);
-        } else {
+        } else if(!isComprable() && getTablero().getJuego().getTurno().equals(getTablero().getJuego().getTurno())){
             funciones.add(TipoFuncion.hipotecar);
         }
 

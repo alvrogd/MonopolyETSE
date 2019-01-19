@@ -237,8 +237,8 @@ public class BotonGUI {
 
     public void inhabilitarBoton(){
 
-        getSensor().setX(-500);
-        getSensor().setY(-500);
+        getSensor().setX(-1000);
+        getSensor().setY(-1000);
 
     }
 
@@ -296,6 +296,7 @@ public class BotonGUI {
     }
 
     public void finalizarTurno(){
+
         getApp().getJuego().finalizarTurno();
 
         Output.respuesta("El jugador actual es " + getApp().getJuego().getTurno().getNombre());

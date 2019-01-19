@@ -18,6 +18,10 @@ public class BotoneraGUI {
 
     /* Atributos */
 
+    //todo borrar esto
+
+    private boolean puedoImprimir = false;
+
     // Nodo propiedad de la sección de la botonera
     private final Group nodo;
 
@@ -181,6 +185,8 @@ public class BotoneraGUI {
                 break;
             }
         }
+
+        this.puedoImprimir = true;
     }
 
     public void handleClickPulsado(double x, double y) {
@@ -203,6 +209,9 @@ public class BotoneraGUI {
 
         for(BotonGUI botonGUI : getBotones()){
             if(botonGUI.contienePosicion(posicionX, posicionY)){
+                if(botonGUI.getFuncion().equals(TipoFuncion.finalizarTurno)) {
+                    System.out.println("Holi");
+                }
                 botonGUI.handleClickSoltado(posicionX, posicionY);
                 break;
             }
@@ -251,11 +260,18 @@ public class BotoneraGUI {
         int fila = 0, columna = 0;
         actualizarBotones();
         for(BotonGUI botonGUI : getBotonesActuales()){
+
             botonGUI.render(fila, columna);
+
+            if(puedoImprimir)
+                System.out.println(botonGUI.getNombre() + " en la posición (fila, columna): (" + fila + ", " + columna + ")");
             fila++;
             columna += fila/ConstantesGUI.BOTONES_POR_FILA;
             fila %= ConstantesGUI.BOTONES_POR_FILA;
         }
+
+        if(puedoImprimir)
+            this.puedoImprimir = false;
 
     }
 

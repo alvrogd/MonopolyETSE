@@ -447,6 +447,7 @@ public class Output {
         else
             impresionTablero = true;
 
+        Aplicacion.consola.imprimir(impresion.toString());
         addBuffer(impresion.toString(), anchoTotal, altoTotal);
 
     }
