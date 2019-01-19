@@ -1,6 +1,7 @@
 package aplicacionGUI.informacion.marcoInformacion;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ImagenAnimada;
 import java.util.ArrayList;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
-import resources.marcoInformacion.ImagenesMarcoInformacion;
+import resources.marcoInformacion.animacion.AnimacionMarcoInformacion;
 
 public class MarcoInformacion {
 
@@ -21,39 +22,44 @@ public class MarcoInformacion {
     private final Group nodo;
 
     // Canvas contenido en el nodo
-    private Canvas canvas;
+    private final Canvas canvas;
 
     // Sensor asociado al tablero
-    private Rectangle sensor;
+    private final Rectangle sensor;
 
     // Contexto en el que representar objetos
-    private GraphicsContext gc;
+    private final GraphicsContext gc;
 
     // Dimensiones de la representación
     private final int ancho = ConstantesGUI.MARCO_INFORMACION_ANCHO;
-    private int alto;
+    private final int alto = ConstantesGUI.MARCO_INFORMACION_ALTO;
 
-    // Desplazamiento en la coordenada Y
-    private int desplazamientoY;
-
-    // Imágenes correspondientes al marco
-    private final static Image SECCION_SUPERIOR = new Image(ImagenesMarcoInformacion.class.getResource(
-            ConstantesGUI.MARCO_INFORMACION_IMAGEN_SUPERIOR).toString());
-
-    private final static Image SECCION_CENTRAL = new Image(ImagenesMarcoInformacion.class.getResource(
-            ConstantesGUI.MARCO_INFORMACION_IMAGEN_CENTRAL).toString());
-
-    private final static Image SECCION_INFERIOR = new Image(ImagenesMarcoInformacion.class.getResource(
-            ConstantesGUI.MARCO_INFORMACION_IMAGEN_INFERIOR).toString());
+    // Imagen final
+    private final static Image IMAGEN_FINAL = new Image(AnimacionMarcoInformacion.class.getResource(
+            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES[ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES.length -
+                    1]).toString());
 
     // Información a representar
     private ArrayList<String> informacion;
 
-    // Nümero de secciones centrales necesarias
-    private int numeroSeccionesCentrales;
-
-    // Boolean si se encuentra activo
+    // Si se encuentra activo
     private boolean activo;
+    
+    // Si ha finalizado la animación
+    private boolean animacionFinalizada;
+    
+    // Animación de abrir/cerrar
+    private final static ImagenAnimada ANIMACION_ABRIR = new ImagenAnimada(new AnimacionMarcoInformacion(),
+            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES, 0.01);
+    
+    // Si se va a abrir
+    private boolean abrirse;
+    
+    // Si es el primer frame
+    private boolean primerFrame;
+    
+    // Último frame
+    private Image ultimoFrame;
 
     /* Constructor */
     public MarcoInformacion(Group raiz) {
@@ -66,8 +72,27 @@ public class MarcoInformacion {
         // Se añade al nodo dado un nuevo nodo de uso para el marco
         this.nodo = new Group();
         raiz.getChildren().add(this.nodo);
+        
+        // Se mueve el marco a su posición adecuada
+        this.nodo.getTransforms().add(new Translate(ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X,
+                ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y));
+
+        // Se crea un sensor del tamaño apropiado
+        this.sensor = new Rectangle(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
+        this.sensor.setFill(Color.TRANSPARENT);
+
+        // Se crea un canvas en el nodo para representar el marco
+        this.canvas = new Canvas(ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
+        this.nodo.getChildren().add(this.canvas);
+
+        // Se genera un contexto a partir del canvas para insertar la representación del tablero
+        this.gc = this.canvas.getGraphicsContext2D();
 
         this.activo = false;
+        this.animacionFinalizada = true;
+        this.abrirse = false;
+        this.primerFrame = false;
+        this.ultimoFrame = null;
     }
 
     /* Getters y setters */
@@ -77,10 +102,6 @@ public class MarcoInformacion {
 
     public Rectangle getSensor() {
         return sensor;
-    }
-
-    public void setSensor(Rectangle sensor) {
-        this.sensor = sensor;
     }
 
     public Canvas getCanvas() {
@@ -99,24 +120,8 @@ public class MarcoInformacion {
         return alto;
     }
 
-    public int getDesplazamientoY() {
-        return desplazamientoY;
-    }
-
-    public void setDesplazamientoY(int desplazamientoY) {
-        this.desplazamientoY = desplazamientoY;
-    }
-
-    public static Image getSECCION_SUPERIOR() {
-        return SECCION_SUPERIOR;
-    }
-
-    public static Image getSECCION_CENTRAL() {
-        return SECCION_CENTRAL;
-    }
-
-    public static Image getSECCION_INFERIOR() {
-        return SECCION_INFERIOR;
+    public static Image getIMAGEN_FINAL() {
+        return IMAGEN_FINAL;
     }
 
     public ArrayList<String> getInformacion() {
@@ -127,26 +132,6 @@ public class MarcoInformacion {
         this.informacion = informacion;
     }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
-    public void setGc(GraphicsContext gc) {
-        this.gc = gc;
-    }
-
-    public void setAlto(int alto) {
-        this.alto = alto;
-    }
-
-    public int getNumeroSeccionesCentrales() {
-        return numeroSeccionesCentrales;
-    }
-
-    public void setNumeroSeccionesCentrales(int numeroSeccionesCentrales) {
-        this.numeroSeccionesCentrales = numeroSeccionesCentrales;
-    }
-
     public boolean isActivo() {
         return activo;
     }
@@ -155,11 +140,49 @@ public class MarcoInformacion {
         this.activo = activo;
     }
 
+    public boolean isAnimacionFinalizada() {
+        return animacionFinalizada;
+    }
+
+    public void setAnimacionFinalizada(boolean animacionFinalizada) {
+        this.animacionFinalizada = animacionFinalizada;
+    }
+
+    public static ImagenAnimada getANIMACION_ABRIR() {
+        return ANIMACION_ABRIR;
+    }
+
+    public boolean isAbrirse() {
+        return abrirse;
+    }
+
+    public void setAbrirse(boolean abrirse) {
+        this.abrirse = abrirse;
+    }
+
+    public boolean isPrimerFrame() {
+        return primerFrame;
+    }
+
+    public void setPrimerFrame(boolean primerFrame) {
+        this.primerFrame = primerFrame;
+    }
+
+    public Image getUltimoFrame() {
+        return ultimoFrame;
+    }
+
+    public void setUltimoFrame(Image ultimoFrame) {
+        this.ultimoFrame = ultimoFrame;
+    }
+    
+       
+
     /* Métodos */
     public boolean contienePosicion(double x, double y) {
 
         double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
-        double posicionY = y - getDesplazamientoY();
+        double posicionY = y - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y;
 
         return (getSensor().contains(posicionX, posicionY));
     }
@@ -167,41 +190,31 @@ public class MarcoInformacion {
     public void handleClickIzquierdo(double x, double y) {
 
         double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
-        double posicionY = y - getDesplazamientoY();
+        double posicionY = y - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y;
 
-        setActivo(!isActivo());
+        // Se indica la necesidad de abrirse/cerrarse
+        setAnimacionFinalizada(false);
+        
+        // Se resetea el número de frame
+        setPrimerFrame(true);
+        setUltimoFrame(null);
+        
+        // Si se va a abrir, se indica que ahora esté activo
+        if(!isActivo()) {
+            setActivo(true);
+            setAbrirse(true);
+        }
+        
+        // Si se va a cerrar, debe continuar activo pero se indica que se cierre
+        else {
+            setAbrirse(false);
+        }
     }
 
     public void actualizarContenido(String[] informacion) {
 
         // Se adapta la información al marco
-        ArrayList<String> informacionAdaptada = ajustarInformacion(informacion);
-
-        // Se obtiene la cantidad de secciones centrales necesarias para representar la información
-        setNumeroSeccionesCentrales(calcularSeccionesCentrales(informacionAdaptada));
-
-        // Se establece el tamaño vertical total
-        setAlto(ConstantesGUI.MARCO_INFORMACION_SUPERIOR_ALTO + getNumeroSeccionesCentrales()
-                * ConstantesGUI.MARCO_INFORMACION_CENTRAL_ALTO + ConstantesGUI.MARCO_INFORMACION_INFERIOR_ALTO);
-
-        // Se mueve el marco a su posición adecuada
-        setDesplazamientoY((int) ((ConstantesGUI.TABLERO_ALTO - getAlto()) / (double) 2) - 18);
-
-        getNodo().getTransforms().clear();
-        getNodo().getTransforms().add(new Translate(ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X,
-                getDesplazamientoY()));
-
-        // Se crea un sensor del tamaño apropiado
-        setSensor(new Rectangle(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, getAlto()));
-        getSensor().setFill(Color.TRANSPARENT);
-
-        // Se crea un canvas en el nodo para representar el marco
-        getNodo().getChildren().remove(getCanvas());
-        setCanvas(new Canvas(ConstantesGUI.MARCO_INFORMACION_ANCHO, getAlto()));
-        getNodo().getChildren().add(canvas);
-
-        // Se genera un contexto a partir del canvas para insertar la representación del tablero
-        setGc(getCanvas().getGraphicsContext2D());
+        ArrayList<String> informacionAdaptada = ajustarInformacion(informacion);        
 
         // Se guarda la información a representar
         setInformacion(informacionAdaptada);
@@ -244,56 +257,105 @@ public class MarcoInformacion {
         return (resultado);
     }
 
-    private int calcularSeccionesCentrales(ArrayList<String> informacion) {
-
-        return ((int) Math.ceil(informacion.size() * ConstantesGUI.MARCO_INFORMACION_FUENTE_TAMANO
-                / (double) ConstantesGUI.MARCO_INFORMACION_CENTRAL_ALTO));
-
-    }
-
-    public void render() {
+    public void render(double t) {
 
         if (isActivo()) {
-            int desplazamiento = 0;
-
-            // Se establece la tipografía
-            getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL,
-                    ConstantesGUI.MARCO_INFORMACION_FUENTE_TAMANO));
-            getGc().setStroke(Color.TRANSPARENT);
-            getGc().setFill(Color.BLACK);
-            getGc().setTextAlign(TextAlignment.CENTER);
-            getGc().setLineWidth(1);
-
-            // Se muestra la sección superior
-            getGc().drawImage(getSECCION_SUPERIOR(), 0, 0);
-            desplazamiento += ConstantesGUI.MARCO_INFORMACION_SUPERIOR_ALTO;
-
-            // Variables auxiliares para el texto
-            int desplazamientoTexto = desplazamiento;
-            int j = 0;
-
-            // Se muestran las secciones centrales junto con el texto
-            for (int i = 0; i < getNumeroSeccionesCentrales(); i++) {
-
-                getGc().drawImage(getSECCION_CENTRAL(), - 2, desplazamiento);
-                desplazamiento += ConstantesGUI.MARCO_INFORMACION_CENTRAL_ALTO;
-
-                // Mientras no se supere el desplazamiento de la sección central actual
-                do {
-                    // Se añade texto
-                    getGc().fillText(getInformacion().get(j++), getAncho() / 2, desplazamientoTexto + 10);
-                    // Y se trata por separado su desplazamiento
-                    desplazamientoTexto += ConstantesGUI.MARCO_INFORMACION_FUENTE_TAMANO + 5;
-
-                } while (desplazamientoTexto < desplazamiento && j < getInformacion().size());
+            
+            if( isAnimacionFinalizada() ) {
+                renderAnimacionFinalizada(t);
             }
-
-            // Se muestra la sección inferior
-            getGc().drawImage(getSECCION_INFERIOR(), 0, desplazamiento);
+            
+            // En caso contrario, se renderiza un fotograma
+            else {
+                renderAnimacionActiva(t);
+            }          
         }
         
+        // Si no está activo, simplemente se limpia el gc
         else {
-            getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, getAlto());
+            getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
         }
+    }
+    
+    private void renderAnimacionFinalizada(double t ) {
+        
+        // Se establece la tipografía
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL,
+                ConstantesGUI.MARCO_INFORMACION_FUENTE_TAMANO));
+        getGc().setStroke(Color.TRANSPARENT);
+        getGc().setFill(Color.BLACK);
+        getGc().setTextAlign(TextAlignment.CENTER);
+        getGc().setLineWidth(1);
+
+        // Se muestra el pergamino
+        getGc().drawImage(getIMAGEN_FINAL(), 0, 0);
+
+        // Variables auxiliares para el texto
+        int numeroLineas = getInformacion().size();
+
+        // Se muestra el texto
+        for (int i = 0, desplazamiento = ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO *
+                ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++,
+                desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
+
+            // Se añade texto
+            getGc().fillText(getInformacion().get(i), getAncho() / 2, desplazamiento + 10);
+        } 
+    }
+    
+    private void renderAnimacionActiva(double t) {
+        
+        // Frame a renderizar
+        Image frame;
+                
+        // Si se trata del primer frame, se guarda el tiempo de inicio
+        if(isPrimerFrame()) {
+            getANIMACION_ABRIR().setTiempoInicio(t);
+            setPrimerFrame(false);
+        }
+
+        // Si se va a abrir
+        if( isAbrirse()) {
+
+            frame = getANIMACION_ABRIR().getFrame(t);
+
+            // La animación debe finalizar al alcanzar el último frame; sin embargo, es probable que el último frame en
+            // renderizarse no sea precisamente el último de la animación, sino que sea uno de los últimos al obtener
+            // frames en función del tiempo transcurrido. Para ello, debe llevarse el registro del último frame
+            // renderizado, y comprobar si el frame obtenido ha vuelto a comenzar el bucle de la animación
+            
+            // Si se vuelve a comenzar la animación, se indica el fin y se establece como activo
+            if( getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame) <
+                    getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
+                setAnimacionFinalizada(true);
+                return;
+            }
+        }
+
+        // En caso contrario, se está cerrando
+        else {
+
+            frame = getANIMACION_ABRIR().getFrameInverso(t);
+
+            // Sucede algo similar en este caso, siendo posible que el último frame en renderizarse no sea el primero
+            // de la animación
+            
+            // Si se comenzado de nuevo la animación, se indica el fin y se establece como no activo
+            if( getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame) >
+                    getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
+                setAnimacionFinalizada(true);
+                setActivo(false);
+                return;
+            }
+        }
+
+        // Se limpia el gc del anterior frame
+        getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
+
+        // Se renderiza el frame
+        getGc().drawImage(frame, 0, 0);
+
+        // Se actualiza el último frame renderizado
+        setUltimoFrame(frame);
     }
 }

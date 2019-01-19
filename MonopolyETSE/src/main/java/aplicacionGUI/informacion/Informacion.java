@@ -161,6 +161,6 @@ public class Informacion {
         getTableroGUI().render(t);
         getSuerteGUI().render();
         getComunidadGUI().render();
-        getMarcoInformacion().render();
+        getMarcoInformacion().render(t);
     }
 }

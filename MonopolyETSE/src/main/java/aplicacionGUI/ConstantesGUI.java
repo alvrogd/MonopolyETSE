@@ -183,9 +183,7 @@ public class ConstantesGUI {
     
     // Dimensiones del marco de información
     public final static int MARCO_INFORMACION_ANCHO = 610;
-    public final static int MARCO_INFORMACION_SUPERIOR_ALTO = 168;
-    public final static int MARCO_INFORMACION_CENTRAL_ALTO = 58;
-    public final static int MARCO_INFORMACION_INFERIOR_ALTO = 175;
+    public final static int MARCO_INFORMACION_ALTO = 480;
     
     // Nombres de las imágenes del marco de información
     public final static String MARCO_INFORMACION_IMAGEN_SUPERIOR = "SeccionSuperior.png";
@@ -194,9 +192,92 @@ public class ConstantesGUI {
     
     // Desplazamiento del marco de información
     public final static int MARCO_INFORMACION_DESPLAZAMIENTO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2;
+    public final static int MARCO_INFORMACION_DESPLAZAMIENTO_Y = (TABLERO_ALTO - MARCO_INFORMACION_ALTO ) / 2 - 18;
     
     // Tamaño de la fuente del marco de información
     public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
+    
+    // Espacio para cada línea del marco de información
+    public final static int MARCO_INFORMACION_LINEA_ALTO = MARCO_INFORMACION_ALTO / MARCO_INFORMACION_FUENTE_TAMANO;
+    
+    // Número de líneas que caben en el marco de información
+    public final static int MARCO_INFORMACION_NUMERO_LINEAS = MARCO_INFORMACION_ALTO / MARCO_INFORMACION_LINEA_ALTO;
+    
+    // Nombre de los frames de la animación del modo avanzado
+    public final static String[] MARCO_INFORMACION_ANIMACION_FRAMES = {"Pergamino_0.png",
+                                                                       "Pergamino_1.png",
+                                                                       "Pergamino_2.png",
+                                                                       "Pergamino_3.png",
+                                                                       "Pergamino_4.png",
+                                                                       "Pergamino_5.png",
+                                                                       "Pergamino_6.png",
+                                                                       "Pergamino_7.png",
+                                                                       "Pergamino_8.png",
+                                                                       "Pergamino_9.png",
+                                                                       "Pergamino_10.png",
+                                                                       "Pergamino_11.png",
+                                                                       "Pergamino_12.png",
+                                                                       "Pergamino_13.png",
+                                                                       "Pergamino_14.png",
+                                                                       "Pergamino_15.png",
+                                                                       "Pergamino_16.png",
+                                                                       "Pergamino_17.png",
+                                                                       "Pergamino_18.png",
+                                                                       "Pergamino_19.png",
+                                                                       "Pergamino_20.png",
+                                                                       "Pergamino_21.png",
+                                                                       "Pergamino_22.png",
+                                                                       "Pergamino_23.png",
+                                                                       "Pergamino_24.png",
+                                                                       "Pergamino_25.png",
+                                                                       "Pergamino_26.png",
+                                                                       "Pergamino_27.png",
+                                                                       "Pergamino_28.png",
+                                                                       "Pergamino_29.png",
+                                                                       "Pergamino_30.png",
+                                                                       "Pergamino_31.png",
+                                                                       "Pergamino_32.png",
+                                                                       "Pergamino_33.png",
+                                                                       "Pergamino_34.png",
+                                                                       "Pergamino_35.png",
+                                                                       "Pergamino_36.png",
+                                                                       "Pergamino_37.png",
+                                                                       "Pergamino_38.png",
+                                                                       "Pergamino_39.png",
+                                                                       "Pergamino_40.png",
+                                                                       "Pergamino_41.png",
+                                                                       "Pergamino_42.png",
+                                                                       "Pergamino_43.png",
+                                                                       "Pergamino_44.png",
+                                                                       "Pergamino_45.png",
+                                                                       "Pergamino_46.png",
+                                                                       "Pergamino_47.png",
+                                                                       "Pergamino_48.png",
+                                                                       "Pergamino_49.png",
+                                                                       "Pergamino_50.png",
+                                                                       "Pergamino_51.png",
+                                                                       "Pergamino_52.png",
+                                                                       "Pergamino_53.png",
+                                                                       "Pergamino_54.png",
+                                                                       "Pergamino_55.png",
+                                                                       "Pergamino_56.png",
+                                                                       "Pergamino_57.png",
+                                                                       "Pergamino_58.png",
+                                                                       "Pergamino_59.png",
+                                                                       "Pergamino_60.png",
+                                                                       "Pergamino_61.png",
+                                                                       "Pergamino_62.png",
+                                                                       "Pergamino_63.png",
+                                                                       "Pergamino_64.png",
+                                                                       "Pergamino_65.png",
+                                                                       "Pergamino_66.png",
+                                                                       "Pergamino_67.png",
+                                                                       "Pergamino_68.png",
+                                                                       "Pergamino_69.png",
+                                                                       "Pergamino_70.png",
+                                                                       "Pergamino_71.png",
+                                                                       "Pergamino_72.png",
+                                                                       "Pergamino_73.png"};
     
     // Dimensiones del registro
     public final static int REGISTRO_ANCHO = 737;

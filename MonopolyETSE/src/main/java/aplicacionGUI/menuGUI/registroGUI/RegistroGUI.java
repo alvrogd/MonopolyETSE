@@ -49,6 +49,7 @@ public class RegistroGUI {
         // Se añade el ScrollPane al nodo
         this.nodo.getChildren().add(this.panel);
 
+        // Inicialmente no existe ningún tipo de contenido
         this.contenido = null;
 
     }

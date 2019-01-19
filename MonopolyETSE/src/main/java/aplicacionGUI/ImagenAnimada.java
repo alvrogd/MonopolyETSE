@@ -15,6 +15,9 @@ public class ImagenAnimada {
     // Duración de la animación
     private double duracion;
     
+    // Tiempo de inicio de la animación
+    private double tiempoInicio;
+    
     
     
     /* Constructor */
@@ -45,6 +48,8 @@ public class ImagenAnimada {
         
         // Se guarda la duración
         this.duracion = duracion;
+        
+        this.tiempoInicio = 0;
     }
     
     
@@ -64,6 +69,15 @@ public class ImagenAnimada {
     public void setDuracion(double duracion) {
         this.duracion = duracion;
     }
+
+    public double getTiempoInicio() {
+        return tiempoInicio;
+    }
+
+    public void setTiempoInicio(double tiempoInicio) {
+        this.tiempoInicio = tiempoInicio;
+    }
+    
     
     
     
@@ -71,8 +85,25 @@ public class ImagenAnimada {
     
     public Image getFrame(double t) {
         
-        int i = (int)((t % (getFrames().size() * getDuracion())) / getDuracion());
+        int i = (int)(((t - getTiempoInicio())% (getFrames().size() * getDuracion())) / getDuracion());
         
         return( getFrames().get(i));
+    }
+    
+    public Image getFrameInverso(double t) {
+        
+        int i = (int)(((t - getTiempoInicio())% (getFrames().size() * getDuracion())) / getDuracion());
+        
+        return( getFrames().get(getFrames().size() - 1 - i));
+    }
+    
+    public Image getFrameNumero(int i) {
+                
+        return( getFrames().get(i));
+    }
+    
+    public Image getFrameInversoNumero(int i) {
+                
+        return( getFrames().get(getFrames().size() - 1 - i));
     }
 }
