@@ -8,11 +8,11 @@ public class ConstantesGUI {
     
     // Dimensiones de la sección de información
     public final static int INFORMACION_ANCHO = 1650;
-    public final static int INFORMACION_ALTO = 715;
+    public final static int INFORMACION_ALTO = 690;
 
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
-    public final static int TABLERO_ALTO = 715;
+    public final static int TABLERO_ALTO = 690;
     
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
