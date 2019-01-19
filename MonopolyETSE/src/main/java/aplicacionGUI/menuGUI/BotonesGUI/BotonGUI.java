@@ -1,5 +1,9 @@
 package aplicacionGUI.menuGUI.BotonesGUI;
 
+import aplicacion.Aplicacion;
+import aplicacion.excepciones.InputUsuarioException;
+import aplicacion.salidaPantalla.Comando;
+import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -9,10 +13,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
+import monopoly.jugadores.Coche;
+import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.menuGUI.botones.BotonesImagenes;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class BotonGUI {
 
@@ -45,13 +58,16 @@ public class BotonGUI {
     // Sensor asociado a este botón
     private Rectangle sensor;
 
+    // Aplicacion
+    private Aplicacion aplicacion;
+
     // Booleano para saber si el botón es animado
     private boolean animado;
 
     // Booleano para saber si es el botón de ayuda
     private boolean ayuda;
 
-    public BotonGUI(Group raiz, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
+    public BotonGUI(Group raiz, Aplicacion app, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
@@ -78,6 +94,12 @@ public class BotonGUI {
             System.exit(1);
         }
 
+        if(app == null){
+            System.err.println("Aplicación no inicializada");
+            System.exit(1);
+        }
+
+        this.aplicacion = app;
         this.nombre = nombre;
         this.funcion = funcion;
 
@@ -113,8 +135,12 @@ public class BotonGUI {
         this.ayuda = ayuda;
     }
 
-    public BotonGUI(Group raiz, String nombre, TipoFuncion funcion, int fila, int columna){
-        this(raiz, nombre, funcion, fila, columna, false, false);
+    public BotonGUI(Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna){
+        this(raiz, app, nombre, funcion, fila, columna, false, false);
+    }
+
+    public Aplicacion getApp() {
+        return aplicacion;
     }
 
     public Translate getTranslate() {
@@ -238,13 +264,288 @@ public class BotonGUI {
         return(getSensor().contains(posicionX, posicionY));
     }
 
+    public void lanzarDados(){
+
+        if (getApp().getJuego().getTurno().getAvatar() instanceof Coche)
+            getApp().getJuego().setHaCompradoPropiedad(false);
+
+        try {
+            getApp().getJuego().getTurno().lanzarDados(getApp().getJuego().getTablero().getDado());
+        } catch(Exception ignored){
+
+        }
+
+    }
+
+    public void cambiarModo(){
+
+        try {
+            getApp().getJuego().getTurno().getAvatar().switchMovimiento();
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void comprar() {
+        try {
+            getApp().getJuego().getTurno().comprar(getApp().getJuego().getBanca(), (Propiedad) getApp().getJuego().getTurno().getAvatar().getPosicion());
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void finalizarTurno(){
+        getApp().getJuego().finalizarTurno();
+
+        Output.respuesta("El jugador actual es " + getApp().getJuego().getTurno().getNombre());
+
+        if(!getApp().getJuego().getTurno().getTratosRecibidos().isEmpty()){
+            Output.mensaje("¡Tienes " + getApp().getJuego().getTurno().getTratosRecibidos().size() + " tratos pendientes!");
+            listarTrato();
+        }
+    }
+
+    public void listarTrato(){
+
+        Set<String> tratos = getApp().getJuego().getTurno().getTratosEmitidos().keySet();
+
+        String salida = "";
+        boolean emitido = false;
+        boolean recibido = false;
+
+        salida += "\n(!) Tratos emitidos pendientes: \n";
+
+        int contador = 0;
+
+        for (String idTrato : tratos) {
+            emitido = true;
+            contador++;
+            salida += "(Trato " + contador + ")────────────────────────────────────────────────()\n\n";
+            salida += getApp().getJuego().getTurno().getTratosEmitidos().get(idTrato).toString() + "\n\n";
+        }
+
+        if (!emitido)
+            salida += " (-) Sin tratos emitidos.\n\n\n";
+
+        salida += "\n(!) Tratos recibidos: \n\n";
+
+        tratos = getApp().getJuego().getTurno().getTratosRecibidos().keySet();
+
+        contador = 0;
+
+        for (String idTrato : tratos) {
+            recibido = true;
+            contador++;
+            salida += "(Trato " + contador + ")────────────────────────────────────────────────()\n\n";
+            salida += getApp().getJuego().getTurno().getTratosRecibidos().get(idTrato).toString();
+        }
+
+        if (!recibido)
+            salida += " (-) Sin tratos recibidos.\n\n\n";
+
+        Output.respuesta(Output.toArrayString(salida));
+
+    }
+
+    public void listarEdificios(){
+        ArrayList<String> respuesta = new ArrayList<>();
+        boolean flag = false;
+
+        respuesta.add("Los edificios del tablero son los siguientes.");
+
+        for (ArrayList<Casilla> fila : getApp().getJuego().getTablero().getCasillas()) {
+
+            for (Casilla casilla : fila) {
+
+                if (casilla instanceof Solar) {
+
+                    Solar solar = (Solar) casilla;
+
+                    for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
+                        for (Edificio edificio : solar.getEdificiosContenidos().get(tipoEdificio)) {
+
+                            flag = true;
+                            respuesta.addAll(Output.toArrayString(edificio.toString()));
+                            respuesta.add(" ");
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (!flag) {
+
+            respuesta.add("(!) No hay edificios en el tablero.");
+
+        }
+
+        Output.respuesta(respuesta);
+    }
+
+    public void edificarVariable(String tipoEdificio){
+        TipoEdificio edificio = TipoEdificio.toEdificio(tipoEdificio);
+
+        Jugador turno = getApp().getJuego().getTurno();
+
+        if (turno.getAvatar().getPosicion() instanceof Solar) {
+
+            if (edificio != null) {
+                try {
+                    getApp().getJuego().getTurno().crearEdificio(edificio, (Solar) getApp().getJuego().getTurno().getAvatar().getPosicion());
+                } catch (Exception ignored) {
+
+                }
+            }
+
+        }
+    }
+
+    public void hipotecar(){
+
+        try {
+            getApp().getJuego().getTurno().hipotecar((Propiedad) getApp().getJuego().getTurno().getAvatar().getPosicion());
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void deshipotecar(){
+
+        try {
+            getApp().getJuego().getTurno().deshipotecar((Propiedad) getApp().getJuego().getTurno().getAvatar().getPosicion());
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void venderVariable(String tipoEdificio){
+
+        TipoEdificio edificio = TipoEdificio.toEdificio(tipoEdificio);
+        int cantidad = 1;
+        try {
+            getApp().getJuego().getTurno().venderEdificio(edificio, cantidad, (Solar)getApp().getJuego().getTurno().getAvatar().getPosicion());
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void avanzar(){
+
+        int casillasPorMoverse = getApp().getJuego().getTurno().getAvatar().getCasillasRestantesPorMoverse();
+        try {
+            getApp().getJuego().getTurno().getAvatar().avanzar(casillasPorMoverse);
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void estadisticasJugador(){
+        Jugador auxJugador = getApp().getJuego().getTurno();
+
+        Output.respuesta("(*) Estadísticas de " + auxJugador.getNombre(),
+                "      -> Dinero invertido           : " + auxJugador.getDineroInvertido(),
+                "      -> Pago tasas e impuestos     : " + auxJugador.getPagoTasasEImpuestos(),
+                "      -> Pago de alquileres         : " + auxJugador.getPagoDeAlquileres(),
+                "      -> Cobro de alquileres        : " + auxJugador.getCobroDeAlquileres(),
+                "      -> Pasar por casilla de salida: " + auxJugador.getPasarPorCasillaDeSalida(),
+                "      -> Premios inversiones o botes: " + auxJugador.getPremiosInversionesOBote(),
+                "      -> Veces en la carcel         : " + auxJugador.getVecesEnLaCarcel());
+    }
+
+    public void estadisticasGlobales(){
+        Output.respuesta("(*) Estadísticas globales",
+                "      -> Casilla más rentable    : " + getApp().getJuego().casillaMasRentable().getNombre(),
+                "      -> Grupo más rentable      : " + getApp().getJuego().grupoMasRentable().getTipo().toString(),
+                "      -> Casilla más frecuentada : " + getApp().getJuego().casillaMasFrecuentada().getNombre(),
+                "      -> Jugador con más vueltas : " + getApp().getJuego().jugadorMasVueltas().getNombre(),
+                "      -> Jugador con más tiradas : " + getApp().getJuego().jugadorMasVecesDados().getNombre(),
+                "      -> Jugador en cabeza       : " + getApp().getJuego().jugadorEnCabeza().getNombre());
+    }
+
     public void handleClickIzquierdo(double x, double y) {
 
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBoton(posicionX, posicionY)){
-            System.out.println("Se ha pulsado el botón "+getNombre());
+            switch(getFuncion()){
+                case cambiarModo:
+                    cambiarModo();
+                    break;
+                case avanzar:
+                    avanzar();
+                    break;
+                case finalizarTurno:
+                    finalizarTurno();
+                    break;
+                case lanzarDados:
+                    lanzarDados();
+                    break;
+                case hipotecar:
+                    hipotecar();
+                    break;
+                case comprar:
+                    comprar();
+                    break;
+                case deshipotecar:
+                    deshipotecar();
+                    break;
+                case vender:
+
+                    break;
+                case venderCasa:
+                    venderVariable("casa");
+                    break;
+                case venderHotel:
+                    venderVariable("hotel");
+                    break;
+                case venderPiscina:
+                    venderVariable("piscina");
+                    break;
+                case venderPista:
+                    venderVariable("pista");
+                    break;
+                case edificar:
+                    break;
+                case edificarCasa:
+                    edificarVariable("casa");
+                    break;
+                case edificarHotel:
+                    edificarVariable("hotel");
+                    break;
+                case edificarPiscina:
+                    edificarVariable("piscina");
+                    break;
+                case edificarPista:
+                    edificarVariable("pista");
+                    break;
+                case ayuda:
+                    break;
+                case atras:
+                    break;
+                case estadisticasGlobales:
+                    estadisticasGlobales();
+                    break;
+                case estadisticasUsuario:
+                    estadisticasJugador();
+                    break;
+                case listar:
+                    break;
+                case listarEdificios:
+                    listarEdificios();
+                    break;
+                case listarTratos:
+                    listarTrato();
+                    break;
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 package aplicacionGUI.menuGUI;
+import aplicacion.Aplicacion;
 import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
@@ -32,6 +33,9 @@ public class MenuGUI{
     // Juego
     private final Juego juego;
 
+    // Aplicacion
+    private Aplicacion aplicacion;
+
     // Contexto en el que representar objetos
     private final GraphicsContext gc;
 
@@ -55,7 +59,7 @@ public class MenuGUI{
 
     /* Constructor */
 
-    public MenuGUI(Group raiz, Juego juego, String imagen, TableroGUI tableroGUI){
+    public MenuGUI(Group raiz, Aplicacion app, String imagen, TableroGUI tableroGUI){
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
@@ -67,8 +71,8 @@ public class MenuGUI{
             System.exit(1);
         }
 
-        if (juego == null) {
-            System.err.println("Juego no inicializado");
+        if (app == null) {
+            System.err.println("Aplicación no inicializada");
             System.exit(1);
         }
 
@@ -78,7 +82,8 @@ public class MenuGUI{
         }
 
         // Se asigna el juego
-        this.juego = juego;
+        this.juego = app.getJuego();
+        this.aplicacion = app;
 
         // Se añade el nodo a la raíz
         this.nodo = new Group();
@@ -105,7 +110,7 @@ public class MenuGUI{
         // Se crea la representación de los jugadores (parte derecha)
         this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
 
-        this.botonera = new BotoneraGUI(this.nodo, juego);
+        this.botonera = new BotoneraGUI(this.nodo, app);
 
         this.numJugadores = 0;
     }
@@ -120,6 +125,10 @@ public class MenuGUI{
             System.exit(1);
         }
         getJugadoresGUI().nuevoJugador(jugador);
+    }
+
+    public Aplicacion getAplicacion() {
+        return aplicacion;
     }
 
     public GraphicsContext getGc() {

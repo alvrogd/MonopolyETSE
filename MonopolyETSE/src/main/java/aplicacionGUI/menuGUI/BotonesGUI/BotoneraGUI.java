@@ -1,5 +1,6 @@
 package aplicacionGUI.menuGUI.BotonesGUI;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -26,6 +27,9 @@ public class BotoneraGUI {
     // Juego
     private Juego juego;
 
+    // Aplicacion
+    private Aplicacion aplicacion;
+
     // Botones que pueden estar en la botonera
     private ArrayList<BotonGUI> botones;
 
@@ -36,14 +40,14 @@ public class BotoneraGUI {
     private ArrayList<BotonGUI> botonesActuales;
 
     /* Constructor */
-    public BotoneraGUI(Group raiz, Juego juego){
+    public BotoneraGUI(Group raiz, Aplicacion app){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
             System.exit(1);
         }
 
-        if(juego == null){
+        if(app == null){
             System.err.println("Juego no inicializado");
             System.exit(1);
         }
@@ -52,7 +56,8 @@ public class BotoneraGUI {
         this.nodo = new Group();
         raiz.getChildren().add(this.nodo);
 
-        this.juego = juego;
+        this.juego = app.getJuego();
+        this.aplicacion = app;
         // Se establece su correspondiente posición en la ventana
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.BOTONES_DESPLAZAMIENTO_X, ConstantesGUI.BOTONES_DESPLAZAMIENTO_Y));
 
@@ -87,6 +92,10 @@ public class BotoneraGUI {
         }
     }
 
+    public Aplicacion getAplicacion() {
+        return aplicacion;
+    }
+
     public void nuevoBoton(String nombre, TipoFuncion funcion, boolean animado, boolean ayuda, boolean atras){
 
         int columna = getBotones().size() / ConstantesGUI.BOTONES_POR_FILA;
@@ -118,10 +127,10 @@ public class BotoneraGUI {
                 columna = size % ConstantesGUI.BOTONES_POR_FILA;
             }
 
-            getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(getNodo(), nombre, funcion, fila, columna, animado, ayuda));
+            getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
 
         } else {
-            getBotones().add(new BotonGUI(getNodo(), nombre, funcion, fila, columna, animado, ayuda));
+            getBotones().add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
         }
     }
 

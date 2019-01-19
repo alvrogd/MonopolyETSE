@@ -102,7 +102,7 @@ public class main extends Application {
             Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
 
             // Se crea la sección inferior de la GUI, encarga de ofrecer un menú al usuario
-            MenuGUI menuGUI = new MenuGUI(raiz, app.getJuego(), "fondo.png", informacion.getTableroGUI());
+            MenuGUI menuGUI = new MenuGUI(raiz, app, "fondo.png", informacion.getTableroGUI());
             
             menuGUI.getRegistroGUI().actualizarContenido("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id rutrum nulla. Sed ut porttitor leo. Aliquam pharetra placerat ipsum, a mattis magna fermentum in. Nunc sit amet mollis mauris, vehicula tristique enim. Sed vel egestas turpis, vitae fermentum tortor. Suspendisse gravida enim sit amet gravida efficitur. Nunc feugiat sagittis tortor id ultricies. Curabitur tempor erat nec tincidunt hendrerit. Pellentesque ullamcorper, felis id venenatis imperdiet, velit odio malesuada nunc, in convallis odio metus malesuada purus. Nullam in vehicula lectus. Praesent eu eros interdum, egestas nisl quis, consequat metus. Ut pellentesque quam vel nunc aliquet hendrerit. Praesent a magna bibendum, varius nisi sit amet, maximus mi. In aliquet porttitor leo, vel mattis diam accumsan vel.\n" +
 "\n" +
