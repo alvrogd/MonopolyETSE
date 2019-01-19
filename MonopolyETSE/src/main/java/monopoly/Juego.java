@@ -10,6 +10,7 @@ import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.*;
@@ -729,6 +730,8 @@ public class Juego {
             }
 
             funciones.add(TipoFuncion.listar);
+            funciones.add(TipoFuncion.listarEdificios);
+            funciones.add(TipoFuncion.listarTratos);
             funciones.add(TipoFuncion.estadisticasGlobales);
             funciones.add(TipoFuncion.estadisticasUsuario);
 
@@ -739,95 +742,110 @@ public class Juego {
                     funciones.add(TipoFuncion.vender);
                 }
 
-                Integer numCasillasGrupo = solar.getGrupo().getPropiedades().size();
+                if(!solar.isHipotecada()) {
 
-                Integer numHoteles = solar.getEdificiosContenidos().get(TipoEdificio.hotel).size();
-                Integer numCasas = solar.getEdificiosContenidos().get(TipoEdificio.casa).size();
-                Integer numPiscinas = solar.getEdificiosContenidos().get(TipoEdificio.piscina).size();
-                Integer numPistas = solar.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
+                    Integer numCasillasGrupo = solar.getGrupo().getPropiedades().size();
 
-                if (numHoteles > 0) {
-                    funciones.add(TipoFuncion.venderHotel);
-                }
-                if (numCasas > 0) {
-                    funciones.add(TipoFuncion.venderCasa);
-                }
-                if (numPiscinas > 0) {
-                    funciones.add(TipoFuncion.venderPiscina);
-                }
-                if (numPistas > 0) {
-                    funciones.add(TipoFuncion.venderPista);
-                }
+                    Integer numHoteles = solar.getEdificiosContenidos().get(TipoEdificio.hotel).size();
+                    Integer numCasas = solar.getEdificiosContenidos().get(TipoEdificio.casa).size();
+                    Integer numPiscinas = solar.getEdificiosContenidos().get(TipoEdificio.piscina).size();
+                    Integer numPistas = solar.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
 
-                for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
-
-                    if (!solar.getEdificiosContenidos().get(tipoEdificio).isEmpty()) {
-
-                        funciones.add(TipoFuncion.toFuncion(tipoEdificio));
-
+                    if (numHoteles > 0) {
+                        funciones.add(TipoFuncion.venderHotel);
+                    }
+                    if (numCasas > 0) {
+                        funciones.add(TipoFuncion.venderCasa);
+                    }
+                    if (numPiscinas > 0) {
+                        funciones.add(TipoFuncion.venderPiscina);
+                    }
+                    if (numPistas > 0) {
+                        funciones.add(TipoFuncion.venderPista);
                     }
 
-                    if (!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
-                            numPistas == numCasillasGrupo)) {
-                        funciones.add(TipoFuncion.edificar);
-                    }
+                    for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
 
-                    switch (tipoEdificio) {
+                        if (!solar.getEdificiosContenidos().get(tipoEdificio).isEmpty()) {
 
-                        case casa:
-                            if (numCasas == 4) {
+                            funciones.add(TipoFuncion.toFuncion(tipoEdificio));
+
+                        }
+
+                        if (!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
+                                numPistas == numCasillasGrupo)) {
+                            if (turno.getAvatar().getVecesCaidasEnPropiedades().get(solar.getPosicionEnTablero() % 40) > 2 ||
+                                    turno.haObtenidoSolaresGrupo(solar.getGrupo()))
+                                funciones.add(TipoFuncion.edificar);
+                        }
+
+                        switch (tipoEdificio) {
+
+                            case casa:
+                                if (numCasas == 4) {
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo) {
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.casa, solar.getGrupo().getTipo())))
+                                    break;
+                                funciones.add(TipoFuncion.edificarCasa);
                                 break;
-                            }
-                            if (numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo) {
-                                break;
-                            }
-                            funciones.add(TipoFuncion.edificarCasa);
-                            break;
 
-                        case hotel:
+                            case hotel:
 
-                            if (numCasas != 4) {
+                                if (numCasas != 4) {
 
-                                break;
-                            }
-                            if (numHoteles == numCasillasGrupo) {
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo) {
 
-                                break;
-                            }
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.hotel, solar.getGrupo().getTipo())))
+                                    break;
 
-                            funciones.add(TipoFuncion.edificarHotel);
-
-                            break;
-
-                        case piscina:
-                            if (numHoteles < 1 || numCasas < 2) {
-
-                                break;
-                            }
-
-                            if (numPiscinas == numCasillasGrupo) {
-
-                                break;
-                            }
-
-                            funciones.add(TipoFuncion.edificarPiscina);
-
-                            break;
-
-                        case pistaDeporte:
-                            if (numHoteles < 2) {
+                                funciones.add(TipoFuncion.edificarHotel);
 
                                 break;
-                            }
-                            if (numPistas == numCasillasGrupo) {
+
+                            case piscina:
+                                if (numHoteles < 1 || numCasas < 2) {
+
+                                    break;
+                                }
+
+                                if (numPiscinas == numCasillasGrupo) {
+
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.piscina, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPiscina);
 
                                 break;
-                            }
 
-                            funciones.add(TipoFuncion.edificarPista);
+                            case pistaDeporte:
+                                if (numHoteles < 2) {
 
-                            break;
+                                    break;
+                                }
+                                if (numPistas == numCasillasGrupo) {
 
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPista);
+
+                                break;
+
+                        }
                     }
                 }
             }

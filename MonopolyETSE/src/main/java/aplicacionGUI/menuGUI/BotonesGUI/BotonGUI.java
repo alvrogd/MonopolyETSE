@@ -463,6 +463,12 @@ public class BotonGUI {
         getBotonera().setFuncionPagina(getFuncion());
     }
 
+    public void listar(){
+
+        getBotonera().setPagina(true);
+        getBotonera().setFuncionPagina(getFuncion());
+    }
+
     public void estadisticasJugador(){
         Jugador auxJugador = getApp().getJuego().getTurno();
 
@@ -562,6 +568,7 @@ public class BotonGUI {
                 estadisticasJugador();
                 break;
             case listar:
+                listar();
                 break;
             case listarEdificios:
                 listarEdificios();
