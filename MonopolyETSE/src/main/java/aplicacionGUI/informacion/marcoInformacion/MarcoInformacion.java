@@ -36,30 +36,36 @@ public class MarcoInformacion {
 
     // Imagen final
     private final static Image IMAGEN_FINAL = new Image(AnimacionMarcoInformacion.class.getResource(
-            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES[ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES.length -
-                    1]).toString());
+            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES[ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES.length
+            - 1]).toString());
+
+    // Animación de abrir/cerrar
+    private final static ImagenAnimada ANIMACION_ABRIR = new ImagenAnimada(new AnimacionMarcoInformacion(),
+            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES, 0.01);
 
     // Información a representar
     private ArrayList<String> informacion;
 
     // Si se encuentra activo
     private boolean activo;
-    
+
     // Si ha finalizado la animación
     private boolean animacionFinalizada;
-    
-    // Animación de abrir/cerrar
-    private final static ImagenAnimada ANIMACION_ABRIR = new ImagenAnimada(new AnimacionMarcoInformacion(),
-            ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES, 0.01);
-    
+
     // Si se va a abrir
     private boolean abrirse;
-    
+
     // Si es el primer frame
     private boolean primerFrame;
-    
-    // Último frame
+
+    // Último frame renderizado
     private Image ultimoFrame;
+
+    // Si es necesario llevar a cabo el fade del texto
+    private boolean fadeTexto;
+
+    // Tick correspondiente al texto
+    private int tickTexto;
 
     /* Constructor */
     public MarcoInformacion(Group raiz) {
@@ -72,7 +78,7 @@ public class MarcoInformacion {
         // Se añade al nodo dado un nuevo nodo de uso para el marco
         this.nodo = new Group();
         raiz.getChildren().add(this.nodo);
-        
+
         // Se mueve el marco a su posición adecuada
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X,
                 ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y));
@@ -93,6 +99,8 @@ public class MarcoInformacion {
         this.abrirse = false;
         this.primerFrame = false;
         this.ultimoFrame = null;
+        this.fadeTexto = false;
+        this.tickTexto = 0;
     }
 
     /* Getters y setters */
@@ -175,8 +183,22 @@ public class MarcoInformacion {
     public void setUltimoFrame(Image ultimoFrame) {
         this.ultimoFrame = ultimoFrame;
     }
-    
-       
+
+    public boolean isFadeTexto() {
+        return fadeTexto;
+    }
+
+    public void setFadeTexto(boolean fadeTexto) {
+        this.fadeTexto = fadeTexto;
+    }
+
+    public int getTickTexto() {
+        return tickTexto;
+    }
+
+    public void setTickTexto(int tickTexto) {
+        this.tickTexto = tickTexto;
+    }
 
     /* Métodos */
     public boolean contienePosicion(double x, double y) {
@@ -192,20 +214,21 @@ public class MarcoInformacion {
         double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y;
 
-        // Se indica la necesidad de abrirse/cerrarse
-        setAnimacionFinalizada(false);
-        
         // Se resetea el número de frame
         setPrimerFrame(true);
         setUltimoFrame(null);
-        
-        // Si se va a abrir, se indica que ahora esté activo
-        if(!isActivo()) {
+
+        // Se indica la necesidad de llevar a cabo el fade del texto
+        setFadeTexto(true);
+        setTickTexto(0);
+
+        // Si se va a abrir, se indica que ahora esté activo y que debe realizarse la animación en primer lugar
+        if (!isActivo()) {
+            setAnimacionFinalizada(false);
             setActivo(true);
             setAbrirse(true);
-        }
-        
-        // Si se va a cerrar, debe continuar activo pero se indica que se cierre
+        } // Si se va a cerrar, debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de
+        // realizar la animación hasta que finalice el fade del texto
         else {
             setAbrirse(false);
         }
@@ -214,7 +237,7 @@ public class MarcoInformacion {
     public void actualizarContenido(String[] informacion) {
 
         // Se adapta la información al marco
-        ArrayList<String> informacionAdaptada = ajustarInformacion(informacion);        
+        ArrayList<String> informacionAdaptada = ajustarInformacion(informacion);
 
         // Se guarda la información a representar
         setInformacion(informacionAdaptada);
@@ -260,32 +283,58 @@ public class MarcoInformacion {
     public void render(double t) {
 
         if (isActivo()) {
-            
-            if( isAnimacionFinalizada() ) {
+
+            if (isAnimacionFinalizada()) {
                 renderAnimacionFinalizada(t);
-            }
-            
-            // En caso contrario, se renderiza un fotograma
+            } // En caso contrario, se renderiza un fotograma
             else {
                 renderAnimacionActiva(t);
-            }          
-        }
-        
-        // Si no está activo, simplemente se limpia el gc
+            }
+        } // Si no está activo, simplemente se limpia el gc
         else {
             getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
         }
     }
-    
-    private void renderAnimacionFinalizada(double t ) {
-        
+
+    private void renderAnimacionFinalizada(double t) {
+
         // Se establece la tipografía
         getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL,
                 ConstantesGUI.MARCO_INFORMACION_FUENTE_TAMANO));
         getGc().setStroke(Color.TRANSPARENT);
-        getGc().setFill(Color.BLACK);
         getGc().setTextAlign(TextAlignment.CENTER);
         getGc().setLineWidth(1);
+
+        // Si se ha finalizado el fade
+        if (!isFadeTexto()) {
+
+            // Se muestra un negro sólido
+            getGc().setFill(Color.BLACK);
+
+        } // En caso contrario
+        else {
+
+            // Si el marco se está abriendo, se realiza un fade-in
+            if (isAbrirse()) {
+                getGc().setFill(Color.rgb(0, 0, 0, 0.1 * getTickTexto()));
+            } // Si se está cerrando, es un fade-out
+            else {
+                getGc().setFill(Color.rgb(0, 0, 0, 1 - 0.1 * getTickTexto()));
+            }
+
+            // Se incrementa el contador del tick del texto
+            setTickTexto(getTickTexto() + 1);
+
+            // Si se ha alcanzado el décimo tick, se finaliza el fade
+            if (getTickTexto() == 10) {
+                setFadeTexto(false);
+
+                // Y, si se estaba realizando un fade-out, debe llevarse a cabo ahora la animación de cierre
+                if (!isAbrirse()) {
+                    setAnimacionFinalizada(false);
+                }
+            }
+        }
 
         // Se muestra el pergamino
         getGc().drawImage(getIMAGEN_FINAL(), 0, 0);
@@ -294,28 +343,27 @@ public class MarcoInformacion {
         int numeroLineas = getInformacion().size();
 
         // Se muestra el texto
-        for (int i = 0, desplazamiento = ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO *
-                ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++,
-                desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
+        for (int i = 0, desplazamiento = ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO
+                * ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++, desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
 
             // Se añade texto
             getGc().fillText(getInformacion().get(i), getAncho() / 2, desplazamiento + 10);
-        } 
+        }
     }
-    
+
     private void renderAnimacionActiva(double t) {
-        
+
         // Frame a renderizar
         Image frame;
-                
+
         // Si se trata del primer frame, se guarda el tiempo de inicio
-        if(isPrimerFrame()) {
+        if (isPrimerFrame()) {
             getANIMACION_ABRIR().setTiempoInicio(t);
             setPrimerFrame(false);
         }
 
         // Si se va a abrir
-        if( isAbrirse()) {
+        if (isAbrirse()) {
 
             frame = getANIMACION_ABRIR().getFrame(t);
 
@@ -323,26 +371,22 @@ public class MarcoInformacion {
             // renderizarse no sea precisamente el último de la animación, sino que sea uno de los últimos al obtener
             // frames en función del tiempo transcurrido. Para ello, debe llevarse el registro del último frame
             // renderizado, y comprobar si el frame obtenido ha vuelto a comenzar el bucle de la animación
-            
             // Si se vuelve a comenzar la animación, se indica el fin y se establece como activo
-            if( getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame) <
-                    getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
+            if (getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame)
+                    < getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
                 setAnimacionFinalizada(true);
                 return;
             }
-        }
-
-        // En caso contrario, se está cerrando
+        } // En caso contrario, se está cerrando
         else {
 
             frame = getANIMACION_ABRIR().getFrameInverso(t);
 
             // Sucede algo similar en este caso, siendo posible que el último frame en renderizarse no sea el primero
             // de la animación
-            
             // Si se comenzado de nuevo la animación, se indica el fin y se establece como no activo
-            if( getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame) >
-                    getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
+            if (getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame)
+                    > getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
                 setAnimacionFinalizada(true);
                 setActivo(false);
                 return;
