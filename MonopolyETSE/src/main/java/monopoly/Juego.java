@@ -682,7 +682,10 @@ public class Juego {
 
             if (posicion instanceof Propiedad) {
                 if (turno.puedeComprar((Propiedad) posicion)) {
-                    funciones.add(TipoFuncion.comprar);
+                    if (!(((Propiedad) posicion).isComprable() && ((Propiedad) posicion).getPropietario().equals(turno))) {
+                        if(!((Propiedad) posicion).isHipotecada())
+                            funciones.add(TipoFuncion.comprar);
+                    }
                 }
             }
 
