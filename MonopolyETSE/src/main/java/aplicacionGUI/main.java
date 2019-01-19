@@ -234,7 +234,7 @@ public class main extends Application {
                     // Render
                     gc.drawImage(fondo, 0, 0);
                     informacion.render(t);
-                    menuGUI.render();
+                    menuGUI.render(t);
                     
                     
                 }

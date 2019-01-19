@@ -89,6 +89,14 @@ public class ImagenAnimada {
         
         return( getFrames().get(i));
     }
+
+    public int getIndice(double t){
+        return((int)(((t - getTiempoInicio())% (getFrames().size() * getDuracion())) / getDuracion()));
+    }
+
+    public int getIndiceInverso(double t){
+        return(getFrames().size()-1-getIndice(t));
+    }
     
     public Image getFrameInverso(double t) {
         

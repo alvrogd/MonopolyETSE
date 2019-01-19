@@ -39,6 +39,18 @@ public class ConstantesGUI {
     public final static int BOTON_ALTO = 75;
     public final static int BOTON_SEPARACION_X = 5;
     public final static int BOTON_SEPARACION_Y = 5;
+    public final static int NUM_FRAMES_CAMBIARMODO = 10;
+    public final static String[] FRAMES_CAMBIARMODO = {"marcoBoton0.png",
+                                                        "marcoBoton1.png",
+                                                        "marcoBoton2.png",
+                                                        "marcoBoton3.png",
+                                                        "marcoBoton4.png",
+                                                        "marcoBoton5.png",
+                                                        "marcoBoton6.png",
+                                                        "marcoBoton7.png",
+                                                        "marcoBoton8.png",
+                                                        "marcoBoton9.png",
+                                                        "marcoBoton10.png"};
 
     public final static int BOTONES_POR_FILA = 5;
     public final static int BOTONES_COLUMNAS = 3;

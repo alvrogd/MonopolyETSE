@@ -5,6 +5,7 @@ import aplicacion.excepciones.InputUsuarioException;
 import aplicacion.salidaPantalla.Comando;
 import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ImagenAnimada;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -237,8 +238,8 @@ public class BotonGUI {
 
     public void inhabilitarBoton(){
 
-        getSensor().setX(-1000);
-        getSensor().setY(-1000);
+        getSensor().setX(-500);
+        getSensor().setY(-500);
 
     }
 
@@ -471,82 +472,86 @@ public class BotonGUI {
                 "      -> Jugador en cabeza       : " + getApp().getJuego().jugadorEnCabeza().getNombre());
     }
 
+    public void ejecutarFuncion(){
+        switch(getFuncion()){
+            case cambiarModo:
+                cambiarModo();
+                break;
+            case avanzar:
+                avanzar();
+                break;
+            case finalizarTurno:
+                finalizarTurno();
+                break;
+            case lanzarDados:
+                lanzarDados();
+                break;
+            case hipotecar:
+                hipotecar();
+                break;
+            case comprar:
+                comprar();
+                break;
+            case deshipotecar:
+                deshipotecar();
+                break;
+            case vender:
+
+                break;
+            case venderCasa:
+                venderVariable("casa");
+                break;
+            case venderHotel:
+                venderVariable("hotel");
+                break;
+            case venderPiscina:
+                venderVariable("piscina");
+                break;
+            case venderPista:
+                venderVariable("pista");
+                break;
+            case edificar:
+                break;
+            case edificarCasa:
+                edificarVariable("casa");
+                break;
+            case edificarHotel:
+                edificarVariable("hotel");
+                break;
+            case edificarPiscina:
+                edificarVariable("piscina");
+                break;
+            case edificarPista:
+                edificarVariable("pista");
+                break;
+            case ayuda:
+                break;
+            case atras:
+                break;
+            case estadisticasGlobales:
+                estadisticasGlobales();
+                break;
+            case estadisticasUsuario:
+                estadisticasJugador();
+                break;
+            case listar:
+                break;
+            case listarEdificios:
+                listarEdificios();
+                break;
+            case listarTratos:
+                listarTrato();
+                break;
+        }
+    }
+
     public void handleClickIzquierdo(double x, double y) {
 
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBoton(posicionX, posicionY)){
-            switch(getFuncion()){
-                case cambiarModo:
-                    cambiarModo();
-                    break;
-                case avanzar:
-                    avanzar();
-                    break;
-                case finalizarTurno:
-                    finalizarTurno();
-                    break;
-                case lanzarDados:
-                    lanzarDados();
-                    break;
-                case hipotecar:
-                    hipotecar();
-                    break;
-                case comprar:
-                    comprar();
-                    break;
-                case deshipotecar:
-                    deshipotecar();
-                    break;
-                case vender:
-
-                    break;
-                case venderCasa:
-                    venderVariable("casa");
-                    break;
-                case venderHotel:
-                    venderVariable("hotel");
-                    break;
-                case venderPiscina:
-                    venderVariable("piscina");
-                    break;
-                case venderPista:
-                    venderVariable("pista");
-                    break;
-                case edificar:
-                    break;
-                case edificarCasa:
-                    edificarVariable("casa");
-                    break;
-                case edificarHotel:
-                    edificarVariable("hotel");
-                    break;
-                case edificarPiscina:
-                    edificarVariable("piscina");
-                    break;
-                case edificarPista:
-                    edificarVariable("pista");
-                    break;
-                case ayuda:
-                    break;
-                case atras:
-                    break;
-                case estadisticasGlobales:
-                    estadisticasGlobales();
-                    break;
-                case estadisticasUsuario:
-                    estadisticasJugador();
-                    break;
-                case listar:
-                    break;
-                case listarEdificios:
-                    listarEdificios();
-                    break;
-                case listarTratos:
-                    listarTrato();
-                    break;
-            }
+            ejecutarFuncion();
         }
     }
 
@@ -570,11 +575,11 @@ public class BotonGUI {
         }
     }
 
-    public void render(){
+    public void render(double t){
         getGc().drawImage(getBotonActual(), 0, 0);
     }
 
-    public void render(int fila, int columna){
+    public void render(int fila, int columna, double t){
 
         int x = desplazamientoX(fila);
         int y = desplazamientoY(columna);
@@ -584,8 +589,7 @@ public class BotonGUI {
 
         getTranslate().setX(x);
         getTranslate().setY(y);
-        habilitarBoton();
 
-        render();
+        render(t);
     }
 }

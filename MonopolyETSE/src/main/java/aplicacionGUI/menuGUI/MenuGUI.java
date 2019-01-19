@@ -213,7 +213,7 @@ public class MenuGUI{
         }
     }
 
-    public void render(){
+    public void render(double t){
 
         if(getJuego().getNombresJugadores().size() > getNumJugadores()){
             int jugadoresNuevos = getJuego().getNombresJugadores().size() - getNumJugadores();
@@ -228,7 +228,7 @@ public class MenuGUI{
         // Se muestra la imagen
         getGc().drawImage(getFondo(), 0, 0);
         getJugadoresGUI().render();
-        getBotonera().render();
+        getBotonera().render(t);
 
     }
 

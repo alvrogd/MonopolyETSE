@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
@@ -80,7 +81,11 @@ public class BotoneraGUI {
     public void crearBotones(){
         for(TipoFuncion funcion : TipoFuncion.values()) {
             if(funcion.isBotonAsignado()) {
-                nuevoBoton(funcion);
+                if(funcion.equals(TipoFuncion.cambiarModo)){
+                    nuevoBoton(funcion.toString(), funcion, true, false, false);
+                } else {
+                    nuevoBoton(funcion);
+                }
             }
         }
     }
@@ -131,10 +136,18 @@ public class BotoneraGUI {
                 columna = size % ConstantesGUI.BOTONES_POR_FILA;
             }
 
-            getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+            if(animado){
+                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonAnimadoGUI(getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
+            } else {
+                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+            }
 
         } else {
-            getBotones().add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+            if(animado){
+                getBotones().add(new BotonAnimadoGUI(getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
+            } else {
+                getBotones().add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+            }
         }
     }
 
@@ -209,9 +222,6 @@ public class BotoneraGUI {
 
         for(BotonGUI botonGUI : getBotones()){
             if(botonGUI.contienePosicion(posicionX, posicionY)){
-                if(botonGUI.getFuncion().equals(TipoFuncion.finalizarTurno)) {
-                    System.out.println("Holi");
-                }
                 botonGUI.handleClickSoltado(posicionX, posicionY);
                 break;
             }
@@ -241,11 +251,15 @@ public class BotoneraGUI {
             setBotonesActuales(new ArrayList<>());
 
             for (BotonGUI boton : getBotones()) {
+                boton.getGc().clearRect(0,0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
 
                 if (funciones.contains(boton.getFuncion())) {
                     boton.habilitarBoton();
                     getBotonesActuales().add(boton);
                 } else {
+                    if(boton.getFuncion().equals(TipoFuncion.cambiarModo)){
+                        getBotonesActuales().add(boton);
+                    }
                     boton.inhabilitarBoton();
                 }
 
@@ -255,13 +269,13 @@ public class BotoneraGUI {
     }
 
 
-    public void render(){
+    public void render(double t){
 
         int fila = 0, columna = 0;
         actualizarBotones();
         for(BotonGUI botonGUI : getBotonesActuales()){
 
-            botonGUI.render(fila, columna);
+            botonGUI.render(fila, columna, t);
 
             if(puedoImprimir)
                 System.out.println(botonGUI.getNombre() + " en la posición (fila, columna): (" + fila + ", " + columna + ")");

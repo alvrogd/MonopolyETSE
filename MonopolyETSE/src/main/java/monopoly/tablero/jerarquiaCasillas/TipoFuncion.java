@@ -1,10 +1,12 @@
 package monopoly.tablero.jerarquiaCasillas;
 
+import aplicacionGUI.ConstantesGUI;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
+import resources.menuGUI.botones.avanzadoToNormal.AnimacionCambiarModo;
 
 public enum TipoFuncion {
 
-    cambiarModo("cambiar modo", true),
+    cambiarModo("cambiar modo", new AnimacionCambiarModo(), ConstantesGUI.FRAMES_CAMBIARMODO, 0.1),
     avanzar("avanzar", true),
     finalizarTurno("finalizar turno", true),
     lanzarDados("lanzar dados", true),
@@ -41,8 +43,26 @@ public enum TipoFuncion {
     //Booleano para saber si la función tiene un botón asignado
     private final boolean botonAsignado;
 
+    // Para las funciones que tienen botones animados asignados
+    private final Object localizacion;
+    private final String[] frames;
+    private final double duracion;
+
     //Pueden tener una función raiz
     private TipoFuncion funcionRaiz;
+
+    TipoFuncion(String nombre, Object localizacion, String[] frames, double duracion) {
+        this.nombre = nombre;
+        this.localizacion = localizacion;
+        this.frames = frames;
+        this.duracion = duracion;
+        this.menuPrincipal = true;
+        this.botonAsignado = true;
+    }
+
+    TipoFuncion(String nombre) {
+        this(nombre, false);
+    }
 
     TipoFuncion(String nombre, TipoFuncion funcionRaiz) {
         this(nombre, false);
@@ -57,6 +77,21 @@ public enum TipoFuncion {
         this.menuPrincipal = menuPrincipal;
         this.botonAsignado = botonAsignado;
         this.funcionRaiz = null;
+        this.localizacion = null;
+        this.frames = null;
+        this.duracion = 0;
+    }
+
+    public Object getLocalizacion() {
+        return localizacion;
+    }
+
+    public String[] getFrames() {
+        return frames;
+    }
+
+    public double getDuracion() {
+        return duracion;
     }
 
     public String getNombre() {
