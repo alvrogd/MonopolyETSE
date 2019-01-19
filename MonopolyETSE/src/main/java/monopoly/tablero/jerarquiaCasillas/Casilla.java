@@ -4,6 +4,7 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.Tablero;
 
 import java.rmi.ServerError;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Casilla {
@@ -105,6 +106,16 @@ public abstract class Casilla {
     public int frecuenciaVisita() {
 
         return( getFrecuencia() );
+    }
+
+    public ArrayList<TipoFuncion> funcionesARealizar(){
+
+        ArrayList<TipoFuncion> funciones = new ArrayList<>();
+
+        funciones.add(TipoFuncion.describir);
+
+        return funciones;
+
     }
 
     @Override
