@@ -341,7 +341,7 @@ public class BotoneraGUI {
                     // Si no pertenece a las funciones a realizar se inhabilita el botón
                     if(boton.getFuncion().equals(TipoFuncion.cambiarModo)){
                         //En caso de ser el botón cambiarModo, este sigue quedando en la botonera, pero inactivo.
-                        if(isPagina()) {
+                        if(!isPagina()) {
                             getBotonesActuales().add(boton);
                         }
                     }
