@@ -6,6 +6,7 @@ import monopoly.tablero.Tablero;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class Casilla {
 
@@ -108,9 +109,9 @@ public abstract class Casilla {
         return( getFrecuencia() );
     }
 
-    public ArrayList<TipoFuncion> funcionesARealizar(){
+    public HashSet<TipoFuncion> funcionesARealizar(){
 
-        ArrayList<TipoFuncion> funciones = new ArrayList<>();
+        HashSet<TipoFuncion> funciones = new HashSet<>();
 
         funciones.add(TipoFuncion.describir);
 

@@ -6,13 +6,10 @@ import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.NumeroIncorrectoException;
 import monopoly.jugadores.tratos.Trato;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
-import monopoly.tablero.jerarquiaCasillas.Grupo;
+import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
-import monopoly.tablero.jerarquiaCasillas.Propiedad;
-import monopoly.tablero.jerarquiaCasillas.Solar;
 
 import java.util.*;
 
@@ -672,6 +669,48 @@ public class Juego{
 
         return jugadorMax;
 
+
+    }
+
+    public HashSet<TipoFuncion> funcionesARealizar(){
+
+        HashSet<TipoFuncion> funciones = new HashSet<>();
+
+        if(isIniciado()){
+            Jugador turno = getTurno();
+            Casilla posicion = turno.getAvatar().getPosicion();
+
+            if(posicion instanceof Propiedad) {
+                if (turno.puedeComprar((Propiedad)posicion)) {
+                    funciones.add(TipoFuncion.comprar);
+                }
+            }
+
+            if(isHaAcabadoMovimiento()){
+                funciones.add(TipoFuncion.finalizarTurno);
+            } else {
+                if(!isHaLanzadoDados()){
+                    funciones.add(TipoFuncion.lanzarDados);
+                } else {
+                    funciones.add(TipoFuncion.avanzar);
+                }
+            }
+
+            if(!isHaHechoUnaTirada()){
+                funciones.add(TipoFuncion.cambiarModo);
+            }
+
+            funciones.add(TipoFuncion.listar);
+            funciones.add(TipoFuncion.estadisticasGlobales);
+            funciones.add(TipoFuncion.estadisticasUsuario);
+
+            if(posicion instanceof Solar){
+                if(turno.puedeEdificar((Solar) posicion))
+                    funciones.add(TipoFuncion.edificar);
+            }
+        }
+
+        return funciones;
 
     }
 

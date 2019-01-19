@@ -366,6 +366,34 @@ public abstract class Participante {
         return( importe );
     }
 
+    public boolean puedeComprar(Propiedad propiedad){
+
+        int importe;
+
+        if (propiedad instanceof Servicio || propiedad instanceof Transporte) {
+
+            importe = propiedad.getGrupo().getPrecio();
+
+            // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
+            if (balanceNegativoTrasPago(importe))
+                return false;
+
+        }
+
+        // Si es un solar, el alquiler es proporcional al número de casillas del grupo
+        else {
+            importe = (int) (propiedad.getGrupo().getPrecio() / (double) propiedad.getGrupo().getPropiedades().size());
+
+            // Si el jugador no dispone de suficiente liquidez como para llevar a cabo la compra
+            if (balanceNegativoTrasPago(importe))
+                return false;
+
+        }
+
+        return true;
+
+    }
+
 
     /**
      * Se transfiere una propiedad dada de un participante a otro

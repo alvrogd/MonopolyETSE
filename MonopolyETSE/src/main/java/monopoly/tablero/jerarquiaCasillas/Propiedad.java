@@ -10,7 +10,7 @@ import monopoly.jugadores.excepciones.NoLiquidezException;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class Propiedad extends Casilla{
 
@@ -239,13 +239,11 @@ public abstract class Propiedad extends Casilla{
     }
 
     @Override
-    public ArrayList<TipoFuncion> funcionesARealizar(){
-        ArrayList<TipoFuncion> funciones = super.funcionesARealizar();
+    public HashSet<TipoFuncion> funcionesARealizar(){
+        HashSet<TipoFuncion> funciones = super.funcionesARealizar();
 
         if(isHipotecada()){
             funciones.add(TipoFuncion.deshipotecar);
-        } else if(!isComprable()){
-            funciones.add(TipoFuncion.comprar);
         } else {
             funciones.add(TipoFuncion.hipotecar);
         }
