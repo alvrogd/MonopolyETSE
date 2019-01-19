@@ -5,6 +5,7 @@ import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -24,6 +25,7 @@ import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.avatares.modoAvanzado.AnimacionAvataresModoAvanzado;
 import resources.casillas.FondosCasillas;
 
@@ -313,18 +315,24 @@ public class CasillaGUI {
         // Se crea el menú de opciones para la casilla
         ContextMenu menu = new ContextMenu();
         
-        // Se añade la opción de describir
-        MenuItem item1 = new MenuItem( "Describir" );
-        item1.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion describir");
-            }
-        });
+        // Se obtienen las funciones propias a la casilla
+        HashSet<TipoFuncion> funciones = getCasilla().funcionesARealizar();
         
-        // Se añade la opción al menú
-        menu.getItems().add(item1);
+        if( funciones.contains(TipoFuncion.describir)) {
+            
+            // Se añade la opción de describir
+            MenuItem item1 = new MenuItem( "Describir" );
+            item1.setOnAction(new EventHandler<ActionEvent>() {
+            
+                @Override
+                public void handle( ActionEvent event ) {
+                    System.out.println("Escogida opcion describir");
+                }
+            });
+            
+            // Se añade la opción al menú
+            menu.getItems().add(item1);
+        }
         
         return( menu );
     }

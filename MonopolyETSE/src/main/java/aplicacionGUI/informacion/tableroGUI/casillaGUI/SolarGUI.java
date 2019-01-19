@@ -2,6 +2,8 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import java.util.ArrayList;
+import java.util.HashSet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -15,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import monopoly.tablero.jerarquiaCasillas.Solar;
+import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.edificios.ImagenesEdificios;
 
@@ -131,55 +134,92 @@ public class SolarGUI extends PropiedadGUI {
         // Se crea el menú de opciones para a partir del padre
         ContextMenu menu = super.generarMenuContextual();
         
+        // Se obtienen las funciones propias a la casilla
+        HashSet<TipoFuncion> funciones = getCasilla().funcionesARealizar();
         
-        // Se crea un submenú para las opciones de vender edificios
-        Menu item1 = new Menu( "Vender edificicaciones" );
+        // Opciones a añadir al menú
+        ArrayList<MenuItem> opciones = new ArrayList<>();
         
-        // Se añade la opción para vender casas
-        MenuItem item2 = new MenuItem( "Casas" );
-        item2.setOnAction(new EventHandler<ActionEvent>() {
+        if( funciones.contains(TipoFuncion.vender)) {
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion vender casas");
-            }
-        });
-        
-        // Se añade la opción para vender hoteles
-        MenuItem item3 = new MenuItem( "Hoteles" );
-        item3.setOnAction(new EventHandler<ActionEvent>() {
+            // Se crea un submenú para las opciones de vender edificios
+            Menu item1 = new Menu( "Vender edificicaciones" );
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion vender hoteles");
+            if( funciones.contains(TipoFuncion.venderCasa)) {
+                
+                // Se añade la opción para vender casas
+                MenuItem item2 = new MenuItem( "Casas" );
+                item2.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle( ActionEvent event ) {
+                        System.out.println("Escogida opcion vender casas");
+                    }
+                });
+                
+                item1.getItems().add(item2);
             }
-        });
-        
-        // Se añade la opción para vender piscinas
-        MenuItem item4 = new MenuItem( "Piscinas" );
-        item4.setOnAction(new EventHandler<ActionEvent>() {
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion vender piscinas");
+            if( funciones.contains(TipoFuncion.venderHotel)) {
+                
+                // Se añade la opción para vender hoteles
+                MenuItem item3 = new MenuItem( "Hoteles" );
+                item3.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle( ActionEvent event ) {
+                        System.out.println("Escogida opcion vender hoteles");
+                    }
+                });
+                
+                item1.getItems().add(item3);
             }
-        });
-        
-        // Se añade la opción para vender hoteles
-        MenuItem item5 = new MenuItem( "Pistas" );
-        item3.setOnAction(new EventHandler<ActionEvent>() {
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion vender pistas");
+            if( funciones.contains(TipoFuncion.venderPiscina)) {
+                
+                // Se añade la opción para vender piscinas
+                MenuItem item4 = new MenuItem( "Piscinas" );
+                item4.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle( ActionEvent event ) {
+                        System.out.println("Escogida opcion vender piscinas");
+                    }
+                });
+                
+                item1.getItems().add(item4);
             }
-        });
+            
+            if( funciones.contains(TipoFuncion.venderPista)) {
+                
+                // Se añade la opción para vender hoteles
+                MenuItem item5 = new MenuItem( "Pistas" );
+                item5.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle( ActionEvent event ) {
+                        System.out.println("Escogida opcion vender pistas");
+                    }
+                });
+                
+                item1.getItems().add(item5);
+            }
+            
+            // Se añade el submenú si contiene alguna opción
+            if( !item1.getItems().isEmpty()) {
+                opciones.add(item1);
+            }
+        }
         
-        // Se añaden los items al submenú
-        item1.getItems().addAll(item2, item3, item4, item5);
-        
-        // Se añade el submenú al menú contextual junto con un separador
-        menu.getItems().addAll(new SeparatorMenuItem(), item1);
+        // Si se van a añadir nuevas opciones
+        if( !opciones.isEmpty() ) {
+            
+            // Se añade un sepador
+            menu.getItems().add(new SeparatorMenuItem());
+
+            // Y se añaden las opciones
+            menu.getItems().addAll(opciones);
+        }
         
         return( menu );
     }

@@ -1,6 +1,8 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import java.util.ArrayList;
+import java.util.HashSet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -14,6 +16,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import monopoly.jugadores.Banca;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
+import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 
 public class PropiedadGUI extends CasillaGUI {
 
@@ -78,29 +81,52 @@ public class PropiedadGUI extends CasillaGUI {
         
         // Se crea el menú de opciones para a partir del padre
         ContextMenu menu = super.generarMenuContextual();
+                
+        // Se obtienen las funciones propias a la casilla
+        HashSet<TipoFuncion> funciones = getCasilla().funcionesARealizar();
         
-        // Se añade la opción de hipotecar
-        MenuItem item1 = new MenuItem( "Hipotecar" );
-        item1.setOnAction(new EventHandler<ActionEvent>() {
+        // Opciones a añadir al menú
+        ArrayList<MenuItem> opciones = new ArrayList<>();
+        
+        if( funciones.contains(TipoFuncion.hipotecar)) {
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion hipotecar");
-            }
-        });
-        
-        // Se añade la opción de deshipotecar
-        MenuItem item2 = new MenuItem( "Deshipotecar" );
-        item2.setOnAction(new EventHandler<ActionEvent>() {
+            // Se añade la opción de hipotecar
+            MenuItem item1 = new MenuItem( "Hipotecar" );
+            item1.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle( ActionEvent event ) {
+                    System.out.println("Escogida opcion hipotecar");
+                }
+            });
             
-            @Override
-            public void handle( ActionEvent event ) {
-                System.out.println("Escogida opcion deshipotecar");
-            }
-        });
+            opciones.add(item1);
+        }
         
-        // Se añaden los items junto con un separador
-        menu.getItems().addAll(new SeparatorMenuItem(), item1, item2);
+        if( funciones.contains(TipoFuncion.deshipotecar)) {
+            
+            // Se añade la opción de deshipotecar
+            MenuItem item2 = new MenuItem( "Deshipotecar" );
+            item2.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle( ActionEvent event ) {
+                    System.out.println("Escogida opcion deshipotecar");
+                }
+            });
+            
+            opciones.add(item2);
+        }
+        
+        // Si se van a añadir nuevas opciones
+        if( !opciones.isEmpty() ) {
+            
+            // Se añade un sepador
+            menu.getItems().add(new SeparatorMenuItem());
+
+            // Y se añaden las opciones
+            menu.getItems().addAll(opciones);
+        }
         
         return( menu );
     }
