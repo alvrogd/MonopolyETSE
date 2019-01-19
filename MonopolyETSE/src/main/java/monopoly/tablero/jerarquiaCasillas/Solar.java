@@ -261,6 +261,29 @@ public class Solar extends Propiedad{
 
     }
 
+    @Override
+    public ArrayList<TipoFuncion> funcionesARealizar(){
+
+        ArrayList<TipoFuncion> funciones = super.funcionesARealizar();
+
+        if(tieneEdificios()){
+            funciones.add(TipoFuncion.vender);
+        }
+
+        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+            if(!getEdificiosContenidos().get(tipoEdificio).isEmpty()){
+
+                funciones.add(TipoFuncion.toFuncion(tipoEdificio));
+
+            }
+
+        }
+
+        return funciones;
+
+    }
+
 
     @Override
     public void actualizarAlquiler() {

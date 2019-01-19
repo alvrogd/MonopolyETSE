@@ -10,6 +10,8 @@ import monopoly.jugadores.excepciones.NoLiquidezException;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
+import java.util.ArrayList;
+
 public abstract class Propiedad extends Casilla{
 
     private final Grupo grupo;
@@ -234,6 +236,21 @@ public abstract class Propiedad extends Casilla{
         }
 
         return(comprador.comprar(getPropietario(), this));
+    }
+
+    @Override
+    public ArrayList<TipoFuncion> funcionesARealizar(){
+        ArrayList<TipoFuncion> funciones = super.funcionesARealizar();
+
+        if(isHipotecada()){
+            funciones.add(TipoFuncion.deshipotecar);
+        } else if(!isComprable()){
+            funciones.add(TipoFuncion.comprar);
+        } else {
+            funciones.add(TipoFuncion.hipotecar);
+        }
+
+        return funciones;
     }
 
     @Override
