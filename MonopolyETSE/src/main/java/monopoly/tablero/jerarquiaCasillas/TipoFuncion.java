@@ -25,7 +25,7 @@ public enum TipoFuncion {
     edificarPiscina("piscina", edificar),
     edificarPista("pista", edificar),
     ayuda("ayuda", true),
-    atras("atras", ayuda),
+    atras("atras", true),
     estadisticasGlobales("estadísticas globales", true),
     estadisticasUsuario("estadisticas", true),
     listar("listar", true),

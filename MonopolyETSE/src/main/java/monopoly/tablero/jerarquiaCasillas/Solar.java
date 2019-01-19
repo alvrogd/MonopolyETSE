@@ -288,7 +288,7 @@ public class Solar extends Propiedad{
 
             if(!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
                     numPistas == numCasillasGrupo)){
-                funciones.add(TipoFuncion.comprar.edificar);
+                funciones.add(TipoFuncion.edificar);
             }
 
             switch(tipoEdificio){

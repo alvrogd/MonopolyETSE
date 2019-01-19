@@ -21,8 +21,8 @@ public class BotonAnimadoGUI extends BotonGUI{
     // Booleano para saber en que modo está
     private boolean modo;
 
-    public BotonAnimadoGUI(Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna, Object localizador, String[] nombreFrames, double duracion) {
-        super(raiz, app, nombre, funcion, fila, columna, true, false);
+    public BotonAnimadoGUI(BotoneraGUI botonera, Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna, Object localizador, String[] nombreFrames, double duracion) {
+        super(botonera, raiz, app, nombre, funcion, fila, columna, true, false);
         crearImagenAnimada(localizador, nombreFrames, duracion);
         this.ponerTachado = false;
         this.modo = false;

@@ -33,6 +33,9 @@ public class BotonGUI {
     // Nombre del botón
     private final String nombre;
 
+    // Botonera a la que pertenece
+    private final BotoneraGUI botonera;
+
     // Funcion que tiene el botón
     private final TipoFuncion funcion;
 
@@ -68,7 +71,7 @@ public class BotonGUI {
     // Booleano para saber si es el botón de ayuda
     private boolean ayuda;
 
-    public BotonGUI(Group raiz, Aplicacion app, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
+    public BotonGUI(BotoneraGUI botonera, Group raiz, Aplicacion app, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
@@ -100,6 +103,7 @@ public class BotonGUI {
             System.exit(1);
         }
 
+        this.botonera = botonera;
         this.aplicacion = app;
         this.nombre = nombre;
         this.funcion = funcion;
@@ -136,8 +140,12 @@ public class BotonGUI {
         this.ayuda = ayuda;
     }
 
-    public BotonGUI(Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna){
-        this(raiz, app, nombre, funcion, fila, columna, false, false);
+    public BotonGUI(BotoneraGUI botonera, Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna){
+        this(botonera, raiz, app, nombre, funcion, fila, columna, false, false);
+    }
+
+    public BotoneraGUI getBotonera() {
+        return botonera;
     }
 
     public Aplicacion getApp() {
@@ -449,6 +457,12 @@ public class BotonGUI {
 
     }
 
+    public void vender(){
+
+        getBotonera().setPagina(true);
+        getBotonera().setFuncionPagina(getFuncion());
+    }
+
     public void estadisticasJugador(){
         Jugador auxJugador = getApp().getJuego().getTurno();
 
@@ -470,6 +484,18 @@ public class BotonGUI {
                 "      -> Jugador con más vueltas : " + getApp().getJuego().jugadorMasVueltas().getNombre(),
                 "      -> Jugador con más tiradas : " + getApp().getJuego().jugadorMasVecesDados().getNombre(),
                 "      -> Jugador en cabeza       : " + getApp().getJuego().jugadorEnCabeza().getNombre());
+    }
+
+    public void atras(){
+
+        ArrayList<BotonGUI> botonesPagina = getBotonera().getBotonesPagina().get(getBotonera().getFuncionPagina());
+        for(BotonGUI boton : botonesPagina){
+            boton.getGc().clearRect(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+            boton.inhabilitarBoton();
+        }
+        getBotonera().setPagina(false);
+        getBotonera().setFuncionPagina(null);
+
     }
 
     public void ejecutarFuncion(){
@@ -496,7 +522,7 @@ public class BotonGUI {
                 deshipotecar();
                 break;
             case vender:
-
+                vender();
                 break;
             case venderCasa:
                 venderVariable("casa");
@@ -527,6 +553,7 @@ public class BotonGUI {
             case ayuda:
                 break;
             case atras:
+                atras();
                 break;
             case estadisticasGlobales:
                 estadisticasGlobales();
@@ -592,4 +619,25 @@ public class BotonGUI {
 
         render(t);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        // Si apuntan a la misma dirección de memoria
+        if (this == obj) return (true);
+
+        // Si el objeto con el que se compara apunta a null
+        if (obj == null) return (false);
+
+        // Si no pertenecen a la misma clase
+        if (getClass() != obj.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
+        // llamar a sus métodos
+        final BotonGUI otro = (BotonGUI) obj;
+
+        // Si los nombres del botón son el mismo
+        return (this.getNombre() == otro.getNombre());
+
+    } /* Fin del método equals */
 }
