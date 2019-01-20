@@ -19,8 +19,6 @@ public class BotoneraGUI {
 
     /* Atributos */
 
-    //todo borrar esto
-
     private boolean puedoImprimir = false;
 
     // Nodo propiedad de la sección de la botonera
@@ -29,8 +27,17 @@ public class BotoneraGUI {
     // Sensor asociado a esta sección
     private Rectangle sensor;
 
+    // Botón de atras
+    private BotonGUI botonAtras;
+
+    // Boton de ayuda
+    private BotonGUI botonAyuda;
+
     // Juego
     private Juego juego;
+
+    // Booleano para saber si se ha presionado la ayuda
+    private boolean ayuda;
 
     // Aplicacion
     private Aplicacion aplicacion;
@@ -43,6 +50,12 @@ public class BotoneraGUI {
 
     // Botones que están en la botonera
     private ArrayList<BotonGUI> botonesActuales;
+
+    // Si la botonera está actualmente en una página
+    private boolean pagina;
+
+    // Si está en una página, cual era la función del botón
+    private TipoFuncion funcionPagina;
 
     /* Constructor */
     public BotoneraGUI(Group raiz, Aplicacion app){
@@ -73,6 +86,9 @@ public class BotoneraGUI {
         this.botones = new ArrayList<>();
         this.botonesActuales = new ArrayList<>();
         this.botonesPagina = new HashMap<>();
+        this.pagina = false;
+        this.funcionPagina = null;
+        this.ayuda = false;
 
         crearBotones();
 
@@ -83,6 +99,10 @@ public class BotoneraGUI {
             if(funcion.isBotonAsignado()) {
                 if(funcion.equals(TipoFuncion.cambiarModo)){
                     nuevoBoton(funcion.toString(), funcion, true, false, false);
+                } else if(funcion.equals(TipoFuncion.ayuda)){
+                    nuevoBoton(funcion.toString(), funcion, false, true, false);
+                } else if(funcion.equals(TipoFuncion.atras)){
+                    nuevoBoton(funcion.toString(), funcion, false, false, true);
                 } else {
                     nuevoBoton(funcion);
                 }
@@ -101,6 +121,38 @@ public class BotoneraGUI {
         }
     }
 
+    public boolean isAyuda() {
+        return ayuda;
+    }
+
+    public void setAyuda(boolean ayuda) {
+        this.ayuda = ayuda;
+    }
+
+    public BotonGUI getBotonAyuda() {
+        return botonAyuda;
+    }
+
+    public void setPagina(boolean pagina) {
+        this.pagina = pagina;
+    }
+
+    public boolean isPagina() {
+        return pagina;
+    }
+
+    public BotonGUI getBotonAtras() {
+        return botonAtras;
+    }
+
+    public TipoFuncion getFuncionPagina() {
+        return funcionPagina;
+    }
+
+    public void setFuncionPagina(TipoFuncion funcionPagina) {
+        this.funcionPagina = funcionPagina;
+    }
+
     public Aplicacion getAplicacion() {
         return aplicacion;
     }
@@ -111,7 +163,7 @@ public class BotoneraGUI {
         int fila = getBotones().size() % ConstantesGUI.BOTONES_POR_FILA;
 
         if(ayuda){
-            fila = ConstantesGUI.BOTONES_POR_FILA - 1;
+            fila = ConstantesGUI.BOTONES_POR_FILA - 2;
             columna = ConstantesGUI.BOTONES_COLUMNAS - 1;
         }
 
@@ -129,7 +181,7 @@ public class BotoneraGUI {
             int size = getBotonesPagina().get(funcion.getFuncionRaiz()).size();
 
             if(atras){
-                fila = ConstantesGUI.BOTONES_POR_FILA - 1;
+                fila = ConstantesGUI.BOTONES_POR_FILA - 2;
                 columna = ConstantesGUI.BOTONES_COLUMNAS - 1;
             } else {
                 fila = size / ConstantesGUI.BOTONES_POR_FILA;
@@ -137,16 +189,21 @@ public class BotoneraGUI {
             }
 
             if(animado){
-                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonAnimadoGUI(getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
+                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonAnimadoGUI(this, getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
             } else {
-                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(this, getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
             }
 
         } else {
             if(animado){
-                getBotones().add(new BotonAnimadoGUI(getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
+                getBotones().add(new BotonAnimadoGUI(this, getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
             } else {
-                getBotones().add(new BotonGUI(getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+                BotonGUI boton = new BotonGUI(this, getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda);
+                if(atras)
+                    this.botonAtras = boton;
+                if(ayuda)
+                    this.botonAyuda = boton;
+                getBotones().add(boton);
             }
         }
     }
@@ -192,8 +249,18 @@ public class BotoneraGUI {
         double posicionX = x - ConstantesGUI.BOTONES_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.BOTONES_DESPLAZAMIENTO_Y;
 
-        for(BotonGUI botonGUI : getBotones()){
+        ArrayList<BotonGUI> botonesRecorrer = new ArrayList<>();
+
+        if(isPagina()){
+            botonesRecorrer.addAll(getBotones());
+            botonesRecorrer.addAll(getBotonesPagina().get(getFuncionPagina()));
+        } else {
+            botonesRecorrer.addAll(getBotones());
+        }
+
+        for(BotonGUI botonGUI : botonesRecorrer){
             if(botonGUI.contienePosicion(posicionX, posicionY)){
+                System.out.println(botonGUI.getNombre());
                 botonGUI.handleClickIzquierdo(posicionX, posicionY);
                 break;
             }
@@ -207,7 +274,16 @@ public class BotoneraGUI {
         double posicionX = x - ConstantesGUI.BOTONES_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.BOTONES_DESPLAZAMIENTO_Y;
 
-        for(BotonGUI botonGUI : getBotones()){
+        ArrayList<BotonGUI> botonesRecorrer = new ArrayList<>();
+
+        if(isPagina()){
+            botonesRecorrer.addAll(getBotones());
+            botonesRecorrer.addAll(getBotonesPagina().get(getFuncionPagina()));
+        } else {
+            botonesRecorrer.addAll(getBotones());
+        }
+
+        for(BotonGUI botonGUI : botonesRecorrer){
             if(botonGUI.contienePosicion(posicionX, posicionY)){
                 botonGUI.handleClickPulsado(posicionX, posicionY);
                 break;
@@ -220,7 +296,16 @@ public class BotoneraGUI {
         double posicionX = x - ConstantesGUI.BOTONES_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.BOTONES_DESPLAZAMIENTO_Y;
 
-        for(BotonGUI botonGUI : getBotones()){
+        ArrayList<BotonGUI> botonesRecorrer = new ArrayList<>();
+
+        if(isPagina()){
+            botonesRecorrer.addAll(getBotones());
+            botonesRecorrer.addAll(getBotonesPagina().get(getFuncionPagina()));
+        } else {
+            botonesRecorrer.addAll(getBotones());
+        }
+
+        for(BotonGUI botonGUI : botonesRecorrer){
             if(botonGUI.contienePosicion(posicionX, posicionY)){
                 botonGUI.handleClickSoltado(posicionX, posicionY);
                 break;
@@ -232,37 +317,63 @@ public class BotoneraGUI {
 
         if(getJuego().isIniciado()) {
             Casilla casilla = getJuego().getTurno().getAvatar().getPosicion();
-            HashSet<TipoFuncion> funciones = casilla.funcionesARealizar();
-            HashSet<TipoFuncion> funciones2 = getJuego().funcionesARealizar();
-
-            if(!funciones2.contains(TipoFuncion.edificar)){
-                funciones.remove(TipoFuncion.edificarCasa);
-                funciones.remove(TipoFuncion.edificarHotel);
-                funciones.remove(TipoFuncion.edificarPiscina);
-                funciones.remove(TipoFuncion.edificarPista);
-            }
-
-            if(!funciones2.contains(TipoFuncion.comprar)){
-                funciones.remove(TipoFuncion.comprar);
-            }
-
-            funciones.addAll(funciones2);
-
+            HashSet<TipoFuncion> funciones = getJuego().funcionesARealizar();
+            ArrayList<BotonGUI> botones;
+            ArrayList<BotonGUI> botonesRecorrer = new ArrayList<>();
             setBotonesActuales(new ArrayList<>());
 
-            for (BotonGUI boton : getBotones()) {
+            // En caso de que actualmente se esté en una página de botones (que no sea la principal) los botones donde se
+            // comparará serán los asociados a esa página, en caso contrario serán todos los botones.
+            if(isPagina()){
+                botones = getBotonesPagina().get(getFuncionPagina());
+
+                if(!botones.contains(getBotonAtras())){
+                    botones.add(getBotonAtras());
+                }
+
+                if(!botones.contains(getBotonAyuda())){
+                    botones.add(getBotonAyuda());
+                }
+
+
+                // Se añaden los botones de la página y los botones a inhabilitar en los botones a recorrer
+                botonesRecorrer.addAll(botones);
+                botonesRecorrer.addAll(getBotones());
+                funciones.add(TipoFuncion.atras);
+                funciones.add(TipoFuncion.ayuda);
+            } else {
+                botones = getBotones();
+                botonesRecorrer = getBotones();
+                funciones.add(TipoFuncion.ayuda);
+            }
+
+            for (BotonGUI boton : botonesRecorrer) {
                 boton.getGc().clearRect(0,0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
 
+                // En caso de que las funciones a realizar contengan el botón actual, este podrá ser candidato a entrar en
+                // la botonera
+
                 if (funciones.contains(boton.getFuncion())) {
-                    boton.habilitarBoton();
-                    getBotonesActuales().add(boton);
-                } else {
-                    if(boton.getFuncion().equals(TipoFuncion.cambiarModo)){
+
+                    // Se comprueba si pertenece a los botones de la página
+                    if(botones.contains(boton)) {
+                        boton.habilitarBoton();
                         getBotonesActuales().add(boton);
+                    }
+                    else {
+                        boton.inhabilitarBoton();
+                    }
+
+                } else {
+                    // Si no pertenece a las funciones a realizar se inhabilita el botón
+                    if(boton.getFuncion().equals(TipoFuncion.cambiarModo)){
+                        //En caso de ser el botón cambiarModo, este sigue quedando en la botonera, pero inactivo.
+                        if(!isPagina()) {
+                            getBotonesActuales().add(boton);
+                        }
                     }
                     boton.inhabilitarBoton();
                 }
-
             }
         }
 
@@ -275,13 +386,20 @@ public class BotoneraGUI {
         actualizarBotones();
         for(BotonGUI botonGUI : getBotonesActuales()){
 
-            botonGUI.render(fila, columna, t);
+            if(botonGUI.getFuncion().equals(TipoFuncion.ayuda)){
+                botonGUI.render(ConstantesGUI.BOTONES_POR_FILA-1, ConstantesGUI.BOTONES_COLUMNAS-1, t);
+            } else if(botonGUI.getFuncion().equals(TipoFuncion.atras)) {
+                botonGUI.render(ConstantesGUI.BOTONES_POR_FILA - 2, ConstantesGUI.BOTONES_COLUMNAS - 1, t);
+            } else {
+                botonGUI.render(fila, columna, t);
 
-            if(puedoImprimir)
-                System.out.println(botonGUI.getNombre() + " en la posición (fila, columna): (" + fila + ", " + columna + ")");
-            fila++;
-            columna += fila/ConstantesGUI.BOTONES_POR_FILA;
-            fila %= ConstantesGUI.BOTONES_POR_FILA;
+                if (puedoImprimir)
+                    System.out.println(botonGUI.getNombre() + " en la posición (fila, columna): (" + fila + ", " + columna + ")");
+
+                fila++;
+                columna += fila / ConstantesGUI.BOTONES_POR_FILA;
+                fila %= ConstantesGUI.BOTONES_POR_FILA;
+            }
         }
 
         if(puedoImprimir)

@@ -10,6 +10,8 @@ import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.*;
 
@@ -680,14 +682,38 @@ public class Juego {
             Jugador turno = getTurno();
             Casilla posicion = turno.getAvatar().getPosicion();
 
+            // Se mira si la casilla en la que está se puede comprar
             if (posicion instanceof Propiedad) {
+
+                // Si se puede comprar
                 if (turno.puedeComprar((Propiedad) posicion)) {
-                    if (!(((Propiedad) posicion).isComprable() && ((Propiedad) posicion).getPropietario().equals(turno))) {
-                        if(!((Propiedad) posicion).isHipotecada())
-                            funciones.add(TipoFuncion.comprar);
+                    if (((Propiedad) posicion).isComprable()) {
+                        if (!((Propiedad) posicion).getPropietario().equals(turno)) {
+                            if (!((Propiedad) posicion).isHipotecada()) {
+                                funciones.add(TipoFuncion.comprar);
+                            }
+                        }
+                    }
+                }
+
+                Propiedad propiedad = (Propiedad) posicion;
+                // Si se puede hipotecar / deshipotecar
+                if (propiedad.isHipotecada()) {
+                    funciones.add(TipoFuncion.deshipotecar);
+                } else if (!propiedad.isComprable() && getTablero().getJuego().getTurno().equals(propiedad.getPropietario())) {
+
+                    if(propiedad instanceof Solar){
+                        Solar solar = (Solar) propiedad;
+                        if(!solar.tieneEdificios()){
+                            funciones.add(TipoFuncion.hipotecar);
+                        }
+                    } else {
+                        funciones.add(TipoFuncion.hipotecar);
                     }
                 }
             }
+
+            // Se mira los tipos de movimiento que puede realizar
 
             if (isHaLanzadoDados()) {
                 funciones.add(TipoFuncion.finalizarTurno);
@@ -695,7 +721,7 @@ public class Juego {
                 funciones.add(TipoFuncion.lanzarDados);
             }
 
-            if(getTurno().getAvatar().getCasillasRestantesPorMoverse() > 0){
+            if (getTurno().getAvatar().getCasillasRestantesPorMoverse() > 0) {
                 funciones.add(TipoFuncion.avanzar);
             }
 
@@ -704,12 +730,124 @@ public class Juego {
             }
 
             funciones.add(TipoFuncion.listar);
+            funciones.add(TipoFuncion.listarEdificios);
+            funciones.add(TipoFuncion.listarTratos);
             funciones.add(TipoFuncion.estadisticasGlobales);
             funciones.add(TipoFuncion.estadisticasUsuario);
 
+            // Se mira si puede edificar y que edificios o venderlos.
             if (posicion instanceof Solar) {
-                if (turno.puedeEdificar((Solar) posicion))
-                    funciones.add(TipoFuncion.edificar);
+                Solar solar = (Solar) posicion;
+                if (solar.tieneEdificios()) {
+                    funciones.add(TipoFuncion.vender);
+                }
+
+                if(!solar.isHipotecada()) {
+
+                    Integer numCasillasGrupo = solar.getGrupo().getPropiedades().size();
+
+                    Integer numHoteles = solar.getEdificiosContenidos().get(TipoEdificio.hotel).size();
+                    Integer numCasas = solar.getEdificiosContenidos().get(TipoEdificio.casa).size();
+                    Integer numPiscinas = solar.getEdificiosContenidos().get(TipoEdificio.piscina).size();
+                    Integer numPistas = solar.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
+
+                    if (numHoteles > 0) {
+                        funciones.add(TipoFuncion.venderHotel);
+                    }
+                    if (numCasas > 0) {
+                        funciones.add(TipoFuncion.venderCasa);
+                    }
+                    if (numPiscinas > 0) {
+                        funciones.add(TipoFuncion.venderPiscina);
+                    }
+                    if (numPistas > 0) {
+                        funciones.add(TipoFuncion.venderPista);
+                    }
+
+                    for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
+                        if (!solar.getEdificiosContenidos().get(tipoEdificio).isEmpty()) {
+
+                            funciones.add(TipoFuncion.toFuncion(tipoEdificio));
+
+                        }
+
+                        if (!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
+                                numPistas == numCasillasGrupo)) {
+                            if (turno.getAvatar().getVecesCaidasEnPropiedades().get(solar.getPosicionEnTablero() % 40) > 2 ||
+                                    turno.haObtenidoSolaresGrupo(solar.getGrupo()))
+                                funciones.add(TipoFuncion.edificar);
+                        }
+
+                        switch (tipoEdificio) {
+
+                            case casa:
+                                if (numCasas == 4) {
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo) {
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.casa, solar.getGrupo().getTipo())))
+                                    break;
+                                funciones.add(TipoFuncion.edificarCasa);
+                                break;
+
+                            case hotel:
+
+                                if (numCasas != 4) {
+
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo) {
+
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.hotel, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarHotel);
+
+                                break;
+
+                            case piscina:
+                                if (numHoteles < 1 || numCasas < 2) {
+
+                                    break;
+                                }
+
+                                if (numPiscinas == numCasillasGrupo) {
+
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.piscina, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPiscina);
+
+                                break;
+
+                            case pistaDeporte:
+                                if (numHoteles < 2) {
+
+                                    break;
+                                }
+                                if (numPistas == numCasillasGrupo) {
+
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPista);
+
+                                break;
+
+                        }
+                    }
+                }
             }
         }
 

@@ -8,7 +8,7 @@ public class ConstantesGUI {
 
     // Dimensiones de la sección de información
     public final static int INFORMACION_ANCHO = 1650;
-    public final static int INFORMACION_ALTO = 715;
+    public final static int INFORMACION_ALTO = 690;
 
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
@@ -16,7 +16,7 @@ public class ConstantesGUI {
 
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
-    public final static int CONTROLES_ALTO = 270;
+    public final static int CONTROLES_ALTO = 300;
 
     // Desplazamientos de la sección de información
     public final static int INFORMACION_DESPLAZAMIENTO_X = (VENTANA_ANCHO - INFORMACION_ANCHO) / 2;
@@ -37,8 +37,8 @@ public class ConstantesGUI {
     // Dimesiones de un botón
     public final static int BOTON_ANCHO = 75;
     public final static int BOTON_ALTO = 75;
-    public final static int BOTON_SEPARACION_X = 5;
-    public final static int BOTON_SEPARACION_Y = 5;
+    public final static int BOTON_SEPARACION_X = 15;
+    public final static int BOTON_SEPARACION_Y = 3;
     public final static int NUM_FRAMES_CAMBIARMODO = 10;
     public final static String[] FRAMES_CAMBIARMODO = {"marcoBoton0.png",
                                                         "marcoBoton1.png",

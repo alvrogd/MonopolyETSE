@@ -1,13 +1,17 @@
 package aplicacion.salidaPantalla;
 
+import aplicacionGUI.menuGUI.MenuGUI;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
+import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
+
 import java.util.Scanner;
 
 public class ConsolaNormal implements Consola{
-
     public ConsolaNormal(){}
 
     @Override
     public void imprimir(String mensaje){
+        ConsolaInterfaz.imprimir(mensaje);
         System.out.println(mensaje);
     }
 

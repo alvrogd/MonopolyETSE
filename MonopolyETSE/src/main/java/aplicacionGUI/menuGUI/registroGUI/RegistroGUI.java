@@ -1,5 +1,6 @@
 package aplicacionGUI.menuGUI.registroGUI;
 
+import aplicacion.salidaPantalla.ConsolaNormal;
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
@@ -52,6 +53,7 @@ public class RegistroGUI {
         // Inicialmente no existe ningún tipo de contenido
         this.contenido = null;
 
+        ConsolaInterfaz.setRegistroGUI(this);
     }
 
     /* Getters y setters */
