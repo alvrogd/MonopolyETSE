@@ -23,6 +23,7 @@ import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Celda {
@@ -604,5 +605,10 @@ public class Celda {
         });
 
         menu.getItems().add(item);
+    }
+
+    public HashSet<TipoGrupo> getGruposSolaresLibres() {
+
+        return(getEditor().getGruposSolaresLibres(getPosicionTablero()));
     }
 }

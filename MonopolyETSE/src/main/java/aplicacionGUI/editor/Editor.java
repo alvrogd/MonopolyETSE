@@ -4,6 +4,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.filas.Fila;
 import aplicacionGUI.editor.filas.TipoFila;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,9 +14,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.jerarquiaCasillas.Solar;
 import resources.editor.EditorCuadricula;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Editor {
 
@@ -200,5 +204,78 @@ public class Editor {
     public void actualizarNumeroCasillas(TipoCasilla tipoCasilla, int posicion, int balance ) {
 
         getFilas().get(posicion/10).actualizarNumeroCasillas(tipoCasilla, balance);
+    }
+
+    public HashSet<TipoGrupo> getGruposSolaresLibres(int posicion) {
+
+        int lado = posicion / 10;
+        HashSet<TipoGrupo> resultado = new HashSet<>();
+
+        // Lado sur
+        if( lado == 0 ) {
+
+            if(estaLibre(TipoGrupo.negro, 0)) {
+                resultado.add(TipoGrupo.negro);
+            }
+
+            if(estaLibre(TipoGrupo.cyan, 0)) {
+                resultado.add(TipoGrupo.cyan);
+            }
+        }
+
+        // Lado oeste
+        else if(lado == 1 ){
+
+            if(estaLibre(TipoGrupo.rosa, 1)) {
+                resultado.add(TipoGrupo.rosa);
+            }
+
+            if(estaLibre(TipoGrupo.naranja, 1)) {
+                resultado.add(TipoGrupo.naranja);
+            }
+        }
+
+        // Lado norte
+        else if(lado == 2 ) {
+
+            if(estaLibre(TipoGrupo.rojo, 2)) {
+                resultado.add(TipoGrupo.rojo);
+            }
+
+            if(estaLibre(TipoGrupo.marron, 2)) {
+                resultado.add(TipoGrupo.marron);
+            }
+        }
+
+        // Lado este
+        else {
+
+            if(estaLibre(TipoGrupo.verde, 3)) {
+                resultado.add(TipoGrupo.verde);
+            }
+
+            if(estaLibre(TipoGrupo.azul, 3)) {
+                resultado.add(TipoGrupo.azul);
+            }
+        }
+
+        return(resultado);
+    }
+
+    private boolean estaLibre(TipoGrupo tipoGrupo, int fila) {
+
+        int total = 0;
+
+        for( Celda celda : getCeldas().get(fila)) {
+
+            if( celda.getCasillaGUI().getCasilla() instanceof Solar) {
+
+                if( ((Solar)celda.getCasillaGUI().getCasilla()).getGrupo().getTipo().equals(tipoGrupo)) {
+                    total++;
+                }
+            }
+        }
+
+        return(total < tipoGrupo.getTamano());
     }
 }
