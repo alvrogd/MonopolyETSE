@@ -1,11 +1,11 @@
 package aplicacionGUI;
 
 public class ConstantesGUI {
-    
+
     // Dimensiones de la ventana
     public final static int VENTANA_ANCHO = 1920;
     public final static int VENTANA_ALTO = 1000;
-    
+
     // Dimensiones de la sección de información
     public final static int INFORMACION_ANCHO = 1650;
     public final static int INFORMACION_ALTO = 715;
@@ -13,11 +13,11 @@ public class ConstantesGUI {
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
     public final static int TABLERO_ALTO = 715;
-    
+
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
     public final static int CONTROLES_ALTO = 270;
-    
+
     // Desplazamientos de la sección de información
     public final static int INFORMACION_DESPLAZAMIENTO_X = (VENTANA_ANCHO - INFORMACION_ANCHO) / 2;
     public final static int INFORMACION_DESPLAZAMIENTO_Y = (VENTANA_ALTO - INFORMACION_ALTO - CONTROLES_ALTO) / 2;
@@ -33,7 +33,7 @@ public class ConstantesGUI {
     // Dimensiones de la sección de botones
     public final static int BOTONES_ANCHO = 480;
     public final static int BOTONES_ALTO = VENTANA_ALTO - MENU_DESPLAZAMIENTO_Y - 20;
-    
+
     // Dimesiones de un botón
     public final static int BOTON_ANCHO = 75;
     public final static int BOTON_ALTO = 75;
@@ -97,20 +97,23 @@ public class ConstantesGUI {
     // Desplazamientos para la sección de los jugadores
     public final static int JUGADORES_DESPLAZAMIENTO_X = IMPRESION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
     public final static int JUGADORES_DESPLAZAMIENTO_Y = 0;
-    
+
     // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;
     public final static int TABLERO_DESPLAZAMIENTO_Y = (INFORMACION_ALTO - TABLERO_ALTO) / 2;
-    
+
     // Dimensiones de las representaciones de las casillas
     public final static int CASILLA_ANCHO = 150;
     public final static int CASILLA_ALTO = 65;
-    
+
     // Número de casillas por cada fila (4 filas con 40 casillas en total, comezando desde la casilla de Salida)
     public final static int CASILLAS_POR_FILA = 10;
     // Número de casillas por cada lado del tablero
     public final static int CASILLAS_POR_LADO = 11;
-    
+
+    // Número de lados del tablero
+    public final static int NUMERO_LADOS = 4;
+
     // Nombres de las imágenes de las casillas
     public final static String[] CASILLAS_IMAGENES = {"Isengard.png",
                                                       "Platform934.png",
@@ -152,22 +155,22 @@ public class ConstantesGUI {
                                                       "Isengard.png",
                                                       "SmaugsTax.png",
                                                       "Mordor.png"};
-    
+
     // Nombres de las imágenes de los edificios
     public final static String CASA = "casa.png";
     public final static String HOTEL = "hotel.png";
     public final static String PISCINA = "piscina.png";
     public final static String PISTA = "pista.png";
-    
+
     // Tamaño de las cartas
     public final static int CARTA_ANCHO = 170;
     public final static int CARTA_ALTO = 275;
-    
+
     // Nombres de las imágenes de las cartas
     public final static String CARTA_SUERTE = "Suerte.png";
     public final static String CARTA_COMUNIDAD = "Comunidad.png";
     public final static String CARTA_REVERSO = "Reverso.png";
-    
+
     // Desplazamientos de las cartas
     public final static int SUERTE_DESPLAZAMIENTO_X = CASILLA_ANCHO + 100;
     // El -14 es un ajuste porque en realidad las casillas se imprimen más juntas para evitar que los bordes entre
@@ -178,7 +181,7 @@ public class ConstantesGUI {
     public final static int COMUNIDAD_DESPLAZAMIENTO_X = TABLERO_ANCHO - CARTA_ANCHO - CASILLA_ANCHO - 100 -
             CASILLAS_POR_LADO * 3;
     public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
-    
+
     // Nombres de las imágenes de los avatares
     public final static String[] AVATARES_IMAGENES = {"Avion.png",
                                                       "Coche.png",
@@ -186,35 +189,35 @@ public class ConstantesGUI {
                                                       "Hamburguesa.png",
                                                       "Pelota.png",
                                                       "Sombrero.png"};
-    
+
     // Nombre de los frames de la animación del modo avanzado
     public final static String[] AVATARES_AVANZADO_FRAMES = {"Destello_0.png",
                                                              "Destello_1.png",
                                                              "Destello_2.png",
                                                              "Destello_3.png"};
-    
+
     // Dimensiones del marco de información
     public final static int MARCO_INFORMACION_ANCHO = 610;
     public final static int MARCO_INFORMACION_ALTO = 480;
-    
+
     // Nombres de las imágenes del marco de información
     public final static String MARCO_INFORMACION_IMAGEN_SUPERIOR = "SeccionSuperior.png";
     public final static String MARCO_INFORMACION_IMAGEN_CENTRAL = "SeccionCentral.png";
     public final static String MARCO_INFORMACION_IMAGEN_INFERIOR = "SeccionInferior.png";
-    
+
     // Desplazamiento del marco de información
     public final static int MARCO_INFORMACION_DESPLAZAMIENTO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2;
     public final static int MARCO_INFORMACION_DESPLAZAMIENTO_Y = (TABLERO_ALTO - MARCO_INFORMACION_ALTO ) / 2 - 18;
-    
+
     // Tamaño de la fuente del marco de información
     public final static int MARCO_INFORMACION_FUENTE_TAMANO = 16;
-    
+
     // Espacio para cada línea del marco de información
     public final static int MARCO_INFORMACION_LINEA_ALTO = MARCO_INFORMACION_ALTO / MARCO_INFORMACION_FUENTE_TAMANO;
-    
+
     // Número de líneas que caben en el marco de información
     public final static int MARCO_INFORMACION_NUMERO_LINEAS = MARCO_INFORMACION_ALTO / MARCO_INFORMACION_LINEA_ALTO;
-    
+
     // Nombre de los frames de la animación del modo avanzado
     public final static String[] MARCO_INFORMACION_ANIMACION_FRAMES = {"Pergamino_0.png",
                                                                        "Pergamino_1.png",
@@ -290,15 +293,23 @@ public class ConstantesGUI {
                                                                        "Pergamino_71.png",
                                                                        "Pergamino_72.png",
                                                                        "Pergamino_73.png"};
-    
+
     // Dimensiones del registro
     public final static int REGISTRO_ANCHO = 737;
     public final static int REGISTRO_ALTO = 230;
-    
+
     // Desplazamiento del registro
     public final static int REGISTRO_DESPLAZAMIENTO_X = 485;
     public final static int REGISTRO_DESPLAZAMIENTO_Y = 10;
-    
+
     // Tamaño de la fuente del registro
     public final static int REGISTRO_FUENTE_TAMANO = 12;
+
+    // Dimensiones del editor
+    public final static int EDITOR_ANCHO = 100;
+    public final static int EDITOR_ALTO = 100;
+
+    // Desplazamiento del editor
+    public final static int EDITOR_DESPLAZAMIENTO_X = (VENTANA_ANCHO - EDITOR_ANCHO) / 2;
+    public final static int EDITOR_DESPLAZAMIENTO_Y = (VENTANA_ALTO - EDITOR_ALTO) / 2;
 }

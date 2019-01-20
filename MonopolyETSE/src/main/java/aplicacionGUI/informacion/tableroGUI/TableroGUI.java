@@ -175,7 +175,7 @@ public class TableroGUI {
     
     /* Métodos */
     
-    private ArrayList<int[]> calcularPosiciones() {
+    public static ArrayList<int[]> calcularPosiciones() {
         
         // Array final de posiciones
         ArrayList<int[]> posiciones = new ArrayList<>();
@@ -206,7 +206,7 @@ public class TableroGUI {
     }
     
     
-    private ArrayList<int[]> calcularPosicionesFila(boolean superior) {
+    private static ArrayList<int[]> calcularPosicionesFila(boolean superior) {
         
         ArrayList<int[]> posiciones = new ArrayList<>();
         
@@ -239,7 +239,7 @@ public class TableroGUI {
     }
     
     
-    private ArrayList<int[]> calcularPosicionesColumna(boolean izquierda) {
+    private static ArrayList<int[]> calcularPosicionesColumna(boolean izquierda) {
         
         ArrayList<int[]> posiciones = new ArrayList<>();
         

@@ -11,7 +11,7 @@ import java.util.HashSet;
 public abstract class Casilla {
 
     /* Atributos */
-    private final String nombre;
+    private String nombre;
     private final int posicionEnTablero;
     private final Tablero tablero;
 
@@ -56,6 +56,10 @@ public abstract class Casilla {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getPosicionEnTablero() {

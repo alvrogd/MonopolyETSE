@@ -5,7 +5,7 @@ import monopoly.tablero.Tablero;
 
 public class Impuesto extends Casilla {
 
-    private final int impuesto;
+    private int impuesto;
 
     public Impuesto(String nombre, int posicion, Tablero tablero, int impuesto){
 
@@ -18,4 +18,7 @@ public class Impuesto extends Casilla {
         return impuesto;
     }
 
+    public void setImpuesto(int impuesto) {
+        this.impuesto = impuesto;
+    }
 }

@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 public abstract class Propiedad extends Casilla{
 
-    private final Grupo grupo;
+    private Grupo grupo;
 
     private Participante propietario;
     private boolean hipotecada;
@@ -79,6 +79,10 @@ public abstract class Propiedad extends Casilla{
 
     public Grupo getGrupo() {
         return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     public Participante getPropietario() {
