@@ -557,6 +557,7 @@ public class BotonGUI {
                 edificarVariable("pista");
                 break;
             case ayuda:
+                Aplicacion.consola.imprimir("Seleccione un botón del que necesite ayuda.");
                 break;
             case atras:
                 atras();
@@ -585,7 +586,18 @@ public class BotonGUI {
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBoton(posicionX, posicionY)){
-            ejecutarFuncion();
+
+            if(getBotonera().isAyuda()){
+                Aplicacion.consola.imprimir(TipoFuncion.toString(getFuncion()));
+            } else {
+                ejecutarFuncion();
+            }
+
+            if(getFuncion().equals(TipoFuncion.ayuda))
+                getBotonera().setAyuda(true);
+            else
+                getBotonera().setAyuda(false);
+
         }
     }
 

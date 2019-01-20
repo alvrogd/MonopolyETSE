@@ -30,8 +30,14 @@ public class BotoneraGUI {
     // Botón de atras
     private BotonGUI botonAtras;
 
+    // Boton de ayuda
+    private BotonGUI botonAyuda;
+
     // Juego
     private Juego juego;
+
+    // Booleano para saber si se ha presionado la ayuda
+    private boolean ayuda;
 
     // Aplicacion
     private Aplicacion aplicacion;
@@ -82,6 +88,7 @@ public class BotoneraGUI {
         this.botonesPagina = new HashMap<>();
         this.pagina = false;
         this.funcionPagina = null;
+        this.ayuda = false;
 
         crearBotones();
 
@@ -114,6 +121,18 @@ public class BotoneraGUI {
         }
     }
 
+    public boolean isAyuda() {
+        return ayuda;
+    }
+
+    public void setAyuda(boolean ayuda) {
+        this.ayuda = ayuda;
+    }
+
+    public BotonGUI getBotonAyuda() {
+        return botonAyuda;
+    }
+
     public void setPagina(boolean pagina) {
         this.pagina = pagina;
     }
@@ -144,7 +163,7 @@ public class BotoneraGUI {
         int fila = getBotones().size() % ConstantesGUI.BOTONES_POR_FILA;
 
         if(ayuda){
-            fila = ConstantesGUI.BOTONES_POR_FILA - 1;
+            fila = ConstantesGUI.BOTONES_POR_FILA - 2;
             columna = ConstantesGUI.BOTONES_COLUMNAS - 1;
         }
 
@@ -162,7 +181,7 @@ public class BotoneraGUI {
             int size = getBotonesPagina().get(funcion.getFuncionRaiz()).size();
 
             if(atras){
-                fila = ConstantesGUI.BOTONES_POR_FILA - 1;
+                fila = ConstantesGUI.BOTONES_POR_FILA - 2;
                 columna = ConstantesGUI.BOTONES_COLUMNAS - 1;
             } else {
                 fila = size / ConstantesGUI.BOTONES_POR_FILA;
@@ -182,6 +201,8 @@ public class BotoneraGUI {
                 BotonGUI boton = new BotonGUI(this, getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda);
                 if(atras)
                     this.botonAtras = boton;
+                if(ayuda)
+                    this.botonAyuda = boton;
                 getBotones().add(boton);
             }
         }
@@ -310,10 +331,16 @@ public class BotoneraGUI {
                     botones.add(getBotonAtras());
                 }
 
+                if(!botones.contains(getBotonAyuda())){
+                    botones.add(getBotonAyuda());
+                }
+
+
                 // Se añaden los botones de la página y los botones a inhabilitar en los botones a recorrer
                 botonesRecorrer.addAll(botones);
                 botonesRecorrer.addAll(getBotones());
                 funciones.add(TipoFuncion.atras);
+                funciones.add(TipoFuncion.ayuda);
             } else {
                 botones = getBotones();
                 botonesRecorrer = getBotones();
@@ -359,8 +386,10 @@ public class BotoneraGUI {
         actualizarBotones();
         for(BotonGUI botonGUI : getBotonesActuales()){
 
-            if(botonGUI.getFuncion().equals(TipoFuncion.ayuda) || botonGUI.getFuncion().equals(TipoFuncion.atras)){
+            if(botonGUI.getFuncion().equals(TipoFuncion.ayuda)){
                 botonGUI.render(ConstantesGUI.BOTONES_POR_FILA-1, ConstantesGUI.BOTONES_COLUMNAS-1, t);
+            } else if(botonGUI.getFuncion().equals(TipoFuncion.atras)) {
+                botonGUI.render(ConstantesGUI.BOTONES_POR_FILA - 2, ConstantesGUI.BOTONES_COLUMNAS - 1, t);
             } else {
                 botonGUI.render(fila, columna, t);
 
