@@ -392,19 +392,143 @@ public class Celda {
             if (getEditor().masCasillas(TipoCasilla.solar, getPosicionTablero())) {
 
                 // Se añade la opción para crear un solar
-                MenuItem item = new MenuItem("Solar");
-                item.setOnAction(new EventHandler<ActionEvent>() {
+                Menu subsubmenu = new Menu("Solar");
 
-                    @Override
-                    public void handle(ActionEvent event) {
-                        setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
-                                getGrupoNegro(),true, getPosicionTablero(), getBanca(), getTablero()),
-                                ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
-                    }
-                });
+                // Se obtienen los posibles grupos para la celda
+                HashSet<TipoGrupo> gruposDisponibles = getGruposSolaresLibres();
 
-                submenu.getItems().add(item);
+                if(gruposDisponibles.contains(TipoGrupo.negro)) {
+                    MenuItem item = new MenuItem("Grupo negro");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoNegro(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.cyan)){
+                    MenuItem item = new MenuItem("Grupo cyan");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoCyan(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.rosa)) {
+                    MenuItem item = new MenuItem("Grupo rosa");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoRosa(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.naranja)){
+                    MenuItem item = new MenuItem("Grupo naranja");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoNaranja(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.rojo)) {
+                    MenuItem item = new MenuItem("Grupo rojo");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoRojo(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.marron)){
+                    MenuItem item = new MenuItem("Grupo marrón");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoMarron(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.verde)) {
+                    MenuItem item = new MenuItem("Grupo verde");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoVerde(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                if(gruposDisponibles.contains(TipoGrupo.azul)){
+                    MenuItem item = new MenuItem("Grupo azul");
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                    getGrupoAzul(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                    ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                        }
+                    });
+
+                    subsubmenu.getItems().add(item);
+                }
+
+                // Se añade el (sub:)submenú si contiene alguna opción
+                if (!subsubmenu.getItems().isEmpty()) {
+                    submenu.getItems().add(subsubmenu);
+                }
             }
 
             if (getEditor().masCasillas(TipoCasilla.suerte, getPosicionTablero())) {
@@ -563,7 +687,16 @@ public class Celda {
             public void handle(ActionEvent event) {
                 Scanner scanner = new Scanner(System.in);
                 final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
-                propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+
+                // El alquiler debe ser multiplicado por el tamaño del grupo dado que el de los solares es dependiente
+                // de este y del número de solares contenidos
+                if( propiedad instanceof Solar ) {
+                    propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+                }
+
+                else {
+                    propiedad.getGrupo().setPrecio(scanner.nextInt());
+                }
             }
         });
 
@@ -600,7 +733,7 @@ public class Celda {
             public void handle(ActionEvent event) {
                 Scanner scanner = new Scanner(System.in);
                 final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
-                propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+                propiedad.getGrupo().setPrecio(scanner.nextInt());
             }
         });
 

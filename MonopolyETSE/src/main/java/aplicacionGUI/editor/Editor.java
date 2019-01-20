@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.tablero.TipoGrupo;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import resources.editor.EditorCuadricula;
 
@@ -268,10 +269,16 @@ public class Editor {
 
         for( Celda celda : getCeldas().get(fila)) {
 
-            if( celda.getCasillaGUI().getCasilla() instanceof Solar) {
+            // Si se ha creado una casilla en la celda
+            if( celda.getCasillaGUI() != null ) {
 
-                if( ((Solar)celda.getCasillaGUI().getCasilla()).getGrupo().getTipo().equals(tipoGrupo)) {
-                    total++;
+                Casilla casilla = celda.getCasillaGUI().getCasilla();
+
+                if( casilla instanceof Solar) {
+
+                    if( ((Solar)casilla).getGrupo().getTipo().equals(tipoGrupo)) {
+                        total++;
+                    }
                 }
             }
         }
