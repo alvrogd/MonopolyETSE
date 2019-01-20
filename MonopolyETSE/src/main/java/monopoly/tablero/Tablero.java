@@ -31,7 +31,7 @@ public class Tablero {
     //HashMap con las casillas, para acceder de forma directa a través de la clave.
     private HashMap<String, Casilla> casillasTablero;
 
-    //HashMao con los grupos
+    //HashMap con los grupos
     private HashMap<TipoGrupo, Grupo> grupos;
 
     //HashMap con los avatares que contiene el tablero

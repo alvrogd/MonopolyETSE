@@ -57,7 +57,7 @@ public class CasillaGUI {
     private Casilla casilla;
     
     // Imagen de fondo de la casilla asociada
-    private final Image fondo;
+    private Image fondo;
     
     // Sensor de la casilla
     private Rectangle sensor;
@@ -160,7 +160,10 @@ public class CasillaGUI {
         return fondo;
     }
 
-    
+    public void setFondo(Image fondo) {
+        this.fondo = fondo;
+    }
+
     public Rectangle getSensor() {
         return sensor;
     }

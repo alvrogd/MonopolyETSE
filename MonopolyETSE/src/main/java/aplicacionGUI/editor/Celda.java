@@ -12,16 +12,19 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import javafx.stage.FileChooser;
 import monopoly.jugadores.Banca;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -660,7 +663,20 @@ public class Celda {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Escogida opcion cambiar fondo");
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Escoja una imagen de fondo");
+
+                File imagen = fileChooser.showOpenDialog(null);
+
+                // Si el usuario ha escogido una imagen
+                if( imagen != null ) {
+                    getCasillaGUI().setFondo(new Image(imagen.toURI().toString()));
+                }
+
+                // Si el usuario quiere provocar un SEGFAULT
+                else {
+                    System.out.println("Operación cancelada");
+                }
             }
         });
 
