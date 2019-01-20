@@ -306,10 +306,13 @@ public class ConstantesGUI {
     public final static int REGISTRO_FUENTE_TAMANO = 12;
 
     // Dimensiones del editor
-    public final static int EDITOR_ANCHO = 100;
-    public final static int EDITOR_ALTO = 100;
+    public final static int EDITOR_ANCHO = 1620;
+    public final static int EDITOR_ALTO = 685;
 
     // Desplazamiento del editor
     public final static int EDITOR_DESPLAZAMIENTO_X = (VENTANA_ANCHO - EDITOR_ANCHO) / 2;
     public final static int EDITOR_DESPLAZAMIENTO_Y = (VENTANA_ALTO - EDITOR_ALTO) / 2;
+
+    // Nombre de la imagen de cuadrícula del editor
+    public final static String EDITOR_CUADRICULA = "Cuadricula.png";
 }

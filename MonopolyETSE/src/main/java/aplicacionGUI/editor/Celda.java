@@ -288,6 +288,21 @@ public class Celda {
             menu.getItems().add(item1);
         }
 
+        if( true ) {
+
+            // Se añade la opción para cambiar la imagen de fondo
+            MenuItem item2 = new MenuItem("Cambiar fondo");
+            item2.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle( ActionEvent event ) {
+                    System.out.println("Escogida opcion cambiar fondo");
+                }
+            });
+
+            menu.getItems().add(item2);
+        }
+
         // Si se trata de una propiedad
         if( getCasillaGUI().getCasilla() instanceof Propiedad) {
             generalMenuContextualPropiedad(menu);

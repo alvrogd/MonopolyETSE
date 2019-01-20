@@ -2,13 +2,16 @@ package aplicacionGUI.editor;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import resources.editor.EditorCuadricula;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,12 @@ public class Editor {
     // Nodo propiedad del editor
     private final Group nodo;
 
+    // Canvas contenido en el nodo
+    private final Canvas canvas;
+
+    // Contexto en el que representar objetos
+    private final GraphicsContext gc;
+
     // Sensor asociado al editor
     private final Rectangle sensor;
 
@@ -27,6 +36,10 @@ public class Editor {
 
     // Celdas del editor
     private final ArrayList<ArrayList<Celda>> celdas;
+
+    // Cuadrícula del editor
+    private final Image cuadricula = new
+            Image(EditorCuadricula.class.getResource(ConstantesGUI.EDITOR_CUADRICULA).toString());
 
 
     /* Constructor */
@@ -46,14 +59,21 @@ public class Editor {
         this.nodo.getTransforms().add(new Translate(ConstantesGUI.EDITOR_DESPLAZAMIENTO_X,
                 ConstantesGUI.EDITOR_DESPLAZAMIENTO_Y));
 
+        // Se crea un canvas en el nuevo nodo para representar la cuadrícula
+        this.canvas = new Canvas( ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
+        this.nodo.getChildren().add(canvas);
+
+        // Se genera un contexto a partir del canvas para insertar la cuadrícula
+        this.gc = this.canvas.getGraphicsContext2D();
+
         // Se crea el sensor correspondiente
         this.sensor = new Rectangle(0, 0, ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
-        // Y su diferencia (es necesario el ajuste de juntar las casillas)
+        // Y su diferencia
         this.diferencia = new Rectangle(ConstantesGUI.CASILLA_ANCHO, ConstantesGUI.CASILLA_ALTO,
-                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ANCHO - 3 ),
-                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ALTO - 3 ));
+                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ANCHO),
+                (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ALTO));
         this.diferencia.setFill(Color.TRANSPARENT);
 
         // Se obtienen las correspondientes posiciones de las casillas en la ventana
@@ -67,6 +87,7 @@ public class Editor {
 
             // Se crea una fila para cada lado
             ArrayList<Celda> fila = new ArrayList<>();
+            this.celdas.add(fila);
 
             // Se crean tantas celdas como casillas haya por fila
             for( int j = 0; j < ConstantesGUI.CASILLAS_POR_FILA; j++, contador++ ) {
@@ -81,6 +102,18 @@ public class Editor {
 
     public Group getNodo() {
         return nodo;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public Image getCuadricula() {
+        return cuadricula;
     }
 
     public Rectangle getSensor() {
@@ -131,6 +164,10 @@ public class Editor {
 
     public void render(double t ) {
 
+        // Se muestra la cuadrícula
+        getGc().drawImage(getCuadricula(), 0, 0);
+
+        // Se renderizan las celdas
         for( ArrayList<Celda> fila : getCeldas() ) {
 
             for( Celda celda : fila ) {
