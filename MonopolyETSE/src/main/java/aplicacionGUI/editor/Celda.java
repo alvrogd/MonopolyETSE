@@ -12,21 +12,19 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
-import monopoly.Constantes;
 import monopoly.jugadores.Banca;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.ComunidadCasilla;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.SuerteCasilla;
-import resources.casillas.FondosCasillas;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Celda {
 
@@ -58,6 +56,18 @@ public class Celda {
     private static final Banca banca = new Banca();
     private static final Tablero tablero = new Tablero();
     private static final TableroGUI tableroGUI = new TableroGUI();
+
+    // Grupos que asociar a las casillas
+    private static final Grupo grupoNegro = new Grupo(TipoGrupo.negro);
+    private static final Grupo grupoCyan = new Grupo(TipoGrupo.cyan);
+    private static final Grupo grupoRosa = new Grupo(TipoGrupo.rosa);
+    private static final Grupo grupoNaranja = new Grupo(TipoGrupo.naranja);
+    private static final Grupo grupoRojo = new Grupo(TipoGrupo.rojo);
+    private static final Grupo grupoMarron = new Grupo(TipoGrupo.marron);
+    private static final Grupo grupoVerde = new Grupo(TipoGrupo.verde);
+    private static final Grupo grupoAzul = new Grupo(TipoGrupo.azul);
+    private static final Grupo grupoServicios = new Grupo(TipoGrupo.servicios);
+    private static final Grupo grupoTransportes = new Grupo(TipoGrupo.transporte);
 
 
 
@@ -153,6 +163,48 @@ public class Celda {
     public static TableroGUI getTableroGUI() {
         return tableroGUI;
     }
+
+    public static Grupo getGrupoNegro() {
+        return grupoNegro;
+    }
+
+    public static Grupo getGrupoCyan() {
+        return grupoCyan;
+    }
+
+    public static Grupo getGrupoRosa() {
+        return grupoRosa;
+    }
+
+    public static Grupo getGrupoNaranja() {
+        return grupoNaranja;
+    }
+
+    public static Grupo getGrupoRojo() {
+        return grupoRojo;
+    }
+
+    public static Grupo getGrupoMarron() {
+        return grupoMarron;
+    }
+
+    public static Grupo getGrupoVerde() {
+        return grupoVerde;
+    }
+
+    public static Grupo getGrupoAzul() {
+        return grupoAzul;
+    }
+
+    public static Grupo getGrupoServicios() {
+        return grupoServicios;
+    }
+
+    public static Grupo getGrupoTransportes() {
+        return grupoTransportes;
+    }
+
+
 
     /* Métodos */
 
@@ -251,8 +303,8 @@ public class Celda {
                 @Override
                 public void handle(ActionEvent event) {
                     setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Servicio("Casilla Servicio",
-                            new Grupo(TipoGrupo.servicios),true, getPosicionTablero(), getBanca(),
-                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                            getGrupoServicios(),true, getPosicionTablero(), getBanca(), getTablero()),
+                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -267,8 +319,8 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar", new
-                            Grupo(TipoGrupo.negro),true, getPosicionTablero(), getBanca(), getTablero()),
+                    setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                            getGrupoNegro(),true, getPosicionTablero(), getBanca(), getTablero()),
                             ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
                 }
             });
@@ -301,8 +353,8 @@ public class Celda {
                 @Override
                 public void handle(ActionEvent event) {
                     setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Transporte("Casilla Transporte",
-                            new Grupo(TipoGrupo.transporte),true, getPosicionTablero(), getBanca(),
-                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                            getGrupoTransportes(),true, getPosicionTablero(), getBanca(), getTablero()),
+                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -339,7 +391,8 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println("Escogida opcion cambiar nombre");
+                    Scanner scanner = new Scanner(System.in);
+                    getCasillaGUI().getCasilla().setNombre(scanner.nextLine());
                 }
             });
 
@@ -382,7 +435,9 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println("Escogida opcion cambiar precio inicial");
+                    Scanner scanner = new Scanner(System.in);
+                    final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
+                    propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
                 }
             });
 
@@ -423,7 +478,9 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println("Escogida opcion cambiar impuesto");
+                    Scanner scanner = new Scanner(System.in);
+                    final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
+                    propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
                 }
             });
 

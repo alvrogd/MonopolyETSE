@@ -59,9 +59,9 @@ public abstract class Propiedad extends Casilla{
         this.comprable = comprable;
         this.hipotecada = false;
 
-        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
+        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano());
         this.importeCompra = 0;
-        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
+        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano());
 
         this.rentabilidad = 0;
 
@@ -163,7 +163,7 @@ public abstract class Propiedad extends Casilla{
     }
 
     public int getPrecioActual(){
-        return((int) (grupo.getPrecio() / (double) grupo.getPropiedades().size()));
+        return((int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano()));
     }
 
 
