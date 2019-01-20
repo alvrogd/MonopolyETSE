@@ -1,6 +1,8 @@
 package aplicacionGUI.editor;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.editor.filas.Fila;
+import aplicacionGUI.editor.filas.TipoFila;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -40,6 +42,9 @@ public class Editor {
     // Cuadrícula del editor
     private final Image cuadricula = new
             Image(EditorCuadricula.class.getResource(ConstantesGUI.EDITOR_CUADRICULA).toString());
+
+    // Filas para la contabilidad de las casillas
+    private final ArrayList<Fila> filas;
 
 
     /* Constructor */
@@ -96,6 +101,13 @@ public class Editor {
                         contador));
             }
         }
+
+        // Se crea una fila para cada uno de los lados del tablero
+        this.filas = new ArrayList<>();
+        this.filas.add(new Fila(TipoFila.este));
+        this.filas.add(new Fila(TipoFila.norte));
+        this.filas.add(new Fila(TipoFila.oeste));
+        this.filas.add(new Fila(TipoFila.sur));
     }
 
 
@@ -129,6 +141,10 @@ public class Editor {
         return celdas;
     }
 
+    public ArrayList<Fila> getFilas() {
+        return filas;
+    }
+
 
 
     /* Métodos */
@@ -140,7 +156,6 @@ public class Editor {
 
         return(getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY));
     }
-
 
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
             menus) {
@@ -175,5 +190,15 @@ public class Editor {
                 celda.render(t);
             }
         }
+    }
+
+    public boolean masCasillas(TipoCasilla tipoCasilla, int posicion) {
+
+        return(getFilas().get(posicion/10).masCasillas(tipoCasilla));
+    }
+
+    public void actualizarNumeroCasillas(TipoCasilla tipoCasilla, int posicion, int balance ) {
+
+        getFilas().get(posicion/10).actualizarNumeroCasillas(tipoCasilla, balance);
     }
 }

@@ -20,8 +20,7 @@ import monopoly.jugadores.Banca;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.*;
-import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.ComunidadCasilla;
-import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.SuerteCasilla;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -260,110 +259,192 @@ public class Celda {
     private void generarMenuContextualNoCasilla(ContextMenu menu) {
 
         // Se crea un submenú para las opciones de crear una casilla
-        Menu item1 = new Menu("Crear casilla");
+        Menu submenu = new Menu("Crear casilla");
 
-        if (true) {
+        // Si se trata de una de las esquinas
+        if(getPosicionTablero() % 10 == 0) {
 
-            // Se añade la opción para crear una casilla de comunidad
-            MenuItem item2 = new MenuItem("Comunidad");
-            item2.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.carcel, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new ComunidadCasilla("Casilla Comunidad",
-                            getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                }
-            });
+                // Se añade la opción para crear una cárcel
+                MenuItem item = new MenuItem("Cárcel");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item2);
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Carcel("Cárcel",
+                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.carcel, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
+
+            if (getEditor().masCasillas(TipoCasilla.irCarcel, getPosicionTablero())) {
+
+                // Se añade la opción para crear una casilla de ir a la cárcel
+                MenuItem item = new MenuItem("Ir a la cárcel");
+                item.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new IrCarcel("Ir a la cárcel",
+                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.irCarcel, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
+
+            if (getEditor().masCasillas(TipoCasilla.parking, getPosicionTablero())) {
+
+                // Se añade la opción para crear un parking
+                MenuItem item = new MenuItem("Parking");
+                item.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Parking("Parking",
+                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.parking, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
+
+            if (getEditor().masCasillas(TipoCasilla.salida, getPosicionTablero())) {
+
+                // Se añade la opción para crear una salida
+                MenuItem item = new MenuItem("Salida");
+                item.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Salida("Salida",
+                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.salida, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
         }
 
-        if (true) {
+        // En caso contrario
+        else {
 
-            // Se añade la opción para crear una casilla de impuestos
-            MenuItem item3 = new MenuItem("Impuesto");
-            item3.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.comunidad, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Impuesto("Casilla Impuesto", getPosicionTablero(),
-                            getTablero(), 100), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                }
-            });
+                // Se añade la opción para crear una casilla de comunidad
+                MenuItem item = new MenuItem("Comunidad");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item3);
-        }
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new ComunidadCasilla("Casilla Comunidad",
+                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.comunidad, getPosicionTablero(), 1);
+                    }
+                });
 
-        if (true) {
+                submenu.getItems().add(item);
+            }
 
-            // Se añade la opción para crear una casilla de servicios
-            MenuItem item4 = new MenuItem("Servicio");
-            item4.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.impuesto, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Servicio("Casilla Servicio",
-                            getGrupoServicios(),true, getPosicionTablero(), getBanca(), getTablero()),
-                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                }
-            });
+                // Se añade la opción para crear una casilla de impuestos
+                MenuItem item = new MenuItem("Impuesto");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item4);
-        }
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Impuesto("Casilla Impuesto", getPosicionTablero(),
+                                getTablero(), 100), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.impuesto, getPosicionTablero(), 1);
+                    }
+                });
 
-        if (true) {
+                submenu.getItems().add(item);
+            }
 
-            // Se añade la opción para crear un solar
-            MenuItem item5 = new MenuItem("Solar");
-            item5.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.servicio, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
-                            getGrupoNegro(),true, getPosicionTablero(), getBanca(), getTablero()),
-                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
-                }
-            });
+                // Se añade la opción para crear una casilla de servicios
+                MenuItem item = new MenuItem("Servicio");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item5);
-        }
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Servicio("Casilla Servicio",
+                                getGrupoServicios(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.servicio, getPosicionTablero(), 1);
+                    }
+                });
 
-        if (true) {
+                submenu.getItems().add(item);
+            }
 
-            // Se añade la opción para crear una casilla de suerte
-            MenuItem item6 = new MenuItem("Suerte");
-            item6.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.solar, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new SuerteCasilla("Casilla Suerte", getPosicionTablero(),
-                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                }
-            });
+                // Se añade la opción para crear un solar
+                MenuItem item = new MenuItem("Solar");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item6);
-        }
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar",
+                                getGrupoNegro(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), 1);
+                    }
+                });
 
-        if (true) {
+                submenu.getItems().add(item);
+            }
 
-            // Se añade la opción para crear una casilla de transportes
-            MenuItem item7 = new MenuItem("Transporte");
-            item7.setOnAction(new EventHandler<ActionEvent>() {
+            if (getEditor().masCasillas(TipoCasilla.suerte, getPosicionTablero())) {
 
-                @Override
-                public void handle(ActionEvent event) {
-                    setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Transporte("Casilla Transporte",
-                            getGrupoTransportes(),true, getPosicionTablero(), getBanca(), getTablero()),
-                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                }
-            });
+                // Se añade la opción para crear una casilla de suerte
+                MenuItem item = new MenuItem("Suerte");
+                item.setOnAction(new EventHandler<ActionEvent>() {
 
-            item1.getItems().add(item7);
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new SuerteCasilla("Casilla Suerte", getPosicionTablero(),
+                                getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.suerte, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
+
+            if (getEditor().masCasillas(TipoCasilla.transporte, getPosicionTablero())) {
+
+                // Se añade la opción para crear una casilla de transportes
+                MenuItem item = new MenuItem("Transporte");
+                item.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Transporte("Casilla Transporte",
+                                getGrupoTransportes(),true, getPosicionTablero(), getBanca(), getTablero()),
+                                ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.transporte, getPosicionTablero(), 1);
+                    }
+                });
+
+                submenu.getItems().add(item);
+            }
         }
 
         // Se añade el submenú si contiene alguna opción
-        if (!item1.getItems().isEmpty()) {
-            menu.getItems().add(item1);
+        if (!submenu.getItems().isEmpty()) {
+            menu.getItems().add(submenu);
         }
     }
 
@@ -375,6 +456,59 @@ public class Celda {
 
             @Override
             public void handle(ActionEvent event) {
+
+                final Casilla casilla = getCasillaGUI().getCasilla();
+
+                // Se actualiza el número de casillas presentes del tipo de casilla correspondiente
+                if( casilla instanceof Propiedad ) {
+
+                    if( casilla instanceof Servicio ) {
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.servicio, getPosicionTablero(), -1);
+                    }
+
+                    else if( casilla instanceof Solar ) {
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), -1);
+                    }
+
+                    else {
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.transporte, getPosicionTablero(), -1);
+                    }
+                }
+
+                else if( casilla instanceof Accion) {
+
+                    if( casilla instanceof Especial ) {
+
+                        if( casilla instanceof Carcel ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.carcel, getPosicionTablero(), -1);
+                        }
+
+                        if( casilla instanceof IrCarcel ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.irCarcel, getPosicionTablero(), -1);
+                        }
+
+                        if( casilla instanceof Parking ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.parking, getPosicionTablero(), -1);
+                        }
+
+                        else {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.salida, getPosicionTablero(), -1);
+                        }
+                    }
+
+                    else if( casilla instanceof ComunidadCasilla ) {
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.comunidad, getPosicionTablero(), -1);
+                    }
+
+                    else {
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.suerte, getPosicionTablero(), -1);
+                    }
+                }
+
+                else {
+                    getEditor().actualizarNumeroCasillas(TipoCasilla.impuesto, getPosicionTablero(), -1);
+                }
+
                 getCasillaGUI().clear();
                 setCasillaGUI(null);
             }
@@ -382,37 +516,30 @@ public class Celda {
 
         menu.getItems().addAll(item1, new SeparatorMenuItem());
 
+        // Se añade la opción para cambiar el nombre
+        MenuItem item2 = new MenuItem("Cambiar nombre");
+        item2.setOnAction(new EventHandler<ActionEvent>() {
 
-        if (true) {
+            @Override
+            public void handle(ActionEvent event) {
+                Scanner scanner = new Scanner(System.in);
+                getCasillaGUI().getCasilla().setNombre(scanner.nextLine());
+            }
+        });
 
-            // Se añade la opción para cambiar el nombre
-            MenuItem item2 = new MenuItem("Cambiar nombre");
-            item2.setOnAction(new EventHandler<ActionEvent>() {
+        menu.getItems().add(item2);
 
-                @Override
-                public void handle(ActionEvent event) {
-                    Scanner scanner = new Scanner(System.in);
-                    getCasillaGUI().getCasilla().setNombre(scanner.nextLine());
-                }
-            });
+        // Se añade la opción para cambiar la imagen de fondo
+        MenuItem item3 = new MenuItem("Cambiar fondo");
+        item3.setOnAction(new EventHandler<ActionEvent>() {
 
-            menu.getItems().add(item2);
-        }
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Escogida opcion cambiar fondo");
+            }
+        });
 
-        if (true) {
-
-            // Se añade la opción para cambiar la imagen de fondo
-            MenuItem item3 = new MenuItem("Cambiar fondo");
-            item3.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                    System.out.println("Escogida opcion cambiar fondo");
-                }
-            });
-
-            menu.getItems().add(item3);
-        }
+        menu.getItems().add(item3);
 
         // Si se trata de una propiedad
         if (getCasillaGUI().getCasilla() instanceof Propiedad) {
@@ -427,22 +554,19 @@ public class Celda {
 
     private void generalMenuContextualPropiedad(ContextMenu menu) {
 
-        if (true) {
+        // Se añade la opción para cambiar el precio inicial
+        MenuItem item = new MenuItem("Cambiar precio inicial");
+        item.setOnAction(new EventHandler<ActionEvent>() {
 
-            // Se añade la opción para cambiar el precio inicial
-            MenuItem item1 = new MenuItem("Cambiar precio inicial");
-            item1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Scanner scanner = new Scanner(System.in);
+                final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
+                propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+            }
+        });
 
-                @Override
-                public void handle(ActionEvent event) {
-                    Scanner scanner = new Scanner(System.in);
-                    final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
-                    propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
-                }
-            });
-
-            menu.getItems().add(item1);
-        }
+        menu.getItems().add(item);
 
         // Si se trata de un solar
         if (getCasillaGUI().getCasilla() instanceof Solar) {
@@ -452,39 +576,33 @@ public class Celda {
 
     private void generarMenuContextualSolar(ContextMenu menu) {
 
-        if (true) {
+        // Se añade la opción para cambiar el grupo
+        MenuItem item = new MenuItem("Cambiar grupo");
+        item.setOnAction(new EventHandler<ActionEvent>() {
 
-            // Se añade la opción para cambiar el grupo
-            MenuItem item1 = new MenuItem("Cambiar grupo");
-            item1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Escogida opcion cambiar grupo");
+            }
+        });
 
-                @Override
-                public void handle(ActionEvent event) {
-                    System.out.println("Escogida opcion cambiar grupo");
-                }
-            });
-
-            menu.getItems().add(item1);
-        }
+        menu.getItems().add(item);
     }
 
     private void generalMenuContextualImpuesto(ContextMenu menu) {
 
-        if (true) {
+        // Se añade la opción para cambiar el impuesto
+        MenuItem item = new MenuItem("Cambiar impuesto");
+        item.setOnAction(new EventHandler<ActionEvent>() {
 
-            // Se añade la opción para cambiar el impuesto
-            MenuItem item1 = new MenuItem("Cambiar impuesto");
-            item1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Scanner scanner = new Scanner(System.in);
+                final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
+                propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+            }
+        });
 
-                @Override
-                public void handle(ActionEvent event) {
-                    Scanner scanner = new Scanner(System.in);
-                    final Propiedad propiedad = (Propiedad)getCasillaGUI().getCasilla();
-                    propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
-                }
-            });
-
-            menu.getItems().add(item1);
-        }
+        menu.getItems().add(item);
     }
 }
