@@ -1,6 +1,7 @@
 .idea
 .gradle
 .bat
+/MonopolyETSE/out/
 build
 MonopolyETSE.iml
 /nbproject/private/
