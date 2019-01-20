@@ -3,12 +3,15 @@ package aplicacionGUI.editor;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -215,8 +218,8 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new ComunidadCasilla("Casilla Comunidad", getPosicionTablero(),
-                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new ComunidadCasilla("Casilla Comunidad",
+                            getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -231,8 +234,8 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    getCasillaGUI().setCasilla(new Impuesto("Casilla Impuesto", getPosicionTablero(),
-                            getTablero(), 100));
+                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Impuesto("Casilla Impuesto", getPosicionTablero(),
+                            getTablero(), 100), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -247,8 +250,9 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    getCasillaGUI().setCasilla(new Servicio("Casilla Servicio", new Grupo(TipoGrupo.servicios),
-                            true, getPosicionTablero(), getBanca(), getTablero()));
+                    setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Servicio("Casilla Servicio",
+                            new Grupo(TipoGrupo.servicios),true, getPosicionTablero(), getBanca(),
+                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -263,8 +267,9 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    getCasillaGUI().setCasilla(new Solar("Casilla Solar", new Grupo(TipoGrupo.negro),
-                            true, getPosicionTablero(), getBanca(), getTablero()));
+                    setCasillaGUI(new SolarGUI(getTableroGUI(), getNodo(), new Solar("Casilla Solar", new
+                            Grupo(TipoGrupo.negro),true, getPosicionTablero(), getBanca(), getTablero()),
+                            ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,0 ));
                 }
             });
 
@@ -279,8 +284,8 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    getCasillaGUI().setCasilla(new SuerteCasilla("Casilla Suerte", getPosicionTablero(),
-                            getTablero()));
+                    setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new SuerteCasilla("Casilla Suerte", getPosicionTablero(),
+                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -295,9 +300,9 @@ public class Celda {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    getCasillaGUI().setCasilla(new Transporte("Casilla Transporte",
+                    setCasillaGUI(new PropiedadGUI(getTableroGUI(), getNodo(), new Transporte("Casilla Transporte",
                             new Grupo(TipoGrupo.transporte),true, getPosicionTablero(), getBanca(),
-                            getTablero()));
+                            getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                 }
             });
 
@@ -312,11 +317,25 @@ public class Celda {
 
     private void generarMenuContextualCasilla(ContextMenu menu) {
 
+        // Se añade la opción para eliminar la casilla
+        MenuItem item1 = new MenuItem("Eliminar casilla");
+        item1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                getCasillaGUI().clear();
+                setCasillaGUI(null);
+            }
+        });
+
+        menu.getItems().addAll(item1, new SeparatorMenuItem());
+
+
         if (true) {
 
             // Se añade la opción para cambiar el nombre
-            MenuItem item1 = new MenuItem("Cambiar nombre");
-            item1.setOnAction(new EventHandler<ActionEvent>() {
+            MenuItem item2 = new MenuItem("Cambiar nombre");
+            item2.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent event) {
@@ -324,14 +343,14 @@ public class Celda {
                 }
             });
 
-            menu.getItems().add(item1);
+            menu.getItems().add(item2);
         }
 
         if (true) {
 
             // Se añade la opción para cambiar la imagen de fondo
-            MenuItem item2 = new MenuItem("Cambiar fondo");
-            item2.setOnAction(new EventHandler<ActionEvent>() {
+            MenuItem item3 = new MenuItem("Cambiar fondo");
+            item3.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent event) {
@@ -339,7 +358,7 @@ public class Celda {
                 }
             });
 
-            menu.getItems().add(item2);
+            menu.getItems().add(item3);
         }
 
         // Si se trata de una propiedad

@@ -292,6 +292,12 @@ public class CasillaGUI {
         renderAvataresContenidos(t);
     }
 
+
+    public void clear() {
+
+        getGc().clearRect(0, 0, ConstantesGUI.CASILLA_ANCHO, ConstantesGUI.CASILLA_ALTO);
+    }
+
     
     public void renderAvataresContenidos(double t) {
 

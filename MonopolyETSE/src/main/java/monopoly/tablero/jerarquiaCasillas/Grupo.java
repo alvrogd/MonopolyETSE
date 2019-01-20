@@ -26,7 +26,7 @@ public class Grupo {
 
     public Grupo(TipoGrupo tipo) {
         this.tipo = tipo;
-        this.propiedades = null;
+        this.propiedades = new ArrayList<>();
     }
 
     /**
