@@ -54,7 +54,7 @@ public class CasillaGUI {
     private final int desplazamientoY;
 
     // La casilla asociada
-    private final Casilla casilla;
+    private Casilla casilla;
     
     // Imagen de fondo de la casilla asociada
     private final Image fondo;
@@ -151,7 +151,10 @@ public class CasillaGUI {
     public Casilla getCasilla() {
         return casilla;
     }
-    
+
+    public void setCasilla(Casilla casilla) {
+        this.casilla = casilla;
+    }
 
     public Image getFondo() {
         return fondo;

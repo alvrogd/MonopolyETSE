@@ -24,6 +24,11 @@ public class Grupo {
 
     /*Constructores*/
 
+    public Grupo(TipoGrupo tipo) {
+        this.tipo = tipo;
+        this.propiedades = null;
+    }
+
     /**
      * Constructor que crea las solares que contiene además de inicializar todos los atributos de la instancia.
      * @param tipo tipo del grupo

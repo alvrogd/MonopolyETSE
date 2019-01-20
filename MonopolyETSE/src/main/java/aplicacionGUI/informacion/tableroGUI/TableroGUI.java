@@ -44,7 +44,15 @@ public class TableroGUI {
     
     
     /* Constructor */
-    
+
+    public TableroGUI() {
+        this.casillasGUI = null;
+        this.diferencia = null;
+        this.nodo = null;
+        this.representacionesAvatares = null;
+        this.sensor = null;
+    }
+
     public TableroGUI( Group raiz, Tablero tablero ) {
         
         if( raiz == null ) {

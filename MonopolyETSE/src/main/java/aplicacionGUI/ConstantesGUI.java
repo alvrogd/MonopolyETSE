@@ -315,4 +315,7 @@ public class ConstantesGUI {
 
     // Nombre de la imagen de cuadrícula del editor
     public final static String EDITOR_CUADRICULA = "Cuadricula.png";
+
+    // Nombre de un fondo en blanco para una casilla
+    public final static String EDITOR_CASILLA_BLANCO = "CasillaBlanco.png";
 }

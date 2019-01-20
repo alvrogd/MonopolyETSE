@@ -45,6 +45,9 @@ public class Tablero {
 
     /* Constructores */
 
+    public Tablero() {
+    }
+
     /**
      * Único constructor, se le pasa la banca y el juego para inicializar todos los atributos. Crea las casillas y los
      * grupos.

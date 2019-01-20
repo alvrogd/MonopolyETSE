@@ -92,7 +92,8 @@ public class Editor {
             // Se crean tantas celdas como casillas haya por fila
             for( int j = 0; j < ConstantesGUI.CASILLAS_POR_FILA; j++, contador++ ) {
 
-                fila.add(new Celda(this, this.nodo, posiciones.get(contador)[0], posiciones.get(contador)[1]));
+                fila.add(new Celda(this, this.nodo, posiciones.get(contador)[0], posiciones.get(contador)[1],
+                        contador));
             }
         }
     }
