@@ -469,6 +469,12 @@ public class BotonGUI {
         getBotonera().setFuncionPagina(getFuncion());
     }
 
+    public void edificar(){
+
+        getBotonera().setPagina(true);
+        getBotonera().setFuncionPagina(getFuncion());
+    }
+
     public void estadisticasJugador(){
         Jugador auxJugador = getApp().getJuego().getTurno();
 
@@ -543,6 +549,7 @@ public class BotonGUI {
                 venderVariable("pista");
                 break;
             case edificar:
+                edificar();
                 break;
             case edificarCasa:
                 edificarVariable("casa");

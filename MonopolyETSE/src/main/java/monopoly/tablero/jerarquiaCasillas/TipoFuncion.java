@@ -175,11 +175,11 @@ public enum TipoFuncion {
             case edificar:
                 return("Botón para edificar un edificio en la propiedad en la que está el avatar. Se abre un menú nuevo para decidir el edificio a construir");
             case edificarCasa:
-                return("Botón para edificar una pista de la propiedad en la que está el avatar.");
+                return("Botón para edificar una casa de la propiedad en la que está el avatar.");
             case edificarHotel:
-                return("Botón para edificar una pista de la propiedad en la que está el avatar.");
+                return("Botón para edificar un hotel de la propiedad en la que está el avatar.");
             case edificarPiscina:
-                return("Botón para edificar una pista de la propiedad en la que está el avatar.");
+                return("Botón para edificar una piscina de la propiedad en la que está el avatar.");
             case edificarPista:
                 return("Botón para edificar una pista de la propiedad en la que está el avatar.");
             case ayuda:
