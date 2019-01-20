@@ -12,7 +12,7 @@ public class ConstantesGUI {
 
     // Dimensiones de la sección del tablero
     public final static int TABLERO_ANCHO = 1650;
-    public final static int TABLERO_ALTO = 715;
+    public final static int TABLERO_ALTO = 690;
 
     // Dimensiones de la sección de los controles
     public final static int CONTROLES_ANCHO = 1920;
@@ -24,7 +24,7 @@ public class ConstantesGUI {
 
     // Desplazamientos de la sección de menú
     public final static int MENU_DESPLAZAMIENTO_X = (VENTANA_ANCHO - CONTROLES_ANCHO)/2;
-    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - CONTROLES_ALTO);
+    public final static int MENU_DESPLAZAMIENTO_Y = (VENTANA_ALTO - CONTROLES_ALTO) + 50;
 
     // Desplazamientos para la sección de los botones
     public final static int BOTONES_DESPLAZAMIENTO_X = 0;

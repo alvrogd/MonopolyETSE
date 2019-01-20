@@ -128,4 +128,14 @@ public class Editor {
             }
         }
     }
+
+    public void render(double t ) {
+
+        for( ArrayList<Celda> fila : getCeldas() ) {
+
+            for( Celda celda : fila ) {
+                celda.render(t);
+            }
+        }
+    }
 }
