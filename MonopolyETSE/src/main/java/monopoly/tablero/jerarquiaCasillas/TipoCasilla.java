@@ -1,4 +1,4 @@
-package aplicacionGUI.editor;
+package monopoly.tablero.jerarquiaCasillas;
 
 public enum TipoCasilla {
 

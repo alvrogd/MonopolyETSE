@@ -1,6 +1,6 @@
 package aplicacionGUI.editor.filas;
 
-import aplicacionGUI.editor.TipoCasilla;
+import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
 
 public class Fila {
 

@@ -726,7 +726,7 @@ public class Celda {
 
     private void generarMenuContextualSolar(ContextMenu menu) {
 
-        // Se añade la opción para cambiar el grupo
+        /*// Se añade la opción para cambiar el grupo
         MenuItem item = new MenuItem("Cambiar grupo");
         item.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -736,7 +736,7 @@ public class Celda {
             }
         });
 
-        menu.getItems().add(item);
+        menu.getItems().add(item);*/
     }
 
     private void generalMenuContextualImpuesto(ContextMenu menu) {
@@ -759,5 +759,77 @@ public class Celda {
     public HashSet<TipoGrupo> getGruposSolaresLibres() {
 
         return(getEditor().getGruposSolaresLibres(getPosicionTablero()));
+    }
+
+    public InformacionCasillaGUI toInformacionCasillaGUI() {
+
+        final Casilla casilla = getCasillaGUI().getCasilla();
+
+        final TipoCasilla tipoCasilla;
+        final String nombre = getCasillaGUI().getCasilla().getNombre();
+        final Grupo grupo;
+        final int importe;
+        final Image fondo = getCasillaGUI().getFondo();
+
+        if( casilla instanceof Propiedad ) {
+
+            Propiedad propiedad = (Propiedad)casilla;
+
+            grupo = propiedad.getGrupo();
+            importe = propiedad.getPrecioActual();
+
+            if( propiedad instanceof Servicio ) {
+                tipoCasilla = TipoCasilla.servicio;
+            }
+
+            else if( propiedad instanceof Solar ) {
+                tipoCasilla = TipoCasilla.solar;
+            }
+
+            else {
+                tipoCasilla = TipoCasilla.transporte;
+            }
+        }
+
+        else if( casilla instanceof Accion) {
+
+            grupo = null;
+            importe = 0;
+
+            if( casilla instanceof Especial ) {
+
+                if( casilla instanceof Carcel ) {
+                    tipoCasilla = TipoCasilla.carcel;
+                }
+
+                else if( casilla instanceof IrCarcel ) {
+                    tipoCasilla = TipoCasilla.irCarcel;
+                }
+
+                else if( casilla instanceof Parking ) {
+                    tipoCasilla = TipoCasilla.parking;
+                }
+
+                else {
+                    tipoCasilla = TipoCasilla.salida;
+                }
+            }
+
+            else if( casilla instanceof ComunidadCasilla ) {
+                tipoCasilla = TipoCasilla.comunidad;
+            }
+
+            else {
+                tipoCasilla = TipoCasilla.suerte;
+            }
+        }
+
+        else {
+            tipoCasilla = TipoCasilla.impuesto;
+            grupo = null;
+            importe = ((Impuesto)casilla).getImpuesto();
+        }
+
+        return(new InformacionCasillaGUI(tipoCasilla, nombre, grupo, importe, fondo));
     }
 }

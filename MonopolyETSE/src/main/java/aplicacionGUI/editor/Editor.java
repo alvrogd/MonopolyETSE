@@ -4,7 +4,6 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.filas.Fila;
 import aplicacionGUI.editor.filas.TipoFila;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,6 +16,7 @@ import javafx.scene.transform.Translate;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Solar;
+import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
 import resources.editor.EditorCuadricula;
 
 import java.util.ArrayList;
@@ -284,5 +284,19 @@ public class Editor {
         }
 
         return(total < tipoGrupo.getTamano());
+    }
+
+    public ArrayList<InformacionCasillaGUI> exportarTablero() {
+
+        ArrayList<InformacionCasillaGUI> informacion = new ArrayList<>();
+
+        for( ArrayList<Celda> fila : getCeldas() ) {
+
+            for( Celda celda : fila ) {
+                informacion.add(celda.toInformacionCasillaGUI());
+            }
+        }
+
+        return(informacion);
     }
 }
