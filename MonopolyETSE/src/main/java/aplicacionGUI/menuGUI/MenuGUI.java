@@ -6,6 +6,8 @@ import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.menuGUI.BotonesGUI.BotoneraGUI;
 import aplicacionGUI.menuGUI.JugadoresGUI.JugadoresGUI;
+import aplicacionGUI.menuGUI.entrada.EntradaGUI;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -86,6 +88,9 @@ public class MenuGUI{
     // Array auxiliar donde se añadirán las CasillasGUI que participan en una parte del trato
     private ArrayList<CasillaGUI> casillasAuxiliar;
 
+    // Booleano para indicar que el paso se ejecuta en bucle
+    private boolean seguirPaso;
+
     /* Constructor */
 
     public MenuGUI(Group raiz, Aplicacion app, String imagen, TableroGUI tableroGUI){
@@ -153,6 +158,7 @@ public class MenuGUI{
         this.faseNoAlquiler = false;
 
         this.casillasAuxiliar = new ArrayList<>();
+        this.seguirPaso = false;
     }
 
     public BotoneraGUI getBotonera() {
@@ -177,6 +183,14 @@ public class MenuGUI{
 
     public boolean isSiguientePaso() {
         return siguientePaso;
+    }
+
+    public boolean isSeguirPaso() {
+        return seguirPaso;
+    }
+
+    public void setSeguirPaso(boolean seguirPaso) {
+        this.seguirPaso = seguirPaso;
     }
 
     public void setSiguientePaso(boolean siguientePaso) {
@@ -352,28 +366,71 @@ public class MenuGUI{
 
                     // Si en el trato estaba dando ahora tocará recibir
                     if(isEstarDandoDinero()){
-                        getBotonera().setDineroDar(Aplicacion.consola.leer("Introduzca el dinero a dar", true));
-                        setEstarDandoDinero(false);
+                        if(!ConsolaInterfaz.isSeHaLeido()) {
+                            // En caso de que no esté activo voy a querer leer y si no se ha pulsado enter lo pongo en activo de nuevo
+                            if(!ConsolaInterfaz.getEntradaGUI().isPulsadoEnter()) {
+                                ConsolaInterfaz.getEntradaGUI().setActivo(true);
+                            } else {
+                                // En el caso de que se haya puesto a enter puedo leer lo que hay en el buffer
+                                Integer entero = ConsolaInterfaz.leer("Introduzca el dinero a dar", true);
+                                if(entero == null){
+                                    // Entonces el valor era incorrecto y se vuelve a poner en activo
+                                    ConsolaInterfaz.getEntradaGUI().setActivo(true);
+                                } else {
+                                    getBotonera().setDineroDar(entero);
+                                    ConsolaInterfaz.setSeHaLeido(true);
+                                    setSeguirPaso(true);
+                                }
+                            }
+                        } else {
+
+                            // Se deja activada porque va a ser necesaria
+                            ConsolaInterfaz.getEntradaGUI().setActivo(true);
+                            ConsolaInterfaz.setSeHaLeido(false);
+                            setEstarDandoDinero(false);
+                        }
                     } else {
                         // Esta es la última parte del trato y por lo tanto se procede a crearlo y procesarlo.
-                        getBotonera().setDineroRecibir(Aplicacion.consola.leer("Introduzca el dinero a recibir", true));
-                        Aplicacion.consola.imprimir("Trato enviado a " + getJugadorProponerTrato().getNombre() + " por parte de " + getJuego().getTurno().getNombre());
+                        setSeguirPaso(false);
+                        if(!ConsolaInterfaz.isSeHaLeido()) {
+                            // En caso de que no esté activo voy a querer leer y no se haya pulsado enter lo pongo a true
+                            if(!ConsolaInterfaz.getEntradaGUI().isPulsadoEnter()) {
+                                ConsolaInterfaz.getEntradaGUI().setActivo(true);
+                            } else {
+                                // En el caso de que se haya puesto a enter puedo leer lo que hay en el buffer
+                                Integer entero = ConsolaInterfaz.leer("Introduzca el dinero a recibir", true);
+                                if(entero == null){
+                                    // Entonces el valor era incorrecto y se vuelve a poner en activo
+                                    ConsolaInterfaz.getEntradaGUI().setActivo(true);
+                                } else {
+                                    getBotonera().setDineroRecibir(entero);
+                                    ConsolaInterfaz.getEntradaGUI().setActivo(false);
+                                    ConsolaInterfaz.setSeHaLeido(true);
+                                }
+                            }
+                        } else {
+                            ConsolaInterfaz.setSeHaLeido(false);
+                            ConsolaInterfaz.getEntradaGUI().setActivo(false);
+                            setEstarDandoDinero(false);
 
-                        getAplicacion().getJuego().incrementarNumTratos(1);
+                            Aplicacion.consola.imprimir("Trato enviado a " + getJugadorProponerTrato().getNombre() + " por parte de " + getJuego().getTurno().getNombre());
 
-                        String idTrato = "trato" + getAplicacion().getJuego().getNumTratos();
+                            getAplicacion().getJuego().incrementarNumTratos(1);
 
-                        Trato trato = new Trato(getAplicacion().getJuego().getTurno(), getJugadorProponerTrato(), getBotonera().getCasillasDar(), getBotonera().getCasillasRecibir(), getBotonera().getDineroDar(), getBotonera().getDineroRecibir(), getBotonera().getInmunidades(), idTrato);
+                            String idTrato = "trato" + getAplicacion().getJuego().getNumTratos();
 
-                        getAplicacion().getJuego().getTurno().getTratosEmitidos().put(trato.getId(), trato);
-                        try {
-                            getJugadorProponerTrato().proponerTrato(trato);
-                        } catch (NoSerPropietarioException e) {
-                            Aplicacion.consola.imprimir(e.getMessage());
+                            Trato trato = new Trato(getAplicacion().getJuego().getTurno(), getJugadorProponerTrato(), getBotonera().getCasillasDar(), getBotonera().getCasillasRecibir(), getBotonera().getDineroDar(), getBotonera().getDineroRecibir(), getBotonera().getInmunidades(), idTrato);
+
+                            getAplicacion().getJuego().getTurno().getTratosEmitidos().put(trato.getId(), trato);
+                            try {
+                                getJugadorProponerTrato().proponerTrato(trato);
+                            } catch (NoSerPropietarioException e) {
+                                Aplicacion.consola.imprimir(e.getMessage());
+                            }
+
+                            // Se finaliza el trato
+                            setProponiendoTrato(false);
                         }
-
-                        // Se finaliza el trato
-                        setProponiendoTrato(false);
                     }
                 } else {
                     // Si en el trato se estaba dando ahora tocará recibir
@@ -396,7 +453,8 @@ public class MenuGUI{
             }
 
             // Se pone el siguiente paso a false
-            setSiguientePaso(false);
+            if(!seguirPaso)
+                setSiguientePaso(false);
         }
 
     }

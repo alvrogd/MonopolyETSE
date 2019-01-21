@@ -3,6 +3,8 @@ package aplicacionGUI.menuGUI.BotonesGUI;
 import aplicacion.Aplicacion;
 import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ImagenAnimada;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -675,6 +677,7 @@ public class BotonGUI {
     // ponen todos en false.
     public void cancelar(){
         getBotonera().getMenuGUI().setProponiendoTrato(false);
+        ConsolaInterfaz.getEntradaGUI().setActivo(false);
     }
 
     public void ejecutarFuncion(){

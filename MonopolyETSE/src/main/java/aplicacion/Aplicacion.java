@@ -4,6 +4,9 @@ import aplicacion.excepciones.AplicacionException;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacion.salidaPantalla.*;
 import java.util.HashSet;
+
+import aplicacionGUI.menuGUI.entrada.EntradaGUI;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import monopoly.Juego;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 
