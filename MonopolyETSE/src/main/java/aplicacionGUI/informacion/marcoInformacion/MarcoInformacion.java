@@ -443,7 +443,9 @@ public class MarcoInformacion {
                 setAnimacionFinalizada(true);
                 return;
             }
-        } // En caso contrario, se está cerrando
+        }
+
+        // En caso contrario, se está cerrando
         else {
 
             frame = getANIMACION_ABRIR().getFrameInverso(t);
