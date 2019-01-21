@@ -36,14 +36,14 @@ public class Fila {
 
         this.tipoFila = tipoFila;
 
-        this.numeroCarcel = 0;
+        Fila.numeroCarcel = 0;
         this.numeroComunidad = 0;
         this.numeroEspecial = 0;
         this.numeroGrupos = 0;
         this.numeroImpuestos = 0;
-        this.numeroIrCarcel = 0;
-        this.numeroParking = 0;
-        this.numeroSalida = 0;
+        Fila.numeroIrCarcel = 0;
+        Fila.numeroParking = 0;
+        Fila.numeroSalida = 0;
         this.numeroServicios = 0;
         this.numeroSolares = 0;
         this.numeroSuerte = 0;
@@ -59,7 +59,7 @@ public class Fila {
     }
 
     public void setNumeroCarcel(int numeroCarcel) {
-        this.numeroCarcel = numeroCarcel;
+        Fila.numeroCarcel = numeroCarcel;
     }
 
     public TipoFila getTipoFila() {
@@ -103,7 +103,7 @@ public class Fila {
     }
 
     public void setNumeroIrCarcel(int numeroIrCarcel) {
-        this.numeroIrCarcel = numeroIrCarcel;
+        Fila.numeroIrCarcel = numeroIrCarcel;
     }
 
     public int getNumeroParking() {
@@ -111,7 +111,7 @@ public class Fila {
     }
 
     public void setNumeroParking(int numeroParking) {
-        this.numeroParking = numeroParking;
+        Fila.numeroParking = numeroParking;
     }
 
     public int getNumeroSalida() {
@@ -119,7 +119,7 @@ public class Fila {
     }
 
     public void setNumeroSalida(int numeroSalida) {
-        this.numeroSalida = numeroSalida;
+        Fila.numeroSalida = numeroSalida;
     }
 
     public int getNumeroServicios() {
