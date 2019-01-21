@@ -220,7 +220,7 @@ public class Celda {
     }
 
 
-    public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
+    public void handleClick(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
             menus) {
 
         double posicionX = x - getDesplazamientoX();

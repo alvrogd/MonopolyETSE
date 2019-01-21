@@ -3,11 +3,8 @@ package aplicacionGUI;
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.editor.Editor;
-import aplicacionGUI.menuGUI.MenuGUI;
 import aplicacionGUI.informacion.Informacion;
-import java.util.ArrayList;
-import java.util.Scanner;
-
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -22,6 +19,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import resources.fondo.Fondo;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -306,7 +306,7 @@ public class main extends Application {
                 //Se utiliza xPresionado para que en vez de detectar la acción en la posición donde se suelta el click
                 //lo detecte en la posición donde se empezó a presionar
                 if(editor.contienePosicion(xPresionado[0], yPresionado[0])){
-                    editor.handleClickDerecho(xPresionado[0], yPresionado[0], raiz, e, menus);
+                    editor.handleClick(xPresionado[0], yPresionado[0], raiz, e, menus);
                 }
             }
         });
