@@ -311,7 +311,7 @@ public class CasillaGUI {
     
     
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
-            menus) {
+            menus, Aplicacion app) {
         
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
@@ -319,7 +319,7 @@ public class CasillaGUI {
         System.out.println(getCasilla().getNombre());
         
         // Se genera el menú
-        setMenu(generarMenuContextual());
+        setMenu(generarMenuContextual(app));
         
         // Se muestra el menú
         getMenu().show(nodoRaiz, e.getScreenX(), e.getScreenY());
@@ -455,7 +455,7 @@ public class CasillaGUI {
     }
     
     
-    public ContextMenu generarMenuContextual() {
+    public ContextMenu generarMenuContextual(Aplicacion app) {
         
         // Se crea el menú de opciones para la casilla
         ContextMenu menu = new ContextMenu();
@@ -471,7 +471,7 @@ public class CasillaGUI {
             
                 @Override
                 public void handle( ActionEvent event ) {
-                    System.out.println("Escogida opcion describir");
+                    System.out.println(getCasilla().toString());
                 }
             });
             

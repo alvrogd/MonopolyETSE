@@ -165,13 +165,13 @@ public class Informacion {
     
     
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
-            menus) {
+            menus, Aplicacion app) {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
         
         if( getTableroGUI().contienePosicion(posicionX, posicionY)) {
-            getTableroGUI().handleClickDerecho(posicionX, posicionY, nodoRaiz, e, menus);
+            getTableroGUI().handleClickDerecho(posicionX, posicionY, nodoRaiz, e, menus, app);
         }   
     }
     

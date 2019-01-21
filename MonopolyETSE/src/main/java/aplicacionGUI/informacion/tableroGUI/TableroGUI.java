@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
@@ -340,7 +341,7 @@ public class TableroGUI {
     
     
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
-            menus) {
+            menus, Aplicacion app) {
         
         double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
@@ -354,7 +355,7 @@ public class TableroGUI {
             for( CasillaGUI casillaGUI : fila ) {
             
                 if( casillaGUI.contienePosicion(posicionX, posicionY) ) {
-                    casillaGUI.handleClickDerecho(posicionX, posicionY, nodoRaiz, e, menus);
+                    casillaGUI.handleClickDerecho(posicionX, posicionY, nodoRaiz, e, menus, app);
                 }
             }
         }

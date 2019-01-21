@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import java.util.ArrayList;
@@ -129,10 +130,10 @@ public class SolarGUI extends PropiedadGUI {
     }
     
     
-    public ContextMenu generarMenuContextual() {
+    public ContextMenu generarMenuContextual(Aplicacion app) {
         
         // Se crea el menú de opciones para a partir del padre
-        ContextMenu menu = super.generarMenuContextual();
+        ContextMenu menu = super.generarMenuContextual(app);
         
         // Se obtienen las funciones propias a la casilla
         HashSet<TipoFuncion> funciones = getCasilla().funcionesARealizar();
@@ -153,7 +154,12 @@ public class SolarGUI extends PropiedadGUI {
 
                     @Override
                     public void handle( ActionEvent event ) {
-                        System.out.println("Escogida opcion vender casas");
+                        int cantidad = 1;
+                        try {
+                            app.getJuego().getTurno().venderEdificio(TipoEdificio.casa, cantidad, getSolar());
+                        } catch (Exception ignored) {
+
+                        }
                     }
                 });
                 
@@ -168,7 +174,12 @@ public class SolarGUI extends PropiedadGUI {
 
                     @Override
                     public void handle( ActionEvent event ) {
-                        System.out.println("Escogida opcion vender hoteles");
+                        int cantidad = 1;
+                        try {
+                            app.getJuego().getTurno().venderEdificio(TipoEdificio.hotel, cantidad, getSolar());
+                        } catch (Exception ignored) {
+
+                        }
                     }
                 });
                 
@@ -183,7 +194,12 @@ public class SolarGUI extends PropiedadGUI {
 
                     @Override
                     public void handle( ActionEvent event ) {
-                        System.out.println("Escogida opcion vender piscinas");
+                        int cantidad = 1;
+                        try {
+                            app.getJuego().getTurno().venderEdificio(TipoEdificio.piscina, cantidad, getSolar());
+                        } catch (Exception ignored) {
+
+                        }
                     }
                 });
                 
@@ -198,7 +214,12 @@ public class SolarGUI extends PropiedadGUI {
 
                     @Override
                     public void handle( ActionEvent event ) {
-                        System.out.println("Escogida opcion vender pistas");
+                        int cantidad = 1;
+                        try {
+                            app.getJuego().getTurno().venderEdificio(TipoEdificio.pistaDeporte, cantidad, getSolar());
+                        } catch (Exception ignored) {
+
+                        }
                     }
                 });
                 

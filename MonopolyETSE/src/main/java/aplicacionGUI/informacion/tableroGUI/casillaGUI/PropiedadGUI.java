@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,10 +78,10 @@ public class PropiedadGUI extends CasillaGUI {
     }
     
     
-    public ContextMenu generarMenuContextual() {
+    public ContextMenu generarMenuContextual(Aplicacion app) {
         
         // Se crea el menú de opciones para a partir del padre
-        ContextMenu menu = super.generarMenuContextual();
+        ContextMenu menu = super.generarMenuContextual(app);
                 
         // Se obtienen las funciones propias a la casilla
         HashSet<TipoFuncion> funciones = getCasilla().funcionesARealizar();
@@ -96,7 +97,11 @@ public class PropiedadGUI extends CasillaGUI {
 
                 @Override
                 public void handle( ActionEvent event ) {
-                    System.out.println("Escogida opcion hipotecar");
+                    try {
+                        app.getJuego().getTurno().hipotecar(getPropiedad());
+                    } catch (Exception ignored) {
+
+                    }
                 }
             });
             
@@ -111,7 +116,11 @@ public class PropiedadGUI extends CasillaGUI {
 
                 @Override
                 public void handle( ActionEvent event ) {
-                    System.out.println("Escogida opcion deshipotecar");
+                    try {
+                        app.getJuego().getTurno().deshipotecar(getPropiedad());
+                    } catch (Exception ignored) {
+
+                    }
                 }
             });
             

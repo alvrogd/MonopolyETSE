@@ -187,7 +187,7 @@ public class main extends Application {
                         if(e.getButton().equals(MouseButton.PRIMARY)) {
                             informacion.handleClickIzquierdo(x, y);
                         } else if(e.getButton().equals(MouseButton.SECONDARY)){
-                            informacion.handleClickDerecho(x, y, raiz, e, menus);
+                            informacion.handleClickDerecho(x, y, raiz, e, menus, app);
                         }
                     }
                 }
