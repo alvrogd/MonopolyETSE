@@ -28,7 +28,7 @@ public class ImagenAnimada {
      *
      * @param localizador   clase a partir de la cual localizar los frames
      * @param nombresFrames nombre de cada uno de los frames a obtener
-     * @param duracion      duración de la animación
+     * @param duracion      duración de cada frame
      */
     public ImagenAnimada(Object localizador, String[] nombresFrames, double duracion) {
 
@@ -94,12 +94,15 @@ public class ImagenAnimada {
      * Se obtiene un frame de la animación especificando el tiempo
      *
      * @param t tiempo transcurrido
-     * @return  frame correspondiente
+     * @return frame correspondiente
      */
     public Image getFrame(double t) {
 
         // Se calcula el número de frame:
-        // - Se considera
+        // - Se considera el tiempo de inicio, restándolo al tiempo actual
+        // - Se obtiene el tiempo restante para completar un ciclo (animación completa)
+        // - Se divide el resultado del módulo entre la duración de cada frame para obtener el índice del
+        //   correspondiente
         int i = (int) (((t - getTiempoInicio()) % (getFrames().size() * getDuracion())) / getDuracion());
 
         return (getFrames().get(i));
@@ -109,7 +112,7 @@ public class ImagenAnimada {
      * Se obtiene un frame de la animación en orden inverso especificando el tiempo
      *
      * @param t tiempo transcurrido
-     * @return  frame correspondiente
+     * @return frame correspondiente
      */
     public Image getFrameInverso(double t) {
 
@@ -122,7 +125,7 @@ public class ImagenAnimada {
      * Se obtiene un frame de la animación especificando el número de frame
      *
      * @param i número de frame
-     * @return  frame correspondiente
+     * @return frame correspondiente
      */
     public Image getFrameNumero(int i) {
 
@@ -133,7 +136,7 @@ public class ImagenAnimada {
      * Se obtiene un frame de la animación en orden inverso especificando el número de frame
      *
      * @param i número de frame
-     * @return  frame correspondiente
+     * @return frame correspondiente
      */
     public Image getFrameInversoNumero(int i) {
 
@@ -144,7 +147,7 @@ public class ImagenAnimada {
      * Se obtiene un número de frame de la animación especificando el tiempo
      *
      * @param t tiempo transcurrido
-     * @return  número de frame correspondiente
+     * @return número de frame correspondiente
      */
     public int getIndice(double t) {
         return ((int) (((t - getTiempoInicio()) % (getFrames().size() * getDuracion())) / getDuracion()));
@@ -154,7 +157,7 @@ public class ImagenAnimada {
      * Se obtiene un número de frame de la animación en orden inverso especificando el tiempo
      *
      * @param t tiempo transcurrido
-     * @return  número de frame correspondiente
+     * @return número de frame correspondiente
      */
     public int getIndiceInverso(double t) {
         return (getFrames().size() - 1 - getIndice(t));
