@@ -117,7 +117,7 @@ public class main extends Application {
             app.introducirComando("cambiar modo");
 
             // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
-            Informacion informacion = new Informacion(raiz, app.getJuego().getTablero(), app);
+            Informacion informacion = new Informacion(raiz, app.getJuego().getTablero());
 
             MenuGUI menuGUI = new MenuGUI(raiz, app, "fondo.png", informacion.getTableroGUI());
 

@@ -1,29 +1,29 @@
 package aplicacionGUI.informacion.tableroGUI;
 
 import aplicacion.Aplicacion;
+import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
-import aplicacionGUI.ConstantesGUI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import monopoly.tablero.Tablero;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
+import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import resources.avatares.ImagenesAvatares;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class TableroGUI {
     
