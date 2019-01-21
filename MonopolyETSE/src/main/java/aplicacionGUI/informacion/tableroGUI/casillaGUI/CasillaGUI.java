@@ -334,11 +334,11 @@ public class CasillaGUI {
         renderNombre();
         renderContenido(t);
 
-        if(getCasilla() instanceof Propiedad) {
+        /*if(getCasilla() instanceof Propiedad) {
 
             Propiedad propiedad = (Propiedad) getCasilla();
 
-            if (getTableroGUI().getInformacion().getMenuGUI().isProponiendoTrato()) {
+            //if (getTableroGUI().getInformacion().getMenuGUI().isProponiendoTrato()) {
 
                 if (getTableroGUI().getInformacion().getMenuGUI().isEstarDandoEnTrato()) {
 
@@ -360,7 +360,7 @@ public class CasillaGUI {
                     }
                 }
             }
-        }
+        }*/
     }
 
     public void renderRecuadro(){
