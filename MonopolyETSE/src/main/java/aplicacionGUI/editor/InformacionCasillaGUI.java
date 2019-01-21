@@ -9,16 +9,31 @@ public class InformacionCasillaGUI extends InformacionCasilla {
 
     /* Atributos */
 
+    // Fondo de la representación de la casilla
     private final Image fondo;
 
 
 
     /* Constructores */
 
+    /**
+     * Se crea un contenedor de información personalizada sobre una representación de una casilla y de esta
+     * @param tipoCasilla tipo de casilla al que corresponde la información
+     * @param nombre nombre de la casilla
+     * @param fondo imagen de fondo que mostrar al representar la casilla
+     */
     public InformacionCasillaGUI(TipoCasilla tipoCasilla, String nombre, Image fondo ) {
         this(tipoCasilla, nombre, null, 0, fondo);
     }
 
+    /**
+     * Se crea un contenedor de información personalizada sobre una representación de una casilla y de esta
+     * @param tipoCasilla tipo de casilla al que corresponde la información
+     * @param nombre nombre de la casilla
+     * @param grupo grupo al que pertenece la casilla
+     * @param importe importe asociado a la casilla (precio de compra, impuesto...)
+     * @param fondo imagen de fondo que mostrar al representar la casilla
+     */
     public InformacionCasillaGUI(TipoCasilla tipoCasilla, String nombre, Grupo grupo, int importe, Image fondo ) {
 
         super( tipoCasilla, nombre, grupo, importe);
