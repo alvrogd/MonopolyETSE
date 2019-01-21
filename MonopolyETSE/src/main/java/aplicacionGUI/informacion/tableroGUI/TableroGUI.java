@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI;
 
+import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
@@ -160,6 +161,22 @@ public class TableroGUI {
             
             this.representacionesAvatares.put(avatar.getIdentificador(), avatares.get(0));
             avatares.remove(0);
+        }
+    }
+
+    public TableroGUI(Informacion informacion, Group raiz, Tablero tablero, ArrayList<InformacionCasillaGUI>
+                      tableroExportado) {
+
+        this(informacion, raiz, tablero);
+
+        // Se cambian las imágenes de las casillas
+        int contador = 0;
+
+        for( ArrayList<CasillaGUI> fila : this.casillasGUI ) {
+
+            for( CasillaGUI casillaGUI : fila ) {
+                casillaGUI.setFondo(tableroExportado.get(contador++).getFondo());
+            }
         }
     }
     
