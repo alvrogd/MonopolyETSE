@@ -12,14 +12,6 @@
     -fx-background-radius: 1.0;
 }
 
-/*.scroll-bar > .increment-button, .scroll-bar > .decrement-button, .scroll-bar:hover > .increment-button, .scroll-bar:hover > .decrement-button {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: rgb(150.0, 150.0, 150.0);
-}*/
-
 /* Flecha arriba */
 .scroll-bar:vertical > .increment-button > .increment-arrow {
     -fx-shape: "M298 426h428l-214 214z";
