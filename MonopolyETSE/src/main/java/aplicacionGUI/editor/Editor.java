@@ -286,6 +286,21 @@ public class Editor {
         return(total < tipoGrupo.getTamano());
     }
 
+    public boolean tableroValido() {
+
+        for( ArrayList<Celda> fila : getCeldas() ) {
+
+            for( Celda celda : fila ) {
+
+                if(celda.getCasillaGUI() == null ) {
+                    return(false);
+                }
+            }
+        }
+
+        return(true);
+    }
+
     public ArrayList<InformacionCasillaGUI> exportarTablero() {
 
         ArrayList<InformacionCasillaGUI> informacion = new ArrayList<>();
