@@ -3,8 +3,6 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import java.util.ArrayList;
-import java.util.HashSet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -21,6 +19,9 @@ import monopoly.tablero.jerarquiaCasillas.Solar;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.edificios.ImagenesEdificios;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SolarGUI extends PropiedadGUI {
     
