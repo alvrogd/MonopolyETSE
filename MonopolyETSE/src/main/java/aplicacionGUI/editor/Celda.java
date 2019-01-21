@@ -265,8 +265,8 @@ public class Celda {
         // Se crea un submenú para las opciones de crear una casilla
         Menu submenu = new Menu("Crear casilla");
 
-        // Si se trata de una de las esquinas
-        if(getPosicionTablero() % 10 == 0) {
+        // Si se trata de una de las esquinas y no es la primera casilla (reservada para la salida)
+        if(getPosicionTablero() % 10 == 0 && getPosicionTablero() != 0) {
 
             if (getEditor().masCasillas(TipoCasilla.carcel, getPosicionTablero())) {
 
@@ -313,23 +313,6 @@ public class Celda {
                         setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Parking("Parking",
                                 getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
                         getEditor().actualizarNumeroCasillas(TipoCasilla.parking, getPosicionTablero(), 1);
-                    }
-                });
-
-                submenu.getItems().add(item);
-            }
-
-            if (getEditor().masCasillas(TipoCasilla.salida, getPosicionTablero())) {
-
-                // Se añade la opción para crear una salida
-                MenuItem item = new MenuItem("Salida");
-                item.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle(ActionEvent event) {
-                        setCasillaGUI(new CasillaGUI(getTableroGUI(), getNodo(), new Salida("Salida",
-                                getPosicionTablero(), getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.salida, getPosicionTablero(), 1);
                     }
                 });
 
@@ -578,71 +561,74 @@ public class Celda {
 
     private void generarMenuContextualCasilla(ContextMenu menu) {
 
-        // Se añade la opción para eliminar la casilla
-        MenuItem item1 = new MenuItem("Eliminar casilla");
-        item1.setOnAction(new EventHandler<ActionEvent>() {
+        // Si no es la casilla de salida
+        if(getPosicionTablero() != 0 ) {
+            // Se añade la opción para eliminar la casilla
+            MenuItem item1 = new MenuItem("Eliminar casilla");
+            item1.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
+                @Override
+                public void handle(ActionEvent event) {
 
-                final Casilla casilla = getCasillaGUI().getCasilla();
+                    final Casilla casilla = getCasillaGUI().getCasilla();
 
-                // Se actualiza el número de casillas presentes del tipo de casilla correspondiente
-                if( casilla instanceof Propiedad ) {
+                    // Se actualiza el número de casillas presentes del tipo de casilla correspondiente
+                    if( casilla instanceof Propiedad ) {
 
-                    if( casilla instanceof Servicio ) {
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.servicio, getPosicionTablero(), -1);
-                    }
-
-                    else if( casilla instanceof Solar ) {
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), -1);
-                    }
-
-                    else {
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.transporte, getPosicionTablero(), -1);
-                    }
-                }
-
-                else if( casilla instanceof Accion) {
-
-                    if( casilla instanceof Especial ) {
-
-                        if( casilla instanceof Carcel ) {
-                            getEditor().actualizarNumeroCasillas(TipoCasilla.carcel, getPosicionTablero(), -1);
+                        if( casilla instanceof Servicio ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.servicio, getPosicionTablero(), -1);
                         }
 
-                        if( casilla instanceof IrCarcel ) {
-                            getEditor().actualizarNumeroCasillas(TipoCasilla.irCarcel, getPosicionTablero(), -1);
-                        }
-
-                        if( casilla instanceof Parking ) {
-                            getEditor().actualizarNumeroCasillas(TipoCasilla.parking, getPosicionTablero(), -1);
+                        else if( casilla instanceof Solar ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.solar, getPosicionTablero(), -1);
                         }
 
                         else {
-                            getEditor().actualizarNumeroCasillas(TipoCasilla.salida, getPosicionTablero(), -1);
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.transporte, getPosicionTablero(), -1);
                         }
                     }
 
-                    else if( casilla instanceof ComunidadCasilla ) {
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.comunidad, getPosicionTablero(), -1);
+                    else if( casilla instanceof Accion) {
+
+                        if( casilla instanceof Especial ) {
+
+                            if( casilla instanceof Carcel ) {
+                                getEditor().actualizarNumeroCasillas(TipoCasilla.carcel, getPosicionTablero(), -1);
+                            }
+
+                            if( casilla instanceof IrCarcel ) {
+                                getEditor().actualizarNumeroCasillas(TipoCasilla.irCarcel, getPosicionTablero(), -1);
+                            }
+
+                            if( casilla instanceof Parking ) {
+                                getEditor().actualizarNumeroCasillas(TipoCasilla.parking, getPosicionTablero(), -1);
+                            }
+
+                            else {
+                                getEditor().actualizarNumeroCasillas(TipoCasilla.salida, getPosicionTablero(), -1);
+                            }
+                        }
+
+                        else if( casilla instanceof ComunidadCasilla ) {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.comunidad, getPosicionTablero(), -1);
+                        }
+
+                        else {
+                            getEditor().actualizarNumeroCasillas(TipoCasilla.suerte, getPosicionTablero(), -1);
+                        }
                     }
 
                     else {
-                        getEditor().actualizarNumeroCasillas(TipoCasilla.suerte, getPosicionTablero(), -1);
+                        getEditor().actualizarNumeroCasillas(TipoCasilla.impuesto, getPosicionTablero(), -1);
                     }
+
+                    getCasillaGUI().clear();
+                    setCasillaGUI(null);
                 }
+            });
 
-                else {
-                    getEditor().actualizarNumeroCasillas(TipoCasilla.impuesto, getPosicionTablero(), -1);
-                }
-
-                getCasillaGUI().clear();
-                setCasillaGUI(null);
-            }
-        });
-
-        menu.getItems().addAll(item1, new SeparatorMenuItem());
+            menu.getItems().addAll(item1, new SeparatorMenuItem());
+        }
 
         // Se añade la opción para cambiar el nombre
         MenuItem item2 = new MenuItem("Cambiar nombre");

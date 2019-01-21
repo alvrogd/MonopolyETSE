@@ -4,10 +4,14 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.filas.Fila;
 import aplicacionGUI.editor.filas.TipoFila;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -17,6 +21,7 @@ import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Salida;
 import resources.editor.EditorCuadricula;
 
 import java.util.ArrayList;
@@ -113,6 +118,13 @@ public class Editor {
         this.filas.add(new Fila(TipoFila.norte));
         this.filas.add(new Fila(TipoFila.oeste));
         this.filas.add(new Fila(TipoFila.sur));
+
+        // Se crea la casilla de salida (fija)
+        Celda salida = this.celdas.get(0).get(0);
+
+        salida.setCasillaGUI(new CasillaGUI(Celda.getTableroGUI(), salida.getNodo(), new Salida("Salida",
+                salida.getPosicionTablero(), Celda.getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+        actualizarNumeroCasillas(TipoCasilla.salida, salida.getPosicionTablero(), 1);
     }
 
 
