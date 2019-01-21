@@ -1,6 +1,5 @@
 package aplicacionGUI.menuGUI.registroGUI;
 
-import aplicacion.salidaPantalla.ConsolaNormal;
 import aplicacionGUI.ConstantesGUI;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +11,7 @@ import javafx.scene.transform.Translate;
 public class RegistroGUI {
 
     /* Atributos */
+
     // Nodo propiedad del tablero
     private final Group nodo;
 
@@ -22,6 +22,11 @@ public class RegistroGUI {
     private String contenido;
 
     /* Constructor */
+
+    /**
+     * Constructor que inicializa un registro en el que mostrar texto
+     * @param raiz nodo sobre el cual generar un hijo
+     */
     public RegistroGUI(Group raiz) {
 
         if (raiz == null) {
@@ -56,7 +61,10 @@ public class RegistroGUI {
         ConsolaInterfaz.setRegistroGUI(this);
     }
 
+
+
     /* Getters y setters */
+
     public Group getNodo() {
         return nodo;
     }
@@ -73,18 +81,32 @@ public class RegistroGUI {
         this.contenido = contenido;
     }
 
+
+
     /* Métodos */
+
+    /**
+     * Se borra el contenido del registro
+     */
     public void clear() {
 
         actualizarContenido("");
     }
 
+    /**
+     * Se cambia el contenido del registro
+     * @param contenido nuevo contenido del registro
+     */
     public void actualizarContenido(String contenido) {
 
         // Se guarda el contenido
         guardarContenido(ajustarInformacion(contenido));
     }
 
+    /**
+     * Se añade contenido a la información que contiene actualmente el registro
+     * @param nuevoContenido nueva información a añadir
+     */
     public void anadirContenido(String nuevoContenido) {
 
         StringBuilder actual = new StringBuilder();
@@ -99,6 +121,10 @@ public class RegistroGUI {
         guardarContenido(actual.toString());
     }
 
+    /**
+     * Se actualiza el contenido del registro, dándole un formato apropiado, y se guarda en memoria
+     * @param contenido contenido a guardar
+     */
     private void guardarContenido(String contenido) {
 
         // Se crea un objeto de texto con el contenido
@@ -117,6 +143,12 @@ public class RegistroGUI {
         getPanel().setVvalue(1.0);
     }
 
+    /**
+     * Se adapta la información dada al ancho del registro, evitando incorporar un desplazamiento horizontal a causa de
+     * líneas demasiado largas
+     * @param contenido información a adaptar
+     * @return          información adaptada
+     */
     private String ajustarInformacion(String contenido) {
 
         // Se separa en palabras
