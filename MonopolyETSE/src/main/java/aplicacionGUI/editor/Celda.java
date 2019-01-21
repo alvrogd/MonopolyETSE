@@ -76,6 +76,14 @@ public class Celda {
 
     /* Constructor */
 
+    /**
+     * Se crea una celda del editor del tablero
+     * @param editor editor asociado
+     * @param raiz nodo sobre el cual crear un hijo para la celda
+     * @param posicionX posición (coordenada X) de la celda en el tablero
+     * @param posicionY posición (coordenada Y) de la celda en el tablero
+     * @param posicionTablero posición (del 0 al 39) de la casilla asociada en el tablero final
+     */
     public Celda(Editor editor, Group raiz, int posicionX, int posicionY, int posicionTablero) {
 
         if (editor == null) {
@@ -107,7 +115,7 @@ public class Celda {
         // Se guarda la posición de la casilla en el tablero
         this.posicionTablero = posicionTablero;
 
-        // Se genera el menú correspondiente
+        // El menú no será creado hasta ser solicitado
         this.menu = null;
     }
 
@@ -211,6 +219,13 @@ public class Celda {
 
     /* Métodos */
 
+    /**
+     * Se comprueba si contiene una posición 2D dada
+     *
+     * @param x coordenada X
+     * @param y coordenada Y
+     * @return si contiene la posición dada
+     */
     public boolean contienePosicion(double x, double y) {
 
         double posicionX = x - getDesplazamientoX();
@@ -220,6 +235,15 @@ public class Celda {
     }
 
 
+    /**
+     * Se ejecuta la acción definida ante un click
+     *
+     * @param x        coordenada X del click
+     * @param y        coordenada Y del click
+     * @param nodoRaiz nodo de anclaje
+     * @param e        evento del click
+     * @param menus    conjunto de menús contextuales activos
+     */
     public void handleClick(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
             menus) {
 
@@ -238,6 +262,10 @@ public class Celda {
         menus.add(getMenu());
     }
 
+    /**
+     * Se renderiza la celda
+     * @param t tiempo transcurrido
+     */
     public void render(double t) {
 
         if (getCasillaGUI() != null) {
@@ -245,6 +273,10 @@ public class Celda {
         }
     }
 
+    /**
+     * Se genera el menú contextual correspondiente a la celda
+     * @return menú contextual generado
+     */
     public ContextMenu generarMenuContextual() {
 
         // Se crea el menú de opciones para la casilla
@@ -260,6 +292,10 @@ public class Celda {
         return (menu);
     }
 
+    /**
+     * Se genera el menú contextual correspondiente a cuando no existe una casilla en la celda
+     * @param menu menú contextual generado
+     */
     private void generarMenuContextualNoCasilla(ContextMenu menu) {
 
         // Se crea un submenú para las opciones de crear una casilla
