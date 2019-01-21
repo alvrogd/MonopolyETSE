@@ -1,22 +1,20 @@
 package aplicacionGUI.menuGUI.BotonesGUI;
 
 import aplicacion.Aplicacion;
-import aplicacion.excepciones.InputUsuarioException;
-import aplicacion.salidaPantalla.Comando;
 import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
-import aplicacionGUI.ImagenAnimada;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.excepciones.*;
+import monopoly.jugadores.excepciones.NoExisteTratoException;
+import monopoly.jugadores.excepciones.NoLiquidezException;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
