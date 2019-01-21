@@ -2,7 +2,6 @@ package aplicacionGUI.informacion.marcoInformacion;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
-import java.util.ArrayList;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,9 +14,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
 import resources.marcoInformacion.animacion.AnimacionMarcoInformacion;
 
+import java.util.ArrayList;
+
 public class MarcoInformacion {
 
     /* Atributos */
+
     // Nodo propiedad de la casilla
     private final Group nodo;
 
@@ -37,7 +39,7 @@ public class MarcoInformacion {
     // Imagen final
     private final static Image IMAGEN_FINAL = new Image(AnimacionMarcoInformacion.class.getResource(
             ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES[ConstantesGUI.MARCO_INFORMACION_ANIMACION_FRAMES.length
-            - 1]).toString());
+                    - 1]).toString());
 
     // Animación de abrir/cerrar
     private final static ImagenAnimada ANIMACION_ABRIR = new ImagenAnimada(new AnimacionMarcoInformacion(),
@@ -67,7 +69,15 @@ public class MarcoInformacion {
     // Tick correspondiente al texto
     private int tickTexto;
 
+
+
     /* Constructor */
+
+    /**
+     * Se crea un marco de información sobre el cual representar texto
+     *
+     * @param raiz nodo sobre el cual crear un hijo para el marco de información
+     */
     public MarcoInformacion(Group raiz) {
 
         if (raiz == null) {
@@ -94,6 +104,7 @@ public class MarcoInformacion {
         // Se genera un contexto a partir del canvas para insertar la representación del tablero
         this.gc = this.canvas.getGraphicsContext2D();
 
+        // Se inicializan los demás atributos a valores apropiados
         this.activo = false;
         this.animacionFinalizada = true;
         this.abrirse = false;
@@ -103,7 +114,10 @@ public class MarcoInformacion {
         this.tickTexto = 0;
     }
 
+
+
     /* Getters y setters */
+
     public Group getNodo() {
         return nodo;
     }
@@ -200,7 +214,17 @@ public class MarcoInformacion {
         this.tickTexto = tickTexto;
     }
 
+
+
     /* Métodos */
+
+    /**
+     * Se comprueba si contiene una posición 2D dada
+     *
+     * @param x coordenada X
+     * @param y coordenada Y
+     * @return si contiene la posición dada
+     */
     public boolean contienePosicion(double x, double y) {
 
         double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
@@ -209,6 +233,12 @@ public class MarcoInformacion {
         return (getSensor().contains(posicionX, posicionY));
     }
 
+    /**
+     * Se ejecuta la acción definida ante un click izquierdo
+     *
+     * @param x coordenada X del click
+     * @param y coordenada Y del click
+     */
     public void handleClickIzquierdo(double x, double y) {
 
         double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
@@ -227,13 +257,20 @@ public class MarcoInformacion {
             setAnimacionFinalizada(false);
             setActivo(true);
             setAbrirse(true);
-        } // Si se va a cerrar, debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de
+        }
+
+        // Si se va a cerrar, debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de
         // realizar la animación hasta que finalice el fade del texto
         else {
             setAbrirse(false);
         }
     }
 
+    /**
+     * Se cambia el contenido a representar en el marco de información
+     *
+     * @param informacion nueva información a representar
+     */
     public void actualizarContenido(String[] informacion) {
 
         // Se adapta la información al marco
@@ -243,6 +280,13 @@ public class MarcoInformacion {
         setInformacion(informacionAdaptada);
     }
 
+    /**
+     * Se ajusta la información dada, creando líneas de modo que ninguna de ellas supere el ancho del marco de
+     * información
+     *
+     * @param informacion información a ajustar
+     * @return información tras el ajuste
+     */
     private ArrayList<String> ajustarInformacion(String[] informacion) {
 
         ArrayList<String> resultado = new ArrayList<>();
@@ -280,22 +324,36 @@ public class MarcoInformacion {
         return (resultado);
     }
 
+    /**
+     * Se renderiza el marco de información
+     *
+     * @param t tiempo transcurrido
+     */
     public void render(double t) {
 
         if (isActivo()) {
 
             if (isAnimacionFinalizada()) {
                 renderAnimacionFinalizada(t);
-            } // En caso contrario, se renderiza un fotograma
+            }
+
+            // En caso contrario, se renderiza un fotograma
             else {
                 renderAnimacionActiva(t);
             }
-        } // Si no está activo, simplemente se limpia el gc
+        }
+
+        // Si no está activo, simplemente se limpia el gc
         else {
             getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
         }
     }
 
+    /**
+     * Se renderiza el último frame de la animación del marco junto con el texto contenido, incluyendo el fade-in o
+     * fade-out apropiados para el texto en caso de que sea necesario
+     * @param t tiempo transcurrido
+     */
     private void renderAnimacionFinalizada(double t) {
 
         // Se establece la tipografía
@@ -311,7 +369,9 @@ public class MarcoInformacion {
             // Se muestra un negro sólido
             getGc().setFill(Color.BLACK);
 
-        } // En caso contrario
+        }
+
+        // En caso contrario
         else {
 
             // Si el marco se está abriendo, se realiza un fade-in
@@ -344,13 +404,19 @@ public class MarcoInformacion {
 
         // Se muestra el texto
         for (int i = 0, desplazamiento = ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO
-                * ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++, desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
+                * ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++,
+                desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
 
             // Se añade texto
             getGc().fillText(getInformacion().get(i), getAncho() / 2, desplazamiento + 10);
         }
     }
 
+    /**
+     * Se renderiza uno de los frames del marco, pudiendo encontrarse este tanto abriéndose como cerrándose
+     *
+     * @param t tiempo transcurrido
+     */
     private void renderAnimacionActiva(double t) {
 
         // Frame a renderizar

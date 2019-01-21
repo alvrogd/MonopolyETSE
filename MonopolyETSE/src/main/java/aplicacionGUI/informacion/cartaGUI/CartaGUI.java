@@ -171,7 +171,7 @@ public abstract class CartaGUI {
     }
 
     /**
-     * Se ejecuta la acción definida ante un click
+     * Se ejecuta la acción definida ante un click izquierdo
      *
      * @param x coordenada X del click
      * @param y coordenada Y del click
