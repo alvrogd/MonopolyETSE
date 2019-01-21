@@ -2,6 +2,7 @@ package aplicacionGUI.menuGUI.JugadoresGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -24,6 +25,9 @@ public class JugadoresGUI {
     //Juego
     private Juego juego;
 
+    //Menú
+    private MenuGUI menuGUI;
+
     //ArrayList que almacena cada Jugador
     private ArrayList<JugadorGUI> jugadores;
 
@@ -31,7 +35,7 @@ public class JugadoresGUI {
     private final TableroGUI tableroGUI;
 
     /* Constructor */
-    public JugadoresGUI(Group raiz, Juego juego, TableroGUI tableroGUI){
+    public JugadoresGUI(Group raiz, Juego juego, TableroGUI tableroGUI, MenuGUI menuGUI){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
@@ -47,6 +51,13 @@ public class JugadoresGUI {
             System.err.println("Juego no inicializado");
             System.exit(1);
         }
+
+        if(menuGUI == null){
+            System.err.println("Menú no inicializado");
+            System.exit(1);
+        }
+
+        this.menuGUI = menuGUI;
 
         // Se añade el nodo
         this.nodo = new Group();
@@ -81,6 +92,10 @@ public class JugadoresGUI {
         double posicionY = y - ConstantesGUI.JUGADORES_DESPLAZAMIENTO_Y;
 
         return(getSensor().contains(posicionX, posicionY));
+    }
+
+    public MenuGUI getMenuGUI() {
+        return menuGUI;
     }
 
     public void handleClickIzquierdo(double x, double y) {
@@ -134,7 +149,7 @@ public class JugadoresGUI {
             System.exit(1);
         }
 
-        getJugadores().add(new JugadorGUI(this.nodo, jugador, jugadores.size()+1, getTableroGUI()));
+        getJugadores().add(new JugadorGUI(this.nodo, jugador, jugadores.size()+1, getTableroGUI(), getMenuGUI()));
     }
 
     public void render() {

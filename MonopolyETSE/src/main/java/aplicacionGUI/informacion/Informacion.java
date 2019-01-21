@@ -1,11 +1,14 @@
 package aplicacionGUI.informacion;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.cartaGUI.ComunidadGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.marcoInformacion.MarcoInformacion;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import java.util.ArrayList;
+
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.ContextMenuEvent;
@@ -36,12 +39,15 @@ public class Informacion {
     
     // Sensor asociado a esta sección
     private final Rectangle sensor;
+
+    // Menú GUi
+    private final MenuGUI menuGUI;
     
 
     
     /* Constructor */
     
-    public Informacion(Group raiz, Tablero tablero) {
+    public Informacion(Group raiz, Tablero tablero, Aplicacion app) {
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
@@ -50,6 +56,11 @@ public class Informacion {
 
         if (tablero == null) {
             System.err.println("Tablero no inicializado");
+            System.exit(1);
+        }
+
+        if (app == null) {
+            System.err.println("Aplicación no inicializada");
             System.exit(1);
         }
 
@@ -66,7 +77,7 @@ public class Informacion {
         this.sensor.setFill(Color.TRANSPARENT);
 
         // Se crea la representación del tablero
-        this.tableroGUI = new TableroGUI(this.nodo, tablero);
+        this.tableroGUI = new TableroGUI(this, this.nodo, tablero);
         
         // Se crea la representación de las cartas de suerte
         this.suerteGUI = new SuerteGUI(this.nodo);
@@ -76,6 +87,8 @@ public class Informacion {
         
         // Se crea el marco de información
         this.marcoInformacion = new MarcoInformacion(this.nodo);
+
+        this.menuGUI = new MenuGUI(raiz, app, "fondo.png", getTableroGUI());
     }
 
     
@@ -96,7 +109,10 @@ public class Informacion {
         return tableroGUI;
     }
 
-    
+    public MenuGUI getMenuGUI() {
+        return menuGUI;
+    }
+
     public SuerteGUI getSuerteGUI() {
         return suerteGUI;
     }
@@ -132,6 +148,10 @@ public class Informacion {
         
         if( getSuerteGUI().contienePosicion(posicionX, posicionY)) {
             getSuerteGUI().handleClickIzquierdo(posicionX, posicionY);
+        }
+
+        else if(getTableroGUI().contienePosicion(posicionX, posicionY)){
+            getTableroGUI().handleClickIzquierdo(posicionX, posicionY);
         }
         
         else if( getComunidadGUI().contienePosicion(posicionX, posicionY)) {

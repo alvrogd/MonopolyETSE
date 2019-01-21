@@ -699,7 +699,8 @@ public class Juego {
                 Propiedad propiedad = (Propiedad) posicion;
                 // Si se puede hipotecar / deshipotecar
                 if (propiedad.isHipotecada()) {
-                    funciones.add(TipoFuncion.deshipotecar);
+                    if(!turno.balanceNegativoTrasPago((int) ((double) propiedad.getImporteCompra() * 0.5 * 1.10)))
+                        funciones.add(TipoFuncion.deshipotecar);
                 } else if (!propiedad.isComprable() && getTablero().getJuego().getTurno().equals(propiedad.getPropietario())) {
 
                     if(propiedad instanceof Solar){
@@ -726,7 +727,20 @@ public class Juego {
             }
 
             if (!isHaHechoUnaTirada()) {
-                funciones.add(TipoFuncion.cambiarModo);
+                if(turno.getAvatar().isHaMovidoCasillasTirada())
+                    funciones.add(TipoFuncion.cambiarModo);
+            }
+
+            // Se mira si el usuario tiene tratos emitidos o recibidos
+
+            if(!turno.getTratosRecibidos().isEmpty()){
+                funciones.add(TipoFuncion.aceptarTratos);
+                funciones.add(TipoFuncion.aceptacionTratos);
+            }
+
+            if(!turno.getTratosEmitidos().isEmpty()){
+                funciones.add(TipoFuncion.eliminarTratos);
+                funciones.add(TipoFuncion.eliminacionTratos);
             }
 
             funciones.add(TipoFuncion.listar);
