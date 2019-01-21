@@ -22,8 +22,9 @@ public class InformacionCasilla {
 
     /**
      * Se crea un contenedor de información personalizada sobre una casilla
+     *
      * @param tipoCasilla tipo de casilla al que corresponde la información
-     * @param nombre nombre de la casilla
+     * @param nombre      nombre de la casilla
      */
     public InformacionCasilla(TipoCasilla tipoCasilla, String nombre) {
         this(tipoCasilla, nombre, null, 0);
@@ -31,19 +32,20 @@ public class InformacionCasilla {
 
     /**
      * Se crea un contenedor de información personalizada sobre una casilla
+     *
      * @param tipoCasilla tipo de casilla al que corresponde la información
-     * @param nombre nombre de la casilla
-     * @param grupo grupo al que pertenece la casilla
-     * @param importe importe asociado a la casilla (precio de compra, impuesto...)
+     * @param nombre      nombre de la casilla
+     * @param grupo       grupo al que pertenece la casilla
+     * @param importe     importe asociado a la casilla (precio de compra, impuesto...)
      */
     public InformacionCasilla(TipoCasilla tipoCasilla, String nombre, Grupo grupo, int importe) {
 
-        if( tipoCasilla == null ) {
+        if (tipoCasilla == null) {
             System.out.println("Tipo de casilla no inicializado");
             System.exit(1);
         }
 
-        if( nombre == null ) {
+        if (nombre == null) {
             System.out.println("Nombre no inicializado");
             System.exit(1);
         }

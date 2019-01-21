@@ -27,6 +27,11 @@ public class Fila {
 
     /* Constructor */
 
+    /**
+     * Se crea una contabilización de las casillas contenidas en una fila
+     *
+     * @param tipoFila tipo de fila de la cual obtener los máximos de casillas de distintos tipos
+     */
     public Fila(TipoFila tipoFila) {
 
         if (tipoFila == null) {
@@ -34,8 +39,10 @@ public class Fila {
             System.exit(1);
         }
 
+        // Se registra el tipo de fila
         this.tipoFila = tipoFila;
 
+        // Inicialmente no se contiene ninguna casilla
         Fila.numeroCarcel = 0;
         this.numeroComunidad = 0;
         this.numeroEspecial = 0;
@@ -158,54 +165,120 @@ public class Fila {
 
     /* Métodos */
 
+    /**
+     * Se actualiza el número de cárceles
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de cárceles
+     */
     public void actualizarNumeroCarcel(int balance) {
         setNumeroCarcel(getNumeroCarcel() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de comunidad
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de comunidad
+     */
     public void actualizarNumeroComunidad(int balance) {
         setNumeroComunidad(getNumeroComunidad() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas especiales
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas especiales
+     */
     public void actualizarNumeroEspecial(int balance) {
         setNumeroEspecial(getNumeroEspecial() + balance);
     }
 
+    /**
+     * Se actualiza el número de grupos
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de grupos
+     */
     public void actualizarNumeroGrupos(int balance) {
         setNumeroGrupos(getNumeroGrupos() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de impuesto
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de impuesto
+     */
     public void actualizarNumeroImpuestos(int balance) {
         setNumeroImpuestos(getNumeroImpuestos() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de ir a la cárcel
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de ir a la cárcel
+     */
     public void actualizarNumeroIrCarcel(int balance) {
         setNumeroIrCarcel(getNumeroIrCarcel() + balance);
     }
 
+    /**
+     * Se actualiza el número de parkings
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de parkings
+     */
     public void actualizarNumeroParking(int balance) {
         setNumeroParking(getNumeroParking() + balance);
     }
 
+    /**
+     * Se actualiza el número de salidas
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de salidas
+     */
     public void actualizarNumeroSalida(int balance) {
         setNumeroSalida(getNumeroSalida() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de servicio
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de servicio
+     */
     public void actualizarNumeroServicios(int balance) {
         setNumeroServicios(getNumeroServicios() + balance);
     }
 
+    /**
+     * Se actualiza el número de solares
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de solares
+     */
     public void actualizarNumeroSolares(int balance) {
         setNumeroSolares(getNumeroSolares() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de suerte
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de suerte
+     */
     public void actualizarNumeroSuerte(int balance) {
         setNumeroSuerte(getNumeroSuerte() + balance);
     }
 
+    /**
+     * Se actualiza el número de casillas de transporte
+     *
+     * @param balance cantidad en la que aumentar/disminuir el número de casillas de transporte
+     */
     public void actualizarNumeroTransportes(int balance) {
         setNumeroTransportes(getNumeroTransportes() + balance);
     }
 
+    /**
+     * Se comprueba si es posible crear en la fila una casilla más de un tipo dado
+     *
+     * @param tipoCasilla tipo de casilla a comprobar
+     * @return si cabe una casilla más o no del tipo dado
+     */
     public boolean masCasillas(TipoCasilla tipoCasilla) {
 
         int actuales;
@@ -268,6 +341,12 @@ public class Fila {
         return (actuales < maximo);
     }
 
+    /**
+     * Se actualiza el número de casillas de un tipo dado
+     *
+     * @param tipoCasilla tipo de casilla cuya cantidad actualizar
+     * @param balance     cantidad en la que aumentar/disminuir el número de casillas
+     */
     public void actualizarNumeroCasillas(TipoCasilla tipoCasilla, int balance) {
 
         switch (tipoCasilla) {

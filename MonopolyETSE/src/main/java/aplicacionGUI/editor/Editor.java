@@ -54,6 +54,7 @@ public class Editor {
     private final ArrayList<Fila> filas;
 
 
+
     /* Constructor */
 
     public Editor(Group raiz ) {
