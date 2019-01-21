@@ -32,7 +32,16 @@ public enum TipoFuncion {
     listarAvatares("listar avatares", listar),
     listarEdificios("listar edificios", listar),
     listarJugadores("listar jugadores", listar),
-    listarTratos("listar tratos", listar);
+    listarTratos("listar tratos", listar),
+    proponerTrato("proponer trato"),
+    aceptarTratos("aceptar tratos", true),
+    aceptacionTratos("aceptar varios tratos", aceptarTratos),
+    eliminarTratos("eliminar tratos", true),
+    eliminacionTratos("eliminacion varios tratos", eliminarTratos),
+    describirJugador("describir jugador", false),
+    describirAvatar("describir avatar", false),
+    cancelar("cancelar", true),
+    aceptar("aceptar", true);
 
 
     private final String nombre;

@@ -3,6 +3,7 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.menuGUI.BotonesGUI.BotoneraGUI;
 import aplicacionGUI.menuGUI.JugadoresGUI.JugadoresGUI;
 import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
@@ -17,8 +18,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
+import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.Tablero;
 import resources.menuGUI.MenuGUIFondo;
+
+import java.util.ArrayList;
 
 public class MenuGUI{
 
@@ -56,6 +61,30 @@ public class MenuGUI{
 
     // Número de jugadores
     private int numJugadores;
+
+    // Booleano que indica si se está proponiendo un trato
+    private boolean proponiendoTrato;
+
+    // Booleano que indica si se están seleccionando propiedades para dar o para recibir
+    private boolean estarDandoEnTrato;
+
+    // Booleano que indica si se está proponiendo un trato y a mayores se está en la fase del dinero
+    private boolean faseDinero;
+
+    // Booleano para saber si el jugador está recibiendo o dando dinero
+    private boolean estarDandoDinero;
+
+    // Jugador al que se le está proponiendo un trato en caso de que se esté proponiendo
+    private Jugador jugadorProponerTrato;
+
+    // Booleano para saber si se ha entrado en la fase de no alquiler
+    private boolean faseNoAlquiler;
+
+    // Booleano para indicar si se puede continuar al siguiente paso
+    private boolean siguientePaso;
+
+    // Array auxiliar donde se añadirán las CasillasGUI que participan en una parte del trato
+    private ArrayList<CasillaGUI> casillasAuxiliar;
 
     /* Constructor */
 
@@ -108,11 +137,22 @@ public class MenuGUI{
         this.registroGUI = new RegistroGUI(this.nodo);
 
         // Se crea la representación de los jugadores (parte derecha)
-        this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI);
+        this.jugadoresGUI = new JugadoresGUI(this.nodo, juego, tableroGUI, this);
 
-        this.botonera = new BotoneraGUI(this.nodo, app);
+        this.botonera = new BotoneraGUI(this.nodo, app, this);
 
         this.numJugadores = 0;
+
+        this.proponiendoTrato = false;
+        this.estarDandoEnTrato = false;
+
+        this.jugadorProponerTrato = null;
+        this.siguientePaso = false;
+        this.estarDandoDinero = false;
+        this.faseDinero = false;
+        this.faseNoAlquiler = false;
+
+        this.casillasAuxiliar = new ArrayList<>();
     }
 
     public BotoneraGUI getBotonera() {
@@ -131,12 +171,76 @@ public class MenuGUI{
         return aplicacion;
     }
 
+    public boolean isProponiendoTrato() {
+        return proponiendoTrato;
+    }
+
+    public boolean isSiguientePaso() {
+        return siguientePaso;
+    }
+
+    public void setSiguientePaso(boolean siguientePaso) {
+        this.siguientePaso = siguientePaso;
+    }
+
+    public ArrayList<CasillaGUI> getCasillasAuxiliar() {
+        return casillasAuxiliar;
+    }
+
+    public boolean isFaseDinero() {
+        return faseDinero;
+    }
+
+    public void setFaseDinero(boolean faseDinero) {
+        this.faseDinero = faseDinero;
+    }
+
+    public boolean isFaseNoAlquiler() {
+        return faseNoAlquiler;
+    }
+
+    public void setFaseNoAlquiler(boolean faseNoAlquiler) {
+        this.faseNoAlquiler = faseNoAlquiler;
+    }
+
+    public boolean isEstarDandoDinero() {
+        return estarDandoDinero;
+    }
+
+    public void setEstarDandoDinero(boolean estarDandoDinero) {
+        this.estarDandoDinero = estarDandoDinero;
+    }
+
+    public void setProponiendoTrato(boolean proponiendoTrato) {
+        this.proponiendoTrato = proponiendoTrato;
+    }
+
+    public boolean isEstarDandoEnTrato() {
+        return estarDandoEnTrato;
+    }
+
+    public void setEstarDandoEnTrato(boolean estarDandoEnTrato) {
+        this.estarDandoEnTrato = estarDandoEnTrato;
+    }
+
+    public Jugador getJugadorProponerTrato() {
+        return jugadorProponerTrato;
+    }
+
+    public void setJugadorProponerTrato(Jugador jugadorProponerTrato) {
+        this.jugadorProponerTrato = jugadorProponerTrato;
+    }
+
     public GraphicsContext getGc() {
         return gc;
     }
 
     public Image getFondo() {
         return fondo;
+    }
+
+    public void setCasillasAuxiliar(ArrayList<CasillaGUI> casillasAuxiliar) {
+        this.casillasAuxiliar = casillasAuxiliar;
     }
 
     public JugadoresGUI getJugadoresGUI() {
@@ -229,6 +333,71 @@ public class MenuGUI{
         getGc().drawImage(getFondo(), 0, 0);
         getJugadoresGUI().render();
         getBotonera().render(t);
+
+        // En caso de que se haya activado el siguiente paso
+        if(isSiguientePaso()){
+            // Si se está proponiendo un trato
+            if(isProponiendoTrato()){
+
+                // Se deseleccionan todas las casillas del anterior trato
+                for(CasillaGUI casillaGUI : getCasillasAuxiliar()){
+                    casillaGUI.setSeleccionada(false);
+                }
+
+                // Se actualiza el ArrayList
+                setCasillasAuxiliar(new ArrayList<>());
+
+                // Si está en la fase del dinero
+                if(isFaseDinero()){
+
+                    // Si en el trato estaba dando ahora tocará recibir
+                    if(isEstarDandoDinero()){
+                        getBotonera().setDineroDar(Aplicacion.consola.leer("Introduzca el dinero a dar", true));
+                        setEstarDandoDinero(false);
+                    } else {
+                        // Esta es la última parte del trato y por lo tanto se procede a crearlo y procesarlo.
+                        getBotonera().setDineroRecibir(Aplicacion.consola.leer("Introduzca el dinero a recibir", true));
+                        Aplicacion.consola.imprimir("Trato enviado a " + getJugadorProponerTrato().getNombre() + " por parte de " + getJuego().getTurno().getNombre());
+
+                        getAplicacion().getJuego().incrementarNumTratos(1);
+
+                        String idTrato = "trato" + getAplicacion().getJuego().getNumTratos();
+
+                        Trato trato = new Trato(getAplicacion().getJuego().getTurno(), getJugadorProponerTrato(), getBotonera().getCasillasDar(), getBotonera().getCasillasRecibir(), getBotonera().getDineroDar(), getBotonera().getDineroRecibir(), getBotonera().getInmunidades(), idTrato);
+
+                        getAplicacion().getJuego().getTurno().getTratosEmitidos().put(trato.getId(), trato);
+                        try {
+                            getJugadorProponerTrato().proponerTrato(trato);
+                        } catch (NoSerPropietarioException e) {
+                            Aplicacion.consola.imprimir(e.getMessage());
+                        }
+
+                        // Se finaliza el trato
+                        setProponiendoTrato(false);
+                    }
+                } else {
+                    // Si en el trato se estaba dando ahora tocará recibir
+                    if (isEstarDandoEnTrato()) {
+                        System.out.println(getBotonera().getCasillasDar());
+                        setEstarDandoEnTrato(false);
+                    } else {
+                        // Si está en falso tocará ir a la fase del noalquier
+                        System.out.println(getBotonera().getCasillasRecibir());
+                        if(isFaseNoAlquiler()){
+                            // Si se estaba en la fase de no alquiler, tocará ir a la fase de dinero
+                            setFaseDinero(true);
+                            setEstarDandoDinero(true);
+                            setFaseNoAlquiler(false);
+                        } else {
+                            setFaseNoAlquiler(true);
+                        }
+                    }
+                }
+            }
+
+            // Se pone el siguiente paso a false
+            setSiguientePaso(false);
+        }
 
     }
 

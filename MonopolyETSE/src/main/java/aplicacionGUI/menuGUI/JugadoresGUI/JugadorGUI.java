@@ -1,7 +1,10 @@
 package aplicacionGUI.menuGUI.JugadoresGUI;
 
+import aplicacion.Aplicacion;
+import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,8 +17,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
 import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
+import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.menuGUI.jugadores.JugadoresImagen;
 import resources.menuGUI.MenuGUIFondo;
+
+import java.util.ArrayList;
 
 public class JugadorGUI {
 
@@ -30,6 +36,8 @@ public class JugadorGUI {
     private Image barraActual;
     private final Image avatar;
 
+    private final MenuGUI menuGUI;
+
     private final Jugador jugador;
 
     private final int desplazamientoX;
@@ -42,7 +50,7 @@ public class JugadorGUI {
 
     /* Constructor */
 
-    public JugadorGUI(Group raiz, Jugador jugador, int numJugador, TableroGUI tableroGUI){
+    public JugadorGUI(Group raiz, Jugador jugador, int numJugador, TableroGUI tableroGUI, MenuGUI menuGUI){
 
         if(raiz == null){
             System.err.println("Raíz no inicializada");
@@ -64,6 +72,12 @@ public class JugadorGUI {
             System.exit(1);
         }
 
+        if(menuGUI == null){
+            System.err.println("Menú no inicializado");
+            System.exit(1);
+        }
+
+        this.menuGUI = menuGUI;
         this.jugador = jugador;
 
         this.nodo = new Group();
@@ -105,6 +119,10 @@ public class JugadorGUI {
 
         this.avatar = tableroGUI.getRepresentacionesAvatares().get(jugador.getAvatar().getIdentificador());
 
+    }
+
+    public MenuGUI getMenuGUI() {
+        return menuGUI;
     }
 
     public GraphicsContext getGc() {
@@ -218,16 +236,47 @@ public class JugadorGUI {
         return(getBotonDescribir().contains(posicionX, posicionY));
     }
 
+    public void handleTratos(){
+        getMenuGUI().getBotonera().setCasillasDar(new ArrayList<>());
+        getMenuGUI().getBotonera().setCasillasRecibir(new ArrayList<>());
+        getMenuGUI().getBotonera().setInmunidades(new ArrayList<>());
+        getMenuGUI().setSiguientePaso(false);
+        getMenuGUI().setEstarDandoDinero(false);
+        getMenuGUI().setFaseDinero(false);
+        getMenuGUI().setJugadorProponerTrato(getJugador());
+        getMenuGUI().setProponiendoTrato(true);
+        getMenuGUI().setEstarDandoEnTrato(true);
+        getMenuGUI().setFaseNoAlquiler(false);
+    }
+
     public void handleClickIzquierdo(double x, double y) {
 
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBotonTrato(posicionX, posicionY)){
+            if(getMenuGUI().getBotonera().isAyuda()){
+                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.proponerTrato));
+                getMenuGUI().getBotonera().setAyuda(false);
+            } else {
+                handleTratos();
+            }
             System.out.println("Se ha pulsado el botón TRATO");
         } else if(pulsandoBotonDescribir(posicionX, posicionY)){
+            if(getMenuGUI().getBotonera().isAyuda()){
+                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirJugador));
+                getMenuGUI().getBotonera().setAyuda(false);
+            } else {
+
+            }
             System.out.println("Se ha pulsado el botón DESCRIBIR");
         } else if(pulsandoAvatar(posicionX, posicionY)){
+            if(getMenuGUI().getBotonera().isAyuda()){
+                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirAvatar));
+                getMenuGUI().getBotonera().setAyuda(false);
+            } else {
+
+            }
             System.out.println("Se ha pulsado el AVATAR");
         }
     }

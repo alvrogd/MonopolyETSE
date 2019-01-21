@@ -1,11 +1,14 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 
+import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
+import monopoly.jugadores.tratos.Inmunidad;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
@@ -68,6 +72,9 @@ public class CasillaGUI {
     
     // Menú contextual mostrado
     private ContextMenu menu;
+
+    // Booleano seleccionada para saber si en la gestión de los tratos la casilla ha sido seleccionada.
+    private boolean seleccionada;
     
     
     
@@ -127,6 +134,7 @@ public class CasillaGUI {
         
         // Se genera el menú correspondiente
         this.menu = null;
+        this.seleccionada = false;
     }
 
     
@@ -183,7 +191,14 @@ public class CasillaGUI {
         return canvas;
     }
 
-    
+    public boolean isSeleccionada() {
+        return seleccionada;
+    }
+
+    public void setSeleccionada(boolean seleccionada) {
+        this.seleccionada = seleccionada;
+    }
+
     public GraphicsContext getGc() {
         return gc;
     }
@@ -221,6 +236,78 @@ public class CasillaGUI {
         
         return(getSensor().contains(posicionX, posicionY));
     }
+
+    public void handleProponiendoTratos(double x, double y){
+
+        // Se comprueba que esta casilla sea una propiedad
+        if(getCasilla() instanceof Propiedad){
+            Propiedad propiedad = (Propiedad) getCasilla();
+
+            // En caso de que está en la fase del dinero, a la casilla no le incumbe y se corta el flujo
+            if(getTableroGUI().getInformacion().getMenuGUI().isFaseDinero()){
+                return;
+            }
+
+            // En caso de estar en la fase de noalquiler
+            if(getTableroGUI().getInformacion().getMenuGUI().isFaseNoAlquiler()){
+                if(propiedad.getPropietario().equals(getTableroGUI().getInformacion().getMenuGUI().getJugadorProponerTrato())){
+                    if(isSeleccionada()){
+                        int contador = 0;
+                        // En caso de estar ya seleccionada, es que se está deseleccionando, por lo tanto se quita la casilla
+                        for(Inmunidad inmunidad : getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades()){
+                            if(inmunidad.getPropiedad().equals(propiedad)){
+                                getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades().remove(contador);
+                                break;
+                            }
+                            contador++;
+                        }
+                        // Se modifica la seleccion
+                        setSeleccionada(false);
+                    } else {
+                        getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades().add(new Inmunidad((Propiedad)getCasilla(), Aplicacion.consola.leer("Número de turnos", true)));
+                        setSeleccionada(true);
+                    }
+                }
+            } else {
+
+                //En caso de que se estén dando casillas, se comprueba que esta sea del jugador que tiene el turno
+                if (getTableroGUI().getInformacion().getMenuGUI().isEstarDandoEnTrato()) {
+                    if (propiedad.getPropietario().equals(getTableroGUI().getInformacion().getMenuGUI().getJuego().getTurno())) {
+                        if (isSeleccionada()) {
+                            // En caso de estar ya seleccionada, es que se está deseleccionando, por lo tanto se quita la casilla
+                            getTableroGUI().getInformacion().getMenuGUI().getBotonera().getCasillasDar().remove((Propiedad) getCasilla());
+                            // Se modifica la seleccion
+                            setSeleccionada(false);
+                        } else {
+                            getTableroGUI().getInformacion().getMenuGUI().getBotonera().getCasillasDar().add((Propiedad) getCasilla());
+                            setSeleccionada(true);
+                        }
+                    }
+                } else {
+                    // Se comprueba que la propiedad seleccionada pertenezca al jugador
+                    if (propiedad.getPropietario().equals(getTableroGUI().getInformacion().getMenuGUI().getJugadorProponerTrato())) {
+                        if (isSeleccionada()) {
+                            getTableroGUI().getInformacion().getMenuGUI().getBotonera().getCasillasRecibir().remove((Propiedad) getCasilla());
+                            setSeleccionada(false);
+                        } else {
+                            getTableroGUI().getInformacion().getMenuGUI().getBotonera().getCasillasRecibir().add((Propiedad) getCasilla());
+                            setSeleccionada(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void handleClickIzquierdo(double x, double y) {
+
+        double posicionX = x - getDesplazamientoX();
+        double posicionY = y - getDesplazamientoY();
+
+        if(getTableroGUI().getInformacion().getMenuGUI().isProponiendoTrato()){
+            handleProponiendoTratos(posicionX, posicionY);
+        }
+    }
     
     
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
@@ -244,9 +331,55 @@ public class CasillaGUI {
     
     public void render(double t) {
 
+        clear();
         renderFondo();
         renderNombre();
         renderContenido(t);
+
+        if(getCasilla() instanceof Propiedad) {
+
+            Propiedad propiedad = (Propiedad) getCasilla();
+
+            if (getTableroGUI().getInformacion().getMenuGUI().isProponiendoTrato()) {
+
+                if (getTableroGUI().getInformacion().getMenuGUI().isEstarDandoEnTrato()) {
+
+                    if (propiedad.getPropietario().equals(getTableroGUI().getInformacion().getMenuGUI().getJuego().getTurno())) {
+                        renderRecuadro();
+                        if (isSeleccionada()) {
+                            getTableroGUI().getInformacion().getMenuGUI().getCasillasAuxiliar().add(this);
+                            renderRecuadroRelleno();
+                        }
+                    }
+
+                } else {
+                    if (propiedad.getPropietario().equals(getTableroGUI().getInformacion().getMenuGUI().getJugadorProponerTrato())) {
+                        renderRecuadro();
+                        if (isSeleccionada()) {
+                            getTableroGUI().getInformacion().getMenuGUI().getCasillasAuxiliar().add(this);
+                            renderRecuadroRelleno();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void renderRecuadro(){
+        // Cambiar a partir de este momento el color de las líneas a negro
+        getGc().setStroke(Color.BLACK);
+        // Cambiar a partir de este momento el grosor de las líneas a 1 puntos
+        getGc().setLineWidth(1);
+        // Dibujar un rectángulo vacio
+        getGc().strokeRoundRect(ConstantesGUI.CASILLA_ANCHO-25, ConstantesGUI.CASILLA_ALTO-25, 20, 20, 5, 5);
+    }
+
+    public void renderRecuadroRelleno(){
+        renderRecuadro();
+        // Cambiar a partir de este momento el color de relleno a verde
+        getGc().setFill(Color.GREEN);
+        // Dibujar un rectángulo con bordes redondeados a partir de la posición
+        getGc().fillRoundRect(ConstantesGUI.CASILLA_ANCHO-25, ConstantesGUI.CASILLA_ALTO-25, 20, 20, 5, 5);
     }
     
     

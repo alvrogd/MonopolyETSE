@@ -2,13 +2,16 @@ package aplicacionGUI.menuGUI.BotonesGUI;
 
 import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import monopoly.Constantes;
 import monopoly.Juego;
+import monopoly.jugadores.tratos.Inmunidad;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 
 import java.util.ArrayList;
@@ -51,14 +54,24 @@ public class BotoneraGUI {
     // Botones que están en la botonera
     private ArrayList<BotonGUI> botonesActuales;
 
+    // Menú GUI
+    private MenuGUI menuGUI;
+
     // Si la botonera está actualmente en una página
     private boolean pagina;
 
     // Si está en una página, cual era la función del botón
     private TipoFuncion funcionPagina;
 
+    // ArrayList utilizados para ir añadiendo las nuevas casillas para los tratos correspondientes.
+    private ArrayList<Propiedad> casillasDar;
+    private ArrayList<Propiedad> casillasRecibir;
+    private ArrayList<Inmunidad> inmunidades;
+    private Integer dineroDar;
+    private Integer dineroRecibir;
+
     /* Constructor */
-    public BotoneraGUI(Group raiz, Aplicacion app){
+    public BotoneraGUI(Group raiz, Aplicacion app, MenuGUI menuGUI){
 
         if(raiz == null){
             System.err.println("Raiz no inicializada");
@@ -69,6 +82,13 @@ public class BotoneraGUI {
             System.err.println("Juego no inicializado");
             System.exit(1);
         }
+
+        if(menuGUI == null){
+            System.err.println("Menú no inicializado");
+            System.exit(1);
+        }
+
+        this.menuGUI = menuGUI;
 
         // Se añade el nodo
         this.nodo = new Group();
@@ -89,6 +109,13 @@ public class BotoneraGUI {
         this.pagina = false;
         this.funcionPagina = null;
         this.ayuda = false;
+
+        this.casillasDar = new ArrayList<>();
+        this.casillasRecibir = new ArrayList<>();
+        this.inmunidades = new ArrayList<>();
+
+        this.dineroDar = 0;
+        this.dineroRecibir = 0;
 
         crearBotones();
 
@@ -119,6 +146,50 @@ public class BotoneraGUI {
         } else {
             nuevoBoton(funcion.toString(), funcion, false, false ,false);
         }
+    }
+
+    public MenuGUI getMenuGUI() {
+        return menuGUI;
+    }
+
+    public Integer getDineroDar() {
+        return dineroDar;
+    }
+
+    public void setDineroDar(Integer dineroDar) {
+        this.dineroDar = dineroDar;
+    }
+
+    public Integer getDineroRecibir() {
+        return dineroRecibir;
+    }
+
+    public void setDineroRecibir(Integer dineroRecibir) {
+        this.dineroRecibir = dineroRecibir;
+    }
+
+    public ArrayList<Inmunidad> getInmunidades() {
+        return inmunidades;
+    }
+
+    public void setInmunidades(ArrayList<Inmunidad> inmunidades) {
+        this.inmunidades = inmunidades;
+    }
+
+    public ArrayList<Propiedad> getCasillasDar() {
+        return casillasDar;
+    }
+
+    public void setCasillasDar(ArrayList<Propiedad> casillasDar) {
+        this.casillasDar = casillasDar;
+    }
+
+    public ArrayList<Propiedad> getCasillasRecibir() {
+        return casillasRecibir;
+    }
+
+    public void setCasillasRecibir(ArrayList<Propiedad> casillasRecibir) {
+        this.casillasRecibir = casillasRecibir;
     }
 
     public boolean isAyuda() {
@@ -188,10 +259,14 @@ public class BotoneraGUI {
                 columna = size % ConstantesGUI.BOTONES_POR_FILA;
             }
 
-            if(animado){
-                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonAnimadoGUI(this, getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
-            } else {
-                getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(this, getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+            if(funcion.getFuncionRaiz() != null) {
+
+                if (animado) {
+                    getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonAnimadoGUI(this, getNodo(), nombre, getAplicacion(), funcion, fila, columna, funcion.getLocalizacion(), funcion.getFrames(), funcion.getDuracion()));
+                } else {
+                    getBotonesPagina().get(funcion.getFuncionRaiz()).add(new BotonGUI(this, getNodo(), getAplicacion(), nombre, funcion, fila, columna, animado, ayuda));
+                }
+
             }
 
         } else {
@@ -313,6 +388,24 @@ public class BotoneraGUI {
         }
     }
 
+    public void anadirCancelarAceptar(HashSet<TipoFuncion> funciones){
+
+        if(getMenuGUI().isProponiendoTrato()){
+
+            // A mayores, como en este caso el resto de botones no pueden aparecer, se van a eliminar del HashSet de funciones
+            // que codigo más travieso jijiji
+
+            for(TipoFuncion funcion : TipoFuncion.values()){
+                funciones.remove(funcion);
+            }
+
+            funciones.add(TipoFuncion.aceptar);
+            funciones.add(TipoFuncion.cancelar);
+            funciones.add(TipoFuncion.ayuda);
+        }
+
+    }
+
     public void actualizarBotones(){
 
         if(getJuego().isIniciado()) {
@@ -341,10 +434,16 @@ public class BotoneraGUI {
                 botonesRecorrer.addAll(getBotones());
                 funciones.add(TipoFuncion.atras);
                 funciones.add(TipoFuncion.ayuda);
+
+                // Se comprueba si es necesario añadir cancelar o aceptar a los botones actuales.
+                anadirCancelarAceptar(funciones);
             } else {
                 botones = getBotones();
                 botonesRecorrer = getBotones();
                 funciones.add(TipoFuncion.ayuda);
+
+                // Se comprueba si es necesario añadir cancelar o aceptar a los botones actuales.
+                anadirCancelarAceptar(funciones);
             }
 
             for (BotonGUI boton : botonesRecorrer) {
@@ -369,14 +468,17 @@ public class BotoneraGUI {
                     if(boton.getFuncion().equals(TipoFuncion.cambiarModo)){
                         //En caso de ser el botón cambiarModo, este sigue quedando en la botonera, pero inactivo.
                         if(!isPagina()) {
-                            getBotonesActuales().add(boton);
+                            // También hay que tener en cuenta, que aunque este botón aparezca siempre, si se está
+                            // proponiendo un trato debería desaparecer
+                            if(!getMenuGUI().isProponiendoTrato()) {
+                                getBotonesActuales().add(boton);
+                            }
                         }
                     }
                     boton.inhabilitarBoton();
                 }
             }
         }
-
     }
 
 

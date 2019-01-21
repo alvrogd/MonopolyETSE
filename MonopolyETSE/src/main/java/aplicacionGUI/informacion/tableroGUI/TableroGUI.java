@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI;
 
+import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
@@ -40,6 +41,9 @@ public class TableroGUI {
     
     // Representaciones asignadas a los avatares de los jugadores
     private final HashMap<Character, Image> representacionesAvatares;
+
+    // Información
+    private final Informacion informacion;
     
     
     
@@ -51,9 +55,10 @@ public class TableroGUI {
         this.nodo = null;
         this.representacionesAvatares = null;
         this.sensor = null;
+        this.informacion = null;
     }
 
-    public TableroGUI( Group raiz, Tablero tablero ) {
+    public TableroGUI( Informacion informacion, Group raiz, Tablero tablero ) {
         
         if( raiz == null ) {
             System.err.println("Raíz no inicializada");
@@ -64,7 +69,14 @@ public class TableroGUI {
             System.err.println("Tablero no inicializado");
             System.exit(1);
         }
-        
+
+        if( informacion == null ) {
+            System.err.println("Información no inicializado");
+            System.exit(1);
+        }
+
+        this.informacion = informacion;
+
         // Se añade al nodo dado un nuevo nodo de uso para el tablero
         this.nodo = new Group();
         raiz.getChildren().add( this.nodo );
@@ -163,8 +175,11 @@ public class TableroGUI {
     public Rectangle getSensor() {
         return sensor;
     }
-           
-    
+
+    public Informacion getInformacion() {
+        return informacion;
+    }
+
     public ArrayList<ArrayList<CasillaGUI>> getCasillasGUI() {
         return casillasGUI;
     }
@@ -287,6 +302,23 @@ public class TableroGUI {
         double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
         
         return(getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY));
+    }
+
+    public void handleClickIzquierdo(double x, double y) {
+
+        double posicionX = x - ConstantesGUI.TABLERO_DESPLAZAMIENTO_X;
+        double posicionY = y - ConstantesGUI.TABLERO_DESPLAZAMIENTO_Y;
+
+        // Se comprueba cada una de las representaciones de las casillas
+        for( ArrayList<CasillaGUI> fila : getCasillasGUI() ) {
+
+            for( CasillaGUI casillaGUI : fila ) {
+
+                if( casillaGUI.contienePosicion(posicionX, posicionY) ) {
+                    casillaGUI.handleClickIzquierdo(posicionX, posicionY);
+                }
+            }
+        }
     }
     
     

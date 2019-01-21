@@ -17,6 +17,7 @@ import javafx.scene.transform.Translate;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.*;
+import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
@@ -26,6 +27,7 @@ import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.menuGUI.botones.BotonesImagenes;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 public class BotonGUI {
@@ -142,6 +144,75 @@ public class BotonGUI {
 
     public BotonGUI(BotoneraGUI botonera, Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna){
         this(botonera, raiz, app, nombre, funcion, fila, columna, false, false);
+    }
+
+    public BotonGUI(String nombreImagen, BotoneraGUI botonera, Group raiz, String nombre, Aplicacion app, TipoFuncion funcion, int fila, int columna){
+        if(raiz == null){
+            System.err.println("Raiz no inicializada");
+            System.exit(1);
+        }
+
+        if(nombre == null){
+            System.err.println("Nombre no inicializado");
+            System.exit(1);
+        }
+
+        if(funcion == null){
+            System.err.println("Función no inicializada");
+            System.exit(1);
+        }
+
+        if(fila < 0){
+            System.err.println("Fila no puede ser negativa");
+            System.exit(1);
+        }
+
+        if(columna < 0){
+            System.err.println("Columna no puede ser negativa");
+            System.exit(1);
+        }
+
+        if(app == null){
+            System.err.println("Aplicación no inicializada");
+            System.exit(1);
+        }
+
+        this.botonera = botonera;
+        this.aplicacion = app;
+        this.nombre = nombre;
+        this.funcion = funcion;
+
+        // Se añade el nodo
+        this.nodo = new Group();
+        raiz.getChildren().add(this.nodo);
+
+        // Se establece su correspondiente posición en la ventana
+
+        this.fila = fila;
+        this.columna = columna;
+        this.desplazamientoX = desplazamientoX(fila);
+        this.desplazamientoY = desplazamientoY(columna);
+        this.translate = new Translate(desplazamientoX, desplazamientoY);
+
+        this.nodo.getTransforms().add(this.translate);
+
+        this.canvas = new Canvas(ConstantesGUI.BOTONES_ANCHO, ConstantesGUI.BOTON_ALTO);
+        this.nodo.getChildren().add(canvas);
+
+        this.gc = this.canvas.getGraphicsContext2D();
+
+        // Se crea el correspondiente sensor
+        this.sensor = new Rectangle(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+        this.sensor.setFill(Color.TRANSPARENT);
+
+        System.out.println(nombre);
+
+        this.boton = new Image(BotonesImagenes.class.getResource(nombreImagen + ".png").toString());
+        this.botonOscuro = new Image(BotonesImagenes.class.getResource(nombreImagen + "Oscuro.png").toString());
+        this.botonActual = this.boton;
+
+        this.animado = false;
+        this.ayuda = false;
     }
 
     public BotoneraGUI getBotonera() {
@@ -475,6 +546,92 @@ public class BotonGUI {
         getBotonera().setFuncionPagina(getFuncion());
     }
 
+    public void aceptarTratos(){
+
+        ArrayList<BotonGUI> botones = new ArrayList<>();
+        getBotonera().getBotonesPagina().put(TipoFuncion.aceptarTratos, botones);
+
+        Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosRecibidos().values();
+
+        for(Trato trato : tratos){
+            botones.add(new BotonGUI("tratoAceptar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.aceptacionTratos, 0, 0));
+        }
+
+        getBotonera().setPagina(true);
+        getBotonera().setFuncionPagina(getFuncion());
+
+    }
+
+    public void aceptacionTratos(){
+
+        if(getApp().getJuego().getTurno().getTratosRecibidos().containsKey(getNombre())){
+            try {
+                getApp().getJuego().getTurno().aceptarTrato(getNombre());
+            } catch (NoLiquidezException | NoExisteTratoException | NoSerPropietarioException e) {
+                Aplicacion.consola.imprimir(e.getMessage());
+            }
+        }
+
+        ArrayList<BotonGUI> botones = getBotonera().getBotonesPagina().get(TipoFuncion.aceptarTratos);
+
+        for(BotonGUI boton : botones){
+            boton.getGc().clearRect(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+        }
+
+        botones = new ArrayList<>();
+        getBotonera().getBotonesPagina().put(TipoFuncion.aceptarTratos, botones);
+
+        Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosRecibidos().values();
+
+        for(Trato trato : tratos){
+            botones.add(new BotonGUI("tratoAceptar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.aceptacionTratos, 0, 0));
+        }
+    }
+
+    public void eliminarTratos(){
+
+        ArrayList<BotonGUI> botones = new ArrayList<>();
+        getBotonera().getBotonesPagina().put(TipoFuncion.eliminarTratos, botones);
+
+        Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosEmitidos().values();
+
+        for(Trato trato : tratos){
+            botones.add(new BotonGUI("tratoEliminar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.eliminacionTratos, 0, 0));
+        }
+
+        getBotonera().setPagina(true);
+        getBotonera().setFuncionPagina(getFuncion());
+
+    }
+
+    public void eliminacionTratos(){
+
+        if(getApp().getJuego().getTurno().getTratosEmitidos().containsKey(getNombre())){
+            try {
+                getApp().getJuego().getTurno().eliminarTrato(getNombre());
+            } catch (NoExisteTratoException e) {
+                Aplicacion.consola.imprimir(e.getMessage());
+            }
+
+            ArrayList<BotonGUI> botones = getBotonera().getBotonesPagina().get(TipoFuncion.eliminarTratos);
+
+            for(BotonGUI boton : botones){
+                boton.getGc().clearRect(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+            }
+
+            botones = new ArrayList<>();
+
+            getBotonera().getBotonesPagina().put(TipoFuncion.eliminarTratos, botones);
+
+            Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosEmitidos().values();
+
+            for(Trato trato : tratos){
+                botones.add(new BotonGUI("tratoEliminar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.eliminacionTratos, 0, 0));
+            }
+
+        }
+    }
+
     public void estadisticasJugador(){
         Jugador auxJugador = getApp().getJuego().getTurno();
 
@@ -508,6 +665,18 @@ public class BotonGUI {
         getBotonera().setPagina(false);
         getBotonera().setFuncionPagina(null);
 
+    }
+
+    // Aceptar implica pasar a la siguiente posicion, para eso hay un booleano que indica siguientePosicion, el cual se pone
+    // a true y ya se encargará el render
+    public void aceptar(){
+        getBotonera().getMenuGUI().setSiguientePaso(true);
+    }
+
+    // Todos los modos que utilizan cancelar irán en función de booleanos que indican que se está en ese modo, por lo tanto se
+    // ponen todos en false.
+    public void cancelar(){
+        getBotonera().getMenuGUI().setProponiendoTrato(false);
     }
 
     public void ejecutarFuncion(){
@@ -583,6 +752,24 @@ public class BotonGUI {
                 break;
             case listarTratos:
                 listarTrato();
+                break;
+            case aceptarTratos:
+                aceptarTratos();
+                break;
+            case aceptacionTratos:
+                aceptacionTratos();
+                break;
+            case eliminarTratos:
+                eliminarTratos();
+                break;
+            case eliminacionTratos:
+                eliminacionTratos();
+                break;
+            case aceptar:
+                aceptar();
+                break;
+            case cancelar:
+                cancelar();
                 break;
         }
     }
