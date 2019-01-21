@@ -25,6 +25,7 @@ public class RegistroGUI {
 
     /**
      * Constructor que inicializa un registro en el que mostrar texto
+     *
      * @param raiz nodo sobre el cual generar un hijo
      */
     public RegistroGUI(Group raiz) {
@@ -95,6 +96,7 @@ public class RegistroGUI {
 
     /**
      * Se cambia el contenido del registro
+     *
      * @param contenido nuevo contenido del registro
      */
     public void actualizarContenido(String contenido) {
@@ -105,6 +107,7 @@ public class RegistroGUI {
 
     /**
      * Se añade contenido a la información que contiene actualmente el registro
+     *
      * @param nuevoContenido nueva información a añadir
      */
     public void anadirContenido(String nuevoContenido) {
@@ -123,6 +126,7 @@ public class RegistroGUI {
 
     /**
      * Se actualiza el contenido del registro, dándole un formato apropiado, y se guarda en memoria
+     *
      * @param contenido contenido a guardar
      */
     private void guardarContenido(String contenido) {
@@ -135,10 +139,10 @@ public class RegistroGUI {
 
         // Se actualiza el contenido
         getPanel().setContent(text);
-        
+
         // Se guarda
         setContenido(contenido);
-        
+
         // Se mueve el desplazamiento vertical al final
         getPanel().setVvalue(1.0);
     }
@@ -146,8 +150,9 @@ public class RegistroGUI {
     /**
      * Se adapta la información dada al ancho del registro, evitando incorporar un desplazamiento horizontal a causa de
      * líneas demasiado largas
+     *
      * @param contenido información a adaptar
-     * @return          información adaptada
+     * @return información adaptada
      */
     private String ajustarInformacion(String contenido) {
 
@@ -167,9 +172,9 @@ public class RegistroGUI {
                 stringBuilder.append("\n");
                 longitud = 0;
             }
-            
+
             // Si la palabra contiene un salto de línea, se resetea la longitud
-            if( palabra.contains("\n")) {
+            if (palabra.contains("\n")) {
                 longitud = 0;
             }
 
