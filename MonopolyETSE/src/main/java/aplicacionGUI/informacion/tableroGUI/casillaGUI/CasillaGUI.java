@@ -5,10 +5,6 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.tableroGUI.ColorCasillaGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -17,7 +13,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -32,6 +27,9 @@ import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.avatares.modoAvanzado.AnimacionAvataresModoAvanzado;
 import resources.casillas.FondosCasillas;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CasillaGUI {
 
