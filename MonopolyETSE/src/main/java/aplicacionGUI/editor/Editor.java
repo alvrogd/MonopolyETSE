@@ -126,7 +126,8 @@ public class Editor {
         Celda salida = this.celdas.get(0).get(0);
 
         salida.setCasillaGUI(new CasillaGUI(Celda.getTableroGUI(), salida.getNodo(), new Salida("Salida",
-                salida.getPosicionTablero(), Celda.getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0));
+                salida.getPosicionTablero(), Celda.getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0,
+                0, false));
 
         actualizarNumeroCasillas(TipoCasilla.salida, salida.getPosicionTablero(), 1);
     }

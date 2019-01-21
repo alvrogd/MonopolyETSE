@@ -135,14 +135,14 @@ public class TableroGUI {
                     if (casilla instanceof Solar) {
                         // todo ya no es necesario this y this.nodo
                         filaGUI.add(new SolarGUI(this, this.nodo, (Solar) casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
-                                posiciones.get(contador)[0], posiciones.get(contador)[1]));
+                                posiciones.get(contador)[0], posiciones.get(contador)[1], true));
                     } else {
                         filaGUI.add(new PropiedadGUI(this, this.nodo, (Propiedad) casilla, ConstantesGUI.CASILLAS_IMAGENES[
-                                contador], posiciones.get(contador)[0], posiciones.get(contador)[1]));
+                                contador], posiciones.get(contador)[0], posiciones.get(contador)[1], true));
                     }
                 } else {
                     filaGUI.add(new CasillaGUI(this, this.nodo, casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
-                            posiciones.get(contador)[0], posiciones.get(contador)[1]));
+                            posiciones.get(contador)[0], posiciones.get(contador)[1], true));
                 }
 
                 contador++;
@@ -388,6 +388,7 @@ public class TableroGUI {
      * @param nodoRaiz nodo de anclaje
      * @param e        evento del click
      * @param menus    conjunto de menús contextuales activos
+     * @param app      aplicación de Monopoly sobre la cual se ejecuta el juego
      */
     public void handleClickDerecho(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
             menus, Aplicacion app) {

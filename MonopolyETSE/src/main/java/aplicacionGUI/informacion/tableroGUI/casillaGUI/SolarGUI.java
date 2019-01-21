@@ -3,8 +3,7 @@ package aplicacionGUI.informacion.tableroGUI.casillaGUI;
 import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.handlers.VenderEdificio;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
@@ -35,10 +34,24 @@ public class SolarGUI extends PropiedadGUI {
     
     
     /* Constructor */
-    
-    public SolarGUI(TableroGUI tableroGUI, Group raiz, Solar solar, String ficheroFondo, int posicionX, int posicionY) {
 
-        super(tableroGUI, raiz, solar, ficheroFondo, posicionX, posicionY);
+    /**
+     * Se crea una representación de un solar
+     *
+     * @param tableroGUI          representación de un tablero asociada a la representación de una casilla
+     * @param raiz                nodo sobre el cual crear un hijo para la representación de la casilla
+     * @param solar             solara representar
+     * @param ficheroFondo        imagen de fondo de la casilla a representar
+     * @param posicionX           posición (coordenada X) de la representación de la casilla en la representación del
+     *                            tablero
+     * @param posicionY           posición (coordenada Y) de la representación de la casilla en la representación del
+     *                            tablero
+     * @param perteneceTableroGUI si pertenece a una representación de un tablero
+     */
+    public SolarGUI(TableroGUI tableroGUI, Group raiz, Solar solar, String ficheroFondo, int posicionX, int posicionY,
+                    boolean perteneceTableroGUI) {
+
+        super(tableroGUI, raiz, solar, ficheroFondo, posicionX, posicionY, perteneceTableroGUI);
     }
 
     
@@ -49,22 +62,18 @@ public class SolarGUI extends PropiedadGUI {
 
         return ((Solar) getCasilla());
     }
-
     
     public static Image getCASA() {
         return CASA;
     }
 
-    
     public static Image getHOTEL() {
         return HOTEL;
     }
-
     
     public static Image getPISCINA() {
         return PISCINA;
     }
-
     
     public static Image getPISTA() {
         return PISTA;
@@ -73,15 +82,22 @@ public class SolarGUI extends PropiedadGUI {
     
     
     /* Métodos */
-    
+
+    /**
+     * Se renderiza el contenido (avatares contenidos, propietario, casilla de selección y edificios contenidos)
+     *
+     * @param t tiempo transcurrido
+     */
     @Override
     public void renderContenido(double t) {
         
         super.renderContenido(t);
         renderEdificiosContenidos();
     }
-    
-    
+
+    /**
+     * Se renderizan los edificios contenidos
+     */
     public void renderEdificiosContenidos() {
         
         // Se establece la tipografía
@@ -129,8 +145,13 @@ public class SolarGUI extends PropiedadGUI {
             }
         }
     }
-    
-    
+
+    /**
+     * Se genera un menú contextual para el solar
+     *
+     * @param app aplicación de Monopoly sobre la cual se ejecuta el juego
+     * @return menú contextual generado
+     */
     public ContextMenu generarMenuContextual(Aplicacion app) {
         
         // Se crea el menú de opciones para a partir del padre
@@ -151,19 +172,7 @@ public class SolarGUI extends PropiedadGUI {
                 
                 // Se añade la opción para vender casas
                 MenuItem item2 = new MenuItem( "Casas" );
-                item2.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle( ActionEvent event ) {
-                        int cantidad = 1;
-                        try {
-                            app.getJuego().getTurno().venderEdificio(TipoEdificio.casa, cantidad, getSolar());
-                        } catch (Exception ignored) {
-
-                        }
-                    }
-                });
-                
+                item2.setOnAction(new VenderEdificio(getSolar(), TipoEdificio.casa, app));
                 item1.getItems().add(item2);
             }
             
@@ -171,19 +180,7 @@ public class SolarGUI extends PropiedadGUI {
                 
                 // Se añade la opción para vender hoteles
                 MenuItem item3 = new MenuItem( "Hoteles" );
-                item3.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle( ActionEvent event ) {
-                        int cantidad = 1;
-                        try {
-                            app.getJuego().getTurno().venderEdificio(TipoEdificio.hotel, cantidad, getSolar());
-                        } catch (Exception ignored) {
-
-                        }
-                    }
-                });
-                
+                item3.setOnAction(new VenderEdificio(getSolar(), TipoEdificio.hotel, app));
                 item1.getItems().add(item3);
             }
             
@@ -191,39 +188,15 @@ public class SolarGUI extends PropiedadGUI {
                 
                 // Se añade la opción para vender piscinas
                 MenuItem item4 = new MenuItem( "Piscinas" );
-                item4.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle( ActionEvent event ) {
-                        int cantidad = 1;
-                        try {
-                            app.getJuego().getTurno().venderEdificio(TipoEdificio.piscina, cantidad, getSolar());
-                        } catch (Exception ignored) {
-
-                        }
-                    }
-                });
-                
+                item4.setOnAction(new VenderEdificio(getSolar(), TipoEdificio.piscina, app));
                 item1.getItems().add(item4);
             }
             
             if( funciones.contains(TipoFuncion.venderPista)) {
                 
-                // Se añade la opción para vender hoteles
+                // Se añade la opción para vender pistas
                 MenuItem item5 = new MenuItem( "Pistas" );
-                item5.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle( ActionEvent event ) {
-                        int cantidad = 1;
-                        try {
-                            app.getJuego().getTurno().venderEdificio(TipoEdificio.pistaDeporte, cantidad, getSolar());
-                        } catch (Exception ignored) {
-
-                        }
-                    }
-                });
-                
+                item5.setOnAction(new VenderEdificio(getSolar(), TipoEdificio.pistaDeporte, app));
                 item1.getItems().add(item5);
             }
             
