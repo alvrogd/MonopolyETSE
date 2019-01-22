@@ -13,6 +13,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import monopoly.tablero.TipoGrupo;
@@ -22,6 +24,7 @@ import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Salida;
 import resources.editor.EditorCuadricula;
 import resources.menuGUI.botones.BotonesImagenes;
+import resources.sonidos.Sonidos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -73,6 +76,9 @@ public class Editor {
 
     private Image botonAceptarSeleccionada = botonAceptar;
     private Image botonCancelarSeleccionada = botonCancelar;
+
+    // Sonido a reproducir cuando se pulsa un botón
+    private final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
 
 
 
@@ -249,6 +255,10 @@ public class Editor {
         this.botonCancelarSeleccionada = botonCancelarSeleccionada;
     }
 
+    public Media getSonido() {
+        return sonido;
+    }
+
 
 
     /* Métodos */
@@ -283,10 +293,14 @@ public class Editor {
         // Se comprueban los botones
         if (getSensorAceptar().contains(posicionX, posicionY)) {
 
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
             setBotonAceptarSeleccionada(getBotonAceptarOscuro());
 
         } else if (getSensorCancelar().contains(posicionX, posicionY)) {
 
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
             setBotonCancelarSeleccionada(getBotonCancelarOscuro());
         }
     }
