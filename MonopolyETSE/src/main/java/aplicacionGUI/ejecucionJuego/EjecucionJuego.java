@@ -228,7 +228,7 @@ public class EjecucionJuego {
             app.introducirComando("edificar piscina");
             app.introducirComando("cambiar modo");
         } catch (MonopolyETSEException e) {
-            e.toString();
+            System.err.println(e.toString());
         }
 
 

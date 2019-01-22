@@ -82,8 +82,8 @@ public class VenderEdificio implements EventHandler<ActionEvent> {
 
         try {
             getApp().getJuego().getTurno().venderEdificio(getTipoEdificio(), 1, getSolar());
-        } catch (Exception ignored) {
-            // todo no ignorar excepciones, buscar por todos similares no marcados
+        } catch (Exception e) {
+            System.err.println(e.toString());
         }
     }
 }

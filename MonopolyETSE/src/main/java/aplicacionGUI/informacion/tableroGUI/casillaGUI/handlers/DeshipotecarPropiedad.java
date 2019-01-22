@@ -67,8 +67,8 @@ public class DeshipotecarPropiedad implements EventHandler<ActionEvent> {
 
         try {
             getApp().getJuego().getTurno().deshipotecar(getPropiedad());
-        } catch (Exception ignored) {
-            // todo no ignorar excepciones
+        } catch (Exception e) {
+            System.err.println(e.toString());
         }
     }
 }
