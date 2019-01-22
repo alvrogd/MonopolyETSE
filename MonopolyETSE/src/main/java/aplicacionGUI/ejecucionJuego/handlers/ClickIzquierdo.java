@@ -1,5 +1,6 @@
 package aplicacionGUI.ejecucionJuego.handlers;
 
+import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionJuego.EjecucionJuego;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
@@ -69,7 +70,10 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
 
             // Si se ha pulsado el botón primario
             if (e.getButton().equals(MouseButton.PRIMARY)) {
-                getEjecucionJuego().getInformacion().handleClickIzquierdo(x, y);
+                // Se comprueba que no haya ningún Input activo
+                if(!getEjecucionJuego().getMenuGUI().isInputActivo()) {
+                    getEjecucionJuego().getInformacion().handleClickIzquierdo(x, y);
+                }
             }
 
             // Si se ha pulsado el botón secundario

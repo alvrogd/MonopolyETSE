@@ -1,12 +1,12 @@
 package aplicacionGUI.menuGUI.entrada;
 
-import aplicacionGUI.input.Input;
 import aplicacionGUI.menuGUI.MenuGUI;
+import monopoly.jugadores.tratos.Inmunidad;
 import monopoly.jugadores.tratos.Trato;
 
-public class CambiarDarDinero extends CambiarDinero{
+public class CambiarDarTrato extends CambiarTrato {
 
-    public CambiarDarDinero(Trato trato, MenuGUI menuGUI) {
+    public CambiarDarTrato(Trato trato, MenuGUI menuGUI) {
         super(trato, menuGUI);
     }
 
@@ -15,11 +15,7 @@ public class CambiarDarDinero extends CambiarDinero{
         // Como ya se ha cumplido la funcionalidad se le puede indicar al menú que puede continuar el siguiente paso
         getTrato().setDineroDar(enteroLeido);
 
-        // Elimina su nodo
-        Input.getRaiz().getChildren().remove(getInputEntero().getNodo());
-
-        // Se elimina de la lista de inputs activos
-        Input.getInputsActivos().clear();
+        getInputEntero().eliminarRastro();
         getMenuGUI().setSiguientePaso(true);
     }
 }

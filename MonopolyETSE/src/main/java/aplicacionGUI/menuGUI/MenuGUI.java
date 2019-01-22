@@ -1,23 +1,19 @@
 package aplicacionGUI.menuGUI;
 import aplicacion.Aplicacion;
-import aplicacion.excepciones.NumMaximoJugadoresException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import aplicacionGUI.menuGUI.BotonesGUI.BotonGUI;
 import aplicacionGUI.menuGUI.BotonesGUI.BotoneraGUI;
 import aplicacionGUI.menuGUI.JugadoresGUI.JugadoresGUI;
-import aplicacionGUI.menuGUI.entrada.CambiarDarDinero;
-import aplicacionGUI.menuGUI.entrada.CambiarRecibirDinero;
-import aplicacionGUI.menuGUI.entrada.EntradaGUI;
+import aplicacionGUI.menuGUI.entrada.CambiarDarTrato;
+import aplicacionGUI.menuGUI.entrada.CambiarRecibirTrato;
 import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import aplicacionGUI.menuGUI.registroGUI.RegistroGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -25,7 +21,6 @@ import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.jugadores.tratos.Trato;
-import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.menuGUI.MenuGUIFondo;
 
@@ -98,6 +93,9 @@ public class MenuGUI{
     // BotonGUI auxiliar donde se almacenará el botón de aceptar
     private BotonGUI botonGUI;
 
+    // Booleano para saber si está un input activo
+    private boolean inputActivo;
+
     /* Constructor */
 
     public MenuGUI(Group raiz, Aplicacion app, String imagen, TableroGUI tableroGUI){
@@ -165,6 +163,7 @@ public class MenuGUI{
         this.faseNoAlquiler = false;
 
         this.casillasAuxiliar = new ArrayList<>();
+        this.inputActivo = false;
 
         for(BotonGUI boton : getBotonera().getBotones()){
             if(boton.getFuncion().equals(TipoFuncion.aceptar)){
@@ -184,6 +183,14 @@ public class MenuGUI{
             System.exit(1);
         }
         getJugadoresGUI().nuevoJugador(jugador);
+    }
+
+    public boolean isInputActivo() {
+        return inputActivo;
+    }
+
+    public void setInputActivo(boolean inputActivo) {
+        this.inputActivo = inputActivo;
     }
 
     public Aplicacion getAplicacion() {
@@ -389,12 +396,15 @@ public class MenuGUI{
                     if(isEstarDandoDinero()){
 
                         setEstarDandoDinero(false);
-                        new CambiarRecibirDinero(getTrato(), this);
+                        new CambiarRecibirTrato(getTrato(), this);
 
                     } else {
 
                         // Esta es la última parte del trato y por lo tanto se procede a crearlo y procesarlo.
                         Integer entero = 0;
+
+                        // Se ha finalizado la parte del input
+                        setInputActivo(false);
 
                         getBotonera().setDineroRecibir(entero);
 
@@ -406,7 +416,8 @@ public class MenuGUI{
 
                         String idTrato = "trato" + getAplicacion().getJuego().getNumTratos();
 
-                        getTrato().setInmunidades(getBotonera().getInmunidades());
+                        //No se hace esto ya que se añaden en el propio trato al irse añadiendo desde el handler de la propiedad
+                        //getTrato().setInmunidades(getBotonera().getInmunidades());
                         getTrato().setPropiedadesDar(getBotonera().getCasillasDar());
                         getTrato().setPropiedadesRecibir(getBotonera().getCasillasRecibir());
                         getTrato().setId(idTrato);
@@ -438,7 +449,7 @@ public class MenuGUI{
                             setFaseDinero(true);
                             setEstarDandoDinero(true);
                             setFaseNoAlquiler(false);
-                            new CambiarDarDinero(getTrato(), this);
+                            new CambiarDarTrato(getTrato(), this);
 
                             // Ahora se elimina el botón aceptar para que no se pueda continuar sin introducir el valor
                             getBotonera().eliminarBoton(getBotonGUI());

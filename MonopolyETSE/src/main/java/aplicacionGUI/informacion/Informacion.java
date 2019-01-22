@@ -202,6 +202,12 @@ public class Informacion {
         getTableroGUI().render(t);
         getSuerteGUI().render();
         getComunidadGUI().render();
-        getMarcoInformacion().render(t);
+
+        //El marco solo se renderiza en caso de que no haya inputs activos
+        if(!getMenuGUI().isInputActivo()) {
+            getMarcoInformacion().render(t);
+        } else {
+            getMarcoInformacion().getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
+        }
     }
 }
