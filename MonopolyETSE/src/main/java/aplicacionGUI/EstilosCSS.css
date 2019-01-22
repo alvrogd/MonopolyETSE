@@ -1,4 +1,10 @@
 
+/***** Recuadro *****/
+
+
+
+/***** Registro *****/
+
 /* Fondo de la barra lateral */
 .scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
     -fx-background-color: #F1F1F1;

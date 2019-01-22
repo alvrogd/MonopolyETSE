@@ -57,7 +57,7 @@ public class main extends Application {
         // Se añade la escena a la ventana
         ventana.setScene( escena );
         // Se establece un estilo personalizado para la escena (para el registro exclusivamente)
-        escena.getStylesheets().add(ConstantesGUI.class.getResource("RegistroGUI.css").toExternalForm());
+        escena.getStylesheets().add(ConstantesGUI.class.getResource("EstilosCSS.css").toExternalForm());
                                
         // Se crea un canvas en el que representar la GUI y se añade a la raíz
         // todo al final creo que este canvas será completamente innecesario si la parte de arriba y la de abajo tienen
