@@ -48,24 +48,33 @@ public class Input {
 
     /* Constructor */
 
+    /**
+     * Se crea una instancia mediante la cual obtener información del usuario a través del teclado
+     *
+     * @param raiz         nodo sobre el cual crear un hijo para el input
+     * @param imagen       imagen que mostrar cuando no se esté presionando el botón de aceptar
+     * @param imagenOscura imagen que mostrar cuando se esté presionando el botón de aceptar
+     * @param editor       si el input se encuentra en un editor o en el juego, para establecer una correcta posición en
+     *                     pantalla
+     */
     public Input(Group raiz, String imagen, String imagenOscura, boolean editor) {
 
-        if( raiz == null ) {
+        if (raiz == null) {
             System.err.println("Raíz no inicializada");
             System.exit(1);
         }
 
-        if( imagen == null ) {
+        if (imagen == null) {
             System.err.println("Nombre de la imagen no inicializado");
             System.exit(1);
         }
 
-        if( imagenOscura == null ) {
+        if (imagenOscura == null) {
             System.err.println("Nombre de la imagen oscura no inicializado");
             System.exit(1);
         }
 
-        if( Input.inputsActivos == null ) {
+        if (Input.inputsActivos == null) {
             System.err.println("El conjunto de inputs activos aún no ha sido inicializado");
             System.exit(1);
         }
@@ -75,12 +84,10 @@ public class Input {
         raiz.getChildren().add(this.nodo);
 
         // Se establece su correspondiente posición en la ventana
-        if( editor ) {
+        if (editor) {
             this.desplazamientoX = ConstantesGUI.INPUT_DESPLAZAMIENTO_EDITOR_X;
             this.desplazamientoY = ConstantesGUI.INPUT_DESPLAZAMIENTO_EDITOR_Y;
-        }
-
-        else {
+        } else {
             this.desplazamientoX = ConstantesGUI.INPUT_DESPLAZAMIENTO_JUEGO_X;
             this.desplazamientoY = ConstantesGUI.INPUT_DESPLAZAMIENTO_JUEGO_Y;
         }
@@ -125,6 +132,7 @@ public class Input {
     }
 
 
+    
     /* Getters y setters */
 
     public Group getNodo() {
@@ -219,8 +227,8 @@ public class Input {
     /**
      * Se renderiza el marco de información
      */
-    public void render(){
+    public void render() {
 
-        getGc().drawImage(getImagenSeleccionada(), 0,0);
+        getGc().drawImage(getImagenSeleccionada(), 0, 0);
     }
 }
