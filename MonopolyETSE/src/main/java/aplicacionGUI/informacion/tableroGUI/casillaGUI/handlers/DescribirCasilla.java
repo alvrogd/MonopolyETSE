@@ -1,5 +1,6 @@
 package aplicacionGUI.informacion.tableroGUI.casillaGUI.handlers;
 
+import aplicacion.Aplicacion;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
@@ -50,6 +51,6 @@ public class DescribirCasilla implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
 
-        System.out.println(getCasilla().toString());
+        Aplicacion.consola.imprimir(getCasilla().toString());
     }
 }
