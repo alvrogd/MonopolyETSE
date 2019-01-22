@@ -8,6 +8,7 @@ import monopoly.jugadores.Banca;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Grupo;
 import monopoly.tablero.jerarquiaCasillas.Impuesto;
+import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
@@ -339,6 +340,10 @@ public class Tablero {
         getCasillas().get(comunidad.getPosicionEnTablero()/10).set(comunidad.getPosicionEnTablero()%10,comunidad);
         getCasillasTablero().put(comunidad.getNombre(),comunidad);
 
+    }
+
+    public void cambiarTablero(ArrayList<InformacionCasilla> informacionCasillas){
+        return;
     }
 
     /* Getters */
