@@ -343,5 +343,8 @@ public class ConstantesGUI {
     public final static int INPUT_DESPLAZAMIENTO_BOTON_X = INPUT_ANCHO - 25;
     public final static int INPUT_DESPLAZAMIENTO_BOTON_Y = 25;
 
+    // Nombre de las imágenes para el input de enteros
+    public final static String INPUT_ENTERO_IMAGEN = "plantillaEntradaDinero.png";
+    public final static String INPUT_ENTERO_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
 
 }

@@ -280,9 +280,6 @@ public class main extends Application {
         ArrayList<Input> inputsActivos = new ArrayList<>();
         Input.setInputsActivos(inputsActivos);
 
-        // Se crea un input
-        Input input = new Input(raiz, "plantillaEntradaDinero.png", "plantillaEntradaDineroOscuro.png", true);
-
         // Se crea un editor
         Editor editor = new Editor(raiz);
 
@@ -305,10 +302,6 @@ public class main extends Application {
                 }
 
                 menus.clear();
-
-                if( input.contienePosicion(xPresionado[0], yPresionado[0])) {
-                    input.handlePulsacion();
-                }
             }
         });
 
@@ -323,9 +316,6 @@ public class main extends Application {
                     editor.handleClick(xPresionado[0], yPresionado[0], raiz, e, menus);
                 }
 
-                if( input.contienePosicion(xPresionado[0], yPresionado[0])) {
-                    input.handleRelease();
-                }
             }
         });
 
@@ -347,7 +337,6 @@ public class main extends Application {
                 // Render
                 gc.drawImage(fondo, 0, 0);
                 editor.render(t);
-                input.render();
             }
         }.start();
 

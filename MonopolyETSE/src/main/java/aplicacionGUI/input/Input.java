@@ -13,7 +13,7 @@ import resources.entrada.ImagenEntradaGUI;
 
 import java.util.ArrayList;
 
-public class Input {
+public abstract class Input {
 
     /* Atributos */
 
@@ -44,6 +44,8 @@ public class Input {
     // Referencia al conjunto de inputs activos en la aplicación
     private static ArrayList<Input> inputsActivos;
 
+    // Identificador del atributo que el usuario del input desea modificar
+    private final int atributo;
 
 
     /* Constructor */
@@ -54,10 +56,13 @@ public class Input {
      * @param raiz         nodo sobre el cual crear un hijo para el input
      * @param imagen       imagen que mostrar cuando no se esté presionando el botón de aceptar
      * @param imagenOscura imagen que mostrar cuando se esté presionando el botón de aceptar
-     * @param editor       si el input se encuentra en un editor o en el juego, para establecer una correcta posición en
-     *                     pantalla
+     * @param editor       si el input se encuentra en un editor o en el juego, para establecer una correcta posición
+     *                     en pantalla
+     * @param atributo     identificador del atributo que desea modificar aquel que invocó al input (cuando se lea la
+     *                     entrada del usuario, el método llamado para guardar la información obtenida recibirá como
+     *                     argumento el identificador, pudiendo discernir qué atributo debe ser modificado)
      */
-    public Input(Group raiz, String imagen, String imagenOscura, boolean editor) {
+    public Input(Group raiz, String imagen, String imagenOscura, boolean editor, int atributo) {
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
@@ -126,13 +131,16 @@ public class Input {
         // Y se añade al nodo del input
         this.nodo.getChildren().add(textField);
 
+        // Se guarda el identificador del atributo asociado a la entrada
+        this.atributo = atributo;
+
         // Se eliminan los inputs activos y se guarda este
         Input.inputsActivos.clear();
         Input.inputsActivos.add(this);
     }
 
 
-    
+
     /* Getters y setters */
 
     public Group getNodo() {
@@ -177,6 +185,10 @@ public class Input {
 
     public TextField getTextField() {
         return textField;
+    }
+
+    public int getAtributo() {
+        return atributo;
     }
 
     public static ArrayList<Input> getInputsActivos() {
