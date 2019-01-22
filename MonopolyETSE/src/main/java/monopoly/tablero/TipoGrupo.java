@@ -6,29 +6,29 @@ import monopoly.Constantes;
 public enum TipoGrupo {
 
     /*Tipos de enumeraciones*/
-    negro("solar",Constantes.PRECIO_INICIAL_GRUPO_0, TipoColor.negroANSI),
-    cyan("solar",Constantes.PRECIO_INICIAL_GRUPO_1, TipoColor.cianANSI),
-    rosa("solar",Constantes.PRECIO_INICIAL_GRUPO_2, TipoColor.violetaANSI),
-    naranja("solar",Constantes.PRECIO_INICIAL_GRUPO_3, TipoColor.amarilloANSI),
-    rojo("solar",Constantes.PRECIO_INICIAL_GRUPO_4, TipoColor.rojoANSI),
-    marron("solar",Constantes.PRECIO_INICIAL_GRUPO_5, TipoColor.blancoANSI),
-    verde("solar",Constantes.PRECIO_INICIAL_GRUPO_6, TipoColor.verdeANSI),
-    azul("solar",Constantes.PRECIO_INICIAL_GRUPO_7, TipoColor.azulANSI),
-    suerte("suerte",TipoColor.resetAnsi),
-    comunidad("comunidad",TipoColor.resetAnsi),
-    impuesto1("impuesto",Constantes.IMPUESTO_1, TipoColor.resetAnsi),
-    impuesto2("impuesto",Constantes.IMPUESTO_2, TipoColor.resetAnsi),
-    transporte("transporte",Constantes.DINERO_TRANSPORTES, TipoColor.resetAnsi),
-    servicios("servicio",Constantes.DINERO_SERVICIOS, TipoColor.resetAnsi),
-    carcel("carcel",Constantes.DINERO_CARCEL,TipoColor.resetAnsi),
-    parking("parking",0, TipoColor.resetAnsi),
-    salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi),
-    irCarcel("ir a la cárcel",TipoColor.resetAnsi);
+    negro("solar",Constantes.PRECIO_INICIAL_GRUPO_0, TipoColor.negroANSI, 2),
+    cyan("solar",Constantes.PRECIO_INICIAL_GRUPO_1, TipoColor.cianANSI, 3),
+    rosa("solar",Constantes.PRECIO_INICIAL_GRUPO_2, TipoColor.violetaANSI,3),
+    naranja("solar",Constantes.PRECIO_INICIAL_GRUPO_3, TipoColor.amarilloANSI, 3),
+    rojo("solar",Constantes.PRECIO_INICIAL_GRUPO_4, TipoColor.rojoANSI, 3),
+    marron("solar",Constantes.PRECIO_INICIAL_GRUPO_5, TipoColor.blancoANSI, 3),
+    verde("solar",Constantes.PRECIO_INICIAL_GRUPO_6, TipoColor.verdeANSI,3 ),
+    azul("solar",Constantes.PRECIO_INICIAL_GRUPO_7, TipoColor.azulANSI, 2),
+    suerte("suerte",TipoColor.resetAnsi,3),
+    comunidad("comunidad",TipoColor.resetAnsi,3),
+    impuesto1("impuesto",Constantes.IMPUESTO_1, TipoColor.resetAnsi,1),
+    impuesto2("impuesto",Constantes.IMPUESTO_2, TipoColor.resetAnsi,1),
+    transporte("transporte",Constantes.DINERO_TRANSPORTES, TipoColor.resetAnsi,4),
+    servicios("servicio",Constantes.DINERO_SERVICIOS, TipoColor.resetAnsi,2),
+    carcel("carcel",Constantes.DINERO_CARCEL,TipoColor.resetAnsi,1),
+    parking("parking",0, TipoColor.resetAnsi,1),
+    salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi,1),
+    irCarcel("ir a la cárcel",TipoColor.resetAnsi,1);
 
     /*Atributos*/
 
     //Precio inicial del grupo
-    private final int precioInicial;
+    private int precioInicial;
 
     //El color con el que se imprimirá el grupo
     private final TipoColor color;
@@ -36,15 +36,19 @@ public enum TipoGrupo {
     //String con el tipo de casilla que llevará.
     private final String tipoCasilla;
 
+    // Tamaño del grupo
+    private final int tamano;
+
     /**
-     * Constructor paa grupos que no tengan un importe relacionado, el cual se establece a -10
+     * Constructor para grupos que no tengan un importe relacionado, el cual se establece a -10
      * @param tipocasilla se establece el tipo de casilla
      * @param color el color del grupo
      */
-    private TipoGrupo(String tipocasilla,TipoColor color){
+    private TipoGrupo(String tipocasilla,TipoColor color, int tamano){
         this.precioInicial = -10;
         this.color = color;
         this.tipoCasilla = tipocasilla;
+        this.tamano = tamano;
     }
 
     /**
@@ -53,12 +57,12 @@ public enum TipoGrupo {
      * @param precioInicial importe a establecer para el grupo
      * @param color color del grupo
      */
-    private TipoGrupo(String tipocasilla, int precioInicial, TipoColor color) {
+    private TipoGrupo(String tipocasilla, int precioInicial, TipoColor color, int tamano) {
 
         this.tipoCasilla = tipocasilla;
         this.precioInicial = precioInicial;
         this.color = color;
-
+        this.tamano = tamano;
     }
 
     /*Getters y Setters*/
@@ -66,6 +70,10 @@ public enum TipoGrupo {
 
         return precioInicial;
 
+    }
+
+    public void setPrecioInicial(int precioInicial) {
+        this.precioInicial = precioInicial;
     }
 
     public String getTipoCasilla(){
@@ -78,4 +86,7 @@ public enum TipoGrupo {
 
     }
 
+    public int getTamano() {
+        return tamano;
+    }
 }

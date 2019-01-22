@@ -9,6 +9,7 @@ import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Solar extends Propiedad{
@@ -258,6 +259,99 @@ public class Solar extends Propiedad{
         }
 
         return false;
+
+    }
+
+    @Override
+    public HashSet<TipoFuncion> funcionesARealizar(){
+
+        HashSet<TipoFuncion> funciones = super.funcionesARealizar();
+
+        if(tieneEdificios()){
+            funciones.add(TipoFuncion.vender);
+        }
+
+        Integer numCasillasGrupo = getGrupo().getPropiedades().size();
+
+        Integer numHoteles = getEdificiosContenidos().get(TipoEdificio.hotel).size();
+        Integer numCasas = getEdificiosContenidos().get(TipoEdificio.casa).size();
+        Integer numPiscinas = getEdificiosContenidos().get(TipoEdificio.piscina).size();
+        Integer numPistas = getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
+
+        for(TipoEdificio tipoEdificio : TipoEdificio.values()){
+
+            if(!getEdificiosContenidos().get(tipoEdificio).isEmpty()){
+
+                funciones.add(TipoFuncion.toFuncion(tipoEdificio));
+
+            }
+
+            if(!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
+                    numPistas == numCasillasGrupo)){
+                funciones.add(TipoFuncion.edificar);
+            }
+
+            switch(tipoEdificio){
+
+                case casa:
+                    if(numCasas == 4){
+                        break;
+                    }
+                    if(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo){
+                        break;
+                    }
+                    funciones.add(TipoFuncion.edificarCasa);
+                    break;
+
+                case hotel:
+
+                    if(numCasas != 4){
+
+                        break;
+                    }
+                    if(numHoteles == numCasillasGrupo){
+
+                        break;
+                    }
+
+                    funciones.add(TipoFuncion.edificarHotel);
+
+                    break;
+
+                case piscina:
+                    if(numHoteles < 1 || numCasas < 2){
+
+                        break;
+                    }
+
+                    if(numPiscinas == numCasillasGrupo){
+
+                        break;
+                    }
+
+                    funciones.add(TipoFuncion.edificarPiscina);
+
+                    break;
+
+                case pistaDeporte:
+                    if(numHoteles < 2){
+
+                        break;
+                    }
+                    if(numPistas == numCasillasGrupo){
+
+                        break;
+                    }
+
+                    funciones.add(TipoFuncion.edificarPista);
+
+                    break;
+
+            }
+
+        }
+
+        return funciones;
 
     }
 

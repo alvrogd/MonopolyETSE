@@ -10,9 +10,11 @@ import monopoly.jugadores.excepciones.NoLiquidezException;
 import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
+import java.util.HashSet;
+
 public abstract class Propiedad extends Casilla{
 
-    private final Grupo grupo;
+    private Grupo grupo;
 
     private Participante propietario;
     private boolean hipotecada;
@@ -57,9 +59,9 @@ public abstract class Propiedad extends Casilla{
         this.comprable = comprable;
         this.hipotecada = false;
 
-        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
+        this.precioInicial = (int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano());
         this.importeCompra = 0;
-        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getPropiedades().size());
+        this.alquiler = (int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano());
 
         this.rentabilidad = 0;
 
@@ -77,6 +79,10 @@ public abstract class Propiedad extends Casilla{
 
     public Grupo getGrupo() {
         return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     public Participante getPropietario() {
@@ -157,7 +163,7 @@ public abstract class Propiedad extends Casilla{
     }
 
     public int getPrecioActual(){
-        return((int) (grupo.getPrecio() / (double) grupo.getPropiedades().size()));
+        return((int) (grupo.getPrecio() / (double) grupo.getTipo().getTamano()));
     }
 
 
@@ -234,6 +240,19 @@ public abstract class Propiedad extends Casilla{
         }
 
         return(comprador.comprar(getPropietario(), this));
+    }
+
+    @Override
+    public HashSet<TipoFuncion> funcionesARealizar(){
+        HashSet<TipoFuncion> funciones = super.funcionesARealizar();
+
+        if(isHipotecada()){
+            funciones.add(TipoFuncion.deshipotecar);
+        } else if(!isComprable() && getTablero().getJuego().getTurno().equals(getTablero().getJuego().getTurno())){
+            funciones.add(TipoFuncion.hipotecar);
+        }
+
+        return funciones;
     }
 
     @Override

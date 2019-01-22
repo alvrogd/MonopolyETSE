@@ -3,6 +3,17 @@ package aplicacion.salidaPantalla;
 public enum TipoColor {
 
     // Colores
+    /*resetAnsi(),
+    negroANSI(),
+    rojoANSI(),
+    verdeANSI(),
+    amarilloANSI(),
+    azulANSI(),
+    violetaANSI(),
+    cianANSI(),
+    blancoANSI(),
+    Negrita();*/
+
     resetAnsi( "\u001B[00m", "\u001B[00m" ),
     negroANSI( "\u001B[40m","\u001B[30m" ),
     rojoANSI( "\u001B[41m", "\u001B[31m" ),
@@ -21,6 +32,13 @@ public enum TipoColor {
 
         this.fondo = fondo;
         this.letra = letra;
+
+    }
+
+    private TipoColor() {
+
+        this.fondo = "";
+        this.letra = "";
 
     }
 

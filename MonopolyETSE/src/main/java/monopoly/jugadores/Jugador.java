@@ -582,6 +582,23 @@ public class Jugador extends Participante {
         return (importe);
     }
 
+    @Override
+    public boolean puedeComprar(Propiedad propiedad){
+
+        boolean puedeComprar = super.puedeComprar(propiedad);
+
+        if(getAvatar().getPosicion().getPosicionEnTablero() != propiedad.getPosicionEnTablero())
+            return false;
+
+        if ((getAvatar().getTablero().getJuego().isHaCompradoPropiedad() && getAvatar().getTablero().getJuego().getTurno().getAvatar() instanceof Coche) &&
+                !getAvatar().getTablero().getJuego().getTurno().getAvatar().isMovimientoEstandar()) {
+            return false;
+        }
+
+        return(puedeComprar);
+
+    }
+
 
     /**
      * Se lanzan dos dados, y se mueve el avatar del jugador tantas casillas como sea la suma de los valores dados por
@@ -758,6 +775,24 @@ public class Jugador extends Participante {
             Output.respuesta("Para edificar en una casilla, debe haber cumplido uno de los siguientes requisitos:",
                     "        -> Poseer todos los solares del grupo de la casilla",
                     "        -> Haber caído más de dos veces en el solar");
+    }
+
+    public boolean puedeEdificar(Solar solar){
+
+        if(!solar.getPropietario().equals(this)){
+            return false;
+        }
+
+        if(solar.isHipotecada()){
+            return false;
+        }
+
+        if(!(getAvatar().getVecesCaidasEnPropiedades().get(solar.getPosicionEnTablero()%40) > 2 || haObtenidoSolaresGrupo(solar.getGrupo()))){
+            return false;
+        }
+
+        return true;
+
     }
 
 

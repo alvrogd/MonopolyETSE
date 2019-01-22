@@ -4,12 +4,14 @@ import monopoly.jugadores.Avatar;
 import monopoly.tablero.Tablero;
 
 import java.rmi.ServerError;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class Casilla {
 
     /* Atributos */
-    private final String nombre;
+    private String nombre;
     private final int posicionEnTablero;
     private final Tablero tablero;
 
@@ -54,6 +56,10 @@ public abstract class Casilla {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getPosicionEnTablero() {
@@ -105,6 +111,16 @@ public abstract class Casilla {
     public int frecuenciaVisita() {
 
         return( getFrecuencia() );
+    }
+
+    public HashSet<TipoFuncion> funcionesARealizar(){
+
+        HashSet<TipoFuncion> funciones = new HashSet<>();
+
+        funciones.add(TipoFuncion.describir);
+
+        return funciones;
+
     }
 
     @Override

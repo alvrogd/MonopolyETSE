@@ -6,17 +6,16 @@ import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.NumeroIncorrectoException;
 import monopoly.jugadores.tratos.Trato;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
-import monopoly.tablero.jerarquiaCasillas.Grupo;
+import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.cartas.*;
-import monopoly.tablero.jerarquiaCasillas.Propiedad;
-import monopoly.tablero.jerarquiaCasillas.Solar;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.*;
 
-public class Juego{
+public class Juego {
 
     /* Atributos */
 
@@ -132,31 +131,31 @@ public class Juego{
         cartasComunidad = new ArrayList<>();
         cartasSuerte = new ArrayList<>();
 
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCadiz,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCaceres,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCarcel,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarLoteria,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMatriculaColegio,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarBienesInmuebles,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverLeganes,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarPresidente,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTrafico,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMovil,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarAcciones,getTablero()));
-        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTransporte,getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverAeropuerto, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCadiz, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarBilleteAvion, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCaceres, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverCarcel, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarLoteria, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMatriculaColegio, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarBienesInmuebles, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverLeganes, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarPresidente, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTrafico, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.pago, TipoPago.pagarMovil, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.cobro, TipoCobro.cobrarAcciones, getTablero()));
+        cartasSuerte.add(new Suerte(TipoAccion.movimiento, TipoMovimiento.moverTransporte, getTablero()));
 
-        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarBalneario,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverCarcel,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverSalida,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarInternet,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarViajeLeon,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarHacienda,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverValencia,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarAlquilerCannes,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarJet,getTablero()));
-        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverPamplona,getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarBalneario, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverCarcel, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverSalida, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarInternet, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarViajeLeon, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarHacienda, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverValencia, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.pago, TipoPago.pagarAlquilerCannes, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarJet, getTablero()));
+        cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverPamplona, getTablero()));
 
     }
 
@@ -165,20 +164,20 @@ public class Juego{
     }
 
     public void setNumTratos(int numTratos) {
-        if(numTratos < 0){
+        if (numTratos < 0) {
             System.err.println("Número de tratos no puede ser negativo");
             System.exit(1);
         }
         this.numTratos = numTratos;
     }
 
-    public void incrementarNumTratos(int incremento){
+    public void incrementarNumTratos(int incremento) {
 
-        if(incremento < 0){
+        if (incremento < 0) {
             System.err.println("Incremento no puede ser negativo.");
             System.exit(1);
         }
-        setNumTratos(getNumTratos()+incremento);
+        setNumTratos(getNumTratos() + incremento);
     }
 
     private void barajarCarta(String tipo) {
@@ -192,7 +191,7 @@ public class Juego{
         }
     }
 
-    public Carta barajarSuerte(int numCarta) throws  NumeroIncorrectoException {
+    public Carta barajarSuerte(int numCarta) throws NumeroIncorrectoException {
 
         if (numCarta < 0 || numCarta >= Constantes.NUM_CARTAS_SUERTE)
             throw new NumeroIncorrectoException(Integer.toString(numCarta));
@@ -202,15 +201,15 @@ public class Juego{
         return (getCartasSuerte().get(numCarta));
     }
 
-    public boolean isPropiedad(String nombre){
+    public boolean isPropiedad(String nombre) {
 
         boolean resultado;
         Casilla casilla;
 
-        if((casilla = getTablero().getCasillasTablero().get(nombre)) == null){
+        if ((casilla = getTablero().getCasillasTablero().get(nombre)) == null) {
             resultado = false;
-        } else{
-            if(casilla instanceof Propiedad){
+        } else {
+            if (casilla instanceof Propiedad) {
                 resultado = true;
             } else {
                 resultado = false;
@@ -221,7 +220,7 @@ public class Juego{
 
     }
 
-    public Carta barajarComunidad(int numCarta) throws NumeroIncorrectoException  {
+    public Carta barajarComunidad(int numCarta) throws NumeroIncorrectoException {
 
         if (numCarta < 0 || numCarta >= Constantes.NUM_CARTAS_COMUNIDAD)
             throw new NumeroIncorrectoException(Integer.toString(numCarta));
@@ -368,7 +367,7 @@ public class Juego{
         //Para poder pasar el turno el juego debe haberse iniciado.
         if (isIniciado()) {
 
-            if( !isFinalizado() ) {
+            if (!isFinalizado()) {
 
                 if (this.iterador == null) {
                     System.err.println("No se ha añadido ningún jugador.");
@@ -385,8 +384,8 @@ public class Juego{
                     this.turno.reducirInmunidad();
                 }
 
-                    //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
-                    //jugador.
+                //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
+                //jugador.
                 else {
                     this.iterador = getNombresJugadores().iterator();
                     this.turno = getJugadores().get(this.iterador.next());
@@ -501,15 +500,15 @@ public class Juego{
                 //Se recorren las casillas de cada fila
                 for (Casilla casilla : fila) {
 
-                    if(casilla instanceof Solar) {
+                    if (casilla instanceof Solar) {
 
                         Solar solar = (Solar) casilla;
 
                         //Se comprueba que estén en venta
                         if (solar.isComprable()) {
-                                //Se establece el nuevo precio en caso de que no se haya comprado la solar.
-                                solar.getGrupo().setPrecio(
-                                        (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * solar.getGrupo().getPrecio()));
+                            //Se establece el nuevo precio en caso de que no se haya comprado la solar.
+                            solar.getGrupo().setPrecio(
+                                    (int) ((1.0 + Constantes.INCREMENTO_VUELTAS) * solar.getGrupo().getPrecio()));
 
                         }
                     }
@@ -522,18 +521,18 @@ public class Juego{
     /**
      * Función que devuelve la casilla más rentable del juego.
      */
-    public Propiedad casillaMasRentable(){
+    public Propiedad casillaMasRentable() {
 
         ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
 
         //Propiedad con rentabilidad maxima, inicialmente es la casilla negra.
         Propiedad propiedadMax = (Propiedad) casillas.get(0).get(1);
 
-        for(ArrayList<Casilla> fila : casillas){
+        for (ArrayList<Casilla> fila : casillas) {
 
-            for(Casilla casilla : fila){
+            for (Casilla casilla : fila) {
 
-                if(casilla instanceof Propiedad) {
+                if (casilla instanceof Propiedad) {
                     Propiedad propiedad = (Propiedad) casilla;
                     if (propiedadMax.getRentabilidad() < propiedad.getRentabilidad())
                         propiedadMax = propiedad;
@@ -550,19 +549,19 @@ public class Juego{
     /**
      * Función que devuelve el grupo más rentable del juego
      */
-    public Grupo grupoMasRentable(){
+    public Grupo grupoMasRentable() {
 
         Set<TipoGrupo> keysGrupos = getTablero().getGrupos().keySet();
 
         Grupo grupoMax = null;
         int max = -1;
 
-        for(TipoGrupo clave : keysGrupos){
+        for (TipoGrupo clave : keysGrupos) {
 
             Grupo grupo = getTablero().getGrupos().get(clave);
             int rentabilidadAux = grupo.calcularRentabilidad();
 
-            if(max < rentabilidadAux){
+            if (max < rentabilidadAux) {
 
                 max = rentabilidadAux;
                 grupoMax = grupo;
@@ -578,18 +577,18 @@ public class Juego{
     /**
      * Función que devuelve la casilla más frecuentada del juego
      */
-    public Casilla casillaMasFrecuentada(){
+    public Casilla casillaMasFrecuentada() {
 
         ArrayList<ArrayList<Casilla>> casillas = getTablero().getCasillas();
 
         //Casilla con frecuencia máxima, inicialmente es la casilla negra.
         Casilla casillaMax = casillas.get(0).get(1);
 
-        for(ArrayList<Casilla> fila : casillas){
+        for (ArrayList<Casilla> fila : casillas) {
 
-            for(Casilla casilla : fila){
+            for (Casilla casilla : fila) {
 
-                if(casillaMax.getFrecuencia() < casilla.getFrecuencia())
+                if (casillaMax.getFrecuencia() < casilla.getFrecuencia())
                     casillaMax = casilla;
 
             }
@@ -603,17 +602,17 @@ public class Juego{
     /**
      * Función que devuelve el jugador que más vueltas ha dado.
      */
-    public Jugador jugadorMasVueltas(){
+    public Jugador jugadorMasVueltas() {
 
         int vueltasMax = -1;
         Jugador jugadorMax = null;
 
-        for(String nombreJugador : getNombresJugadores()){
+        for (String nombreJugador : getNombresJugadores()) {
 
             Jugador jugadorActual = getJugador(nombreJugador);
             int vueltasAux = jugadorActual.getAvatar().getVueltas();
 
-            if(vueltasMax < vueltasAux){
+            if (vueltasMax < vueltasAux) {
                 vueltasMax = vueltasAux;
                 jugadorMax = jugadorActual;
             }
@@ -627,17 +626,17 @@ public class Juego{
     /**
      * Función que devuelve el jugador que ha tirado más veces los dados
      */
-    public Jugador jugadorMasVecesDados(){
+    public Jugador jugadorMasVecesDados() {
 
         int dadosMax = -1;
         Jugador jugadorMax = null;
 
-        for(String nombreJugador : getNombresJugadores()){
+        for (String nombreJugador : getNombresJugadores()) {
 
             Jugador jugadorActual = getJugador(nombreJugador);
             int dadosAux = jugadorActual.getNumeroTiradas();
 
-            if(dadosMax < dadosAux){
+            if (dadosMax < dadosAux) {
                 dadosMax = dadosAux;
                 jugadorMax = jugadorActual;
             }
@@ -653,17 +652,17 @@ public class Juego{
      * Devuelve al jugador que se encuentra en cabeza
      */
 
-    public Jugador jugadorEnCabeza(){
+    public Jugador jugadorEnCabeza() {
 
         int cabezaMax = -1;
         Jugador jugadorMax = null;
 
-        for(String nombreJugador : getNombresJugadores()){
+        for (String nombreJugador : getNombresJugadores()) {
 
             Jugador jugadorActual = getJugador(nombreJugador);
             int cabezaAux = jugadorActual.calcularFortunaTotal();
 
-            if(cabezaMax < cabezaAux){
+            if (cabezaMax < cabezaAux) {
                 cabezaMax = cabezaAux;
                 jugadorMax = jugadorActual;
             }
@@ -672,6 +671,201 @@ public class Juego{
 
         return jugadorMax;
 
+
+    }
+
+    public HashSet<TipoFuncion> funcionesARealizar() {
+
+        HashSet<TipoFuncion> funciones = new HashSet<>();
+
+        if (isIniciado()) {
+            Jugador turno = getTurno();
+            Casilla posicion = turno.getAvatar().getPosicion();
+
+            // Se mira si la casilla en la que está se puede comprar
+            if (posicion instanceof Propiedad) {
+
+                // Si se puede comprar
+                if (turno.puedeComprar((Propiedad) posicion)) {
+                    if (((Propiedad) posicion).isComprable()) {
+                        if (!((Propiedad) posicion).getPropietario().equals(turno)) {
+                            if (!((Propiedad) posicion).isHipotecada()) {
+                                funciones.add(TipoFuncion.comprar);
+                            }
+                        }
+                    }
+                }
+
+                Propiedad propiedad = (Propiedad) posicion;
+                // Si se puede hipotecar / deshipotecar
+                if (propiedad.isHipotecada()) {
+                    if(!turno.balanceNegativoTrasPago((int) ((double) propiedad.getImporteCompra() * 0.5 * 1.10)))
+                        funciones.add(TipoFuncion.deshipotecar);
+                } else if (!propiedad.isComprable() && getTablero().getJuego().getTurno().equals(propiedad.getPropietario())) {
+
+                    if(propiedad instanceof Solar){
+                        Solar solar = (Solar) propiedad;
+                        if(!solar.tieneEdificios()){
+                            funciones.add(TipoFuncion.hipotecar);
+                        }
+                    } else {
+                        funciones.add(TipoFuncion.hipotecar);
+                    }
+                }
+            }
+
+            // Se mira los tipos de movimiento que puede realizar
+
+            if (isHaLanzadoDados()) {
+                funciones.add(TipoFuncion.finalizarTurno);
+            } else {
+                funciones.add(TipoFuncion.lanzarDados);
+            }
+
+            if (getTurno().getAvatar().getCasillasRestantesPorMoverse() > 0) {
+                funciones.add(TipoFuncion.avanzar);
+            }
+
+            if (!isHaHechoUnaTirada()) {
+                if(turno.getAvatar().isHaMovidoCasillasTirada())
+                    funciones.add(TipoFuncion.cambiarModo);
+            }
+
+            // Se mira si el usuario tiene tratos emitidos o recibidos
+
+            if(!turno.getTratosRecibidos().isEmpty()){
+                funciones.add(TipoFuncion.aceptarTratos);
+                funciones.add(TipoFuncion.aceptacionTratos);
+            }
+
+            if(!turno.getTratosEmitidos().isEmpty()){
+                funciones.add(TipoFuncion.eliminarTratos);
+                funciones.add(TipoFuncion.eliminacionTratos);
+            }
+
+            funciones.add(TipoFuncion.listar);
+            funciones.add(TipoFuncion.listarEdificios);
+            funciones.add(TipoFuncion.listarTratos);
+            funciones.add(TipoFuncion.estadisticasGlobales);
+            funciones.add(TipoFuncion.estadisticasUsuario);
+
+            // Se mira si puede edificar y que edificios o venderlos.
+            if (posicion instanceof Solar) {
+                Solar solar = (Solar) posicion;
+                if (solar.tieneEdificios()) {
+                    funciones.add(TipoFuncion.vender);
+                }
+
+                if(!solar.isHipotecada()) {
+
+                    Integer numCasillasGrupo = solar.getGrupo().getPropiedades().size();
+
+                    Integer numHoteles = solar.getEdificiosContenidos().get(TipoEdificio.hotel).size();
+                    Integer numCasas = solar.getEdificiosContenidos().get(TipoEdificio.casa).size();
+                    Integer numPiscinas = solar.getEdificiosContenidos().get(TipoEdificio.piscina).size();
+                    Integer numPistas = solar.getEdificiosContenidos().get(TipoEdificio.pistaDeporte).size();
+
+                    if (numHoteles > 0) {
+                        funciones.add(TipoFuncion.venderHotel);
+                    }
+                    if (numCasas > 0) {
+                        funciones.add(TipoFuncion.venderCasa);
+                    }
+                    if (numPiscinas > 0) {
+                        funciones.add(TipoFuncion.venderPiscina);
+                    }
+                    if (numPistas > 0) {
+                        funciones.add(TipoFuncion.venderPista);
+                    }
+
+                    for (TipoEdificio tipoEdificio : TipoEdificio.values()) {
+
+                        if (!solar.getEdificiosContenidos().get(tipoEdificio).isEmpty()) {
+
+                            funciones.add(TipoFuncion.toFuncion(tipoEdificio));
+
+                        }
+
+                        if (!(numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo && numPiscinas == numCasillasGrupo &&
+                                numPistas == numCasillasGrupo)) {
+                            if (turno.getAvatar().getVecesCaidasEnPropiedades().get(solar.getPosicionEnTablero() % 40) > 2 ||
+                                    turno.haObtenidoSolaresGrupo(solar.getGrupo()))
+                                funciones.add(TipoFuncion.edificar);
+                        }
+
+                        switch (tipoEdificio) {
+
+                            case casa:
+                                if (numCasas == 4) {
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo && numCasas == numCasillasGrupo) {
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.casa, solar.getGrupo().getTipo())))
+                                    break;
+                                funciones.add(TipoFuncion.edificarCasa);
+                                break;
+
+                            case hotel:
+
+                                if (numCasas != 4) {
+
+                                    break;
+                                }
+                                if (numHoteles == numCasillasGrupo) {
+
+                                    break;
+                                }
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.hotel, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarHotel);
+
+                                break;
+
+                            case piscina:
+                                if (numHoteles < 1 || numCasas < 2) {
+
+                                    break;
+                                }
+
+                                if (numPiscinas == numCasillasGrupo) {
+
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.piscina, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPiscina);
+
+                                break;
+
+                            case pistaDeporte:
+                                if (numHoteles < 2) {
+
+                                    break;
+                                }
+                                if (numPistas == numCasillasGrupo) {
+
+                                    break;
+                                }
+
+                                if(turno.balanceNegativoTrasPago(Edificio.calcularPrecioCompra(TipoEdificio.pistaDeporte, solar.getGrupo().getTipo())))
+                                    break;
+
+                                funciones.add(TipoFuncion.edificarPista);
+
+                                break;
+
+                        }
+                    }
+                }
+            }
+        }
+
+        return funciones;
 
     }
 
