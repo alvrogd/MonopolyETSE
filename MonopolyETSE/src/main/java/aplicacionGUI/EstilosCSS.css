@@ -1,6 +1,10 @@
 
 /***** Recuadro *****/
 
+/* Cuando está seleccionado */
+.text-field:focused {
+    -fx-background-color: white , white , white;
+}
 
 
 /***** Registro *****/

@@ -331,6 +331,10 @@ public class ConstantesGUI {
     public final static int INPUT_DESPLAZAMIENTO_JUEGO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
     public final static int INPUT_DESPLAZAMIENTO_JUEGO_Y = (MARCO_INFORMACION_ALTO ) / 2 + 55;
 
+    // Dimensiones del recuadro del input
+    public final static int INPUT_RECUADRO_ANCHO = 389;
+    public final static int INPUT_RECUADRO_ALTO = 15;
+
     // Desplazamiento del recuadro del input
     public final static int INPUT_DESPLAZAMIENTO_RECUADRO_X = 10;
     public final static int INPUT_DESPLAZAMIENTO_RECUADRO_Y = 25;

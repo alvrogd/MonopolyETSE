@@ -123,8 +123,8 @@ public abstract class Input {
 
         // Se crea el recuadro para que escriba el usuario
         this.textField = new TextField();
-        this.textField.setPrefWidth(390);
-        this.textField.setPrefHeight(25);
+        this.textField.setPrefWidth(ConstantesGUI.INPUT_RECUADRO_ANCHO);
+        this.textField.setPrefHeight(ConstantesGUI.INPUT_RECUADRO_ALTO);
 
         // Se mueve a su correspondiente posición
         this.textField.getTransforms().add(new Translate(ConstantesGUI.INPUT_DESPLAZAMIENTO_RECUADRO_X,
