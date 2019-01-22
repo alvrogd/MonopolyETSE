@@ -352,7 +352,7 @@ public class ConstantesGUI {
     public final static String INPUT_ENTERO_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
 
     // Nombre de las imágenes para el input de strings
-    public final static String INPUT_STRING_IMAGEN = "plantillaEntradaDinero.png";
+    public final static String INPUT_STRING_IMAGEN = "plantillaEntrada.png";
     public final static String INPUT_STRING_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
 
 }
