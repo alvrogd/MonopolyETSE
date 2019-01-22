@@ -276,6 +276,10 @@ public class main extends Application {
 
     private void probarEditor(Group raiz, Stage ventana, Scene escena, GraphicsContext gc, Image fondo, ArrayList<ContextMenu> menus) {
 
+        // Conjunto de inputs activos
+        ArrayList<Input> inputsActivos = new ArrayList<>();
+        Input.setInputsActivos(inputsActivos);
+
         // Se crea un input
         Input input = new Input(raiz, "plantillaEntradaDinero.png", "plantillaEntradaDineroOscuro.png", true);
 
@@ -301,6 +305,10 @@ public class main extends Application {
                 }
 
                 menus.clear();
+
+                if( input.contienePosicion(xPresionado[0], yPresionado[0])) {
+                    input.handlePulsacion();
+                }
             }
         });
 
@@ -313,6 +321,10 @@ public class main extends Application {
                 //lo detecte en la posición donde se empezó a presionar
                 if(editor.contienePosicion(xPresionado[0], yPresionado[0])){
                     editor.handleClick(xPresionado[0], yPresionado[0], raiz, e, menus);
+                }
+
+                if( input.contienePosicion(xPresionado[0], yPresionado[0])) {
+                    input.handleRelease();
                 }
             }
         });
@@ -335,6 +347,7 @@ public class main extends Application {
                 // Render
                 gc.drawImage(fondo, 0, 0);
                 editor.render(t);
+                input.render();
             }
         }.start();
 

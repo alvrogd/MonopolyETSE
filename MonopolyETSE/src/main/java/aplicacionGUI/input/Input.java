@@ -112,8 +112,16 @@ public class Input {
         this.textField.setPrefWidth(390);
         this.textField.setPrefHeight(25);
 
+        // Se mueve a su correspondiente posición
+        this.textField.getTransforms().add(new Translate(ConstantesGUI.INPUT_DESPLAZAMIENTO_RECUADRO_X,
+                ConstantesGUI.INPUT_DESPLAZAMIENTO_RECUADRO_Y));
+
         // Y se añade al nodo del input
         this.nodo.getChildren().add(textField);
+
+        // Se eliminan los inputs activos y se guarda este
+        Input.inputsActivos.clear();
+        Input.inputsActivos.add(this);
     }
 
 
