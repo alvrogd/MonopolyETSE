@@ -8,5 +8,5 @@ public interface ILectorEntero {
      * @param enteroLeido           entero leído del usuario
      * @param identificadorAtributo identificador del atributo a modificar
      */
-    public void almacenarEntero(int enteroLeido, int identificadorAtributo);
+    void almacenarEntero(int enteroLeido, int identificadorAtributo);
 }

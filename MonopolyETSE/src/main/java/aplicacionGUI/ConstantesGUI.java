@@ -324,8 +324,8 @@ public class ConstantesGUI {
     public final static int INPUT_ALTO = 60;
 
     // Desplazamiento del input en el editor
-    public final static int INPUT_DESPLAZAMIENTO_EDITOR_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
-    public final static int INPUT_DESPLAZAMIENTO_EDITOR_Y = (MARCO_INFORMACION_ALTO ) / 2 + 55;
+    public final static int INPUT_DESPLAZAMIENTO_EDITOR_X = (VENTANA_ANCHO - INPUT_ANCHO) / 2;
+    public final static int INPUT_DESPLAZAMIENTO_EDITOR_Y = (VENTANA_ALTO - INPUT_ALTO) / 2;
 
     // Desplazamiento del input en el juego
     public final static int INPUT_DESPLAZAMIENTO_JUEGO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
@@ -346,5 +346,9 @@ public class ConstantesGUI {
     // Nombre de las imágenes para el input de enteros
     public final static String INPUT_ENTERO_IMAGEN = "plantillaEntradaDinero.png";
     public final static String INPUT_ENTERO_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
+
+    // Nombre de las imágenes para el input de strings
+    public final static String INPUT_STRING_IMAGEN = "plantillaEntradaDinero.png";
+    public final static String INPUT_STRING_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
 
 }

@@ -1,11 +1,11 @@
 package aplicacionGUI.editor.handlers;
 
 import aplicacionGUI.editor.Celda;
+import aplicacionGUI.input.ILectorString;
+import aplicacionGUI.input.InputString;
 import javafx.event.ActionEvent;
 
-import java.util.Scanner;
-
-public class CambiarNombre extends CambiarAtributo {
+public class CambiarNombre extends CambiarAtributo implements ILectorString {
 
     /* Constructor */
 
@@ -31,8 +31,19 @@ public class CambiarNombre extends CambiarAtributo {
     @Override
     public void handle(ActionEvent event) {
 
-        // Se lee el nombre y se guarda
-        Scanner scanner = new Scanner(System.in);
-        getCelda().getCasillaGUI().getCasilla().setNombre(scanner.nextLine());
+        // Se crea un lector de strings
+        new InputString(true, 0, this);
+    }
+
+    /**
+     * Se almacena un string dado como nombre de la casilla asociada
+     *
+     * @param stringLeido           string leído del usuario
+     * @param identificadorAtributo identificador del atributo a modificar
+     */
+    @Override
+    public void almacenarString(String stringLeido, int identificadorAtributo) {
+
+        getCelda().getCasillaGUI().getCasilla().setNombre(stringLeido);
     }
 }

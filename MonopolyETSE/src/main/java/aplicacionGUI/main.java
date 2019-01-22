@@ -86,6 +86,13 @@ public class main extends Application {
 
     private void probarJuego(Group raiz, Stage ventana, Scene escena, GraphicsContext gc, Image fondo, ArrayList<ContextMenu> menus) {
 
+        // Conjunto de inputs activos
+        ArrayList<Input> inputsActivos = new ArrayList<>();
+        Input.setInputsActivos(inputsActivos);
+
+        // Raíz de los inputs
+        Input.setRaiz(raiz);
+
         // Se crea una aplicación Monopoly
         Aplicacion app;
 
@@ -216,6 +223,12 @@ public class main extends Application {
                     if(menuGUI.contienePosicion(x, y)){
                         menuGUI.handleClickPulsado(x, y);
                     }
+
+                    if(inputsActivos.size() > 0 ) {
+                        if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                            inputsActivos.get(0).handlePulsacion();
+                        }
+                    }
                 }
             });
 
@@ -237,6 +250,12 @@ public class main extends Application {
                     /*if( informacion.contienePosicion(xPresionado[0], yPresionado[0])) {
                         informacion.handleClickIzquierdo(xPresionado[0], yPresionado[0]);
                     }*/
+
+                    if(inputsActivos.size() > 0 ) {
+                        if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                            inputsActivos.get(0).handleRelease();
+                        }
+                    }
 
                 }
             });
@@ -261,7 +280,9 @@ public class main extends Application {
                     informacion.render(t);
                     menuGUI.render(t);
 
-
+                    if(inputsActivos.size() > 0 ) {
+                        inputsActivos.get(0).render();
+                    }
                 }
             }.start();
 

@@ -38,7 +38,7 @@ public class CambiarPrecioInicial extends CambiarAtributo implements ILectorEnte
     }
 
     /**
-     * Se almacena un entero dado en un atributo obtenido en función del identificador
+     * Se almacena un entero dado como precio inicial de la casilla asociada
      *
      * @param enteroLeido           entero leído del usuario
      * @param identificadorAtributo identificador del atributo a modificar
