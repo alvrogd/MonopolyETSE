@@ -47,31 +47,36 @@ public class AplicacionGUI {
 
     /* Constructor */
 
+    /**
+     * Se crea una aplicación gráfica para jugar al Monopoly
+     *
+     * @param ventana ventana en la que mostrar la aplicación
+     */
     public AplicacionGUI(Stage ventana) {
 
-        if( ventana == null ) {
+        if (ventana == null) {
             System.err.println("Ventana no inicializada");
             System.exit(1);
         }
 
         // Se guarda la ventana dada y se le cambia el nombre
         this.ventana = ventana;
-        this.ventana.setTitle( "MonopolyETSE GUI" );
+        this.ventana.setTitle("MonopolyETSE GUI");
 
         // Se crea un nodo raíz
         this.raiz = new Group();
 
         // Se añade a una escena nueva
-        this.escena = new Scene( raiz );
+        this.escena = new Scene(raiz);
 
         // Se añade la escena a la ventana
-        this.ventana.setScene( escena );
+        this.ventana.setScene(escena);
 
         // Se establece un estilo personalizado para la escena (para el registro y recuadro del input)
         this.escena.getStylesheets().add(ConstantesGUI.class.getResource("EstilosCSS.css").toExternalForm());
 
         // Se crea un canvas en el que representar el fondo
-        this.canvas = new Canvas( ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO );
+        this.canvas = new Canvas(ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
         this.raiz.getChildren().add(canvas);
 
         // Se crea un entorno que manipular a partir del canvas
@@ -130,18 +135,19 @@ public class AplicacionGUI {
 
     /* Métodos */
 
+    /**
+     * Se inicia la aplicación gráfica
+     */
     public void iniciar() {
 
         Scanner scanner = new Scanner(System.in);
 
         int opcion = scanner.nextInt();
 
-        if( opcion == 1 ) {
+        if (opcion == 1) {
             EjecucionJuego ejecucionJuego = new EjecucionJuego(this);
             ejecucionJuego.iniciar();
-        }
-
-        else {
+        } else {
             EjecucionEditor ejecucionEditor = new EjecucionEditor(this);
             ejecucionEditor.iniciar();
         }
