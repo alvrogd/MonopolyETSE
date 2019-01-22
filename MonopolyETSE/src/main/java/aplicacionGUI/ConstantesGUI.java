@@ -319,12 +319,25 @@ public class ConstantesGUI {
     // Nombre de un fondo en blanco para una casilla
     public final static String EDITOR_CASILLA_BLANCO = "CasillaBlanco.png";
 
-    // Constantes para la ventana de entrada
+    // Dimensiones del input
+    public final static int INPUT_ANCHO = 510;
+    public final static int INPUT_ALTO = 60;
 
-    public final static int ENTRADA_DESPLAZAMIENTO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
-    public final static int ENTRADA_DESPLAZAMIENTO_Y = (MARCO_INFORMACION_ALTO ) / 2 + 55;
-    public final static int ENTRADA_ANCHO = 510;
-    public final static int ENTRADA_ALTO = 60;
-    public final static int ENTRADA_DESPLAZAMIENTO_BOTON_X = ENTRADA_ANCHO - 25;
-    public final static int ENTRADA_DESPLAZAMIENTO_BOTON_Y = 25;
+    // Desplazamiento del input en el editor
+    public final static int INPUT_DESPLAZAMIENTO_EDITOR_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
+    public final static int INPUT_DESPLAZAMIENTO_EDITOR_Y = (MARCO_INFORMACION_ALTO ) / 2 + 55;
+
+    // Desplazamiento del input en el juego
+    public final static int INPUT_DESPLAZAMIENTO_JUEGO_X = (TABLERO_ANCHO - MARCO_INFORMACION_ANCHO) / 2+25;
+    public final static int INPUT_DESPLAZAMIENTO_JUEGO_Y = (MARCO_INFORMACION_ALTO ) / 2 + 55;
+
+    // Dimensiones del botón de aceptar del input
+    public final static int INPUT_BOTON_ANCHO = 25;
+    public final static int INPUT_BOTON_ALTO = 25;
+
+    // Desplazamiento del botón de aceptar del input
+    public final static int INPUT_DESPLAZAMIENTO_BOTON_X = INPUT_ANCHO - 25;
+    public final static int INPUT_DESPLAZAMIENTO_BOTON_Y = 25;
+
+
 }
