@@ -1,6 +1,6 @@
-package aplicacionGUI.ejecucionJuego.handlers;
+package aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers;
 
-import aplicacionGUI.ejecucionJuego.EjecucionJuego;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.FaseJuego;
 import aplicacionGUI.input.Input;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -12,7 +12,7 @@ public class Release implements EventHandler<MouseEvent> {
     /* Atributos */
 
     // Ejecución del juego asociada
-    private final EjecucionJuego ejecucionJuego;
+    private final FaseJuego faseJuego;
 
 
 
@@ -21,24 +21,24 @@ public class Release implements EventHandler<MouseEvent> {
     /**
      * Se crea un gestor de eventos de releases del ratón para una ejecución del Monopoly
      *
-     * @param ejecucionJuego ejecución del juego asociada
+     * @param faseJuego ejecución del juego asociada
      */
-    public Release(EjecucionJuego ejecucionJuego) {
+    public Release(FaseJuego faseJuego) {
 
-        if (ejecucionJuego == null) {
+        if (faseJuego == null) {
             System.err.println("Ejecución del juego no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionJuego = ejecucionJuego;
+        this.faseJuego = faseJuego;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionJuego getEjecucionJuego() {
-        return ejecucionJuego;
+    public FaseJuego getFaseJuego() {
+        return faseJuego;
     }
 
 
@@ -55,12 +55,12 @@ public class Release implements EventHandler<MouseEvent> {
 
         // Posiciones de la pulsación anterior al release (para conocer la posición donde se comenzó a presionar el
         // botón)
-        double x = getEjecucionJuego().getxPresionado();
-        double y = getEjecucionJuego().getyPresionado();
+        double x = getFaseJuego().getxPresionado();
+        double y = getFaseJuego().getyPresionado();
 
         // Si se ha pulsado la sección de controles
-        if (getEjecucionJuego().getMenuGUI().contienePosicion(x, y)) {
-            getEjecucionJuego().getMenuGUI().handleClickSoltado(x, y);
+        if (getFaseJuego().getMenuGUI().contienePosicion(x, y)) {
+            getFaseJuego().getMenuGUI().handleClickSoltado(x, y);
         }
 
         // todo residuos?
@@ -72,7 +72,7 @@ public class Release implements EventHandler<MouseEvent> {
             informacion.handleClickIzquierdo(xPresionado[0], yPresionado[0]);
         }*/
 
-        final ArrayList<Input> inputsActivos = getEjecucionJuego().getInputsActivos();
+        final ArrayList<Input> inputsActivos = getFaseJuego().getInputsActivos();
         // Si existe algún input activo
         if (inputsActivos.size() > 0) {
 

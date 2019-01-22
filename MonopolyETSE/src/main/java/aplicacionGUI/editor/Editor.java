@@ -236,6 +236,22 @@ public class Editor {
     }
 
     /**
+     * Se limpia el GC del editor
+     */
+    public void clear() {
+
+        getGc().clearRect(0, 0, ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
+
+        // Se limpian los GCs de las celdas
+        for (ArrayList<Celda> fila : getCeldas()) {
+
+            for (Celda celda : fila) {
+                celda.clear();
+            }
+        }
+    }
+
+    /**
      * Se comprueba si es posible crear una casilla más de un tipo dado en la posición especificada
      *
      * @param tipoCasilla tipo de casilla a comprobar

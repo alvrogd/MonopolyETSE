@@ -1,9 +1,5 @@
-package aplicacionGUI.ejecucionEditor;
+package aplicacionGUI.ejecucionAplicacion;
 
-import aplicacionGUI.AplicacionGUI;
-import aplicacionGUI.editor.Editor;
-import aplicacionGUI.ejecucionEditor.handlers.Pulsacion;
-import aplicacionGUI.ejecucionEditor.handlers.Release;
 import aplicacionGUI.input.Input;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,9 +11,12 @@ import resources.fondo.Fondo;
 
 import java.util.ArrayList;
 
-public class EjecucionEditor {
+public abstract class Fase implements IFase {
 
     /* Atributos */
+
+    // Aplicación gráfica asociada
+    private final AplicacionGUI aplicacionGUI;
 
     // Nodo raíz de la aplicación
     private final Group raiz;
@@ -32,7 +31,7 @@ public class EjecucionEditor {
     private final GraphicsContext gc;
 
     // Fondo a representar
-    private final Image fondo = new Image(Fondo.class.getResource("fondo.jpg").toString());
+    private final Image fondo;
 
     // Conjunto de menús contextuales activos
     private final ArrayList<ContextMenu> menus;
@@ -40,28 +39,33 @@ public class EjecucionEditor {
     // Registro de inputs activos
     private final ArrayList<Input> inputsActivos;
 
-    // Editor del tablero
-    private Editor editor;
-
     // Posiciones de eventos de ratón
     private double xPresionado;
     private double yPresionado;
+
+    // Si se ha iniciado
+    private boolean iniciado;
 
 
 
     /* Constructor */
 
     /**
-     * Se crea una instancia que relaciona ofrece en ventana un editor para el tablero del Monopoly
+     * Se crea una fase, asociando sus atributos con los de una aplicación gráfica dada y obteniendo el fondo
+     * especificado
      *
-     * @param aplicacionGUI aplicación gráfica asociada
+     * @param aplicacionGUI aplicación gráfica a asociar
+     * @param fondo         nombre de la imagen que emplear como fondo
      */
-    public EjecucionEditor(AplicacionGUI aplicacionGUI) {
+    public Fase(AplicacionGUI aplicacionGUI, String fondo) {
 
         if (aplicacionGUI == null) {
             System.err.println("Aplicación no inicializada");
             System.exit(1);
         }
+
+        // Se guarda la aplicación
+        this.aplicacionGUI = aplicacionGUI;
 
         // Se inicializan los atributos a partir de aquellos de la aplicación
         this.raiz = aplicacionGUI.getRaiz();
@@ -70,11 +74,20 @@ public class EjecucionEditor {
         this.gc = aplicacionGUI.getGc();
         this.menus = aplicacionGUI.getMenus();
         this.inputsActivos = aplicacionGUI.getInputsActivos();
+
+        // Inicialmente, no se ha iniciado
+        this.iniciado = false;
+
+        this.fondo = new Image(Fondo.class.getResource(fondo).toString());
     }
 
 
 
     /* Getters y setters */
+
+    public AplicacionGUI getAplicacionGUI() {
+        return aplicacionGUI;
+    }
 
     public Group getRaiz() {
         return raiz;
@@ -104,14 +117,6 @@ public class EjecucionEditor {
         return inputsActivos;
     }
 
-    public Editor getEditor() {
-        return editor;
-    }
-
-    public void setEditor(Editor editor) {
-        this.editor = editor;
-    }
-
     public double getxPresionado() {
         return xPresionado;
     }
@@ -128,29 +133,11 @@ public class EjecucionEditor {
         this.yPresionado = yPresionado;
     }
 
+    public boolean isIniciado() {
+        return iniciado;
+    }
 
-
-    /* Métodos */
-
-    /**
-     * Se inicia el editor del tablero
-     */
-    public void iniciar() {
-
-        // Se crea un editor
-        setEditor(new Editor(getRaiz()));
-
-        // Se define la acción al presionar un botón del ratón
-        escena.setOnMousePressed(new Pulsacion(this));
-
-        // Se define la acción al soltar un botón del ratón
-        escena.setOnMouseReleased(new Release(this));
-
-        // Se inicia el game loop
-        EjecucionEditorLoop loop = new EjecucionEditorLoop(this);
-        loop.iniciar();
-
-        // Se muestra la ventana
-        ventana.show();
+    public void setIniciado(boolean iniciado) {
+        this.iniciado = iniciado;
     }
 }

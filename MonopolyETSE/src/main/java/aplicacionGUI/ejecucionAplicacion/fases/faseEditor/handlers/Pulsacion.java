@@ -1,6 +1,6 @@
-package aplicacionGUI.ejecucionEditor.handlers;
+package aplicacionGUI.ejecucionAplicacion.fases.faseEditor.handlers;
 
-import aplicacionGUI.ejecucionEditor.EjecucionEditor;
+import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.FaseEditor;
 import aplicacionGUI.input.Input;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
@@ -13,7 +13,7 @@ public class Pulsacion implements EventHandler<MouseEvent> {
     /* Atributos */
 
     // Ejecución del editor asociada
-    private final EjecucionEditor ejecucionEditor;
+    private final FaseEditor faseEditor;
 
 
 
@@ -22,24 +22,24 @@ public class Pulsacion implements EventHandler<MouseEvent> {
     /**
      * Se crea un gestor de eventos de pulsaciones del ratón para una ejecución del editor
      *
-     * @param ejecucionEditor ejecución del juego asociada
+     * @param faseEditor ejecución del juego asociada
      */
-    public Pulsacion(EjecucionEditor ejecucionEditor) {
+    public Pulsacion(FaseEditor faseEditor) {
 
-        if (ejecucionEditor == null) {
+        if (faseEditor == null) {
             System.err.println("Ejecución del editor no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionEditor = ejecucionEditor;
+        this.faseEditor = faseEditor;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionEditor getEjecucionEditor() {
-        return ejecucionEditor;
+    public FaseEditor getFaseEditor() {
+        return faseEditor;
     }
 
 
@@ -59,18 +59,18 @@ public class Pulsacion implements EventHandler<MouseEvent> {
         double y = e.getY();
 
         // Se almacenan en la ejecución del juego
-        getEjecucionEditor().setxPresionado(x);
-        getEjecucionEditor().setyPresionado(y);
+        getFaseEditor().setxPresionado(x);
+        getFaseEditor().setyPresionado(y);
 
         // Se ocultan todos los menús contextuales abiertos
-        for (ContextMenu contextMenu : getEjecucionEditor().getMenus()) {
+        for (ContextMenu contextMenu : getFaseEditor().getMenus()) {
             contextMenu.hide();
         }
 
         // Y se eliminan
-        getEjecucionEditor().getMenus().clear();
+        getFaseEditor().getMenus().clear();
 
-        final ArrayList<Input> inputsActivos = getEjecucionEditor().getInputsActivos();
+        final ArrayList<Input> inputsActivos = getFaseEditor().getInputsActivos();
         // Si existe algún input activo
         if (inputsActivos.size() > 0) {
 

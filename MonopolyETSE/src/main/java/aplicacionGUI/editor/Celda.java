@@ -270,6 +270,16 @@ public class Celda {
     }
 
     /**
+     * Se limpia el GC de la celda
+     */
+    public void clear() {
+
+        if(getCasillaGUI() != null ) {
+            getCasillaGUI().clear();
+        }
+    }
+
+    /**
      * Se genera el menú contextual correspondiente a la celda
      *
      * @return menú contextual generado

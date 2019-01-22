@@ -1,6 +1,6 @@
-package aplicacionGUI.ejecucionEditor.handlers;
+package aplicacionGUI.ejecucionAplicacion.fases.faseEditor.handlers;
 
-import aplicacionGUI.ejecucionEditor.EjecucionEditor;
+import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.FaseEditor;
 import aplicacionGUI.input.Input;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -12,7 +12,7 @@ public class Release implements EventHandler<MouseEvent> {
     /* Atributos */
 
     // Ejecución del editor asociada
-    private final EjecucionEditor ejecucionEditor;
+    private final FaseEditor faseEditor;
 
 
 
@@ -21,24 +21,24 @@ public class Release implements EventHandler<MouseEvent> {
     /**
      * Se crea un gestor de eventos de release del ratón para una ejecución del editor
      *
-     * @param ejecucionEditor ejecución del juego asociada
+     * @param faseEditor ejecución del juego asociada
      */
-    public Release(EjecucionEditor ejecucionEditor) {
+    public Release(FaseEditor faseEditor) {
 
-        if (ejecucionEditor == null) {
+        if (faseEditor == null) {
             System.err.println("Ejecución del editor no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionEditor = ejecucionEditor;
+        this.faseEditor = faseEditor;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionEditor getEjecucionEditor() {
-        return ejecucionEditor;
+    public FaseEditor getFaseEditor() {
+        return faseEditor;
     }
 
 
@@ -55,16 +55,16 @@ public class Release implements EventHandler<MouseEvent> {
 
         // Posiciones de la pulsación anterior al release (para conocer la posición donde se comenzó a presionar el
         // botón)
-        double x = getEjecucionEditor().getxPresionado();
-        double y = getEjecucionEditor().getyPresionado();
+        double x = getFaseEditor().getxPresionado();
+        double y = getFaseEditor().getyPresionado();
 
         // Si se ha pulsado el editor
-        if(getEjecucionEditor().getEditor().contienePosicion(x, y)){
-            getEjecucionEditor().getEditor().handleClick(x, y, getEjecucionEditor().getRaiz(), e,
-                    getEjecucionEditor().getMenus());
+        if(getFaseEditor().getEditor().contienePosicion(x, y)){
+            getFaseEditor().getEditor().handleClick(x, y, getFaseEditor().getRaiz(), e,
+                    getFaseEditor().getMenus());
         }
 
-        final ArrayList<Input> inputsActivos = getEjecucionEditor().getInputsActivos();
+        final ArrayList<Input> inputsActivos = getFaseEditor().getInputsActivos();
         // Si existe algún input activo
         if (inputsActivos.size() > 0) {
 

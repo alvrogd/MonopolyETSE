@@ -1,6 +1,6 @@
-package aplicacionGUI.ejecucionJuego.handlers;
+package aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers;
 
-import aplicacionGUI.ejecucionJuego.EjecucionJuego;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.FaseJuego;
 import aplicacionGUI.input.Input;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
@@ -13,7 +13,7 @@ public class Pulsacion implements EventHandler<MouseEvent> {
     /* Atributos */
 
     // Ejecución del juego asociada
-    private final EjecucionJuego ejecucionJuego;
+    private final FaseJuego faseJuego;
 
 
 
@@ -22,24 +22,24 @@ public class Pulsacion implements EventHandler<MouseEvent> {
     /**
      * Se crea un gestor de eventos de pulsaciones del ratón para una ejecución del Monopoly
      *
-     * @param ejecucionJuego ejecución del juego asociada
+     * @param faseJuego ejecución del juego asociada
      */
-    public Pulsacion(EjecucionJuego ejecucionJuego) {
+    public Pulsacion(FaseJuego faseJuego) {
 
-        if (ejecucionJuego == null) {
+        if (faseJuego == null) {
             System.err.println("Ejecución del juego no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionJuego = ejecucionJuego;
+        this.faseJuego = faseJuego;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionJuego getEjecucionJuego() {
-        return ejecucionJuego;
+    public FaseJuego getFaseJuego() {
+        return faseJuego;
     }
 
 
@@ -59,23 +59,23 @@ public class Pulsacion implements EventHandler<MouseEvent> {
         double y = e.getY();
 
         // Se almacenan en la ejecución del juego
-        getEjecucionJuego().setxPresionado(x);
-        getEjecucionJuego().setyPresionado(y);
+        getFaseJuego().setxPresionado(x);
+        getFaseJuego().setyPresionado(y);
 
         // Se ocultan todos los menús contextuales abiertos
-        for (ContextMenu contextMenu : getEjecucionJuego().getMenus()) {
+        for (ContextMenu contextMenu : getFaseJuego().getMenus()) {
             contextMenu.hide();
         }
 
         // Y se eliminan
-        getEjecucionJuego().getMenus().clear();
+        getFaseJuego().getMenus().clear();
 
         // Si se ha pulsado la sección de controles
-        if (getEjecucionJuego().getMenuGUI().contienePosicion(x, y)) {
-            getEjecucionJuego().getMenuGUI().handleClickPulsado(x, y);
+        if (getFaseJuego().getMenuGUI().contienePosicion(x, y)) {
+            getFaseJuego().getMenuGUI().handleClickPulsado(x, y);
         }
 
-        final ArrayList<Input> inputsActivos = getEjecucionJuego().getInputsActivos();
+        final ArrayList<Input> inputsActivos = getFaseJuego().getInputsActivos();
         // Si existe algún input activo
         if (inputsActivos.size() > 0) {
 

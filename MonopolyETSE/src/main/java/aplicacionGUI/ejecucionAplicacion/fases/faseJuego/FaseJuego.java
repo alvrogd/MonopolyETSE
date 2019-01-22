@@ -1,48 +1,19 @@
-package aplicacionGUI.ejecucionJuego;
+package aplicacionGUI.ejecucionAplicacion.fases.faseJuego;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
-import aplicacionGUI.AplicacionGUI;
-import aplicacionGUI.ejecucionJuego.handlers.ClickIzquierdo;
-import aplicacionGUI.ejecucionJuego.handlers.Pulsacion;
-import aplicacionGUI.ejecucionJuego.handlers.Release;
+import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
+import aplicacionGUI.ejecucionAplicacion.Fase;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.ClickIzquierdo;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Pulsacion;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Release;
 import aplicacionGUI.informacion.Informacion;
-import aplicacionGUI.input.Input;
 import aplicacionGUI.menuGUI.MenuGUI;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import resources.fondo.Fondo;
 
-import java.util.ArrayList;
-
-public class EjecucionJuego {
+public class FaseJuego extends Fase {
 
     /* Atributos */
-
-    // Nodo raíz de la aplicación
-    private final Group raiz;
-
-    // Ventana de la aplicación
-    private final Stage ventana;
-
-    // Escena de la aplicación
-    private final Scene escena;
-
-    // GC para representar el fondo de la aplicación
-    private final GraphicsContext gc;
-
-    // Fondo a representar
-    private final Image fondo = new Image(Fondo.class.getResource("fondo.jpg").toString());
-
-    // Conjunto de menús contextuales activos
-    private final ArrayList<ContextMenu> menus;
-
-    // Registro de inputs activos
-    private final ArrayList<Input> inputsActivos;
 
     // Aplicación de Monopoly sobre la que ejecutar el juego
     private Aplicacion app;
@@ -53,10 +24,6 @@ public class EjecucionJuego {
     // Sección de controles de la GUI
     private MenuGUI menuGUI;
 
-    // Posiciones de eventos de ratón
-    private double xPresionado;
-    private double yPresionado;
-
 
 
     /* Constructor */
@@ -66,53 +33,15 @@ public class EjecucionJuego {
      *
      * @param aplicacionGUI aplicación gráfica asociada
      */
-    public EjecucionJuego(AplicacionGUI aplicacionGUI) {
+    public FaseJuego(AplicacionGUI aplicacionGUI) {
 
-        if (aplicacionGUI == null) {
-            System.err.println("Aplicación no inicializada");
-            System.exit(1);
-        }
+        super(aplicacionGUI, "fondo.jpg");
 
-        // Se inicializan los atributos a partir de aquellos de la aplicación
-        this.raiz = aplicacionGUI.getRaiz();
-        this.ventana = aplicacionGUI.getVentana();
-        this.escena = aplicacionGUI.getEscena();
-        this.gc = aplicacionGUI.getGc();
-        this.menus = aplicacionGUI.getMenus();
-        this.inputsActivos = aplicacionGUI.getInputsActivos();
     }
 
 
 
     /* Getters y setters */
-
-    public Group getRaiz() {
-        return raiz;
-    }
-
-    public Stage getVentana() {
-        return ventana;
-    }
-
-    public Scene getEscena() {
-        return escena;
-    }
-
-    public GraphicsContext getGc() {
-        return gc;
-    }
-
-    public Image getFondo() {
-        return fondo;
-    }
-
-    public ArrayList<ContextMenu> getMenus() {
-        return menus;
-    }
-
-    public ArrayList<Input> getInputsActivos() {
-        return inputsActivos;
-    }
 
     public Aplicacion getApp() {
         return app;
@@ -136,22 +65,6 @@ public class EjecucionJuego {
 
     public void setMenuGUI(MenuGUI menuGUI) {
         this.menuGUI = menuGUI;
-    }
-
-    public double getxPresionado() {
-        return xPresionado;
-    }
-
-    public void setxPresionado(double xPresionado) {
-        this.xPresionado = xPresionado;
-    }
-
-    public double getyPresionado() {
-        return yPresionado;
-    }
-
-    public void setyPresionado(double yPresionado) {
-        this.yPresionado = yPresionado;
     }
 
 
@@ -181,22 +94,24 @@ public class EjecucionJuego {
         // todo quitar pruebas
         pruebas2();
 
-
         // Se define la acción ante un click izquierdo
-        escena.setOnMouseClicked(new ClickIzquierdo(this));
+        getEscena().setOnMouseClicked(new ClickIzquierdo(this));
 
         // Se define la acción al presionar un botón del ratón
-        escena.setOnMousePressed(new Pulsacion(this));
+        getEscena().setOnMousePressed(new Pulsacion(this));
 
         // Se define la acción al soltar un botón del ratón
-        escena.setOnMouseReleased(new Release(this));
+        getEscena().setOnMouseReleased(new Release(this));
 
-        // Se inicia el game loop
+        /*// Se inicia el game loop
         EjecucionJuegoLoop loop = new EjecucionJuegoLoop(this);
         loop.iniciar();
 
         // Se muestra la ventana
-        ventana.show();
+        getVentana().show();*/
+
+        // Se indica que se ha inicializado
+        setIniciado(true);
     }
 
     private void pruebas1() {
@@ -265,5 +180,38 @@ public class EjecucionJuego {
                 "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños."});
         // Se activa
         informacion.getMarcoInformacion().setActivo(true);
+    }
+
+    /**
+     * Se renderiza el juego
+     *
+     * @param t tiempo transcurrido
+     */
+    public void render(double t) {
+
+        // Se limpia la ventana
+        getGc().clearRect(0, 0, ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
+
+        if (isIniciado()) {
+
+            // Se renderizan los elementos
+            getGc().drawImage(getFondo(), 0, 0);
+            getInformacion().render(t);
+            getMenuGUI().render(t);
+
+            // Si existe algún input activo, se renderiza el primero
+            if (getInputsActivos().size() > 0) {
+                getInputsActivos().get(0).render();
+            }
+        }
+
+    }
+
+    /**
+     * Se limpia el GC del juego
+     */
+    public void clear() {
+        // Se limpia la ventana
+        getGc().clearRect(0, 0, ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
     }
 }

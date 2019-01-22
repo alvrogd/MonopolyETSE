@@ -1,5 +1,6 @@
 package aplicacionGUI;
 
+import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

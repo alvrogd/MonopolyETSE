@@ -1,6 +1,6 @@
-package aplicacionGUI.ejecucionJuego.handlers;
+package aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers;
 
-import aplicacionGUI.ejecucionJuego.EjecucionJuego;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.FaseJuego;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -10,7 +10,7 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
     /* Atributos */
 
     // Ejecución del juego asociada
-    private final EjecucionJuego ejecucionJuego;
+    private final FaseJuego faseJuego;
 
 
 
@@ -19,24 +19,24 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
     /**
      * Se crea un gestor de eventos de click izquierdo para una ejecución del Monopoly
      *
-     * @param ejecucionJuego ejecución del juego asociada
+     * @param faseJuego ejecución del juego asociada
      */
-    public ClickIzquierdo(EjecucionJuego ejecucionJuego) {
+    public ClickIzquierdo(FaseJuego faseJuego) {
 
-        if (ejecucionJuego == null) {
+        if (faseJuego == null) {
             System.err.println("Ejecución del juego no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionJuego = ejecucionJuego;
+        this.faseJuego = faseJuego;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionJuego getEjecucionJuego() {
-        return ejecucionJuego;
+    public FaseJuego getFaseJuego() {
+        return faseJuego;
     }
 
 
@@ -56,26 +56,26 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
         double y = e.getY();
 
         // Si se ha pulsado la sección de controles
-        if (getEjecucionJuego().getMenuGUI().contienePosicion(x, y)) {
+        if (getFaseJuego().getMenuGUI().contienePosicion(x, y)) {
 
             // Se actúa en caso de que el botón presionado sea el primario (izquierdo)
             if (e.getButton().equals(MouseButton.PRIMARY)) {
-                getEjecucionJuego().getMenuGUI().handleClickIzquierdo(x, y);
+                getFaseJuego().getMenuGUI().handleClickIzquierdo(x, y);
             }
         }
 
         // Si la sección de información ha sido pulsada
-        else if (getEjecucionJuego().getInformacion().contienePosicion(x, y)) {
+        else if (getFaseJuego().getInformacion().contienePosicion(x, y)) {
 
             // Si se ha pulsado el botón primario
             if (e.getButton().equals(MouseButton.PRIMARY)) {
-                getEjecucionJuego().getInformacion().handleClickIzquierdo(x, y);
+                getFaseJuego().getInformacion().handleClickIzquierdo(x, y);
             }
 
             // Si se ha pulsado el botón secundario
             else if (e.getButton().equals(MouseButton.SECONDARY)) {
-                getEjecucionJuego().getInformacion().handleClickDerecho(x, y, getEjecucionJuego().getRaiz(), e,
-                        getEjecucionJuego().getMenus(), getEjecucionJuego().getApp());
+                getFaseJuego().getInformacion().handleClickDerecho(x, y, getFaseJuego().getRaiz(), e,
+                        getFaseJuego().getMenus(), getFaseJuego().getApp());
             }
         }
     }

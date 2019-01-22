@@ -353,7 +353,7 @@ public class CasillaGUI {
 
         // Se añade un fondo transparente sobre el que introducir la información de la casilla
         getGc().setFill(Color.rgb(128, 128, 128, 0.6));
-        getGc().fillRect(3, 19, ancho - 6, 43);
+        getGc().fillRect(3, 19, ancho - 6, 43); // todo cambiar ancho por llamada
 
         // Se renderiza el contenido
         renderAvataresContenidos(t);
