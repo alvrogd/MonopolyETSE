@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import resources.entrada.ImagenEntradaGUI;
 
@@ -49,6 +50,18 @@ public abstract class Input {
 
     // Identificador del atributo que el usuario del input desea modificar
     private final int atributo;
+
+    // Si ha finalizado la animación
+    private boolean animacionFinalizada;
+
+    // Si aparece o desaparece
+    private boolean aparece;
+
+    // Tick de la animación
+    private int tickAnimacion;
+
+    // Escalado establecido
+    private Scale escalado;
 
 
     /* Constructor */
@@ -139,6 +152,11 @@ public abstract class Input {
         // Se eliminan los inputs activos y se guarda este
         Input.inputsActivos.clear();
         Input.inputsActivos.add(this);
+
+        // Inicialmente, la animación ha comenzado y se va a mostrar
+        this.animacionFinalizada = false;
+        this.aparece = true;
+        this.tickAnimacion = 0;
     }
 
 
@@ -209,6 +227,38 @@ public abstract class Input {
         Input.inputsActivos = inputsActivos;
     }
 
+    public boolean isAnimacionFinalizada() {
+        return animacionFinalizada;
+    }
+
+    public void setAnimacionFinalizada(boolean animacionFinalizada) {
+        this.animacionFinalizada = animacionFinalizada;
+    }
+
+    public boolean isAparece() {
+        return aparece;
+    }
+
+    public void setAparece(boolean aparece) {
+        this.aparece = aparece;
+    }
+
+    public int getTickAnimacion() {
+        return tickAnimacion;
+    }
+
+    public void setTickAnimacion(int tickAnimacion) {
+        this.tickAnimacion = tickAnimacion;
+    }
+
+    public Scale getEscalado() {
+        return escalado;
+    }
+
+    public void setEscalado(Scale escalado) {
+        this.escalado = escalado;
+    }
+
 
 
     /* Métodos */
@@ -247,10 +297,78 @@ public abstract class Input {
     }
 
     /**
-     * Se renderiza el marco de información
+     * Se renderiza el input
      */
     public void render() {
 
+        // Si la animación no ha finalizado, debe cambiarse el escalado
+        if( !isAnimacionFinalizada() ) {
+            actualizarEscalado();
+        }
+
+        // Se muestra la imagen
         getGc().drawImage(getImagenSeleccionada(), 0, 0);
+    }
+
+    /**
+     * Se actualiza la transformación de escalado del marco de información, en función de si debe aparecer o
+     * desaparecer
+     */
+    private void actualizarEscalado() {
+
+        // Se elimina el anterior escalado
+        getNodo().getTransforms().remove(getEscalado());
+
+        // Se actualiza el tick
+        setTickAnimacion(getTickAnimacion() + 1);
+
+        // Se crea uno nuevo en función de si va a aparecer o desaparecer
+        if( isAparece() ) {
+            setEscalado(new Scale(0.1 * getTickAnimacion(), 0.1 * getTickAnimacion(),
+                    (double)ConstantesGUI.INPUT_ANCHO / 2, (double)ConstantesGUI.INPUT_ALTO / 2));
+        }
+
+        else {
+            setEscalado(new Scale(1 - 0.1* getTickAnimacion(), 1 - 0.1 * getTickAnimacion(),
+                    (double)ConstantesGUI.INPUT_ANCHO / 2, (double)ConstantesGUI.INPUT_ALTO / 2));
+        }
+
+        // Se aplica
+        getNodo().getTransforms().add(getEscalado());
+
+        // Si se alcanza el décimo tick, la animación finaliza
+        if( getTickAnimacion() == 10 ) {
+
+            setAnimacionFinalizada(true);
+
+            // Y, si está desapareciendo, el input debe eliminar su rastro
+            if(!isAparece()) {
+                eliminarRastro();
+            }
+        }
+    }
+
+    /**
+     * El input realiza las acciones pertinentes a haber finalizado su trabajo, desapareciendo y eliminándose de la
+     * lista de inputs activos
+     */
+    public void finalizar() {
+
+        // Se indica que la animación no ha finalizado, y que debe cerrarse
+        setTickAnimacion(0);
+        setAnimacionFinalizada(false);
+        setAparece(false);
+    }
+
+    /**
+     * El input realiza una limpieza
+     */
+    private void eliminarRastro() {
+
+        // Elimina su nodo
+        Input.getRaiz().getChildren().remove(getNodo());
+
+        // Se elimina de la lista de inputs activos
+        Input.getInputsActivos().clear();
     }
 }

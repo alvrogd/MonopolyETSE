@@ -65,8 +65,7 @@ public class InputEntero extends Input {
             getLector().almacenarEntero(entero, getAtributo());
 
             // Si ha cumplido la función, se elimina
-            Input.getRaiz().getChildren().remove(getNodo());
-            Input.getInputsActivos().clear();
+            finalizar();
 
         } catch (NumberFormatException e) {
 

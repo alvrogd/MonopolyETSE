@@ -329,6 +329,7 @@ public class main extends Application {
 
                 if(inputsActivos.size() > 0 ) {
                     if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                        System.out.println("contiene");
                         inputsActivos.get(0).handlePulsacion();
                     }
                 }
@@ -348,6 +349,7 @@ public class main extends Application {
 
                 if(inputsActivos.size() > 0 ) {
                     if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                        System.out.println("Contiene");
                         inputsActivos.get(0).handleRelease();
                     }
                 }

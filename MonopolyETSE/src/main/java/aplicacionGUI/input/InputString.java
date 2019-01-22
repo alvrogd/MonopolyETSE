@@ -59,7 +59,6 @@ public class InputString extends Input {
         getLector().almacenarString(getTextField().getCharacters().toString(), getAtributo());
 
         // Se elimina al haber cumplido la función
-        Input.getRaiz().getChildren().remove(getNodo());
-        Input.getInputsActivos().clear();
+        finalizar();
     }
 }
