@@ -306,18 +306,34 @@ public class ConstantesGUI {
     public final static int REGISTRO_FUENTE_TAMANO = 12;
 
     // Dimensiones del editor
-    public final static int EDITOR_ANCHO = 1620;
-    public final static int EDITOR_ALTO = 685;
+    public final static int EDITOR_ANCHO = VENTANA_ANCHO;
+    public final static int EDITOR_ALTO = VENTANA_ALTO;
 
-    // Desplazamiento del editor
-    public final static int EDITOR_DESPLAZAMIENTO_X = (VENTANA_ANCHO - EDITOR_ANCHO) / 2;
-    public final static int EDITOR_DESPLAZAMIENTO_Y = (VENTANA_ALTO - EDITOR_ALTO) / 2;
+    // Dimensiones de la cuadrícula del editor
+    public final static int EDITOR_CUADRICULA_ANCHO = 1620;
+    public final static int EDITOR_CUADRICULA_ALTO = 685;
+
+    // Desplazamiento de la cuadrícula del editor
+    public final static int EDITOR_CUADRICULA_DESPLAZAMIENTO_X = (EDITOR_ANCHO - EDITOR_CUADRICULA_ANCHO) / 2;
+    public final static int EDITOR_CUADRICULA_DESPLAZAMIENTO_Y = (EDITOR_ALTO - EDITOR_CUADRICULA_ALTO) / 2;
 
     // Nombre de la imagen de cuadrícula del editor
     public final static String EDITOR_CUADRICULA = "Cuadricula.png";
 
     // Nombre de un fondo en blanco para una casilla
     public final static String EDITOR_CASILLA_BLANCO = "CasillaBlanco.png";
+
+    // Nombres de las imágenes de los botones del editor
+    public final static String EDITOR_BOTON_ACEPTAR = "avanzar.png";
+    public final static String EDITOR_BOTON_ACEPTAR_OSCURO = "avanzarOscuro.png";
+    public final static String EDITOR_BOTON_CANCELAR = "atras.png";
+    public final static String EDITOR_BOTON_CANCELAR_OSCURO = "atrasOscuro.png";
+
+    // Desplazamientos de los botones del editor
+    public final static int EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_X = 100;
+    public final static int EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_Y = 50;
+    public final static int EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_X = 200;
+    public final static int EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_Y = 50;
 
     // Dimensiones del input
     public final static int INPUT_ANCHO = 510;

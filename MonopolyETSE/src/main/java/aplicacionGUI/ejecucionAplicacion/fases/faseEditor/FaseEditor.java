@@ -68,7 +68,7 @@ public class FaseEditor extends Fase {
     public void iniciar() {
 
         // Se crea un editor
-        setEditor(new Editor(getRaiz()));
+        setEditor(new Editor(getAplicacionGUI(), getRaiz()));
 
         // Se define la acción al realizar un click izquierdo
         getEscena().setOnMouseClicked(new ClickIzquierdo());

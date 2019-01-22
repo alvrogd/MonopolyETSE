@@ -60,7 +60,7 @@ public class Release implements EventHandler<MouseEvent> {
 
         // Si se ha pulsado el editor
         if(getFaseEditor().getEditor().contienePosicion(x, y)){
-            getFaseEditor().getEditor().handleClick(x, y, getFaseEditor().getRaiz(), e,
+            getFaseEditor().getEditor().handleRelease(x, y, getFaseEditor().getRaiz(), e,
                     getFaseEditor().getMenus());
         }
 

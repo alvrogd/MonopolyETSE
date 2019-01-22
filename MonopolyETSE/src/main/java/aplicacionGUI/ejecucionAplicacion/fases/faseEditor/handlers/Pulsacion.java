@@ -70,6 +70,11 @@ public class Pulsacion implements EventHandler<MouseEvent> {
         // Y se eliminan
         getFaseEditor().getMenus().clear();
 
+        // Si se ha pulsado el editor
+        if(getFaseEditor().getEditor().contienePosicion(x, y)){
+            getFaseEditor().getEditor().handlePulsacion(x, y);
+        }
+
         final ArrayList<Input> inputsActivos = getFaseEditor().getInputsActivos();
         // Si existe algún input activo
         if (inputsActivos.size() > 0) {

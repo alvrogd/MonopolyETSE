@@ -70,8 +70,8 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
             // Si se ha pulsado el botón primario
             if (e.getButton().equals(MouseButton.PRIMARY)) {
                 // Se comprueba que no haya ningún Input activo
-                if(!getEjecucionJuego().getMenuGUI().isInputActivo()) {
-                    getEjecucionJuego().getInformacion().handleClickIzquierdo(x, y);
+                if(!getFaseJuego().getMenuGUI().isInputActivo()) {
+                    getFaseJuego().getInformacion().handleClickIzquierdo(x, y);
                 }
             }
 

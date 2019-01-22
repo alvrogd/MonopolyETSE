@@ -3,6 +3,8 @@ package aplicacionGUI.editor;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.filas.Fila;
 import aplicacionGUI.editor.filas.TipoFila;
+import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
+import aplicacionGUI.ejecucionAplicacion.TipoFase;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
 import javafx.scene.Group;
@@ -13,13 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Translate;
 import monopoly.tablero.TipoGrupo;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Salida;
 import resources.editor.EditorCuadricula;
+import resources.menuGUI.botones.BotonesImagenes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +29,9 @@ import java.util.HashSet;
 public class Editor {
 
     /* Atributos */
+
+    // Aplicación gráfica asociada
+    private final AplicacionGUI aplicacionGUI;
 
     // Nodo propiedad del editor
     private final Group nodo;
@@ -53,6 +58,22 @@ public class Editor {
     // Filas para la contabilidad de las casillas
     private final ArrayList<Fila> filas;
 
+    // Sensores para los botones de aceptar y cancelar
+    private final Rectangle sensorAceptar;
+    private final Rectangle sensorCancelar;
+
+    // Imágenes para los botones de aceptar y cancelar
+    private final Image botonAceptar = new Image(BotonesImagenes.class.getResource(ConstantesGUI.EDITOR_BOTON_ACEPTAR).toString());
+    private final Image botonAceptarOscuro = new Image(BotonesImagenes.class.getResource(
+            ConstantesGUI.EDITOR_BOTON_ACEPTAR_OSCURO).toString());
+
+    private final Image botonCancelar = new Image(BotonesImagenes.class.getResource(ConstantesGUI.EDITOR_BOTON_CANCELAR).toString());
+    private final Image botonCancelarOscuro = new Image(BotonesImagenes.class.getResource(
+            ConstantesGUI.EDITOR_BOTON_CANCELAR_OSCURO).toString());
+
+    private Image botonAceptarSeleccionada = botonAceptar;
+    private Image botonCancelarSeleccionada = botonCancelar;
+
 
 
     /* Constructor */
@@ -60,22 +81,27 @@ public class Editor {
     /**
      * Se crea un editor del tablero
      *
-     * @param raiz nodo sobre el cual crear un hijo para el editor
+     * @param aplicacionGUI aplicación gráfica a asociar
+     * @param raiz          nodo sobre el cual crear un hijo para el editor
      */
-    public Editor(Group raiz) {
+    public Editor(AplicacionGUI aplicacionGUI, Group raiz) {
 
-        if (raiz == null) {
-            System.out.println("Raíz no inicializada");
+        if( aplicacionGUI == null ) {
+            System.err.println("Aplicación gráfica no inicializada");
             System.exit(1);
         }
+
+        if (raiz == null) {
+            System.err.println("Raíz no inicializada");
+            System.exit(1);
+        }
+
+        // Se guarda la aplicación gráfica
+        this.aplicacionGUI = aplicacionGUI;
 
         // Se añade al nodo dado un nuevo nodo de uso para el editor
         this.nodo = new Group();
         raiz.getChildren().add(this.nodo);
-
-        // Se establece su correspondiente posición en la ventana
-        this.nodo.getTransforms().add(new Translate(ConstantesGUI.EDITOR_DESPLAZAMIENTO_X,
-                ConstantesGUI.EDITOR_DESPLAZAMIENTO_Y));
 
         // Se crea un canvas en el nuevo nodo para representar la cuadrícula
         this.canvas = new Canvas(ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
@@ -85,11 +111,13 @@ public class Editor {
         this.gc = this.canvas.getGraphicsContext2D();
 
         // Se crea el sensor correspondiente
-        this.sensor = new Rectangle(0, 0, ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
+        this.sensor = new Rectangle(ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_Y, ConstantesGUI.EDITOR_ANCHO, ConstantesGUI.EDITOR_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
         // Y su diferencia
-        this.diferencia = new Rectangle(ConstantesGUI.CASILLA_ANCHO, ConstantesGUI.CASILLA_ALTO,
+        this.diferencia = new Rectangle(ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_X + ConstantesGUI.CASILLA_ANCHO,
+                ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_Y + ConstantesGUI.CASILLA_ALTO,
                 (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ANCHO),
                 (ConstantesGUI.CASILLAS_POR_LADO - 2) * (ConstantesGUI.CASILLA_ALTO));
         this.diferencia.setFill(Color.TRANSPARENT);
@@ -110,8 +138,9 @@ public class Editor {
             // Se crean tantas celdas como casillas haya por fila
             for (int j = 0; j < ConstantesGUI.CASILLAS_POR_FILA; j++, contador++) {
 
-                fila.add(new Celda(this, this.nodo, posiciones.get(contador)[0], posiciones.get(contador)[1],
-                        contador));
+                fila.add(new Celda(this, this.nodo, posiciones.get(contador)[0] +
+                        ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_X, posiciones.get(contador)[1] +
+                        ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_Y, contador));
             }
         }
 
@@ -130,10 +159,23 @@ public class Editor {
                 0, false));
 
         actualizarNumeroCasillas(TipoCasilla.salida, salida.getPosicionTablero(), 1);
+
+        // Se crean los sensores de los botones
+        this.sensorAceptar = new Rectangle(ConstantesGUI.EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_Y, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+        this.sensorAceptar.setFill(Color.TRANSPARENT);
+
+        this.sensorCancelar = new Rectangle(ConstantesGUI.EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_Y, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+        this.sensorAceptar.setFill(Color.TRANSPARENT);
     }
 
 
     /* Getters y setters */
+
+    public AplicacionGUI getAplicacionGUI() {
+        return aplicacionGUI;
+    }
 
     public Group getNodo() {
         return nodo;
@@ -167,6 +209,46 @@ public class Editor {
         return filas;
     }
 
+    public Rectangle getSensorAceptar() {
+        return sensorAceptar;
+    }
+
+    public Rectangle getSensorCancelar() {
+        return sensorCancelar;
+    }
+
+    public Image getBotonAceptar() {
+        return botonAceptar;
+    }
+
+    public Image getBotonAceptarOscuro() {
+        return botonAceptarOscuro;
+    }
+
+    public Image getBotonCancelar() {
+        return botonCancelar;
+    }
+
+    public Image getBotonCancelarOscuro() {
+        return botonCancelarOscuro;
+    }
+
+    public Image getBotonAceptarSeleccionada() {
+        return botonAceptarSeleccionada;
+    }
+
+    public void setBotonAceptarSeleccionada(Image botonAceptarSeleccionada) {
+        this.botonAceptarSeleccionada = botonAceptarSeleccionada;
+    }
+
+    public Image getBotonCancelarSeleccionada() {
+        return botonCancelarSeleccionada;
+    }
+
+    public void setBotonCancelarSeleccionada(Image botonCancelarSeleccionada) {
+        this.botonCancelarSeleccionada = botonCancelarSeleccionada;
+    }
+
 
 
     /* Métodos */
@@ -180,14 +262,37 @@ public class Editor {
      */
     public boolean contienePosicion(double x, double y) {
 
-        double posicionX = x - ConstantesGUI.EDITOR_DESPLAZAMIENTO_X;
-        double posicionY = y - ConstantesGUI.EDITOR_DESPLAZAMIENTO_Y;
+        double posicionX = x;
+        double posicionY = y;
 
-        return (getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY));
+        return ((getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY)) ||
+                getSensorAceptar().contains(posicionX, posicionY) || getSensorCancelar().contains(posicionX, posicionY));
     }
 
     /**
-     * Se ejecuta la acción definida ante un click
+     * Se ejecuta la acción definida ante una pulsación del ratón
+     *
+     * @param x        coordenada X del click
+     * @param y        coordenada Y del click
+     */
+    public void handlePulsacion(double x, double y) {
+
+        double posicionX = x;
+        double posicionY = y;
+
+        // Se comprueban los botones
+        if (getSensorAceptar().contains(posicionX, posicionY)) {
+
+            setBotonAceptarSeleccionada(getBotonAceptarOscuro());
+
+        } else if (getSensorCancelar().contains(posicionX, posicionY)) {
+
+            setBotonCancelarSeleccionada(getBotonCancelarOscuro());
+        }
+    }
+
+    /**
+     * Se ejecuta la acción definida ante un release
      *
      * @param x        coordenada X del click
      * @param y        coordenada Y del click
@@ -195,24 +300,50 @@ public class Editor {
      * @param e        evento del click
      * @param menus    conjunto de menús contextuales activos
      */
-    public void handleClick(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
+    public void handleRelease(double x, double y, Group nodoRaiz, MouseEvent e, ArrayList<ContextMenu>
             menus) {
 
-        double posicionX = x - ConstantesGUI.EDITOR_DESPLAZAMIENTO_X;
-        double posicionY = y - ConstantesGUI.EDITOR_DESPLAZAMIENTO_Y;
+        double posicionX = x;
+        double posicionY = y;
 
         System.out.println("x es " + posicionX);
         System.out.println("y es " + posicionY);
 
-        // Se comprueba cada una de las celdas
-        for (ArrayList<Celda> fila : getCeldas()) {
+        // Si es la cuadrícula quien contiene el evento
+        if (getSensor().contains(posicionX, posicionY) && !getDiferencia().contains(posicionX, posicionY)) {
 
-            for (Celda celda : fila) {
+            // Se comprueba cada una de las celdas
+            for (ArrayList<Celda> fila : getCeldas()) {
 
-                if (celda.contienePosicion(posicionX, posicionY)) {
-                    celda.handleClick(posicionX, posicionY, nodoRaiz, e, menus);
+                for (Celda celda : fila) {
+
+                    if (celda.contienePosicion(posicionX, posicionY)) {
+                        celda.handleClick(posicionX, posicionY, nodoRaiz, e, menus);
+                    }
                 }
             }
+        }
+
+        // En caso contrario se comprueban los botones
+        else if (getSensorAceptar().contains(posicionX, posicionY)) {
+
+            setBotonAceptarSeleccionada(getBotonAceptar());
+
+            // Si el tablero es válido, se exporta y se cambia de fase
+            if (tableroValido()) {
+
+                getAplicacionGUI().setTableroPersonalizado(exportarTablero());
+                getAplicacionGUI().setTipoFase(TipoFase.inicioJuego);
+                getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
+            }
+
+        } else if (getSensorCancelar().contains(posicionX, posicionY)) {
+
+            setBotonCancelarSeleccionada(getBotonCancelar());
+
+            // Se cambia de fase
+            getAplicacionGUI().setTipoFase(TipoFase.inicioJuego);
+            getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
         }
     }
 
@@ -223,8 +354,15 @@ public class Editor {
      */
     public void render(double t) {
 
+        // Se muestran los botones
+        getGc().drawImage(getBotonAceptarSeleccionada(), ConstantesGUI.EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_Y);
+        getGc().drawImage(getBotonCancelarSeleccionada(), ConstantesGUI.EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_Y);
+
         // Se muestra la cuadrícula
-        getGc().drawImage(getCuadricula(), 0, 0);
+        getGc().drawImage(getCuadricula(), ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_X,
+                ConstantesGUI.EDITOR_CUADRICULA_DESPLAZAMIENTO_Y);
 
         // Se renderizan las celdas
         for (ArrayList<Celda> fila : getCeldas()) {

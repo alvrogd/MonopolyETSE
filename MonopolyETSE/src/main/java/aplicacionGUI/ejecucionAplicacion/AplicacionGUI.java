@@ -189,21 +189,6 @@ public class AplicacionGUI {
      */
     public void iniciar() {
 
-        /*Scanner scanner = new Scanner(System.in);
-
-        int opcion = scanner.nextInt();
-
-        if (opcion == 1) {
-            FaseJuego faseJuego = new FaseJuego(this);
-            faseJuego.iniciar();
-        } else {
-            FaseEditor faseEditor = new FaseEditor(this);
-            faseEditor.iniciar();
-        }*/
-
-        // Al inicio, se ejecuta la fase de bienvenida
-        //ejecutarFase(TipoFase.bienvenida);
-
         setFase(new FaseBienvenida(this));
         getFase().iniciar();
 
@@ -248,65 +233,12 @@ public class AplicacionGUI {
                 break;
         }
 
+        if( getTableroPersonalizado() != null ) {
+            System.out.println("No es null");
+        }
+
         getFase().iniciar();
         getLoop().setFase(getFase());
         getLoop().start();
-    }
-
-    /**
-     * Se ejecuta la sección de bienvenida
-     */
-    /*public void ejecutarBienvenida() {
-
-        System.out.println("Bienvenido al Monopoly de la ETSE!");
-        System.out.println("Presione una tecla para continuar...");
-        new Scanner(System.in).nextLine();
-
-        setFase(TipoFase.seleccionTablero);
-        ejecutarFase(getFase());
-    }*/
-
-    /**
-     * Se ejecuta la sección de selección del tablero
-     */
-    /*public void ejecutarSeleccionTablero() {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Quiere crear un tablero (1) o usar el tablero por defecto (2)?: ");
-
-        int opcion = scanner.nextInt();
-
-        if( opcion == 1 ) {
-            setFase(TipoFase.creacionTablero);
-        }
-
-        else {
-            setFase(TipoFase.inicioJuego);
-        }
-
-        ejecutarFase(getFase());
-    }*/
-
-    /**
-     * Se ejecuta la sección de creación del tablero
-     */
-/*
-        setTableroPersonalizado(new FaseEditor(this).iniciar());
-
-        if( getTableroPersonalizado() == null ) {
-            System.out.println("Es null");
-        }
-
-        setFase(TipoFase.inicioJuego);
-        ejecutarFase(getFase());
-    }*/
-
-    /**
-     * Se ejecuta la sección de inicio del juego
-     */
-    public void ejecutarInicioJuego() {
-
-        new FaseJuego(this).iniciar();
     }
 }
