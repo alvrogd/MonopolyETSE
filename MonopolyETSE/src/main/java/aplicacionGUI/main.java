@@ -4,6 +4,7 @@ import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.editor.Editor;
 import aplicacionGUI.informacion.Informacion;
+import aplicacionGUI.input.Input;
 import aplicacionGUI.menuGUI.MenuGUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -274,6 +275,9 @@ public class main extends Application {
     }
 
     private void probarEditor(Group raiz, Stage ventana, Scene escena, GraphicsContext gc, Image fondo, ArrayList<ContextMenu> menus) {
+
+        // Se crea un input
+        Input input = new Input(raiz, "plantillaEntradaDinero.png", "plantillaEntradaDineroOscuro.png", true);
 
         // Se crea un editor
         Editor editor = new Editor(raiz);

@@ -13,7 +13,7 @@ import resources.entrada.ImagenEntradaGUI;
 
 import java.util.ArrayList;
 
-public abstract class Input {
+public class Input {
 
     /* Atributos */
 
@@ -43,6 +43,7 @@ public abstract class Input {
 
     // Referencia al conjunto de inputs activos en la aplicación
     private static ArrayList<Input> inputsActivos;
+
 
 
     /* Constructor */
