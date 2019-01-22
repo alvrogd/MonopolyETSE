@@ -5,42 +5,43 @@ import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.menuGUI.botones.avanzadoToNormal.AnimacionCambiarModo;
 
 public enum TipoFuncion {
-    aceptacionTratos("aceptar varios tratos", aceptarTratos),
-    aceptar("aceptar", true),
-    aceptarTratos("aceptar tratos", true),
-    atras("atras", true),
-    avanzar("avanzar", true),
-    ayuda("ayuda", true),
+
     cambiarModo("cambiar modo", new AnimacionCambiarModo(), ConstantesGUI.FRAMES_CAMBIARMODO, 0.1),
-    cancelar("cancelar", true),
-    comprar("comprar", true),
+    avanzar("avanzar", true),
+    finalizarTurno("finalizar turno", true),
+    lanzarDados("lanzar dados", true),
     describir("describir", true, false),
-    describirAvatar("describir avatar", false),
-    describirJugador("describir jugador", false),
+    hipotecar("hipotecar", true),
+    comprar("comprar", true),
     deshipotecar("deshipotecar", true),
+    vender("vender", true),
+    venderCasa("casa", vender),
+    venderHotel("hotel", vender),
+    venderPiscina("piscina", vender),
+    venderPista("pista", vender),
     edificar("edificar", true),
     edificarCasa("casa", edificar),
     edificarHotel("hotel", edificar),
     edificarPiscina("piscina", edificar),
     edificarPista("pista", edificar),
-    eliminacionTratos("eliminacion varios tratos", eliminarTratos),
-    eliminarTratos("eliminar tratos", true),
+    ayuda("ayuda", true),
+    atras("atras", true),
     estadisticasGlobales("estadísticas globales", true),
     estadisticasUsuario("estadisticas", true),
-    finalizarTurno("finalizar turno", true),
-    hipotecar("hipotecar", true),
-    lanzarDados("lanzar dados", true),
     listar("listar", true),
     listarAvatares("listar avatares", listar),
     listarEdificios("listar edificios", listar),
     listarJugadores("listar jugadores", listar),
     listarTratos("listar tratos", listar),
     proponerTrato("proponer trato"),
-    vender("vender", true),
-    venderCasa("casa", vender),
-    venderHotel("hotel", vender),
-    venderPiscina("piscina", vender),
-    venderPista("pista", vender);
+    aceptarTratos("aceptar tratos", true),
+    aceptacionTratos("aceptar varios tratos", aceptarTratos),
+    eliminarTratos("eliminar tratos", true),
+    eliminacionTratos("eliminacion varios tratos", eliminarTratos),
+    describirJugador("describir jugador", false),
+    describirAvatar("describir avatar", false),
+    cancelar("cancelar", true),
+    aceptar("aceptar", true);
 
 
     private final String nombre;
@@ -76,12 +77,11 @@ public enum TipoFuncion {
         this(nombre, false);
         this.funcionRaiz = funcionRaiz;
     }
-
-    TipoFuncion(String nombre, boolean menuPrincipal) {
+    TipoFuncion(String nombre, boolean menuPrincipal){
         this(nombre, menuPrincipal, true);
     }
 
-    TipoFuncion(String nombre, boolean menuPrincipal, boolean botonAsignado) {
+    TipoFuncion(String nombre, boolean menuPrincipal, boolean botonAsignado){
         this.nombre = nombre;
         this.menuPrincipal = menuPrincipal;
         this.botonAsignado = botonAsignado;
@@ -119,11 +119,11 @@ public enum TipoFuncion {
         return botonAsignado;
     }
 
-    public static TipoFuncion toFuncion(TipoEdificio tipoEdificio) {
+    public static TipoFuncion toFuncion(TipoEdificio tipoEdificio){
 
         TipoFuncion tipoFuncion;
 
-        switch (tipoEdificio) {
+        switch(tipoEdificio){
 
             case casa:
                 tipoFuncion = TipoFuncion.venderCasa;
@@ -151,9 +151,9 @@ public enum TipoFuncion {
 
     }
 
-    public static String toString(TipoFuncion tipoFuncion) {
+    public static String toString(TipoFuncion tipoFuncion){
 
-        switch (tipoFuncion) {
+        switch(tipoFuncion){
 
             case cambiarModo:
                 return ("Botón para activar o desactivar el modo avanzando del avatar.");
@@ -211,31 +211,22 @@ public enum TipoFuncion {
                 return ("Botón para listar todos los tratos, recibidos y emitidos del jugador.");
             case proponerTrato:
                 return ("Botón para proponer un trato al jugador seleccionado.");
-                break;
             case aceptarTratos:
                 return ("Botón para acceder a los tratos que puede aceptar el jugador.");
-                break;
             case aceptacionTratos:
                 return ("Botón para aceptar el trato indicado.");
-                break;
             case eliminarTratos:
                 return ("Botón para acceder a los tratos emitidos que se pueden eliminar");
-                break;
             case eliminacionTratos:
                 return ("Botón para eliminar el trato indicado emitido.");
-                break;
             case describirJugador:
                 return ("Botón para describir el jugador seleccionado.");
-                break;
             case describirAvatar:
                 return ("Botón para describir el avatar seleccionado.");
-                break;
             case cancelar:
                 return ("Botón para cancelar la acción actual.");
-                break;
             case aceptar:
                 return ("Botón para aceptar la acción actual.");
-                break;
         }
 
         return ("");
