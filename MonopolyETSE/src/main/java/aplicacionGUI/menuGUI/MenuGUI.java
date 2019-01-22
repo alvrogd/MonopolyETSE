@@ -96,6 +96,9 @@ public class MenuGUI{
     // Booleano para saber si está un input activo
     private boolean inputActivo;
 
+    // Booleano para indicarle al marco de información si se puede imprimir
+    private boolean renderMarco;
+
     /* Constructor */
 
     public MenuGUI(Group raiz, Aplicacion app, String imagen, TableroGUI tableroGUI){
@@ -171,10 +174,20 @@ public class MenuGUI{
                 break;
             }
         }
+
+        this.renderMarco = true;
     }
 
     public BotoneraGUI getBotonera() {
         return botonera;
+    }
+
+    public boolean isRenderMarco() {
+        return renderMarco;
+    }
+
+    public void setRenderMarco(boolean renderMarco) {
+        this.renderMarco = renderMarco;
     }
 
     public void anadirJugador(Jugador jugador){
@@ -381,6 +394,9 @@ public class MenuGUI{
             // Si se está proponiendo un trato
             if(isProponiendoTrato()){
 
+                // Como se está realizando un trato el renderizando del marco se va a desactivar
+                setRenderMarco(false);
+
                 // Se deseleccionan todas las casillas del anterior trato
                 for(CasillaGUI casillaGUI : getCasillasAuxiliar()){
                     casillaGUI.setSeleccionada(false);
@@ -431,6 +447,9 @@ public class MenuGUI{
 
                         // Se finaliza el trato y se vuelve el botón de aceptar en la botonera
                         getBotonera().anadirBoton(getBotonGUI());
+
+                        // Como la proposición del trato finaliza, se vuelve a activar el render del marco
+                        setRenderMarco(true);
                         setProponiendoTrato(false);
                     }
                 } else {

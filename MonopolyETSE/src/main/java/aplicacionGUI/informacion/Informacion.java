@@ -168,7 +168,11 @@ public class Informacion {
         }
         
         else if(getMarcoInformacion().contienePosicion(posicionX, posicionY)) {
-            getMarcoInformacion().handleClickIzquierdo(posicionX, posicionY);
+
+            // Si el render del marco no está activo tampoco su handle
+            if(getMenuGUI().isRenderMarco()) {
+                getMarcoInformacion().handleClickIzquierdo(posicionX, posicionY);
+            }
         }
     }
 
@@ -204,7 +208,7 @@ public class Informacion {
         getComunidadGUI().render();
 
         //El marco solo se renderiza en caso de que no haya inputs activos
-        if(!getMenuGUI().isInputActivo()) {
+        if(!getMenuGUI().isInputActivo() && getMenuGUI().isRenderMarco()) {
             getMarcoInformacion().render(t);
         } else {
             getMarcoInformacion().getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);
