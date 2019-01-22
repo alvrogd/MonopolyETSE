@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Translate;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
@@ -45,6 +47,7 @@ public class BotonGUI {
     private final Image boton;
     private final Image botonOscuro;
     private Image botonActual;
+    private Image tachado;
 
     // Desplazamientos con respecto a la botonera
     private int desplazamientoX;
@@ -584,7 +587,12 @@ public class BotonGUI {
         Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosRecibidos().values();
 
         for(Trato trato : tratos){
-            botones.add(new BotonGUI("tratoAceptar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.aceptacionTratos, 0, 0));
+            if(trato.tratoValido()) {
+                botones.add(new BotonGUI("tratoAceptar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.aceptacionTratos, 0, 0));
+            } else {
+                getApp().getJuego().getTurno().getTratosRecibidos().remove(trato.getId());
+                trato.getEmisor().getTratosEmitidos().remove(trato.getId());
+            }
         }
     }
 
@@ -626,7 +634,12 @@ public class BotonGUI {
             Collection<Trato> tratos = getApp().getJuego().getTurno().getTratosEmitidos().values();
 
             for(Trato trato : tratos){
-                botones.add(new BotonGUI("tratoEliminar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.eliminacionTratos, 0, 0));
+                if(trato.tratoValido()) {
+                    botones.add(new BotonGUI("tratoEliminar", getBotonera(), getBotonera().getNodo(), trato.getId(), getApp(), TipoFuncion.eliminacionTratos, 0, 0));
+                } else {
+                    getApp().getJuego().getTurno().getTratosEmitidos().remove(trato.getId());
+                    trato.getEmisor().getTratosRecibidos().remove(trato.getId());
+                }
             }
 
         }
@@ -782,6 +795,14 @@ public class BotonGUI {
         if(pulsandoBoton(posicionX, posicionY)){
 
             if(getBotonera().isAyuda()){
+                // En caso de que la ayuda sea para el botón correspondiente de un trato, se imprime la descripción del trato
+                if(getFuncion().equals(TipoFuncion.aceptacionTratos)){
+                    Trato trato = getApp().getJuego().getTurno().getTratosRecibidos().get(getNombre());
+                    Aplicacion.consola.imprimir(trato.toString());
+                } else if(getFuncion().equals(TipoFuncion.eliminacionTratos)){
+                    Trato trato = getApp().getJuego().getTurno().getTratosEmitidos().get(getNombre());
+                    Aplicacion.consola.imprimir(trato.toString());
+                }
                 Aplicacion.consola.imprimir(TipoFuncion.toString(getFuncion()));
             } else {
                 ejecutarFuncion();
@@ -817,6 +838,28 @@ public class BotonGUI {
 
     public void render(double t){
         getGc().drawImage(getBotonActual(), 0, 0);
+        if(getFuncion().equals(TipoFuncion.aceptacionTratos) || getFuncion().equals(TipoFuncion.eliminacionTratos)){
+            renderNumTrato();
+        }
+    }
+
+    public void renderNumTrato(){
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 20));
+        getGc().setStroke(Color.TRANSPARENT);
+        getGc().setFill(Color.BLACK);
+        getGc().setLineWidth(1);
+
+        Integer num = -1;
+
+        for(Character numero : getNombre().toCharArray()){
+            if(Aplicacion.consola.isInteger(numero.toString())){
+                num = Integer.parseInt(numero.toString());
+            }
+        }
+
+        if(num != -1) {
+            getGc().fillText(num.toString(), ConstantesGUI.BOTON_ANCHO - 25, ConstantesGUI.BOTON_ALTO - 15);
+        }
     }
 
     public void render(int fila, int columna, double t){

@@ -60,4 +60,25 @@ public class Inmunidad {
         return("("+propiedad.getNombre()+", "+numeroTurnos+")");
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        // Si apuntan a la misma dirección de memoria
+        if (this == obj) return (true);
+
+        // Si el objeto con el que se compara apunta a null
+        if (obj == null) return (false);
+
+        // Si no pertenecen a la misma clase
+        if (getClass() != obj.getClass()) return (false);
+
+        // Se referencia el objeto a comparar mediante un objeto de la misma clase, para poder
+        // llamar a sus métodos
+        final Inmunidad otro = (Inmunidad) obj;
+
+        // Si los nombres del botón son el mismo
+        return (this.getPropiedad() == otro.getPropiedad());
+
+    } /* Fin del método equals */
 }

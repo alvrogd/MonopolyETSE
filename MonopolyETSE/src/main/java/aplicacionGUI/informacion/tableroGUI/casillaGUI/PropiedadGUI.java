@@ -5,6 +5,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.handlers.DeshipotecarPropiedad;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.handlers.HipotecarPropiedad;
+import aplicacionGUI.menuGUI.entrada.CambiarTurnoTrato;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -120,10 +121,10 @@ public class PropiedadGUI extends CasillaGUI {
                 int contador = 0;
 
                 // En caso de estar ya seleccionada, es que se está deseleccionando, por lo que se quita la casilla
-                for (Inmunidad inmunidad : getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades()) {
+                for (Inmunidad inmunidad : getTableroGUI().getInformacion().getMenuGUI().getTrato().getInmunidades()) {
 
                     if (inmunidad.getPropiedad().equals(propiedad)) {
-                        getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades().remove(contador);
+                        getTableroGUI().getInformacion().getMenuGUI().getTrato().getInmunidades().remove(contador);
                         break;
                     }
 
@@ -136,9 +137,11 @@ public class PropiedadGUI extends CasillaGUI {
 
             // Si no se encuentra seleccionada, se añade
             else {
-                getTableroGUI().getInformacion().getMenuGUI().getBotonera().getInmunidades().add(
-                        new Inmunidad((Propiedad) getCasilla(), Aplicacion.consola.leer(
-                                "Número de turnos", true)));
+
+                Inmunidad inmunidad = new Inmunidad((Propiedad) getCasilla(), 0);
+
+                getTableroGUI().getInformacion().getMenuGUI().getTrato().getInmunidades().add(inmunidad);
+                new CambiarTurnoTrato(getTableroGUI().getInformacion().getMenuGUI().getTrato(), getTableroGUI().getInformacion().getMenuGUI(), inmunidad);
                 setSeleccionada(true);
             }
         }

@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import monopoly.jugadores.tratos.Trato;
 
-public abstract class CambiarDinero implements ILectorEntero {
+public abstract class CambiarTrato implements ILectorEntero {
 
     // Trato del que se desea cambiar el dinero a recibir
     private Trato trato;
@@ -20,7 +20,7 @@ public abstract class CambiarDinero implements ILectorEntero {
     /**
      * Se crea un handler para el cambio del dinero introducido en el trato a recibir por el jugador
      */
-    public CambiarDinero(Trato trato, MenuGUI menuGUI) {
+    public CambiarTrato(Trato trato, MenuGUI menuGUI) {
         if(trato == null){
             System.err.println("Trato no inicializado");
             System.exit(1);
@@ -32,6 +32,7 @@ public abstract class CambiarDinero implements ILectorEntero {
         }
 
         this.menuGUI = menuGUI;
+        menuGUI.setInputActivo(true);
         this.trato = trato;
         this.inputEntero = new InputEntero(false, 0, this);
     }
