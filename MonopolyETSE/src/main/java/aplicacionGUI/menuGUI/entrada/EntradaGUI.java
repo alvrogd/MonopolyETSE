@@ -140,8 +140,6 @@ public class EntradaGUI {
         setPulsadoEnter(false);
         getTextField().clear();
         getNodoTextField().getChildren().remove(getTextField());
-        getGc().clearRect(0,0,ConstantesGUI.INPUT_ANCHO, ConstantesGUI.INPUT_ALTO);
-        ConsolaInterfaz.setSeHaLeido(false);
     }
 
     public Group getNodoTextField() {

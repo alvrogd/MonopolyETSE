@@ -47,6 +47,7 @@ public class Trato {
 
         this.emisor = emisor;
         this.receptor = receptor;
+        this.id = "-1";
     }
 
     public Trato(Jugador emisor, Jugador receptor, ArrayList<Propiedad> propiedadesDar, ArrayList<Propiedad> propiedadesRecibir,
@@ -105,6 +106,9 @@ public class Trato {
         return propiedadesDar;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;

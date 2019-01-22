@@ -168,6 +168,7 @@ public abstract class Input {
     }
 
     public static void setRaiz(Group raiz) {
+        System.out.println("Cambiando raiz");
         Input.raiz = raiz;
     }
 
@@ -363,7 +364,7 @@ public abstract class Input {
     /**
      * El input realiza una limpieza
      */
-    private void eliminarRastro() {
+    public void eliminarRastro() {
 
         // Elimina su nodo
         Input.getRaiz().getChildren().remove(getNodo());

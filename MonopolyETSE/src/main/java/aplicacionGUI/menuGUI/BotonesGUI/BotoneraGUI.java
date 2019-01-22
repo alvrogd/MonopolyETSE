@@ -344,6 +344,30 @@ public class BotoneraGUI {
         this.puedoImprimir = true;
     }
 
+
+    public boolean eliminarBoton(BotonGUI botonGUI){
+        if(botonGUI == null){
+            System.err.println("Botón no inicializado");
+            System.exit(1);
+        }
+
+        botonGUI.getGc().clearRect(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
+
+        return(getBotones().remove(botonGUI));
+
+    }
+
+
+    public void anadirBoton(BotonGUI botonGUI){
+        if(botonGUI == null){
+            System.err.println("Botón no inicializado");
+            System.exit(1);
+        }
+
+        getBotones().add(botonGUI);
+
+    }
+
     public void handleClickPulsado(double x, double y) {
 
         double posicionX = x - ConstantesGUI.BOTONES_DESPLAZAMIENTO_X;

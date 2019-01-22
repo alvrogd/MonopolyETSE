@@ -11,27 +11,9 @@ import java.util.Scanner;
 public class ConsolaInterfaz{
 
     private static RegistroGUI registroGUI;
-    private static EntradaGUI entradaGUI;
-    private static boolean seHaLeido;
 
     public static void setRegistroGUI(RegistroGUI registro){
         registroGUI = registro;
-    }
-
-    public static EntradaGUI getEntradaGUI() {
-        return entradaGUI;
-    }
-
-    public static void setEntradaGUI(EntradaGUI entradaGUI) {
-        ConsolaInterfaz.entradaGUI = entradaGUI;
-    }
-
-    public static boolean isSeHaLeido() {
-        return seHaLeido;
-    }
-
-    public static void setSeHaLeido(boolean seHaLeido) {
-        ConsolaInterfaz.seHaLeido = seHaLeido;
     }
 
     public static RegistroGUI getRegistroGUI() {
@@ -48,11 +30,6 @@ public class ConsolaInterfaz{
     }
 
     public static Integer leer(String descripcion, boolean integer) {
-        if(getEntradaGUI().isPulsadoEnter() && getEntradaGUI().isActivo()){
-            if(Aplicacion.consola.isInteger(getEntradaGUI().getBuffer())){
-                return Integer.parseInt(getEntradaGUI().getBuffer());
-            }
-        }
-        return null;
+        return 0;
     }
 }

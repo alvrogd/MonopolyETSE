@@ -677,7 +677,6 @@ public class BotonGUI {
     // ponen todos en false.
     public void cancelar(){
         getBotonera().getMenuGUI().setProponiendoTrato(false);
-        ConsolaInterfaz.getEntradaGUI().setActivo(false);
     }
 
     public void ejecutarFuncion(){
