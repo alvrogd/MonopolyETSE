@@ -280,6 +280,9 @@ public class main extends Application {
         ArrayList<Input> inputsActivos = new ArrayList<>();
         Input.setInputsActivos(inputsActivos);
 
+        // Raíz de los inputs
+        Input.setRaiz(raiz);
+
         // Se crea un editor
         Editor editor = new Editor(raiz);
 
@@ -302,6 +305,12 @@ public class main extends Application {
                 }
 
                 menus.clear();
+
+                if(inputsActivos.size() > 0 ) {
+                    if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                        inputsActivos.get(0).handlePulsacion();
+                    }
+                }
             }
         });
 
@@ -316,6 +325,11 @@ public class main extends Application {
                     editor.handleClick(xPresionado[0], yPresionado[0], raiz, e, menus);
                 }
 
+                if(inputsActivos.size() > 0 ) {
+                    if( inputsActivos.get(0).contienePosicion(xPresionado[0], yPresionado[0])){
+                        inputsActivos.get(0).handleRelease();
+                    }
+                }
             }
         });
 
@@ -337,6 +351,10 @@ public class main extends Application {
                 // Render
                 gc.drawImage(fondo, 0, 0);
                 editor.render(t);
+
+                if(inputsActivos.size() > 0 ) {
+                    inputsActivos.get(0).render();
+                }
             }
         }.start();
 

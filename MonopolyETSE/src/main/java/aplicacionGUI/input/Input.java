@@ -17,6 +17,9 @@ public abstract class Input {
 
     /* Atributos */
 
+    // Raíz asociada a los inputs
+    private static Group raiz;
+
     // Nodo propiedad del input
     private final Group nodo;
 
@@ -53,7 +56,6 @@ public abstract class Input {
     /**
      * Se crea una instancia mediante la cual obtener información del usuario a través del teclado
      *
-     * @param raiz         nodo sobre el cual crear un hijo para el input
      * @param imagen       imagen que mostrar cuando no se esté presionando el botón de aceptar
      * @param imagenOscura imagen que mostrar cuando se esté presionando el botón de aceptar
      * @param editor       si el input se encuentra en un editor o en el juego, para establecer una correcta posición
@@ -62,10 +64,10 @@ public abstract class Input {
      *                     entrada del usuario, el método llamado para guardar la información obtenida recibirá como
      *                     argumento el identificador, pudiendo discernir qué atributo debe ser modificado)
      */
-    public Input(Group raiz, String imagen, String imagenOscura, boolean editor, int atributo) {
+    public Input(String imagen, String imagenOscura, boolean editor, int atributo) {
 
-        if (raiz == null) {
-            System.err.println("Raíz no inicializada");
+        if (Input.raiz == null) {
+            System.err.println("Raíz aún no inicializada");
             System.exit(1);
         }
 
@@ -86,7 +88,7 @@ public abstract class Input {
 
         // Se añade al nodo dado un nuevo nodo de uso para el input
         this.nodo = new Group();
-        raiz.getChildren().add(this.nodo);
+        Input.raiz.getChildren().add(this.nodo);
 
         // Se establece su correspondiente posición en la ventana
         if (editor) {
@@ -142,6 +144,14 @@ public abstract class Input {
 
 
     /* Getters y setters */
+
+    public static Group getRaiz() {
+        return raiz;
+    }
+
+    public static void setRaiz(Group raiz) {
+        Input.raiz = raiz;
+    }
 
     public Group getNodo() {
         return nodo;

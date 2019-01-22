@@ -1,13 +1,13 @@
 package aplicacionGUI.editor.handlers;
 
 import aplicacionGUI.editor.Celda;
+import aplicacionGUI.input.ILectorEntero;
+import aplicacionGUI.input.InputEntero;
 import javafx.event.ActionEvent;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 
-import java.util.Scanner;
-
-public class CambiarPrecioInicial extends CambiarAtributo {
+public class CambiarPrecioInicial extends CambiarAtributo implements ILectorEntero {
 
     /* Constructor */
 
@@ -33,8 +33,18 @@ public class CambiarPrecioInicial extends CambiarAtributo {
     @Override
     public void handle(ActionEvent event) {
 
-        // Se crea un scanner para el input del usuario
-        Scanner scanner = new Scanner(System.in);
+        // Se crea un lector de enteros
+        new InputEntero(true, 0, this);
+    }
+
+    /**
+     * Se almacena un entero dado en un atributo obtenido en función del identificador
+     *
+     * @param enteroLeido           entero leído del usuario
+     * @param identificadorAtributo identificador del atributo a modificar
+     */
+    @Override
+    public void almacenarEntero(int enteroLeido, int identificadorAtributo) {
 
         // Se obtiene la propiedad de la celda asociada
         final Propiedad propiedad = (Propiedad) getCelda().getCasillaGUI().getCasilla();
@@ -42,9 +52,9 @@ public class CambiarPrecioInicial extends CambiarAtributo {
         // El alquiler debe ser multiplicado por el tamaño del grupo dado que el de los solares es dependiente
         // de este y de su tamaño
         if (propiedad instanceof Solar) {
-            propiedad.getGrupo().setPrecio(scanner.nextInt() * propiedad.getGrupo().getTipo().getTamano());
+            propiedad.getGrupo().setPrecio(enteroLeido * propiedad.getGrupo().getTipo().getTamano());
         } else {
-            propiedad.getGrupo().setPrecio(scanner.nextInt());
+            propiedad.getGrupo().setPrecio(enteroLeido);
         }
     }
 }

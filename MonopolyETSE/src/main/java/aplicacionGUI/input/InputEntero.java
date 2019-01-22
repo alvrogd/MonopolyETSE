@@ -1,7 +1,6 @@
 package aplicacionGUI.input;
 
 import aplicacionGUI.ConstantesGUI;
-import javafx.scene.Group;
 
 public class InputEntero extends Input {
 
@@ -14,11 +13,21 @@ public class InputEntero extends Input {
 
     /* Constructor */
 
-    public InputEntero(Group raiz, boolean editor, int atributo, ILectorEntero lector) {
+    /**
+     * Se crea una instancia mediante la cual obtener enteros del usuario a través del teclado
+     *
+     * @param editor   si el input se encuentra en un editor o en el juego, para establecer una correcta posición
+     *                 en pantalla
+     * @param atributo identificador del atributo que desea modificar aquel que invocó al input (cuando se lea la
+     *                 entrada del usuario, el método llamado para guardar la información obtenida recibirá como
+     *                 argumento el identificador, pudiendo discernir qué atributo debe ser modificado)
+     * @param lector   aquel que desea leer un entero del usuario
+     */
+    public InputEntero(boolean editor, int atributo, ILectorEntero lector) {
 
-        super(raiz, ConstantesGUI.INPUT_ENTERO_IMAGEN, ConstantesGUI.INPUT_ENTERO_IMAGEN_OSCURA, editor, atributo);
+        super(ConstantesGUI.INPUT_ENTERO_IMAGEN, ConstantesGUI.INPUT_ENTERO_IMAGEN_OSCURA, editor, atributo);
 
-        if( lector == null ) {
+        if (lector == null) {
             System.err.println("Lector no inicializado");
             System.exit(1);
         }
@@ -38,7 +47,7 @@ public class InputEntero extends Input {
     /* Métodos */
 
     /**
-     * Se ejecuta la acción definida ante un release de un click
+     * Se ejecuta la acción definida ante el release de un click
      */
     @Override
     public void handleRelease() {
@@ -49,11 +58,16 @@ public class InputEntero extends Input {
         String buffer = getTextField().getCharacters().toString();
 
         try {
+
             int entero = Integer.parseInt(buffer);
             getLector().almacenarEntero(entero, getAtributo());
-        }
 
-        catch(NumberFormatException e) {
+            // Si ha cumplido la función, se elimina
+            Input.getRaiz().getChildren().remove(getNodo());
+            Input.getInputsActivos().clear();
+
+        } catch (NumberFormatException e) {
+
             System.err.println("No ha sido posible convertir el input del usuario a un entero");
         }
     }
