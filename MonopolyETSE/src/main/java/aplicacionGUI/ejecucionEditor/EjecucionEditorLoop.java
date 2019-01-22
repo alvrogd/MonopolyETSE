@@ -1,14 +1,14 @@
-package aplicacionGUI.ejecucionJuego;
+package aplicacionGUI.ejecucionEditor;
 
 import aplicacionGUI.ConstantesGUI;
 import javafx.animation.AnimationTimer;
 
-public class EjecucionJuegoLoop extends AnimationTimer {
+public class EjecucionEditorLoop extends AnimationTimer {
 
     /* Atributos */
 
-    // Ejecución del juego asociada
-    private final EjecucionJuego ejecucionJuego;
+    // Ejecución del editor asociada
+    private final EjecucionEditor ejecucionEditor;
 
     // Tiempo de inicio
     private long tiempoInicio;
@@ -18,26 +18,26 @@ public class EjecucionJuegoLoop extends AnimationTimer {
     /* Constructor */
 
     /**
-     * Se crea un animation timer que gestione el bucle de ejecución de una ejecución del juego
+     * Se crea un animation timer que gestione el bucle de ejecución de una ejecución del editor
      *
-     * @param ejecucionJuego ejecución del juego asociada
+     * @param ejecucionEditor ejecución del editor asociada
      */
-    public EjecucionJuegoLoop(EjecucionJuego ejecucionJuego) {
+    public EjecucionEditorLoop(EjecucionEditor ejecucionEditor) {
 
-        if (ejecucionJuego == null) {
-            System.err.println("Ejecución del juego no inicializada");
+        if (ejecucionEditor == null) {
+            System.err.println("Ejecución del editor no inicializada");
             System.exit(1);
         }
 
-        this.ejecucionJuego = ejecucionJuego;
+        this.ejecucionEditor = ejecucionEditor;
     }
 
 
 
     /* Getters y setters */
 
-    public EjecucionJuego getEjecucionJuego() {
-        return ejecucionJuego;
+    public EjecucionEditor getEjecucionEditor() {
+        return ejecucionEditor;
     }
 
     public long getTiempoInicio() {
@@ -76,16 +76,15 @@ public class EjecucionJuegoLoop extends AnimationTimer {
         double t = (currentNanoTime - getTiempoInicio()) / 1000000000.0;
 
         // Se limpia la ventana
-        getEjecucionJuego().getGc().clearRect(0, 0, ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
+        getEjecucionEditor().getGc().clearRect(0, 0, ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
 
         // Se renderizan los elementos
-        getEjecucionJuego().getGc().drawImage(getEjecucionJuego().getFondo(), 0, 0);
-        getEjecucionJuego().getInformacion().render(t);
-        getEjecucionJuego().getMenuGUI().render(t);
+        getEjecucionEditor().getGc().drawImage(getEjecucionEditor().getFondo(), 0, 0);
+        getEjecucionEditor().getEditor().render(t);
 
         // Si existe algún input activo, se renderiza el primero
-        if (getEjecucionJuego().getInputsActivos().size() > 0) {
-            getEjecucionJuego().getInputsActivos().get(0).render();
+        if (getEjecucionEditor().getInputsActivos().size() > 0) {
+            getEjecucionEditor().getInputsActivos().get(0).render();
         }
     }
 }

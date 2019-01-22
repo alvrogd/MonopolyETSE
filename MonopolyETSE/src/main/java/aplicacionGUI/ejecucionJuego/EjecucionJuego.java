@@ -191,9 +191,6 @@ public class EjecucionJuego {
         // Se define la acción al soltar un botón del ratón
         escena.setOnMouseReleased(new Release(this));
 
-        // Se registra el momento de inicio del juego
-        final long tiempoInicio = System.nanoTime();
-
         // Se inicia el game loop
         EjecucionJuegoLoop loop = new EjecucionJuegoLoop(this);
         loop.iniciar();

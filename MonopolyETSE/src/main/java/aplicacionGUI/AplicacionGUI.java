@@ -1,7 +1,8 @@
 package aplicacionGUI;
 
-import aplicacionGUI.input.Input;
+import aplicacionGUI.ejecucionEditor.EjecucionEditor;
 import aplicacionGUI.ejecucionJuego.EjecucionJuego;
+import aplicacionGUI.input.Input;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -141,7 +142,8 @@ public class AplicacionGUI {
         }
 
         else {
-            //probarEditor(raiz, ventana, escena, gc, fondo, menus);
+            EjecucionEditor ejecucionEditor = new EjecucionEditor(this);
+            ejecucionEditor.iniciar();
         }
     }
 }
