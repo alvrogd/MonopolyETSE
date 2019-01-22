@@ -194,6 +194,30 @@ public class Trato {
         return receptor;
     }
 
+    public boolean tratoValido(){
+        if(getEmisor().balanceNegativoTrasPago(getDineroDar()))
+            return false;
+
+        for(Propiedad propiedad : getPropiedadesDar()){
+            if(!propiedad.getPropietario().equals(getEmisor()))
+                return false;
+        }
+
+        if (getReceptor().balanceNegativoTrasPago(getDineroRecibir()))
+            return false;
+
+        for(Propiedad propiedad : getPropiedadesRecibir()){
+            if(!propiedad.getPropietario().equals(getReceptor()))
+                return false;
+        }
+
+        for(Inmunidad inmunidad : getInmunidades()) {
+            if (!inmunidad.getPropiedad().getPropietario().equals(receptor))
+                return false;
+        }
+
+        return true;
+    }
 
 
     /* Métodos */
