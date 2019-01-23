@@ -141,11 +141,11 @@ public final class Constantes {
     public final static String NOMBRE_IMPUESTO_1 = "Sméagol's Tax";
     public final static String NOMBRE_IMPUESTO_2 = "Smaug's Tax";
 
-    public final static String NOMBRE_SUERTE_1 = "suerte1";
-    public final static String NOMBRE_SUERTE_2 = "suerte2";
-    public final static String NOMBRE_SUERTE_3 = "suerte3";
+    public final static String NOMBRE_SUERTE_1 = "Suerte";
+    public final static String NOMBRE_SUERTE_2 = "Suerte";
+    public final static String NOMBRE_SUERTE_3 = "Suerte";
 
-    public final static String NOMBRE_COMUNIDAD_1 = "comunidad1";
-    public final static String NOMBRE_COMUNIDAD_2 = "comunidad2";
-    public final static String NOMBRE_COMUNIDAD_3 = "comunidad3";
+    public final static String NOMBRE_COMUNIDAD_1 = "Comunidad";
+    public final static String NOMBRE_COMUNIDAD_2 = "Comunidad";
+    public final static String NOMBRE_COMUNIDAD_3 = "Comunidad";
 }
