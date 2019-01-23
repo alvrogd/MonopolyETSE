@@ -4,10 +4,6 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.handlers.Tecla;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 public class FaseBienvenida extends Fase {
 
@@ -20,7 +16,7 @@ public class FaseBienvenida extends Fase {
      */
     public FaseBienvenida(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fondo.jpg");
+        super(aplicacionGUI, ConstantesGUI.FASE_BIENVENIDA_FONDO);
     }
 
 
@@ -50,14 +46,7 @@ public class FaseBienvenida extends Fase {
 
         if (isIniciado()) {
 
-            getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-            getGc().setStroke(Color.TRANSPARENT);
-            getGc().setFill(Color.BLACK);
-            getGc().setTextAlign(TextAlignment.CENTER);
-            getGc().setLineWidth(1);
-
-            // Se añade el nombre de la casilla (la posición es la parte central inferior)
-            getGc().fillText("Bienvenido al Monopoly!\n\n\nPresiona una tecla para continuar...", 100, 100);
+            getGc().drawImage(getFondo(), 0, 0);
         }
     }
 

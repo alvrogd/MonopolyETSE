@@ -641,4 +641,6 @@ public class ConstantesGUI {
                                                         "dineroMenos21.png"};
 
 
+    // Fondo de la fase de bienvenida
+    public final static String FASE_BIENVENIDA_FONDO = "bienvenidoWithPenin.png";
 }
