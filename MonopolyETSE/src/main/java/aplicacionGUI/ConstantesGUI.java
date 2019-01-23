@@ -570,57 +570,60 @@ public class ConstantesGUI {
     // Sonido de click de un botón
     public final static String SONIDO_BOTON = "click.wav";
 
+    // Sonido de la animación del dinero
+    public final static String SONIDO_DINERO = "dinero.mp3";
+
     // Sonido de pasar a modo avanzado
     public final static String SONIDO_AVANZADO = "modoAvanzado.wav";
 
     public final static int ANIMACION_DINERO_ANCHO = 100;
     public final static int ANIMACION_DINERO_ALTO = 100;
 
-    public final static String[] FRAMES_DINEROMAS = {"dineroMasReducido0.png",
-                                                        "dineroMasReducido1.png",
-                                                        "dineroMasReducido2.png",
-                                                        "dineroMasReducido3.png",
-                                                        "dineroMasReducido4.png",
-                                                        "dineroMasReducido5.png",
-                                                        "dineroMasReducido6.png",
-                                                        "dineroMasReducido7.png",
-                                                        "dineroMasReducido8.png",
-                                                        "dineroMasReducido9.png",
-                                                        "dineroMasReducido10.png",
-                                                        "dineroMasReducido11.png",
-                                                        "dineroMasReducido12.png",
-                                                        "dineroMasReducido13.png",
-                                                        "dineroMasReducido14.png",
-                                                        "dineroMasReducido15.png",
-                                                        "dineroMasReducido16.png",
-                                                        "dineroMasReducido17.png",
-                                                        "dineroMasReducido18.png",
-                                                        "dineroMasReducido19.png",
-                                                        "dineroMasReducido20.png",
-                                                        "dineroMasReducido21.png"};
+    public final static String[] FRAMES_DINEROMAS = {"dineroMas0.png",
+                                                        "dineroMas1.png",
+                                                        "dineroMas2.png",
+                                                        "dineroMas3.png",
+                                                        "dineroMas4.png",
+                                                        "dineroMas5.png",
+                                                        "dineroMas6.png",
+                                                        "dineroMas7.png",
+                                                        "dineroMas8.png",
+                                                        "dineroMas9.png",
+                                                        "dineroMas10.png",
+                                                        "dineroMas11.png",
+                                                        "dineroMas12.png",
+                                                        "dineroMas13.png",
+                                                        "dineroMas14.png",
+                                                        "dineroMas15.png",
+                                                        "dineroMas16.png",
+                                                        "dineroMas17.png",
+                                                        "dineroMas18.png",
+                                                        "dineroMas19.png",
+                                                        "dineroMas20.png",
+                                                        "dineroMas21.png"};
 
-    public final static String[] FRAMES_DINEROMENOS = {"dineroMenosReducido0.png",
-                                                        "dineroMenosReducido1.png",
-                                                        "dineroMenosReducido2.png",
-                                                        "dineroMenosReducido3.png",
-                                                        "dineroMenosReducido4.png",
-                                                        "dineroMenosReducido5.png",
-                                                        "dineroMenosReducido6.png",
-                                                        "dineroMenosReducido7.png",
-                                                        "dineroMenosReducido8.png",
-                                                        "dineroMenosReducido9.png",
-                                                        "dineroMenosReducido10.png",
-                                                        "dineroMenosReducido11.png",
-                                                        "dineroMenosReducido12.png",
-                                                        "dineroMenosReducido13.png",
-                                                        "dineroMenosReducido14.png",
-                                                        "dineroMenosReducido15.png",
-                                                        "dineroMenosReducido16.png",
-                                                        "dineroMenosReducido17.png",
-                                                        "dineroMenosReducido18.png",
-                                                        "dineroMenosReducido19.png",
-                                                        "dineroMenosReducido20.png",
-                                                        "dineroMenosReducido21.png"};
+    public final static String[] FRAMES_DINEROMENOS = {"dineroMenos0.png",
+                                                        "dineroMenos1.png",
+                                                        "dineroMenos2.png",
+                                                        "dineroMenos3.png",
+                                                        "dineroMenos4.png",
+                                                        "dineroMenos5.png",
+                                                        "dineroMenos6.png",
+                                                        "dineroMenos7.png",
+                                                        "dineroMenos8.png",
+                                                        "dineroMenos9.png",
+                                                        "dineroMenos10.png",
+                                                        "dineroMenos11.png",
+                                                        "dineroMenos12.png",
+                                                        "dineroMenos13.png",
+                                                        "dineroMenos14.png",
+                                                        "dineroMenos15.png",
+                                                        "dineroMenos16.png",
+                                                        "dineroMenos17.png",
+                                                        "dineroMenos18.png",
+                                                        "dineroMenos19.png",
+                                                        "dineroMenos20.png",
+                                                        "dineroMenos21.png"};
 
 
 }
