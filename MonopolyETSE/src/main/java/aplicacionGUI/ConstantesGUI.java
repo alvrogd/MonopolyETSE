@@ -63,7 +63,7 @@ public class ConstantesGUI {
     // Dimensiones de la sección de jugadores
     public final static int JUGADORES_ANCHO = 672;
     public final static int JUGADORES_ALTO = BOTONES_ALTO;
-    public final static int JUGADORES_SEPARACION = 10;
+    public final static int JUGADORES_SEPARACION = 2;
 
     // Dimensiones de la barra del jugador
     public final static int BARRA_DESPLAZAMIENTO_X = 5;
@@ -96,7 +96,7 @@ public class ConstantesGUI {
 
     // Desplazamientos para la sección de los jugadores
     public final static int JUGADORES_DESPLAZAMIENTO_X = IMPRESION_DESPLAZAMIENTO_X + IMPRESION_ANCHO;
-    public final static int JUGADORES_DESPLAZAMIENTO_Y = 0;
+    public final static int JUGADORES_DESPLAZAMIENTO_Y = 14;
 
     // Desplazamientos del tablero
     public final static int TABLERO_DESPLAZAMIENTO_X = (INFORMACION_ANCHO - TABLERO_ANCHO) / 2;
@@ -186,10 +186,10 @@ public class ConstantesGUI {
     public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
 
     // Nombres de las imágenes de los avatares
-    public final static String[] AVATARES_IMAGENES = {//"autobus.png",
-                                                      //"barco.png",
-                                                      //"hamburguesa.png",
-                                                      //"pajaro.png",
+    public final static String[] AVATARES_IMAGENES = {"autobus.png",
+                                                      "barco.png",
+                                                      "hamburguesa.png",
+                                                      "pajaro.png",
                                                       "pato.png",
                                                       "perro.png"};
 
