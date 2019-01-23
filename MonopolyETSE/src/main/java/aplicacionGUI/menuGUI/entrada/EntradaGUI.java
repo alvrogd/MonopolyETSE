@@ -27,7 +27,7 @@ public class EntradaGUI {
     // Contexto en el que representar objetos
     private final GraphicsContext gc;
 
-    // Imagen de fondo para el menú
+    // Imagen de fases para el menú
     private final Image fondo;
 
     // Canvas para la representación del menú

@@ -56,7 +56,7 @@ public class CasillaGUI {
     // La casilla asociada
     private Casilla casilla;
 
-    // Imagen de fondo de la casilla asociada
+    // Imagen de fases de la casilla asociada
     private Image fondo;
 
     // Sensor de la casilla
@@ -88,7 +88,7 @@ public class CasillaGUI {
      * @param tableroGUI          representación de un tablero asociada a la representación de una casilla
      * @param raiz                nodo sobre el cual crear un hijo para la representación de la casilla
      * @param casilla             casilla a representar
-     * @param ficheroFondo        imagen de fondo de la casilla a representar
+     * @param ficheroFondo        imagen de fases de la casilla a representar
      * @param posicionX           posición (coordenada X) de la representación de la casilla en la representación del
      *                            tablero
      * @param posicionY           posición (coordenada Y) de la representación de la casilla en la representación del
@@ -114,7 +114,7 @@ public class CasillaGUI {
         }
 
         if (ficheroFondo == null) {
-            System.err.println("Nombre del fichero de fondo no inicializado");
+            System.err.println("Nombre del fichero de fases no inicializado");
             System.exit(1);
         }
 
@@ -144,7 +144,7 @@ public class CasillaGUI {
         // Se guarda la referencia a la casilla asociada
         this.casilla = casilla;
 
-        // Se obtiene el fondo correspondiente
+        // Se obtiene el fases correspondiente
         this.fondo = new Image(FondosCasillas.class.getResource(ficheroFondo).toString());
 
         // El menú se generá cuando sea solicitado
@@ -315,7 +315,7 @@ public class CasillaGUI {
     }
 
     /**
-     * Se renderiza el fondo
+     * Se renderiza el fases
      */
     public void renderFondo() {
 
@@ -361,7 +361,7 @@ public class CasillaGUI {
      */
     public void renderContenido(double t) {
 
-        // Se añade un fondo transparente sobre el que introducir la información de la casilla
+        // Se añade un fases transparente sobre el que introducir la información de la casilla
         getGc().setFill(Color.rgb(128, 128, 128, 0.6));
         getGc().fillRect(3, 19, ancho - 6, 43); // todo cambiar ancho por llamada
 

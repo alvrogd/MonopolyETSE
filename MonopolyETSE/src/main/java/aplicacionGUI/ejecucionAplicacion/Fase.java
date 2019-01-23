@@ -7,7 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import resources.fondo.Fondo;
+import resources.fases.ImagenesFases;
 
 import java.util.ArrayList;
 
@@ -27,10 +27,10 @@ public abstract class Fase implements IFase {
     // Escena de la aplicación
     private final Scene escena;
 
-    // GC para representar el fondo de la aplicación
+    // GC para representar el fases de la aplicación
     private final GraphicsContext gc;
 
-    // Fondo a representar
+    // ImagenesFases a representar
     private final Image fondo;
 
     // Conjunto de menús contextuales activos
@@ -51,11 +51,11 @@ public abstract class Fase implements IFase {
     /* Constructor */
 
     /**
-     * Se crea una fase, asociando sus atributos con los de una aplicación gráfica dada y obteniendo el fondo
+     * Se crea una fase, asociando sus atributos con los de una aplicación gráfica dada y obteniendo el fases
      * especificado
      *
      * @param aplicacionGUI aplicación gráfica a asociar
-     * @param fondo         nombre de la imagen que emplear como fondo
+     * @param fondo         nombre de la imagen que emplear como fases
      */
     public Fase(AplicacionGUI aplicacionGUI, String fondo) {
 
@@ -78,7 +78,7 @@ public abstract class Fase implements IFase {
         // Inicialmente, no se ha iniciado
         this.iniciado = false;
 
-        this.fondo = new Image(Fondo.class.getResource(fondo).toString());
+        this.fondo = new Image(ImagenesFases.class.getResource(fondo).toString());
     }
 
 

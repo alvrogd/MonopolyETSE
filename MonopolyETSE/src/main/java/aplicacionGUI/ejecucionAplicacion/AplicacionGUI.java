@@ -12,11 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import resources.fondo.Fondo;
 
 import java.util.ArrayList;
 
@@ -27,8 +25,8 @@ public class AplicacionGUI {
     // Ventana de la aplicación
     private final Stage ventana;
 
-    // Fondo de la ventana
-    private final Image fondo = new Image(Fondo.class.getResource("fondo.jpg").toString());
+    // ImagenesFases de la ventana
+    //private final Image fondo = new Image(ImagenesFases.class.getResource("fondo.jpg").toString());
 
     // Nodo raíz de la ventana
     private final Group raiz;
@@ -36,7 +34,7 @@ public class AplicacionGUI {
     // Escena para la ventana
     private final Scene escena;
 
-    // Canvas en el que representar el fondo
+    // Canvas en el que representar el fases
     private final Canvas canvas;
 
     // Contexto gráfico asociado al canvas
@@ -94,7 +92,7 @@ public class AplicacionGUI {
         // Se establece un estilo personalizado para la escena (para el registro y recuadro del input)
         this.escena.getStylesheets().add(ConstantesGUI.class.getResource("EstilosCSS.css").toExternalForm());
 
-        // Se crea un canvas en el que representar el fondo
+        // Se crea un canvas en el que representar el fases
         this.canvas = new Canvas(ConstantesGUI.VENTANA_ANCHO, ConstantesGUI.VENTANA_ALTO);
         this.raiz.getChildren().add(canvas);
 
@@ -128,9 +126,9 @@ public class AplicacionGUI {
         return ventana;
     }
 
-    public Image getFondo() {
+    /*public Image getFondo() {
         return fondo;
-    }
+    }*/
 
     public Group getRaiz() {
         return raiz;

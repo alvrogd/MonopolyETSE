@@ -473,8 +473,8 @@ public class Celda {
         item2.setOnAction(new CambiarNombre(this));
         menu.getItems().add(item2);
 
-        // Se añade la opción para cambiar la imagen de fondo
-        MenuItem item3 = new MenuItem("Cambiar fondo");
+        // Se añade la opción para cambiar la imagen de fases
+        MenuItem item3 = new MenuItem("Cambiar fases");
         item3.setOnAction(new CambiarFondo(this));
         menu.getItems().add(item3);
 

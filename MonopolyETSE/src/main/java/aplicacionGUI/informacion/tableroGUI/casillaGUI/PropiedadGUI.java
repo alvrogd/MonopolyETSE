@@ -32,7 +32,7 @@ public class PropiedadGUI extends CasillaGUI {
      * @param tableroGUI          representación de un tablero asociada a la representación de una casilla
      * @param raiz                nodo sobre el cual crear un hijo para la representación de la casilla
      * @param propiedad           propiedad a representar
-     * @param ficheroFondo        imagen de fondo de la casilla a representar
+     * @param ficheroFondo        imagen de fases de la casilla a representar
      * @param posicionX           posición (coordenada X) de la representación de la casilla en la representación del
      *                            tablero
      * @param posicionY           posición (coordenada Y) de la representación de la casilla en la representación del
