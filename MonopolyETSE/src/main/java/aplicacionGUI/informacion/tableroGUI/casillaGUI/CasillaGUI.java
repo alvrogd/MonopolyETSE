@@ -344,7 +344,7 @@ public class CasillaGUI {
         getGc().fillRect(3, 3, getAncho() - 6, 14);
 
         // Se establece la tipografía
-        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.SEMI_BOLD, 12));
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.BOLD, 12));
         getGc().setStroke(Color.TRANSPARENT);
         getGc().setFill(Color.BLACK);
         getGc().setTextAlign(TextAlignment.CENTER);

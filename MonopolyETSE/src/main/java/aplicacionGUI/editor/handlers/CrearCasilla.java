@@ -4,6 +4,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.Celda;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.ImpuestoGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import javafx.event.ActionEvent;
@@ -125,8 +126,8 @@ public class CrearCasilla implements EventHandler<ActionEvent> {
                 break;
 
             case impuesto:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new Impuesto("Casilla Impuesto",
-                        posicionTablero, tablero, 100), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
+                celda.setCasillaGUI(new ImpuestoGUI(tableroGUI, nodo, new Impuesto("Casilla Impuesto",
+                        posicionTablero, tablero, 0), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case servicio:

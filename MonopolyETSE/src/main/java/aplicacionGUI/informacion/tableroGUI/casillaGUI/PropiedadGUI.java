@@ -218,7 +218,7 @@ public class PropiedadGUI extends CasillaGUI {
     public void renderPropietario() {
 
         // Se establece la tipografía
-        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.SEMI_BOLD, 12));
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.BOLD, 12));
         getGc().setLineWidth(1);
         getGc().setFill(Color.BLACK);
         getGc().setTextAlign(TextAlignment.LEFT);
@@ -226,7 +226,7 @@ public class PropiedadGUI extends CasillaGUI {
         // Si el propietario es la banca, se añade el precio de la casilla
         if (getPropiedad().getPropietario() instanceof Banca) {
 
-            getGc().fillText(getPropiedad().getPrecioActual() + " K €", 5, 58);
+            getGc().fillText(getPropiedad().getPrecioActual() + " K €", 5, 59);
         }
 
         // En caso contrario, se indica el propietario
@@ -235,10 +235,10 @@ public class PropiedadGUI extends CasillaGUI {
             // Se diferencia entre estar hipotecada o no
             if (getPropiedad().isHipotecada()) {
 
-                getGc().fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), 5, 58);
+                getGc().fillText("Hipot.: " + getPropiedad().getPropietario().getNombre(), 5, 59);
             } else {
 
-                getGc().fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), 5, 58);
+                getGc().fillText("Prop.: " + getPropiedad().getPropietario().getNombre(), 5, 59);
             }
         }
     }

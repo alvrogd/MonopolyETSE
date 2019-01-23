@@ -5,6 +5,7 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.CasillaGUI;
+import aplicacionGUI.informacion.tableroGUI.casillaGUI.ImpuestoGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.PropiedadGUI;
 import aplicacionGUI.informacion.tableroGUI.casillaGUI.SolarGUI;
 import javafx.scene.Group;
@@ -17,6 +18,7 @@ import javafx.scene.transform.Translate;
 import monopoly.jugadores.Avatar;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
+import monopoly.tablero.jerarquiaCasillas.Impuesto;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import resources.avatares.ImagenesAvatares;
@@ -140,7 +142,14 @@ public class TableroGUI {
                         filaGUI.add(new PropiedadGUI(this, this.nodo, (Propiedad) casilla, ConstantesGUI.CASILLAS_IMAGENES[
                                 contador], posiciones.get(contador)[0], posiciones.get(contador)[1], true));
                     }
-                } else {
+                }
+
+                else if( casilla instanceof Impuesto ) {
+                    filaGUI.add(new ImpuestoGUI(this, this.nodo, (Impuesto) casilla, ConstantesGUI.CASILLAS_IMAGENES[
+                            contador], posiciones.get(contador)[0], posiciones.get(contador)[1], true));
+                }
+
+                else {
                     filaGUI.add(new CasillaGUI(this, this.nodo, casilla, ConstantesGUI.CASILLAS_IMAGENES[contador],
                             posiciones.get(contador)[0], posiciones.get(contador)[1], true));
                 }

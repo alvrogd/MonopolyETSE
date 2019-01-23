@@ -366,37 +366,30 @@ public class Celda {
 
                 if (gruposDisponibles.contains(TipoGrupo.cyan)) {
                     anadirCrearCasilla(subsubmenu, "Grupo cyan", TipoCasilla.solar, getGrupoCyan());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.rosa)) {
                     anadirCrearCasilla(subsubmenu, "Grupo violeta", TipoCasilla.solar, getGrupoRosa());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.naranja)) {
                     anadirCrearCasilla(subsubmenu, "Grupo amarillo", TipoCasilla.solar, getGrupoNaranja());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.rojo)) {
                     anadirCrearCasilla(subsubmenu, "Grupo rojo", TipoCasilla.solar, getGrupoRojo());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.marron)) {
                     anadirCrearCasilla(subsubmenu, "Grupo blanco", TipoCasilla.solar, getGrupoMarron());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.verde)) {
                     anadirCrearCasilla(subsubmenu, "Grupo verde", TipoCasilla.solar, getGrupoVerde());
-
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.azul)) {
                     anadirCrearCasilla(subsubmenu, "Grupo azul", TipoCasilla.solar, getGrupoAzul());
-
                 }
 
                 // Se añade el (sub:)submenú si contiene alguna opción
@@ -507,27 +500,6 @@ public class Celda {
         MenuItem item = new MenuItem("Cambiar precio inicial");
         item.setOnAction(new CambiarPrecioInicial(this));
         menu.getItems().add(item);
-
-        // Si se trata de un solar
-        if (getCasillaGUI().getCasilla() instanceof Solar) {
-            generarMenuContextualSolar(menu);
-        }
-    }
-
-    private void generarMenuContextualSolar(ContextMenu menu) {
-
-        // todo añadir o no?
-        /*// Se añade la opción para cambiar el grupo
-        MenuItem item = new MenuItem("Cambiar grupo");
-        item.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Escogida opcion cambiar grupo");
-            }
-        });
-
-        menu.getItems().add(item);*/
     }
 
     /**
