@@ -1,18 +1,15 @@
 package monopoly.jugadores;
 
-import monopoly.Constantes;
-import monopoly.jugadores.acciones.TransferenciaMonetaria;
-import monopoly.jugadores.excepciones.*;
-import monopoly.tablero.cartas.Suerte;
-import monopoly.tablero.jerarquiaCasillas.*;
-import monopoly.tablero.Tablero;
 import aplicacion.salidaPantalla.Output;
+import monopoly.Constantes;
+import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-import java.util.Scanner;
 
 public abstract class Avatar {
 
@@ -636,68 +633,52 @@ public abstract class Avatar {
         actualizarPosicion(calcularNuevaPosicion(numeroCasillas), cobrarSalida, importeSalidaEstandar);
 
         // En función del tipo de casilla en la que se ha caído
-        switch (getPosicion().getNombre()) {
+        if( getPosicion() instanceof SuerteCasilla ) {
+            Output.respuesta("Has caído en una casilla de suerte.");
+            caerEnSuerte();
+        }
 
-            case Constantes.NOMBRE_SUERTE_1:
-            case Constantes.NOMBRE_SUERTE_2:
-            case Constantes.NOMBRE_SUERTE_3:
-                Output.respuesta("Has caído en una casilla de suerte.");
-                caerEnSuerte();
-                break;
+        else if( getPosicion() instanceof ComunidadCasilla ) {
+            Output.respuesta("Has caído en una casilla de comunidad.");
+            caerEnComunidad();
+        }
 
-            case Constantes.NOMBRE_COMUNIDAD_1:
-            case Constantes.NOMBRE_COMUNIDAD_2:
-            case Constantes.NOMBRE_COMUNIDAD_3:
-                Output.respuesta("Has caído en una casilla de comunidad.");
-                caerEnComunidad();
-                break;
+        else if( getPosicion() instanceof Impuesto ) {
+            Output.respuesta("Has caído en una casilla de impuestos.");
+            caerEnImpuesto(((Impuesto) getPosicion()).getImpuesto());
+        }
 
-            case Constantes.NOMBRE_IMPUESTO_1:
-                Output.respuesta("Has caído en la primera casilla de impuestos.");
-                caerEnImpuesto(Constantes.IMPUESTO_1);
-                break;
+        else if(getPosicion() instanceof  Transporte ) {
+            Output.respuesta("Has caído en una casilla de transporte.");
+            caerEnTransporte(multiplicador);
+        }
 
-            case Constantes.NOMBRE_IMPUESTO_2:
-                Output.respuesta("Has caído en la segunda casilla de impuestos.");
-                caerEnImpuesto(Constantes.IMPUESTO_2);
-                break;
+        else if( getPosicion() instanceof Servicio ) {
+            Output.respuesta("Has caído en una casilla de servicio.");
+            caerEnServicio(numeroCasillas, multiplicador);
+        }
 
-            case Constantes.NOMBRE_TRANSPORTE_1:
-            case Constantes.NOMBRE_TRANSPORTE_2:
-            case Constantes.NOMBRE_TRANSPORTE_3:
-            case Constantes.NOMBRE_TRANSPORTE_4:
-                Output.respuesta("Has caído en una casilla de transporte.");
-                caerEnTransporte(multiplicador);
-                break;
+        else if( getPosicion() instanceof Carcel ) {
+            Output.respuesta("Has caído en la casilla de visita de la cárcel.");
+        }
 
-            case Constantes.NOMBRE_SERVICIO_1:
-            case Constantes.NOMBRE_SERVICIO_2:
-                Output.respuesta("Has caído en una casilla de servicio.");
-                caerEnServicio(numeroCasillas, multiplicador);
-                break;
+        else if(getPosicion() instanceof IrCarcel ) {
+            Output.respuesta("Has caído en la casilla de ir a la cárcel.");
+            caerEnIrACarcel();
+        }
 
-            case Constantes.NOMBRE_CARCEL:
-                // acción asociada a la casilla de cárcel
-                Output.respuesta("Has caído en la casilla de visita de la cárcel.");
-                break;
+        else if(getPosicion() instanceof Parking) {
+            Output.respuesta("Has caído en la casilla del parking.");
+            caerEnParking();
+        }
 
-            case Constantes.NOMBRE_IR_A_CARCEL:
-                Output.respuesta("Has caído en la casilla de ir a la cárcel.");
-                caerEnIrACarcel();
-                break;
+        else if( getPosicion() instanceof  Salida ) {
+            Output.respuesta("Has caído en la casilla de salida.");
+        }
 
-            case Constantes.NOMBRE_PARKING:
-                Output.respuesta("Has caído en la casilla del parking.");
-                caerEnParking();
-                break;
-
-            case Constantes.NOMBRE_SALIDA:
-                Output.respuesta("Has caído en la casilla de salida.");
-                break;
-
-            default:
-                Output.respuesta("Has caído en una casilla de un solar.");
-                caerEnSolar(multiplicador);
+        else {
+            Output.respuesta("Has caído en una casilla de un solar.");
+            caerEnSolar(multiplicador);
         }
     }
 

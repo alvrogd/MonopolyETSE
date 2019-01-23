@@ -584,8 +584,10 @@ public class Celda {
                 tipoCasilla = TipoCasilla.servicio;
             } else if (propiedad instanceof Solar) {
                 tipoCasilla = TipoCasilla.solar;
-            } else {
+            } else if( propiedad instanceof  Transporte ){
                 tipoCasilla = TipoCasilla.transporte;
+            } else {
+                tipoCasilla = TipoCasilla.servicio;
             }
         } else if (casilla instanceof Accion) {
 
