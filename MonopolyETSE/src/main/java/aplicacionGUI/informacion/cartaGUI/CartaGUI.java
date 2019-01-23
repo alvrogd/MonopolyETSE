@@ -2,6 +2,7 @@
 package aplicacionGUI.informacion.cartaGUI;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ImagenAnimada;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,11 +25,11 @@ public abstract class CartaGUI {
     // Contexto en el que representar objetos
     private final GraphicsContext gc;
 
-    // Imagen de la carta
-    private final Image imagen;
+    // Imágenes de la baraja de la carta
+    private final ImagenAnimada baraja;
 
-    // Reverso de una carta
-    private final Image reverso;
+    // Animación de volteado de la carta
+    private final ImagenAnimada volteado;
 
     // Imagen seleccionada
     private Image imagenSeleccionada;
@@ -36,9 +37,31 @@ public abstract class CartaGUI {
     // Sensor de la casilla
     private Rectangle sensor;
 
-    // Desplazamientos correspondientes
+    // Desplazamiento correspondiente
     private final int desplazamientoX;
     private final int desplazamientoY;
+
+    // Desplazamiento de una carta individual
+    private final int cartaDesplazamientoX;
+    private final int cartaDesplazamientoY;
+
+    // Si ha finalizado la animación
+    private boolean animacionFinalizada;
+
+    // Si se ha barajado
+    private boolean haBarajado;
+
+    // Si se está barajando
+    private boolean barajando;
+
+    // En el caso de voltearse, si se está mostrando o escondiendo
+    private boolean mostrandose;
+
+    // Si es el primer frame a renderizar de una animación
+    private boolean primerFrame;
+
+    // Último frame renderizado
+    private Image ultimoFrame;
 
 
 
@@ -47,20 +70,27 @@ public abstract class CartaGUI {
     /**
      * Se crea una representación de una carta
      *
-     * @param raiz            nodo sobre el cual crear un hijo para la carta
-     * @param imagen          imagen que representa la carta
-     * @param desplazamientoX posición (coordenada X) de la carta en la sección de información
-     * @param desplazamientoY posición (coordenada Y) de la carta en la sección de información
+     * @param raiz                 nodo sobre el cual crear un hijo para la carta
+     * @param desplazamientoX      posición (coordenada X) de la carta en la sección de información
+     * @param desplazamientoY      posición (coordenada Y) de la carta en la sección de información
+     * @param cartaDesplazamientoX posición (coordenada X) de una carta dentro de su baraja
+     * @param cartaDesplazamientoY posición (coordenada Y) de una carta dentro de su baraja
      */
-    public CartaGUI(Group raiz, String imagen, int desplazamientoX, int desplazamientoY) {
+    public CartaGUI(Group raiz, int desplazamientoX, int desplazamientoY, String[] imagenesBaraja,
+                    String[] imagenesVolteada, int cartaDesplazamientoX, int cartaDesplazamientoY) {
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
             System.exit(1);
         }
 
-        if (imagen == null) {
-            System.err.println("Nombre de la imagen no inicializado");
+        if (imagenesBaraja == null) {
+            System.err.println("Nombres de las imágenes de la baraja no inicializados");
+            System.exit(1);
+        }
+
+        if (imagenesVolteada == null) {
+            System.err.println("Nombres de las imágenes de la carta voletada no inicializados");
             System.exit(1);
         }
 
@@ -74,24 +104,31 @@ public abstract class CartaGUI {
         this.nodo.getTransforms().add(new Translate(desplazamientoX, desplazamientoY));
 
         // Se crea un canvas en el nuevo nodo para representar la carta
-        this.canvas = new Canvas(ConstantesGUI.CARTA_ANCHO, ConstantesGUI.CARTA_ALTO);
+        this.canvas = new Canvas(ConstantesGUI.BARAJA_ANCHO, ConstantesGUI.BARAJA_ALTO);
         this.nodo.getChildren().add(canvas);
 
         // Se genera un contexto a partir del canvas para insertar la representación del tablero
         this.gc = this.canvas.getGraphicsContext2D();
 
         // Se crea el sensor correspondiente
-        this.sensor = new Rectangle(0, 0, ConstantesGUI.CARTA_ANCHO, ConstantesGUI.CARTA_ALTO);
+        this.cartaDesplazamientoX = cartaDesplazamientoX;
+        this.cartaDesplazamientoY = cartaDesplazamientoY;
+        /*this.sensor = new Rectangle(this.cartaDesplazamientoX, this.cartaDesplazamientoY, ConstantesGUI.CARTA_ANCHO,
+                ConstantesGUI.CARTA_ALTO);*/
+        this.sensor = new Rectangle(0, 0, ConstantesGUI.BARAJA_ANCHO, ConstantesGUI.BARAJA_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
-        // Se obtiene la imagen correspondiente
-        this.imagen = new Image(ImagenesCartas.class.getResource(imagen).toString());
+        // Se crean las animaciones
+        this.baraja = new ImagenAnimada(new ImagenesCartas(), imagenesBaraja, 0.01);
+        this.volteado = new ImagenAnimada(new ImagenesCartas(), imagenesVolteada, 0.05);
 
-        // Se obtiene el reverso de las cartas
-        this.reverso = new Image(ImagenesCartas.class.getResource(ConstantesGUI.CARTA_REVERSO).toString());
+        // Se establece por defecto la primera imagen de la baraja
+        this.imagenSeleccionada = this.baraja.getFrameNumero(0);
 
-        // Se establece por defecto la imagen correspondiente
-        this.imagenSeleccionada = this.imagen;
+        // Inicialmente, no hay animación, y se encuentra en la fase de baraja
+        this.animacionFinalizada = true;
+        this.haBarajado = false;
+        this.barajando = true;
     }
 
 
@@ -102,53 +139,100 @@ public abstract class CartaGUI {
         return nodo;
     }
 
-
     public Canvas getCanvas() {
         return canvas;
     }
-
 
     public GraphicsContext getGc() {
         return gc;
     }
 
+    public ImagenAnimada getBaraja() {
+        return baraja;
+    }
 
-    public Image getImagen() {
-        return imagen;
+    public ImagenAnimada getVolteado() {
+        return volteado;
+    }
+
+    public Image getImagenSeleccionada() {
+        return imagenSeleccionada;
+    }
+
+    public void setImagenSeleccionada(Image imagenSeleccionada) {
+        this.imagenSeleccionada = imagenSeleccionada;
     }
 
     public Rectangle getSensor() {
         return sensor;
     }
 
-
     public void setSensor(Rectangle sensor) {
         this.sensor = sensor;
     }
-
-
-    public Image getReverso() {
-        return reverso;
-    }
-
-
-    public Image getImagenSeleccionada() {
-        return imagenSeleccionada;
-    }
-
-
-    public void setImagenSeleccionada(Image imagenSeleccionada) {
-        this.imagenSeleccionada = imagenSeleccionada;
-    }
-
 
     public int getDesplazamientoX() {
         return desplazamientoX;
     }
 
-
     public int getDesplazamientoY() {
         return desplazamientoY;
+    }
+
+    public int getCartaDesplazamientoX() {
+        return cartaDesplazamientoX;
+    }
+
+    public int getCartaDesplazamientoY() {
+        return cartaDesplazamientoY;
+    }
+
+    public boolean isAnimacionFinalizada() {
+        return animacionFinalizada;
+    }
+
+    public void setAnimacionFinalizada(boolean animacionFinalizada) {
+        this.animacionFinalizada = animacionFinalizada;
+    }
+
+    public boolean isHaBarajado() {
+        return haBarajado;
+    }
+
+    public void setHaBarajado(boolean haBarajado) {
+        this.haBarajado = haBarajado;
+    }
+
+    public boolean isBarajando() {
+        return barajando;
+    }
+
+    public void setBarajando(boolean barajando) {
+        this.barajando = barajando;
+    }
+
+    public boolean isMostrandose() {
+        return mostrandose;
+    }
+
+    public void setMostrandose(boolean mostrandose) {
+        this.mostrandose = mostrandose;
+    }
+
+    public Image getUltimoFrame() {
+        return ultimoFrame;
+    }
+
+    public void setUltimoFrame(Image ultimoFrame) {
+        this.ultimoFrame = ultimoFrame;
+    }
+
+    public boolean isPrimerFrame() {
+        return primerFrame;
+    }
+
+    public void setPrimerFrame(boolean primerFrame) {
+        this.primerFrame = primerFrame;
     }
 
 
@@ -178,30 +262,197 @@ public abstract class CartaGUI {
      */
     public void handleClickIzquierdo(double x, double y) {
 
-        double posicionX = x - getDesplazamientoX();
-        double posicionY = y - getDesplazamientoY();
+        // Si se está en la fase de barajar y la animación ha finalizado
+        if (isBarajando() && isAnimacionFinalizada()) {
 
-        switchImagen();
+            // O bien se baraja
+            if(!isHaBarajado()) {
+                barajar();
+            }
+
+            // O bien se inicia la fase de mostrar la carta
+            else {
+                mostrarCarta();
+            }
+
+
+        }
+
+        // Si se está en la fase de mostrar la carta y ha finalizado, se comienza a esconder la carta
+        else if (!isBarajando() && isAnimacionFinalizada() && isMostrandose()) {
+            esconderCarta();
+        }
+    }
+
+    /**
+     * Se baraja
+     */
+    public void barajar() {
+
+        setAnimacionFinalizada(false);
+        setMostrandose(false);
+
+        setPrimerFrame(true);
+        setUltimoFrame(null);
+    }
+
+    /**
+     * Se muestra una carta
+     */
+    public void mostrarCarta() {
+
+        setBarajando(false);
+        setAnimacionFinalizada(false);
+        setMostrandose(true);
+
+        setPrimerFrame(true);
+        setUltimoFrame(null);
+    }
+
+    /**
+     * Se esconde la carta mostrada
+     */
+    public void esconderCarta() {
+        setBarajando(false);
+        setAnimacionFinalizada(false);
+        setMostrandose(false);
+        setPrimerFrame(true);
+        setUltimoFrame(null);
     }
 
     /**
      * Se renderiza la carta
      */
-    public void render() {
+    public void render(double t) {
 
-        // Se muestra la imagen
-        getGc().drawImage(getImagenSeleccionada(), 0, 0);
+        // Se limpia el gc del anterior frame
+        getGc().clearRect(0, 0, ConstantesGUI.BARAJA_ANCHO, ConstantesGUI.BARAJA_ALTO);
+
+        if (isAnimacionFinalizada()) {
+            renderAnimacionFinalizada(t);
+        }
+
+        // En caso contrario, se renderiza un fotograma
+        else {
+            renderAnimacionActiva(t);
+        }
     }
 
     /**
-     * Se cambia la imagen a representar entre la dada en el contructor y la que representa el reverso
+     * Se renderiza el último frame de la animación de la baraja o de la animación de voltear la carta, en función del
+     * estado
+     *
+     * @param t tiempo transcurrido
      */
-    private void switchImagen() {
+    private void renderAnimacionFinalizada(double t) {
 
-        if (getImagenSeleccionada() == getImagen()) {
-            setImagenSeleccionada(getReverso());
+        // Frame a renderizar
+        Image frame;
+
+        // Desplazamiento del renderizado
+        int despX = 0;
+        int despY = 0;
+
+        if (isBarajando()) {
+            frame = getBaraja().getFrameInversoNumero(0);
         } else {
-            setImagenSeleccionada(getImagen());
+            frame = getVolteado().getFrameInversoNumero(0);
+            despX = getCartaDesplazamientoX();
+            despY = getCartaDesplazamientoY();
+
+            // Se renderiza igualmente la baraja, para que no desaparezcan las demás cartas
+            getGc().drawImage(getBaraja().getFrameInversoNumero(0), 0, 0);
         }
+
+        // Se renderiza y se guarda
+        getGc().drawImage(frame, despX, despY);
+    }
+
+    /**
+     * Se renderiza uno de los frames de la baraja, pudiendo encontrarse este tanto barajándose como volteándose
+     *
+     * @param t tiempo transcurrido
+     */
+    private void renderAnimacionActiva(double t) {
+
+        // Frame a renderizar
+        Image frame;
+
+        // Desplazamiento del renderizado
+        int despX = 0;
+        int despY = 0;
+
+
+        // Si se trata del primer frame, se guarda el tiempo de inicio
+        if (isPrimerFrame()) {
+            getBaraja().setTiempoInicio(t);
+            getVolteado().setTiempoInicio(t);
+            setPrimerFrame(false);
+        }
+
+        // Si se va a barajar
+        if (isBarajando()) {
+
+            frame = getBaraja().getFrame(t);
+
+            // La animación debe finalizar al alcanzar el último frame; sin embargo, es probable que el último frame en
+            // renderizarse no sea precisamente el último de la animación, sino que sea uno de los últimos al obtener
+            // frames en función del tiempo transcurrido. Para ello, debe llevarse el registro del último frame
+            // renderizado, y comprobar si el frame obtenido ha vuelto a comenzar el bucle de la animación
+            // Si se vuelve a comenzar la animación, se indica el fin y se establece como activo
+            if (getUltimoFrame() != null && getBaraja().getFrames().indexOf(frame)
+                    < getBaraja().getFrames().indexOf(getUltimoFrame())) {
+
+                frame = getBaraja().getFrameInversoNumero(0);
+                setAnimacionFinalizada(true);
+                setHaBarajado(true);
+            }
+        }
+
+        // En caso contrario, se está en la fase de voltear una carta
+        else {
+
+            despX = getCartaDesplazamientoX();
+            despY = getCartaDesplazamientoY();
+
+            // Si se está mostrando la carta
+            if (isMostrandose()) {
+
+                frame = getVolteado().getFrame(t);
+
+                // Si se comenzado de nuevo la animación, se indica el fin y se establece como no activo
+                if (getUltimoFrame() != null && getVolteado().getFrames().indexOf(frame)
+                        < getVolteado().getFrames().indexOf(getUltimoFrame())) {
+
+                    frame = getVolteado().getFrameInversoNumero(0);
+                    setAnimacionFinalizada(true);
+                }
+            }
+
+            // Si se está escondiendo
+            else {
+
+                frame = getVolteado().getFrameInverso(t);
+
+                // Si se comenzado de nuevo la animación, se indica el fin y se establece como no activo
+                if (getUltimoFrame() != null && getVolteado().getFrames().indexOf(frame)
+                        > getVolteado().getFrames().indexOf(getUltimoFrame())) {
+
+                    frame = getVolteado().getFrameNumero(0);
+                    setAnimacionFinalizada(true);
+                    setBarajando(true);
+                    setHaBarajado(false);
+                }
+            }
+
+            // Se renderiza igualmente la baraja, para que no desaparezcan las demás cartas
+            getGc().drawImage(getBaraja().getFrameInversoNumero(0), 0, 0);
+        }
+
+        // Se renderiza el frame
+        getGc().drawImage(frame, despX, despY);
+
+        // Se actualiza el último frame renderizado
+        setUltimoFrame(frame);
     }
 }
