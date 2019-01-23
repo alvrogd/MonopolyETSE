@@ -241,8 +241,19 @@ public class MarcoInformacion {
      */
     public void handleClickIzquierdo(double x, double y) {
 
-        double posicionX = x - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_X;
-        double posicionY = y - ConstantesGUI.MARCO_INFORMACION_DESPLAZAMIENTO_Y;
+        if (!isActivo()) {
+            abrir();
+        }
+
+        else {
+           cerrar();
+        }
+    }
+
+    /**
+     * Se abre el marco de información
+     */
+    public void abrir() {
 
         // Se resetea el número de frame
         setPrimerFrame(true);
@@ -252,18 +263,28 @@ public class MarcoInformacion {
         setFadeTexto(true);
         setTickTexto(0);
 
-        // Si se va a abrir, se indica que ahora esté activo y que debe realizarse la animación en primer lugar
-        if (!isActivo()) {
-            setAnimacionFinalizada(false);
-            setActivo(true);
-            setAbrirse(true);
-        }
+        // Se indica que ahora esté activo y que debe realizarse la animación en primer lugar
+        setAnimacionFinalizada(false);
+        setActivo(true);
+        setAbrirse(true);
+    }
 
-        // Si se va a cerrar, debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de
-        // realizar la animación hasta que finalice el fade del texto
-        else {
-            setAbrirse(false);
-        }
+    /**
+     * Se cierra el marco de información
+     */
+    public void cerrar() {
+
+        // Se resetea el número de frame
+        setPrimerFrame(true);
+        setUltimoFrame(null);
+
+        // Se indica la necesidad de llevar a cabo el fade del texto
+        setFadeTexto(true);
+        setTickTexto(0);
+
+        // Debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de realizar la animación
+        // hasta que finalice el fade del texto
+        setAbrirse(false);
     }
 
     /**
@@ -352,6 +373,7 @@ public class MarcoInformacion {
     /**
      * Se renderiza el último frame de la animación del marco junto con el texto contenido, incluyendo el fade-in o
      * fade-out apropiados para el texto en caso de que sea necesario
+     *
      * @param t tiempo transcurrido
      */
     private void renderAnimacionFinalizada(double t) {
@@ -405,7 +427,7 @@ public class MarcoInformacion {
         // Se muestra el texto
         for (int i = 0, desplazamiento = ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO
                 * ((ConstantesGUI.MARCO_INFORMACION_NUMERO_LINEAS - numeroLineas) / 2); i < numeroLineas; i++,
-                desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
+                     desplazamiento += ConstantesGUI.MARCO_INFORMACION_LINEA_ALTO) {
 
             // Se añade texto
             getGc().fillText(getInformacion().get(i), getAncho() / 2, desplazamiento + 10);
@@ -441,7 +463,7 @@ public class MarcoInformacion {
             if (getUltimoFrame() != null && getANIMACION_ABRIR().getFrames().indexOf(frame)
                     < getANIMACION_ABRIR().getFrames().indexOf(getUltimoFrame())) {
                 setAnimacionFinalizada(true);
-                return;
+                frame = getANIMACION_ABRIR().getFrameInversoNumero(0);
             }
         }
 

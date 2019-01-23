@@ -165,25 +165,188 @@ public class ConstantesGUI {
     public final static String PISCINA = "piscina.png";
     public final static String PISTA = "pista.png";
 
+    // Tamaño de las barajas
+    public final static int BARAJA_ANCHO = 370;
+    public final static int BARAJA_ALTO = 283;
+
     // Tamaño de las cartas
     public final static int CARTA_ANCHO = 170;
     public final static int CARTA_ALTO = 275;
 
-    // Nombres de las imágenes de las cartas
-    public final static String CARTA_SUERTE = "Suerte.png";
-    public final static String CARTA_COMUNIDAD = "Comunidad.png";
-    public final static String CARTA_REVERSO = "Reverso.png";
+    // Nombres de las imágenes de las barajas
+    public final static String[] BARAJA_SUERTE = {"suerteBaraja0.png",
+                                                    "suerteBaraja1.png",
+                                                    "suerteBaraja2.png",
+                                                    "suerteBaraja3.png",
+                                                    "suerteBaraja4.png",
+                                                    "suerteBaraja5.png",
+                                                    "suerteBaraja6.png",
+                                                    "suerteBaraja7.png",
+                                                    "suerteBaraja8.png",
+                                                    "suerteBaraja9.png",
+                                                    "suerteBaraja10.png",
+                                                    "suerteBaraja11.png",
+                                                    "suerteBaraja12.png",
+                                                    "suerteBaraja13.png",
+                                                    "suerteBaraja14.png",
+                                                    "suerteBaraja15.png",
+                                                    "suerteBaraja16.png",
+                                                    "suerteBaraja17.png",
+                                                    "suerteBaraja18.png",
+                                                    "suerteBaraja19.png",
+                                                    "suerteBaraja20.png",
+                                                    "suerteBaraja21.png",
+                                                    "suerteBaraja22.png",
+                                                    "suerteBaraja23.png",
+                                                    "suerteBaraja24.png",
+                                                    "suerteBaraja25.png",
+                                                    "suerteBaraja26.png",
+                                                    "suerteBaraja27.png",
+                                                    "suerteBaraja28.png",
+                                                    "suerteBaraja29.png",
+                                                    "suerteBaraja30.png",
+                                                    "suerteBaraja31.png",
+                                                    "suerteBaraja32.png",
+                                                    "suerteBaraja33.png",
+                                                    "suerteBaraja34.png",
+                                                    "suerteBaraja35.png",
+                                                    "suerteBaraja36.png",
+                                                    "suerteBaraja37.png",
+                                                    "suerteBaraja38.png",
+                                                    "suerteBaraja39.png",
+                                                    "suerteBaraja40.png",
+                                                    "suerteBaraja41.png",
+                                                    "suerteBaraja42.png",
+                                                    "suerteBaraja43.png",
+                                                    "suerteBaraja44.png",
+                                                    "suerteBaraja45.png",
+                                                    "suerteBaraja46.png",
+                                                    "suerteBaraja47.png",
+                                                    "suerteBaraja48.png",
+                                                    "suerteBaraja49.png",
+                                                    "suerteBaraja50.png",
+                                                    "suerteBaraja51.png",
+                                                    "suerteBaraja52.png",
+                                                    "suerteBaraja53.png"};
 
-    // Desplazamientos de las cartas
-    public final static int SUERTE_DESPLAZAMIENTO_X = CASILLA_ANCHO + 100;
+    public final static String[] BARAJA_COMUNIDAD = {"comunidadBaraja0.png",
+                                                        "comunidadBaraja1.png",
+                                                        "comunidadBaraja2.png",
+                                                        "comunidadBaraja3.png",
+                                                        "comunidadBaraja4.png",
+                                                        "comunidadBaraja5.png",
+                                                        "comunidadBaraja6.png",
+                                                        "comunidadBaraja7.png",
+                                                        "comunidadBaraja8.png",
+                                                        "comunidadBaraja9.png",
+                                                        "comunidadBaraja10.png",
+                                                        "comunidadBaraja11.png",
+                                                        "comunidadBaraja12.png",
+                                                        "comunidadBaraja13.png",
+                                                        "comunidadBaraja14.png",
+                                                        "comunidadBaraja15.png",
+                                                        "comunidadBaraja16.png",
+                                                        "comunidadBaraja17.png",
+                                                        "comunidadBaraja18.png",
+                                                        "comunidadBaraja19.png",
+                                                        "comunidadBaraja20.png",
+                                                        "comunidadBaraja21.png",
+                                                        "comunidadBaraja22.png",
+                                                        "comunidadBaraja23.png",
+                                                        "comunidadBaraja24.png",
+                                                        "comunidadBaraja25.png",
+                                                        "comunidadBaraja26.png",
+                                                        "comunidadBaraja27.png",
+                                                        "comunidadBaraja28.png",
+                                                        "comunidadBaraja29.png",
+                                                        "comunidadBaraja30.png",
+                                                        "comunidadBaraja31.png",
+                                                        "comunidadBaraja32.png",
+                                                        "comunidadBaraja33.png",
+                                                        "comunidadBaraja34.png",
+                                                        "comunidadBaraja35.png",
+                                                        "comunidadBaraja36.png",
+                                                        "comunidadBaraja37.png",
+                                                        "comunidadBaraja38.png",
+                                                        "comunidadBaraja39.png",
+                                                        "comunidadBaraja40.png",
+                                                        "comunidadBaraja41.png",
+                                                        "comunidadBaraja42.png",
+                                                        "comunidadBaraja43.png",
+                                                        "comunidadBaraja44.png",
+                                                        "comunidadBaraja45.png",
+                                                        "comunidadBaraja46.png",
+                                                        "comunidadBaraja47.png",
+                                                        "comunidadBaraja48.png",
+                                                        "comunidadBaraja49.png",
+                                                        "comunidadBaraja50.png",
+                                                        "comunidadBaraja51.png",
+                                                        "comunidadBaraja52.png",
+                                                        "comunidadBaraja53.png"};
+
+    // Nombres de las imágenes de los volteos de las cartas
+    public final static String[] VOLTEO_SUERTE = {"cartaSuerteVolteada0.png",
+                                                    "cartaSuerteVolteada1.png",
+                                                    "cartaSuerteVolteada2.png",
+                                                    "cartaSuerteVolteada3.png",
+                                                    "cartaSuerteVolteada4.png",
+                                                    "cartaSuerteVolteada5.png",
+                                                    "cartaSuerteVolteada6.png",
+                                                    "cartaSuerteVolteada7.png",
+                                                    "cartaSuerteVolteada8.png",
+                                                    "cartaSuerteVolteada9.png",
+                                                    "cartaSuerteVolteada10.png",
+                                                    "cartaSuerteVolteada11.png",
+                                                    "cartaSuerteVolteada12.png",
+                                                    "cartaSuerteVolteada13.png",
+                                                    "cartaSuerteVolteada14.png",
+                                                    "cartaSuerteVolteada15.png",
+                                                    "cartaSuerteVolteada16.png",
+                                                    "cartaSuerteVolteada17.png",
+                                                    "cartaSuerteVolteada18.png",
+                                                    "cartaSuerteVolteada19.png",
+                                                    "cartaSuerteVolteada20.png",
+                                                    "cartaSuerteVolteada21.png"};
+
+    public final static String[] VOLTEO_COMUNIDAD = {"cartaComunidadVolteada0.png",
+                                                        "cartaComunidadVolteada1.png",
+                                                        "cartaComunidadVolteada2.png",
+                                                        "cartaComunidadVolteada3.png",
+                                                        "cartaComunidadVolteada4.png",
+                                                        "cartaComunidadVolteada5.png",
+                                                        "cartaComunidadVolteada6.png",
+                                                        "cartaComunidadVolteada7.png",
+                                                        "cartaComunidadVolteada8.png",
+                                                        "cartaComunidadVolteada9.png",
+                                                        "cartaComunidadVolteada10.png",
+                                                        "cartaComunidadVolteada11.png",
+                                                        "cartaComunidadVolteada12.png",
+                                                        "cartaComunidadVolteada13.png",
+                                                        "cartaComunidadVolteada14.png",
+                                                        "cartaComunidadVolteada15.png",
+                                                        "cartaComunidadVolteada16.png",
+                                                        "cartaComunidadVolteada17.png",
+                                                        "cartaComunidadVolteada18.png",
+                                                        "cartaComunidadVolteada19.png",
+                                                        "cartaComunidadVolteada20.png",
+                                                        "cartaComunidadVolteada21.png"};
+
+    // Desplazamientos de las barajas
+    public final static int SUERTE_BARAJA_DESPLAZAMIENTO_X = TABLERO_ANCHO - BARAJA_ANCHO - CASILLA_ANCHO - 100 -
+            CASILLAS_POR_LADO * 3;
     // El -14 es un ajuste porque en realidad las casillas se imprimen más juntas para evitar que los bordes entre
     // ellas sean enormes
-    public final static int SUERTE_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
+    public final static int SUERTE_BARAJA_DESPLAZAMIENTO_Y = (TABLERO_ALTO - BARAJA_ALTO) / 2 - 14;
     // El ajuste final es por el motivo anterior; además, debe considerarse que la posición dada es la de la esquina
     // superior izquierda de la imagen
-    public final static int COMUNIDAD_DESPLAZAMIENTO_X = TABLERO_ANCHO - CARTA_ANCHO - CASILLA_ANCHO - 100 -
-            CASILLAS_POR_LADO * 3;
-    public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
+    public final static int COMUNIDAD_BARAJA_DESPLAZAMIENTO_X = CASILLA_ANCHO + 100;
+    public final static int COMUNIDAD_BARAJA_DESPLAZAMIENTO_Y = (TABLERO_ALTO - BARAJA_ALTO) / 2 - 14;
+
+    // Desplazamiento de las cartas dentro de su respectiva baraja
+    public final static int CARTA_SUERTE_DESPLAZAMIENTO_X = BARAJA_ANCHO - CARTA_ANCHO - 8;
+    public final static int CARTA_SUERTE_DESPLAZAMIENTO_Y = 0;
+    public final static int CARTA_COMUNIDAD_DESPLAZAMIENTO_X = 8;
+    public final static int CARTA_COMUNIDAD_DESPLAZAMIENTO_Y = 0;
 
     // Nombres de las imágenes de los avatares
     public final static String[] AVATARES_IMAGENES = {"autobus.png",

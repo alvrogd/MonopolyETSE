@@ -16,7 +16,8 @@ public class ComunidadGUI extends CartaGUI {
     public ComunidadGUI(Group raiz) {
 
         // Se crea la representación de la carta
-        super(raiz, ConstantesGUI.CARTA_COMUNIDAD, ConstantesGUI.COMUNIDAD_DESPLAZAMIENTO_X,
-                ConstantesGUI.COMUNIDAD_DESPLAZAMIENTO_Y);
+        super(raiz, ConstantesGUI.COMUNIDAD_BARAJA_DESPLAZAMIENTO_X, ConstantesGUI.COMUNIDAD_BARAJA_DESPLAZAMIENTO_Y,
+                ConstantesGUI.BARAJA_COMUNIDAD, ConstantesGUI.VOLTEO_COMUNIDAD,
+                ConstantesGUI.CARTA_COMUNIDAD_DESPLAZAMIENTO_X, ConstantesGUI.CARTA_COMUNIDAD_DESPLAZAMIENTO_Y);
     }
 }

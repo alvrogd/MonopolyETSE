@@ -112,13 +112,6 @@ public class FaseJuego extends Fase {
         // Se define la acción al soltar un botón del ratón
         getEscena().setOnMouseReleased(new Release(this));
 
-        /*// Se inicia el game loop
-        EjecucionJuegoLoop loop = new EjecucionJuegoLoop(this);
-        loop.iniciar();
-
-        // Se muestra la ventana
-        getVentana().show();*/
-
         // Se indica que se ha inicializado
         setIniciado(true);
     }
