@@ -585,6 +585,12 @@ public class ConstantesGUI {
     // Sonido de barajar
     public final static String SONIDO_CARTA_BARAJAR = "barajar.wav";
 
+    // Sonido de lanzar los dados
+    public final static String SONIDO_DADOS = "dados.wav";
+
+    // Música del editor
+    public final static String MUSICA_EDITOR = "musicaEditor.mp3";
+
     public final static int ANIMACION_DINERO_ANCHO = 100;
     public final static int ANIMACION_DINERO_ALTO = 100;
 

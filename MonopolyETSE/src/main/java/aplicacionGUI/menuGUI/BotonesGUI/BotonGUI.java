@@ -78,6 +78,8 @@ public class BotonGUI {
     // Sonido a reproducir cuando se pulsa un botón
     private static final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
 
+    // Sonido a reproducir cuando se lanzan los dados
+    private static final Media sonidoDados = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_DADOS).toString());
 
 
     public BotonGUI(BotoneraGUI botonera, Group raiz, Aplicacion app, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
@@ -324,6 +326,10 @@ public class BotonGUI {
         return sonido;
     }
 
+    public static Media getSonidoDados() {
+        return sonidoDados;
+    }
+
     public void inhabilitarBoton(){
 
         getSensor().setX(-500);
@@ -360,6 +366,8 @@ public class BotonGUI {
 
         try {
             getApp().getJuego().getTurno().lanzarDados(getApp().getJuego().getTablero().getDado());
+            MediaPlayer reproductor = new MediaPlayer(getSonidoDados());
+            reproductor.play();
         } catch(Exception ignored){
 
         }

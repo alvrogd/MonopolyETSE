@@ -13,6 +13,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import resources.fondo.Fondo;
 
@@ -55,6 +57,10 @@ public class AplicacionGUI {
 
     // Loop
     private Loop loop;
+
+    // Música para el editor
+    private final MediaPlayer reproductor = new MediaPlayer(new Media(resources.sonidos.Sonidos.class.getResource(
+            ConstantesGUI.MUSICA_EDITOR).toString()));
 
 
 
@@ -182,6 +188,12 @@ public class AplicacionGUI {
         this.loop = loop;
     }
 
+    public MediaPlayer getReproductor() {
+        return reproductor;
+    }
+
+
+
     /* Métodos */
 
     /**
@@ -222,9 +234,12 @@ public class AplicacionGUI {
 
             case creacionTablero:
                 setFase(new FaseEditor(this));
+                getReproductor().setVolume(0.4);
+                getReproductor().play();
                 break;
 
             case inicioJuego:
+                getReproductor().stop();
                 setFase(new FaseJuego(this));
                 break;
 
