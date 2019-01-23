@@ -3,6 +3,7 @@ package aplicacionGUI.informacion.cartaGUI;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
+import aplicacionGUI.informacion.Informacion;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,6 +13,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.Juego;
+import monopoly.jugadores.excepciones.*;
+import monopoly.tablero.cartas.Carta;
 import resources.cartas.ImagenesCartas;
 
 public abstract class CartaGUI {
@@ -73,6 +77,8 @@ public abstract class CartaGUI {
     private final Media sonidoBarajar = new Media(resources.sonidos.Sonidos.class.getResource(
             ConstantesGUI.SONIDO_CARTA_BARAJAR).toString());
 
+    private final Informacion informacion;
+
 
     /* Constructor */
 
@@ -86,7 +92,7 @@ public abstract class CartaGUI {
      * @param cartaDesplazamientoY posición (coordenada Y) de una carta dentro de su baraja
      */
     public CartaGUI(Group raiz, int desplazamientoX, int desplazamientoY, String[] imagenesBaraja,
-                    String[] imagenesVolteada, int cartaDesplazamientoX, int cartaDesplazamientoY) {
+                    String[] imagenesVolteada, int cartaDesplazamientoX, int cartaDesplazamientoY, Informacion informacion) {
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
@@ -138,6 +144,8 @@ public abstract class CartaGUI {
         this.animacionFinalizada = true;
         this.haBarajado = false;
         this.barajando = true;
+
+        this.informacion = informacion;
     }
 
 
@@ -154,6 +162,10 @@ public abstract class CartaGUI {
 
     public GraphicsContext getGc() {
         return gc;
+    }
+
+    public Informacion getInformacion() {
+        return informacion;
     }
 
     public ImagenAnimada getBaraja() {
@@ -289,6 +301,32 @@ public abstract class CartaGUI {
 
             // O bien se inicia la fase de mostrar la carta
             else {
+                Juego.setEstarComunidad(false);
+                Juego.setEstarSuerte(false);
+                Carta carta = null;
+                try {
+                    if(this instanceof SuerteGUI)
+                        carta = getInformacion().getMenuGUI().getJuego().barajarSuerte(0);
+                    else
+                        carta = getInformacion().getMenuGUI().getJuego().barajarComunidad(0);
+                } catch (Exception ignored) {
+                }
+
+                try {
+                    carta.accion();
+                } catch (EstarBancarrotaException e) {
+                    System.err.println(e.getMessage());
+                } catch (NoSerPropietarioException e) {
+                    System.err.println(e.getMessage());
+                } catch (ImposibleCambiarModoException e) {
+                    System.err.println(e.getMessage());
+                } catch (ImposibleMoverseException e) {
+                    System.err.println(e.getMessage());
+                } catch (EdificiosSolarException e) {
+                    System.err.println(e.getMessage());
+                } catch (NumeroIncorrectoException e) {
+                    System.err.println(e.getMessage());
+                }
                 mostrarCarta();
             }
 

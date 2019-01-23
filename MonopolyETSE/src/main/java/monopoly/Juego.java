@@ -73,6 +73,15 @@ public class Juego {
     //Para los tratos
     private int numTratos;
 
+    //Booleano para saber si se ha caido en una casilla de comunidad y aún no se ha codigo carta
+    private static boolean estarComunidad;
+
+    //Booleano para saber si se ha caido en una casilla de suerte y aún no se ha codigo carta
+    private static boolean estarSuerte;
+
+    //Booleano para saber si ya se ha barajado
+    private static boolean barajado;
+
     /* Constructores */
 
     /**
@@ -97,6 +106,9 @@ public class Juego {
         haCompradoPropiedad = false;
         anadirCartas();
         numTratos = 0;
+        this.estarComunidad = false;
+        this.estarSuerte = false;
+        this.barajado = false;
 
     }
 
@@ -117,6 +129,9 @@ public class Juego {
         haCompradoPropiedad = false;
         anadirCartas();
         numTratos = 0;
+        this.estarComunidad = false;
+        this.estarSuerte = false;
+        this.barajado = false;
 
     }
 
@@ -151,6 +166,30 @@ public class Juego {
         cartasComunidad.add(new CajaComunidad(TipoAccion.cobro, TipoCobro.cobrarJet, getTablero()));
         cartasComunidad.add(new CajaComunidad(TipoAccion.movimiento, TipoMovimiento.moverPamplona, getTablero()));
 
+    }
+
+    public static boolean isEstarComunidad() {
+        return Juego.estarComunidad;
+    }
+
+    public static void setEstarComunidad(boolean estarComunidad) {
+        Juego.estarComunidad = estarComunidad;
+    }
+
+    public static boolean isBarajado() {
+        return barajado;
+    }
+
+    public static void setBarajado(boolean barajado) {
+        Juego.barajado = barajado;
+    }
+
+    public static boolean isEstarSuerte() {
+        return Juego.estarSuerte;
+    }
+
+    public static void setEstarSuerte(boolean estarSuerte) {
+        Juego.estarSuerte = estarSuerte;
     }
 
     public int getNumTratos() {

@@ -2,6 +2,7 @@ package monopoly.tablero.jerarquiaCasillas.jerarquiaAccion;
 
 import aplicacion.Aplicacion;
 import monopoly.Constantes;
+import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
@@ -27,9 +28,9 @@ public class SuerteCasilla extends Accion{
         int opcion = Aplicacion.consola.leer("¡Carta de suerte! Introduzca un número del 1 al " +
                 Constantes.NUM_CARTAS_SUERTE, true);
 
-        Carta carta = getTablero().getJuego().barajarSuerte(opcion%Constantes.NUM_CARTAS_SUERTE);
+        Juego.setEstarSuerte(true);
 
-        carta.accion();
+
     }
 
 }

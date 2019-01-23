@@ -4,6 +4,7 @@ import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.FaseJuego;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import monopoly.Juego;
 
 public class ClickIzquierdo implements EventHandler<MouseEvent> {
 
@@ -56,7 +57,9 @@ public class ClickIzquierdo implements EventHandler<MouseEvent> {
         double y = e.getY();
 
         // Si se ha pulsado la sección de controles
-        if (getFaseJuego().getMenuGUI().contienePosicion(x, y)) {
+
+        // En caso de que se esté en una casilla de suerte o comunidad no se podrá ejecutar nada de la parte del menú
+        if (getFaseJuego().getMenuGUI().contienePosicion(x, y) && !Juego.isEstarComunidad() && !Juego.isEstarSuerte()) {
 
             // Se actúa en caso de que el botón presionado sea el primario (izquierdo)
             if (e.getButton().equals(MouseButton.PRIMARY)) {
