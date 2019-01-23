@@ -3,15 +3,35 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseSeleccion;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
-import aplicacionGUI.ejecucionAplicacion.TipoFase;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
+import aplicacionGUI.ejecucionAplicacion.fases.faseSeleccion.handlers.Pulsacion;
+import aplicacionGUI.ejecucionAplicacion.fases.faseSeleccion.handlers.Release;
+import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.shape.Rectangle;
+import resources.fases.ImagenesFases;
 
 public class FaseSeleccion extends Fase {
+
+    /* Atributos */
+
+    // Imágenes por las que cambiar el fondo de la fase
+    private final Image editorSeleccionado = new Image(ImagenesFases.class.getResource(
+            ConstantesGUI.FASE_SELECCION_EDITOR).toString());
+    private final Image predeterminadoSeleccionado = new Image(ImagenesFases.class.getResource(
+            ConstantesGUI.FASE_SELECCION_PREDETERMINADO).toString());
+
+    // Fondo seleccionado
+    private Image fondoSeleccionado;
+
+    // Sensores para cada opción
+    private final Rectangle sensorEditor;
+    private final Rectangle sensorPredeterminado;
+
+    // Sonido para los botones
+    private final Media sonido = new Media(resources.sonidos.Sonidos.class.getResource(
+            ConstantesGUI.SONIDO_BOTON).toString());
+
+
 
     /* Constructor */
 
@@ -22,7 +42,50 @@ public class FaseSeleccion extends Fase {
      */
     public FaseSeleccion(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fondo.jpg");
+        super(aplicacionGUI, ConstantesGUI.FASE_SELECCION_FONDO);
+
+        // Inicialmente, se establece el fondo sin selección
+        this.fondoSeleccionado = super.getFondo();
+
+        // Se crean los sensores
+        this.sensorEditor = new Rectangle(ConstantesGUI.FASE_SELECCION_EDITOR_DESPLAZAMIENTO_X,
+                ConstantesGUI.FASE_SELECCION_EDITOR_DESPLAZAMIENTO_Y, ConstantesGUI.FASE_SELECCION_BOTON_ANCHO,
+                ConstantesGUI.FASE_SELECCION_BOTON_ALTO);
+        this.sensorPredeterminado = new Rectangle(ConstantesGUI.FASE_SELECCION_PREDETERIMADO_DESPLAZAMIENTO_X,
+                ConstantesGUI.FASE_SELECCION_PREDETERIMADO_DESPLAZAMIENTO_Y, ConstantesGUI.FASE_SELECCION_BOTON_ANCHO,
+                ConstantesGUI.FASE_SELECCION_BOTON_ALTO);
+    }
+
+
+
+    /* Getters y setters */
+
+    public Image getEditorSeleccionado() {
+        return editorSeleccionado;
+    }
+
+    public Image getPredeterminadoSeleccionado() {
+        return predeterminadoSeleccionado;
+    }
+
+    public Image getFondoSeleccionado() {
+        return fondoSeleccionado;
+    }
+
+    public void setFondoSeleccionado(Image fondoSeleccionado) {
+        this.fondoSeleccionado = fondoSeleccionado;
+    }
+
+    public Rectangle getSensorEditor() {
+        return sensorEditor;
+    }
+
+    public Rectangle getSensorPredeterminado() {
+        return sensorPredeterminado;
+    }
+
+    public Media getSonido() {
+        return sonido;
     }
 
 
@@ -35,20 +98,13 @@ public class FaseSeleccion extends Fase {
     public void iniciar() {
 
 
-        // Se define la acción ante una combinación de teclas
-        getEscena().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        // Se define la acción ante una pulsación de un botón del ratón
+        getEscena().setOnMousePressed(new Pulsacion(this));
 
-            @Override
-            public void handle(KeyEvent e) {
-
-                getAplicacionGUI().setTipoFase(TipoFase.creacionTablero);
-                getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
-            }
-        });
+        // Se define la acción ante un release de un botón del ratón
+        getEscena().setOnMouseReleased(new Release(this));
 
         setIniciado(true);
-
-
     }
 
     /**
@@ -63,14 +119,7 @@ public class FaseSeleccion extends Fase {
 
         if (isIniciado()) {
 
-            getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-            getGc().setStroke(Color.TRANSPARENT);
-            getGc().setFill(Color.BLACK);
-            getGc().setTextAlign(TextAlignment.CENTER);
-            getGc().setLineWidth(1);
-
-            // Se añade el nombre de la casilla (la posición es la parte central inferior)
-            getGc().fillText("Selección", 100, 100);
+            getGc().drawImage(getFondoSeleccionado(), 0, 0);
         }
     }
 

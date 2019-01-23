@@ -643,4 +643,21 @@ public class ConstantesGUI {
 
     // Fondo de la fase de bienvenida
     public final static String FASE_BIENVENIDA_FONDO = "bienvenidoWithPenin.png";
+
+    // Fondo de la fase de selección del tablero
+    public final static String FASE_SELECCION_FONDO = "seleccion.png";
+
+    // Fondos alternativos de la fase de selección
+    public final static String FASE_SELECCION_EDITOR = "personalizadoAsignado.png";
+    public final static String FASE_SELECCION_PREDETERMINADO = "predeterminadoAsignado.png";
+
+    // Desplazamiento de los sensores en la fase de selección
+    public final static int FASE_SELECCION_EDITOR_DESPLAZAMIENTO_X = 192;
+    public final static int FASE_SELECCION_EDITOR_DESPLAZAMIENTO_Y = 350;
+    public final static int FASE_SELECCION_PREDETERIMADO_DESPLAZAMIENTO_X = 1150;
+    public final static int FASE_SELECCION_PREDETERIMADO_DESPLAZAMIENTO_Y = 350;
+
+    // Dimensiones de cada botón de la fase de selección
+    public final static int FASE_SELECCION_BOTON_ANCHO = 574;
+    public final static int FASE_SELECCION_BOTON_ALTO = 500;
 }
