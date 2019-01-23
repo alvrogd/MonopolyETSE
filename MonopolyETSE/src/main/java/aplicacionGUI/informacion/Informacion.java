@@ -14,7 +14,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.Juego;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.ComunidadCasilla;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.SuerteCasilla;
 
 import java.util.ArrayList;
 
@@ -88,10 +91,10 @@ public class Informacion {
         }
 
         // Se crea la representación de las cartas de suerte
-        this.suerteGUI = new SuerteGUI(this.nodo);
+        this.suerteGUI = new SuerteGUI(this.nodo, this);
         
         // Se crea la representación de las cartas de comunidad
-        this.comunidadGUI = new ComunidadGUI(this.nodo);
+        this.comunidadGUI = new ComunidadGUI(this.nodo, this);
         
         // Se crea el marco de información
         this.marcoInformacion = new MarcoInformacion(this.nodo);
@@ -162,16 +165,18 @@ public class Informacion {
         
         double posicionX = x - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_X;
         double posicionY = y - ConstantesGUI.INFORMACION_DESPLAZAMIENTO_Y;
-        
-        if( getSuerteGUI().contienePosicion(posicionX, posicionY)) {
+
+        // Si se está en una casilla de comunidad no se podrá levantar una carta de suerte
+        if( getSuerteGUI().contienePosicion(posicionX, posicionY) && !Juego.isEstarComunidad() && Juego.isEstarSuerte()) {
             getSuerteGUI().handleClickIzquierdo(posicionX, posicionY);
         }
 
         else if(getTableroGUI().contienePosicion(posicionX, posicionY)){
             getTableroGUI().handleClickIzquierdo(posicionX, posicionY);
         }
-        
-        else if( getComunidadGUI().contienePosicion(posicionX, posicionY)) {
+
+        // Si se está en una casilla de suerte no se podrá levantar una carta de comunidad
+        else if( getComunidadGUI().contienePosicion(posicionX, posicionY) && !Juego.isEstarSuerte() && Juego.isEstarComunidad()) {
             getComunidadGUI().handleClickIzquierdo(posicionX, posicionY);
         }
         
@@ -214,6 +219,14 @@ public class Informacion {
         getTableroGUI().render(t);
         getSuerteGUI().render(t);
         getComunidadGUI().render(t);
+
+        if(getMenuGUI().getJuego().getTurno().getAvatar().getPosicion() instanceof SuerteCasilla){
+            for(int i = 0; i < 5; i ++)
+                getSuerteGUI().barajar();
+        } else if(getMenuGUI().getJuego().getTurno().getAvatar().getPosicion() instanceof ComunidadCasilla){
+            for(int i = 0; i < 5; i ++)
+                getComunidadGUI().barajar();
+        }
 
         //El marco solo se renderiza en caso de que no haya inputs activos
         if(!getMenuGUI().isInputActivo() && getMenuGUI().isRenderMarco()) {

@@ -1,7 +1,9 @@
 package monopoly.tablero.jerarquiaCasillas.jerarquiaAccion;
 
 import aplicacion.Aplicacion;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import monopoly.Constantes;
+import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
@@ -24,12 +26,12 @@ public class ComunidadCasilla extends Accion{
             System.exit(-1);
         }
 
-        int opcion = Aplicacion.consola.leer("¡Carta de comunidad! Introduzca un número del 1 al " +
-                Constantes.NUM_CARTAS_COMUNIDAD, true);
+        ConsolaInterfaz.imprimir("¡Carta de comunidad! Haz click encima de las cartas de comunidad");
 
-        Carta carta = getTablero().getJuego().barajarComunidad(opcion%Constantes.NUM_CARTAS_COMUNIDAD);
+        // Se pone en el tablero la opción de que se ha caido en una casilla de comunidad / suerte
 
-        carta.accion();
+        Juego.setEstarComunidad(true);
+
     }
 
 }
