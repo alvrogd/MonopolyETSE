@@ -6,7 +6,7 @@ import resources.menuGUI.botones.avanzadoToNormal.AnimacionCambiarModo;
 
 public enum TipoFuncion {
 
-    cambiarModo("cambiar modo", new AnimacionCambiarModo(), ConstantesGUI.FRAMES_CAMBIARMODO, 0.1),
+    cambiarModo("cambiar modo", new AnimacionCambiarModo(), ConstantesGUI.FRAMES_CAMBIARMODO, 0.03),
     avanzar("avanzar", true),
     finalizarTurno("finalizar turno", true),
     lanzarDados("lanzar dados", true),
