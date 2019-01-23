@@ -15,8 +15,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import monopoly.jugadores.TipoAvatar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AplicacionGUI {
 
@@ -45,6 +47,9 @@ public class AplicacionGUI {
 
     // Inputs activos
     private final ArrayList<Input> inputsActivos;
+
+    // Jugadores almacenados
+    private final HashMap<String, TipoAvatar> jugadoresCreados;
 
     // Fase en la que se encuentra la aplicación
     private TipoFase tipoFase;
@@ -116,6 +121,7 @@ public class AplicacionGUI {
 
         // Inicialmente, no se ha creado un tablero personalizado
         this.tableroPersonalizado = null;
+        this.jugadoresCreados = new HashMap<>();
     }
 
 
@@ -129,6 +135,10 @@ public class AplicacionGUI {
     /*public Image getFondo() {
         return fondo;
     }*/
+
+    public HashMap<String, TipoAvatar> getJugadoresCreados() {
+        return jugadoresCreados;
+    }
 
     public Group getRaiz() {
         return raiz;
