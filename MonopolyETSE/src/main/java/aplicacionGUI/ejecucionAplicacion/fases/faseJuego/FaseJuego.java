@@ -40,7 +40,7 @@ public class FaseJuego extends Fase {
      */
     public FaseJuego(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fases.jpg");
+        super(aplicacionGUI, "fondo.jpg");
 
     }
 
@@ -96,7 +96,7 @@ public class FaseJuego extends Fase {
                 getAplicacionGUI().getTableroPersonalizado()));
 
         // Se crea la sección inferior de la GUI, encargada de representar los controles y los jugadores
-        setMenuGUI(new MenuGUI(getRaiz(), getApp(), "fases.png", getInformacion().getTableroGUI()));
+        setMenuGUI(new MenuGUI(getRaiz(), getApp(), "fondo.png", getInformacion().getTableroGUI()));
 
         // Se guarda la sección de controles en la sección de información (necesario por los tratos)
         getInformacion().setMenuGUI(menuGUI);

@@ -32,7 +32,7 @@ public class FaseEditor extends Fase {
      */
     public FaseEditor(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fases.jpg");
+        super(aplicacionGUI, "fondo.jpg");
 
         // Inicialmente, la edición no ha finalizado y no se ha iniciado el editor
         this.edicionFinalizada = false;

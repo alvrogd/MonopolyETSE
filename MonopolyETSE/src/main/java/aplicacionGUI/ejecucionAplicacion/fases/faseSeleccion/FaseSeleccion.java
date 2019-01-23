@@ -22,7 +22,7 @@ public class FaseSeleccion extends Fase {
      */
     public FaseSeleccion(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fases.jpg");
+        super(aplicacionGUI, "fondo.jpg");
     }
 
 
