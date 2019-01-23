@@ -579,6 +579,12 @@ public class ConstantesGUI {
     // Sonido del pergamino
     public final static String SONIDO_PERGAMINO = "pergamino.wav";
 
+    // Sonido de mostrar una carta
+    public final static String SONIDO_CARTA_REVELAR = "revelarCarta.wav";
+
+    // Sonido de barajar
+    public final static String SONIDO_CARTA_BARAJAR = "barajar.wav";
+
     public final static int ANIMACION_DINERO_ANCHO = 100;
     public final static int ANIMACION_DINERO_ALTO = 100;
 

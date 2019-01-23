@@ -7,6 +7,8 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -63,6 +65,13 @@ public abstract class CartaGUI {
     // Último frame renderizado
     private Image ultimoFrame;
 
+    // Sonido a reproducir cuando se revela una carta
+    private final Media sonidoRevelar = new Media(resources.sonidos.Sonidos.class.getResource(
+            ConstantesGUI.SONIDO_CARTA_REVELAR).toString());
+
+    // Sonido a reproducir cuando se baraja
+    private final Media sonidoBarajar = new Media(resources.sonidos.Sonidos.class.getResource(
+            ConstantesGUI.SONIDO_CARTA_BARAJAR).toString());
 
 
     /* Constructor */
@@ -235,6 +244,14 @@ public abstract class CartaGUI {
         this.primerFrame = primerFrame;
     }
 
+    public Media getSonidoRevelar() {
+        return sonidoRevelar;
+    }
+
+    public Media getSonidoBarajar() {
+        return sonidoBarajar;
+    }
+
 
 
     /* Métodos */
@@ -294,6 +311,9 @@ public abstract class CartaGUI {
 
         setPrimerFrame(true);
         setUltimoFrame(null);
+
+        MediaPlayer reproductor = new MediaPlayer(getSonidoBarajar());
+        reproductor.play();
     }
 
     /**
@@ -307,6 +327,9 @@ public abstract class CartaGUI {
 
         setPrimerFrame(true);
         setUltimoFrame(null);
+
+        MediaPlayer reproductor = new MediaPlayer(getSonidoRevelar());
+        reproductor.play();
     }
 
     /**
