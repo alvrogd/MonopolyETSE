@@ -16,9 +16,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Translate;
 import monopoly.jugadores.Coche;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.excepciones.NoExisteTratoException;
-import monopoly.jugadores.excepciones.NoLiquidezException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
+import monopoly.jugadores.excepciones.*;
 import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
@@ -703,7 +701,12 @@ public class BotonGUI {
         if(!getBotonera().getBotones().contains(getBotonera().getMenuGUI().getBotonGUI())){
             getBotonera().getBotones().add(getBotonera().getMenuGUI().getBotonGUI());
         }
+    }
 
+    public void salirCarcel(){
+        try {
+            getApp().getJuego().getTurno().getAvatar().salirCarcel();
+        } catch (Exception ignored) {}
     }
 
     public void ejecutarFuncion(){
@@ -797,6 +800,9 @@ public class BotonGUI {
                 break;
             case cancelar:
                 cancelar();
+                break;
+            case salirCarcel:
+                salirCarcel();
                 break;
         }
     }
