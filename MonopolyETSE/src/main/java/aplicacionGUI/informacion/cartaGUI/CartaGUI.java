@@ -330,7 +330,6 @@ public abstract class CartaGUI {
                 mostrarCarta();
             }
 
-
         }
 
         // Si se está en la fase de mostrar la carta y ha finalizado, se comienza a esconder la carta
@@ -367,6 +366,7 @@ public abstract class CartaGUI {
         setUltimoFrame(null);
 
         MediaPlayer reproductor = new MediaPlayer(getSonidoRevelar());
+        reproductor.setVolume(0.7);
         reproductor.play();
     }
 
