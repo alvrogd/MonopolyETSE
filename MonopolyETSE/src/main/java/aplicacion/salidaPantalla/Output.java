@@ -476,6 +476,10 @@ public class Output {
 
         for(int i = 0; i < size; i++){
 
+            if(arrayString[i] == '[' || arrayString[i] == ']') {
+                continue;
+            }
+
             if(arrayString[i] == '\n'){
                 salida.add(linea);
                 linea = "";
@@ -486,6 +490,8 @@ public class Output {
             }
 
         }
+
+        salida.add(linea);
 
         return salida;
 
