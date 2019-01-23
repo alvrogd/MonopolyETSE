@@ -393,7 +393,7 @@ public class MenuGUI{
 
         // Se muestra la imagen
         getGc().drawImage(getFondo(), 0, 0);
-        getJugadoresGUI().render();
+        getJugadoresGUI().render(t);
         getBotonera().render(t);
 
         // En caso de que se haya activado el siguiente paso
