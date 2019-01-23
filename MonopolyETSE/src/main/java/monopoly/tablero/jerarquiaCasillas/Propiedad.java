@@ -246,12 +246,13 @@ public abstract class Propiedad extends Casilla{
     public HashSet<TipoFuncion> funcionesARealizar(){
         HashSet<TipoFuncion> funciones = super.funcionesARealizar();
 
-        if(isHipotecada()){
-            funciones.add(TipoFuncion.deshipotecar);
-        } else if(!isComprable() && getTablero().getJuego().getTurno().equals(getTablero().getJuego().getTurno())){
-            funciones.add(TipoFuncion.hipotecar);
+        if(getTablero().getJuego().getTurno().equals(getPropietario())) {
+            if (isHipotecada()) {
+                funciones.add(TipoFuncion.deshipotecar);
+            } else if (!isComprable() && getTablero().getJuego().getTurno().equals(getTablero().getJuego().getTurno())) {
+                funciones.add(TipoFuncion.hipotecar);
+            }
         }
-
         return funciones;
     }
 
