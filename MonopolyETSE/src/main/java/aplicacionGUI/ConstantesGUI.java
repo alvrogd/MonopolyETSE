@@ -115,7 +115,7 @@ public class ConstantesGUI {
     public final static int NUMERO_LADOS = 4;
 
     // Nombres de las imágenes de las casillas
-    public final static String[] CASILLAS_IMAGENES = {"Isengard.png",
+    public final static String[] CASILLAS_IMAGENES = {"Salida.png",
                                                       "Platform934.png",
                                                       "Comunidad.png",
                                                       "DiagonAlley.png",
@@ -127,7 +127,7 @@ public class ConstantesGUI {
                                                       "Hogwarts.png",
                                                       "Azkaban.png",
                                                       "Tatooine.png",
-                                                      "Servicio.png",
+                                                      "Servicio1.png",
                                                       "Alderaan.png",
                                                       "Coruscant.png",
                                                       "ImperialDestroyer.png",
@@ -143,7 +143,7 @@ public class ConstantesGUI {
                                                       "KingsLanding.png",
                                                       "Winterfell.png",
                                                       "NightsWatch.png",
-                                                      "Servicio.png",
+                                                      "Servicio2.png",
                                                       "BeyondTheWall.png",
                                                       "GotoAzkaban.png",
                                                       "TheShire.png",
