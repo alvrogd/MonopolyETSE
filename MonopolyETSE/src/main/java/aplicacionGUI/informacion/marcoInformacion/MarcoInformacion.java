@@ -16,6 +16,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
 import resources.marcoInformacion.animacion.AnimacionMarcoInformacion;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MarcoInformacion {
@@ -308,7 +309,7 @@ public class MarcoInformacion {
      *
      * @param informacion nueva información a representar
      */
-    public void actualizarContenido(String[] informacion) {
+    public void actualizarContenido(ArrayList<String> informacion) {
 
         // Se adapta la información al marco
         ArrayList<String> informacionAdaptada = ajustarInformacion(informacion);
@@ -324,7 +325,7 @@ public class MarcoInformacion {
      * @param informacion información a ajustar
      * @return información tras el ajuste
      */
-    private ArrayList<String> ajustarInformacion(String[] informacion) {
+    private ArrayList<String> ajustarInformacion(ArrayList<String> informacion) {
 
         ArrayList<String> resultado = new ArrayList<>();
 

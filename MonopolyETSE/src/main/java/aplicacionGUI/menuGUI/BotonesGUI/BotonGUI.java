@@ -22,6 +22,8 @@ import monopoly.tablero.jerarquiaCasillas.Casilla;
 import monopoly.tablero.jerarquiaCasillas.Propiedad;
 import monopoly.tablero.jerarquiaCasillas.Solar;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.ComunidadCasilla;
+import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.SuerteCasilla;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.menuGUI.botones.BotonesImagenes;
@@ -360,6 +362,13 @@ public class BotonGUI {
     }
 
     public void lanzarDados(){
+
+        // Se ponen bien las cartas de comunidad / suerte si el jugador estaba en ellas
+        if(getApp().getJuego().getTurno().getAvatar().getPosicion() instanceof SuerteCasilla){
+            getBotonera().getMenuGUI().getTableroGUI().getInformacion().getSuerteGUI().esconderCarta();
+        } else if(getApp().getJuego().getTurno().getAvatar().getPosicion() instanceof ComunidadCasilla){
+            getBotonera().getMenuGUI().getTableroGUI().getInformacion().getComunidadGUI().esconderCarta();
+        }
 
         if (getApp().getJuego().getTurno().getAvatar() instanceof Coche)
             getApp().getJuego().setHaCompradoPropiedad(false);

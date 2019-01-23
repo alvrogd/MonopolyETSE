@@ -1,6 +1,7 @@
 
 package aplicacionGUI.informacion.cartaGUI;
 
+import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.Informacion;
@@ -17,6 +18,8 @@ import monopoly.Juego;
 import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.cartas.Carta;
 import resources.cartas.ImagenesCartas;
+
+import java.util.ArrayList;
 
 public abstract class CartaGUI {
 
@@ -329,6 +332,10 @@ public abstract class CartaGUI {
                     System.err.println(e.getMessage());
                 }
                 mostrarCarta();
+                System.out.println(carta.toString());
+                ArrayList<String> informacion = Output.toArrayString(carta.toString());
+
+                getInformacion().getMarcoInformacion().actualizarContenido(informacion);
             }
 
         }

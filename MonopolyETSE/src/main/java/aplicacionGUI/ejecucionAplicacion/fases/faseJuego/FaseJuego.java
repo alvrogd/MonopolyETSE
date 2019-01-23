@@ -2,6 +2,7 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJuego;
 
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
+import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
@@ -176,10 +177,11 @@ public class FaseJuego extends Fase {
         menuGUI.getRegistroGUI().anadirContenido("adadasdasdadasdasd");
 
         // Se añade texto de prueba al marco de información
-        informacion.getMarcoInformacion().actualizarContenido(new String[]{
-                "El Ministerio de Magia te investiga por colaboración con los mortífagos.",
-                "Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida y sin cobrar los 2M€.",
-                "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños."});
+
+        informacion.getMarcoInformacion().actualizarContenido(Output.toArrayString(
+                "El Ministerio de Magia te investiga por colaboración con los mortífagos.\n"+
+                "Ve a Azkaban. Ve directamente sin pasar por la casilla de Salida y sin cobrar los 2M€.\n"+
+                "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños.\n"));
         // Se activa
         informacion.getMarcoInformacion().setActivo(true);
     }
