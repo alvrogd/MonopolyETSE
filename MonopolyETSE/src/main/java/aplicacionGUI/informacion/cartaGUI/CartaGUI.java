@@ -119,8 +119,8 @@ public abstract class CartaGUI {
         this.sensor.setFill(Color.TRANSPARENT);
 
         // Se crean las animaciones
-        this.baraja = new ImagenAnimada(new ImagenesCartas(), imagenesBaraja, 0.01);
-        this.volteado = new ImagenAnimada(new ImagenesCartas(), imagenesVolteada, 0.05);
+        this.baraja = new ImagenAnimada(new ImagenesCartas(), imagenesBaraja, 0.005);
+        this.volteado = new ImagenAnimada(new ImagenesCartas(), imagenesVolteada, 0.025);
 
         // Se establece por defecto la primera imagen de la baraja
         this.imagenSeleccionada = this.baraja.getFrameNumero(0);

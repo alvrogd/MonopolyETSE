@@ -306,7 +306,22 @@ public class ConstantesGUI {
                                                     "cartaSuerteVolteada18.png",
                                                     "cartaSuerteVolteada19.png",
                                                     "cartaSuerteVolteada20.png",
-                                                    "cartaSuerteVolteada21.png"};
+                                                    "cartaSuerteVolteada21.png",
+                                                    "cartaSuerteVolteada22.png",
+                                                    "cartaSuerteVolteada23.png",
+                                                    "cartaSuerteVolteada24.png",
+                                                    "cartaSuerteVolteada25.png",
+                                                    "cartaSuerteVolteada26.png",
+                                                    "cartaSuerteVolteada27.png",
+                                                    "cartaSuerteVolteada28.png",
+                                                    "cartaSuerteVolteada29.png",
+                                                    "cartaSuerteVolteada30.png",
+                                                    "cartaSuerteVolteada31.png",
+                                                    "cartaSuerteVolteada32.png",
+                                                    "cartaSuerteVolteada33.png",
+                                                    "cartaSuerteVolteada34.png",
+                                                    "cartaSuerteVolteada35.png",
+                                                    "cartaSuerteVolteada36.png"};
 
     public final static String[] VOLTEO_COMUNIDAD = {"cartaComunidadVolteada0.png",
                                                         "cartaComunidadVolteada1.png",
@@ -329,7 +344,22 @@ public class ConstantesGUI {
                                                         "cartaComunidadVolteada18.png",
                                                         "cartaComunidadVolteada19.png",
                                                         "cartaComunidadVolteada20.png",
-                                                        "cartaComunidadVolteada21.png"};
+                                                        "cartaComunidadVolteada21.png",
+                                                        "cartaComunidadVolteada22.png",
+                                                        "cartaComunidadVolteada23.png",
+                                                        "cartaComunidadVolteada24.png",
+                                                        "cartaComunidadVolteada25.png",
+                                                        "cartaComunidadVolteada26.png",
+                                                        "cartaComunidadVolteada27.png",
+                                                        "cartaComunidadVolteada28.png",
+                                                        "cartaComunidadVolteada29.png",
+                                                        "cartaComunidadVolteada30.png",
+                                                        "cartaComunidadVolteada31.png",
+                                                        "cartaComunidadVolteada32.png",
+                                                        "cartaComunidadVolteada33.png",
+                                                        "cartaComunidadVolteada34.png",
+                                                        "cartaComunidadVolteada35.png",
+                                                        "cartaComunidadVolteada36.png"};
 
     // Desplazamientos de las barajas
     public final static int SUERTE_BARAJA_DESPLAZAMIENTO_X = TABLERO_ANCHO - BARAJA_ANCHO - CASILLA_ANCHO - 100 -
