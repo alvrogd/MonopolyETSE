@@ -19,6 +19,8 @@ import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.cartas.Carta;
 import resources.cartas.ImagenesCartas;
 
+import java.util.ArrayList;
+
 public abstract class CartaGUI {
 
     /* Atributos */
@@ -329,7 +331,11 @@ public abstract class CartaGUI {
                     System.err.println(e.getMessage());
                 }
                 mostrarCarta();
-                getInformacion().getMarcoInformacion().actualizarContenido((String[])Output.toArrayString(carta.toString()).toArray());
+                System.out.println(carta.toString());
+                ArrayList<String> informacion = Output.toArrayString(carta.toString());
+
+                getInformacion().getMarcoInformacion().actualizarContenido(informacion);
+                getInformacion().getMarcoInformacion().setActivo(true);
             }
 
 

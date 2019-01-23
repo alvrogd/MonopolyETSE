@@ -102,6 +102,8 @@ public class MenuGUI{
     // Booleano para indicarle al marco de información si se puede imprimir
     private boolean renderMarco;
 
+    private TableroGUI tableroGUI;
+
     /* Constructor */
 
     public MenuGUI(Group raiz, Aplicacion app, String imagen, TableroGUI tableroGUI){
@@ -170,6 +172,7 @@ public class MenuGUI{
 
         this.casillasAuxiliar = new ArrayList<>();
         this.inputActivo = false;
+        this.tableroGUI = tableroGUI;
 
         for(BotonGUI boton : getBotonera().getBotones()){
             if(boton.getFuncion().equals(TipoFuncion.aceptar)){
@@ -179,6 +182,14 @@ public class MenuGUI{
         }
 
         this.renderMarco = true;
+    }
+
+    public TableroGUI getTableroGUI() {
+        return tableroGUI;
+    }
+
+    public void setTableroGUI(TableroGUI tableroGUI) {
+        this.tableroGUI = tableroGUI;
     }
 
     public BotoneraGUI getBotonera() {
