@@ -8,6 +8,7 @@ import java.util.HashSet;
 import aplicacionGUI.menuGUI.entrada.EntradaGUI;
 import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import monopoly.Juego;
+import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 
 import java.util.ArrayList;
@@ -34,6 +35,21 @@ public class Aplicacion {
         Output.setBuffer(buffer);
 
     }
+
+    /**
+     * Constructor que crea el juego a partir de la información de unas casillas predefinidas.
+     * @param informacionCasillas ArrayList con la información de las casillas.
+     */
+    public Aplicacion(ArrayList<InformacionCasilla> informacionCasillas) {
+
+        juego = new Juego(informacionCasillas);
+        menu = new Menu(this);
+        buffer = new ArrayList<>();
+
+        Output.setBuffer(buffer);
+
+    }
+
 
     /*Getters*/
     public Juego getJuego() {

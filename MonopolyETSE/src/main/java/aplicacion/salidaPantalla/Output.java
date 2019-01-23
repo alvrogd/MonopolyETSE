@@ -1,6 +1,7 @@
 package aplicacion.salidaPantalla;
 
 import aplicacion.Aplicacion;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import monopoly.jugadores.Jugador;
 
 import java.util.ArrayList;
@@ -306,6 +307,15 @@ public class Output {
      * @param ancho   ancho entre el recuadro y el mensaje
      * @param alto    alto entre el recuadro y el mensaje
      */
+
+    public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto){
+        for(String imprimir : mensaje){
+            ConsolaInterfaz.imprimir(imprimir);
+        }
+    }
+
+    /*
+    Esta es la función con recuadros para una interfaz de comandos
     public static void imprimirRecuadro(ArrayList<String> mensaje, String tipo, TipoColor color, int ancho, int alto) {
 
         //Variable en la que se guarda el mensaje a mandar al buffer
@@ -451,7 +461,7 @@ public class Output {
         addBuffer(impresion.toString(), anchoTotal, altoTotal);
 
     }
-
+    */
     /**
      * Función para pasar un string a un ArrayList<> donde cada componente es una línea del string.
      */

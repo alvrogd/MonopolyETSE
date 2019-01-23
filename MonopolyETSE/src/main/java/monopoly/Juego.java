@@ -100,30 +100,24 @@ public class Juego {
 
     }
 
-    /**
-     * Constructor para iniciar un Juego con unos jugadores predeterminados, se podrían añadir más
-     *
-     * @param jugadores
-     */
-    public Juego(ArrayList<Jugador> jugadores) {
+    public Juego(ArrayList<InformacionCasilla> informaciones) {
 
-        this();
+        banca = new Banca();
+        turno = null;
+        jugadores = new HashMap<>();
+        nombresJugadores = new ArrayList<>();
+        tablero = new Tablero(banca, this, informaciones);
+        iniciado = false;
+        vueltasMin = 0;
+        seHaIncrementado = false;
+        finalizado = false;
+        haLanzadoDados = false;
+        haHechoUnaTirada = false;
+        haAcabadoMovimiento = false;
+        haCompradoPropiedad = false;
+        anadirCartas();
+        numTratos = 0;
 
-        if (jugadores == null) {
-            System.err.println("Jugador referencia a null");
-            System.exit(1);
-        }
-
-        for (Jugador jugador : jugadores) {
-
-            if (jugador == null) {
-                System.err.println("Jugador referencia a null");
-                System.exit(1);
-            }
-
-            addJugador(jugador);
-
-        }
     }
 
     private void anadirCartas() {

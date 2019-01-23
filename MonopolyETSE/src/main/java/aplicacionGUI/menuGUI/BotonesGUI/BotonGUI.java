@@ -690,6 +690,12 @@ public class BotonGUI {
     // ponen todos en false.
     public void cancelar(){
         getBotonera().getMenuGUI().setProponiendoTrato(false);
+        getBotonera().getMenuGUI().setInputActivo(false);
+        getBotonera().getMenuGUI().setRenderMarco(true);
+        if(!getBotonera().getBotones().contains(getBotonera().getMenuGUI().getBotonGUI())){
+            getBotonera().getBotones().add(getBotonera().getMenuGUI().getBotonGUI());
+        }
+
     }
 
     public void ejecutarFuncion(){

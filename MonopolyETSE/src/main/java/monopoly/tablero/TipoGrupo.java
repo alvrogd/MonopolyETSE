@@ -14,16 +14,8 @@ public enum TipoGrupo {
     marron("solar",Constantes.PRECIO_INICIAL_GRUPO_5, TipoColor.blancoANSI, 3),
     verde("solar",Constantes.PRECIO_INICIAL_GRUPO_6, TipoColor.verdeANSI,3 ),
     azul("solar",Constantes.PRECIO_INICIAL_GRUPO_7, TipoColor.azulANSI, 2),
-    suerte("suerte",TipoColor.resetAnsi,3),
-    comunidad("comunidad",TipoColor.resetAnsi,3),
-    impuesto1("impuesto",Constantes.IMPUESTO_1, TipoColor.resetAnsi,1),
-    impuesto2("impuesto",Constantes.IMPUESTO_2, TipoColor.resetAnsi,1),
     transporte("transporte",Constantes.DINERO_TRANSPORTES, TipoColor.resetAnsi,4),
-    servicios("servicio",Constantes.DINERO_SERVICIOS, TipoColor.resetAnsi,2),
-    carcel("carcel",Constantes.DINERO_CARCEL,TipoColor.resetAnsi,1),
-    parking("parking",0, TipoColor.resetAnsi,1),
-    salida("salida",Constantes.DINERO_SALIDA,TipoColor.resetAnsi,1),
-    irCarcel("ir a la cárcel",TipoColor.resetAnsi,1);
+    servicios("servicio",Constantes.DINERO_SERVICIOS, TipoColor.resetAnsi,2);
 
     /*Atributos*/
 
