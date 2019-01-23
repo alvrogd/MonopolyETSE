@@ -1,6 +1,7 @@
 package monopoly;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Banca;
@@ -732,8 +733,9 @@ public class Juego {
                 Propiedad propiedad = (Propiedad) posicion;
                 // Si se puede hipotecar / deshipotecar
                 if (propiedad.isHipotecada()) {
-                    if(!turno.balanceNegativoTrasPago((int) ((double) propiedad.getImporteCompra() * 0.5 * 1.10)))
+                    if(!turno.balanceNegativoTrasPago((int) ((double) propiedad.getImporteCompra() * 0.5 * 1.10))) {
                         funciones.add(TipoFuncion.deshipotecar);
+                    }
                 } else if (!propiedad.isComprable() && getTablero().getJuego().getTurno().equals(propiedad.getPropietario())) {
 
                     if(propiedad instanceof Solar){
@@ -749,7 +751,7 @@ public class Juego {
 
             // Se mira los tipos de movimiento que puede realizar
 
-            if (isHaLanzadoDados()) {
+            if (isHaLanzadoDados() && getTurno().getTurnosPenalizado() <= 0) {
                 funciones.add(TipoFuncion.finalizarTurno);
             } else {
                 funciones.add(TipoFuncion.lanzarDados);
@@ -759,10 +761,11 @@ public class Juego {
                 funciones.add(TipoFuncion.avanzar);
             }
 
-            if (!isHaHechoUnaTirada()) {
-                if(turno.getAvatar().isHaMovidoCasillasTirada())
-                    funciones.add(TipoFuncion.cambiarModo);
-            }
+            try {
+                if (!getTurno().getAvatar().noPoderCambiarMovimiento(false))
+                        funciones.add(TipoFuncion.cambiarModo);
+            } catch (Exception ignored) {}
+        
 
             // Se mira si el usuario tiene tratos emitidos o recibidos
 
