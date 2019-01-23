@@ -214,8 +214,6 @@ public class BotonGUI {
         this.sensor = new Rectangle(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
-        System.out.println(nombre);
-
         this.boton = new Image(BotonesImagenes.class.getResource(nombreImagen + ".png").toString());
         this.botonOscuro = new Image(BotonesImagenes.class.getResource(nombreImagen + "Oscuro.png").toString());
         this.botonActual = this.boton;

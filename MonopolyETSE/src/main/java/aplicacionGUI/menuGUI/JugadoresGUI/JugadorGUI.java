@@ -123,6 +123,10 @@ public class JugadorGUI {
 
     }
 
+    public Group getNodo() {
+        return nodo;
+    }
+
     public MenuGUI getMenuGUI() {
         return menuGUI;
     }

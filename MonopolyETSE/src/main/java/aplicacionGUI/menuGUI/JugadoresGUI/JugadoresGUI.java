@@ -8,6 +8,8 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
@@ -15,6 +17,7 @@ import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import resources.dineroMas.DineroMasImagen;
 import resources.dineroMenos.DineroMenosReducido;
+import resources.menuGUI.botones.BotonesImagenes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +55,8 @@ public class JugadoresGUI {
 
     //Booleano para saber si se está animando
     private boolean animandose;
+
+    private static final Media sonido = new Media(resources.sonidos.Sonidos.class.getResource(ConstantesGUI.SONIDO_DINERO).toString());
 
     /* Constructor */
     public JugadoresGUI(Group raiz, Juego juego, TableroGUI tableroGUI, MenuGUI menuGUI){
@@ -99,6 +104,10 @@ public class JugadoresGUI {
         this.imagenesAnimadas = new HashMap<>();
         this.primerFrame = true;
         this.animandose = false;
+    }
+
+    public static Media getSonido() {
+        return sonido;
     }
 
     public boolean isPrimerFrame() {
@@ -248,14 +257,13 @@ public class JugadoresGUI {
         if(isPrimerFrame()){
             animacion.setTiempoInicio(t);
             setPrimerFrame(false);
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
         }
 
         frame = animacion.getFrame(t);
 
-        int desplazamientoX = jugadorGUI.getDesplazamientoX() + ConstantesGUI.JUGADORES_ANCHO-200;
-        int desplazamientoY = jugadorGUI.getDesplazamientoY() + 10;
-
-        getGc().drawImage(frame, desplazamientoX, desplazamientoY);
+        jugadorGUI.getGc().drawImage(frame, ConstantesGUI.BARRA_JUGADOR_ANCHO-125, -15);
 
         if(animacion.getIndice(t) == animacion.getFrames().size() - 1){
             setPrimerFrame(true);
