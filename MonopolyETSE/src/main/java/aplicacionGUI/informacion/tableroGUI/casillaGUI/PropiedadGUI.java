@@ -218,8 +218,8 @@ public class PropiedadGUI extends CasillaGUI {
     public void renderPropietario() {
 
         // Se establece la tipografía
-        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
-        getGc().setStroke(Color.TRANSPARENT);
+        getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.SEMI_BOLD, 12));
+        getGc().setLineWidth(1);
         getGc().setFill(Color.BLACK);
         getGc().setTextAlign(TextAlignment.LEFT);
 
