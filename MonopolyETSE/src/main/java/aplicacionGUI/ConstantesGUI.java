@@ -183,12 +183,12 @@ public class ConstantesGUI {
     public final static int COMUNIDAD_DESPLAZAMIENTO_Y = (TABLERO_ALTO - CARTA_ALTO) / 2 - 14;
 
     // Nombres de las imágenes de los avatares
-    public final static String[] AVATARES_IMAGENES = {"Avion.png",
-                                                      "Coche.png",
-                                                      "Esfinge.png",
-                                                      "Hamburguesa.png",
-                                                      "Pelota.png",
-                                                      "Sombrero.png"};
+    public final static String[] AVATARES_IMAGENES = {//"autobus.png",
+                                                      //"barco.png",
+                                                      //"hamburguesa.png",
+                                                      //"pajaro.png",
+                                                      "pato.png",
+                                                      "perro.png"};
 
     // Nombre de los frames de la animación del modo avanzado
     public final static String[] AVATARES_AVANZADO_FRAMES = {"Destello_0.png",
