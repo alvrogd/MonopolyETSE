@@ -220,14 +220,6 @@ public class Informacion {
         getSuerteGUI().render(t);
         getComunidadGUI().render(t);
 
-        if(getMenuGUI().getJuego().getTurno().getAvatar().getPosicion() instanceof SuerteCasilla){
-            for(int i = 0; i < 5; i ++)
-                getSuerteGUI().barajar();
-        } else if(getMenuGUI().getJuego().getTurno().getAvatar().getPosicion() instanceof ComunidadCasilla){
-            for(int i = 0; i < 5; i ++)
-                getComunidadGUI().barajar();
-        }
-
         //El marco solo se renderiza en caso de que no haya inputs activos
         if(!getMenuGUI().isInputActivo() && getMenuGUI().isRenderMarco()) {
             getMarcoInformacion().getGc().clearRect(0, 0, ConstantesGUI.MARCO_INFORMACION_ANCHO, ConstantesGUI.MARCO_INFORMACION_ALTO);

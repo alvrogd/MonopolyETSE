@@ -25,11 +25,7 @@ public class SuerteCasilla extends Accion{
             System.exit(-1);
         }
 
-        int opcion = Aplicacion.consola.leer("¡Carta de suerte! Introduzca un número del 1 al " +
-                Constantes.NUM_CARTAS_SUERTE, true);
-
         Juego.setEstarSuerte(true);
-
 
     }
 

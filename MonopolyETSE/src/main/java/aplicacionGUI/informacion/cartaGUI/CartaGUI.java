@@ -1,6 +1,7 @@
 
 package aplicacionGUI.informacion.cartaGUI;
 
+import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import aplicacionGUI.informacion.Informacion;
@@ -328,6 +329,7 @@ public abstract class CartaGUI {
                     System.err.println(e.getMessage());
                 }
                 mostrarCarta();
+                getInformacion().getMarcoInformacion().actualizarContenido((String[])Output.toArrayString(carta.toString()).toArray());
             }
 
 
