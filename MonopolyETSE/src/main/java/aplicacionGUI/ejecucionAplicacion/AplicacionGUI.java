@@ -5,6 +5,7 @@ import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.FaseBienvenida;
 import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.FaseEditor;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.FaseJuego;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.FaseJugador;
 import aplicacionGUI.ejecucionAplicacion.fases.faseSeleccion.FaseSeleccion;
 import aplicacionGUI.input.Input;
 import javafx.scene.Group;
@@ -244,6 +245,10 @@ public class AplicacionGUI {
                 setFase(new FaseEditor(this));
                 getReproductor().setVolume(0.4);
                 getReproductor().play();
+                break;
+
+            case introduccionJugadores:
+                setFase(new FaseJugador(this));
                 break;
 
             case inicioJuego:
