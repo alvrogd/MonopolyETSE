@@ -335,7 +335,6 @@ public abstract class CartaGUI {
                 ArrayList<String> informacion = Output.toArrayString(carta.toString());
 
                 getInformacion().getMarcoInformacion().actualizarContenido(informacion);
-                getInformacion().getMarcoInformacion().setActivo(true);
             }
 
 
