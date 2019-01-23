@@ -41,6 +41,7 @@ public enum TipoFuncion {
     describirJugador("describir jugador", false),
     describirAvatar("describir avatar", false),
     cancelar("cancelar", true),
+    salirCarcel("salir carcel", true),
     aceptar("aceptar", true);
 
 

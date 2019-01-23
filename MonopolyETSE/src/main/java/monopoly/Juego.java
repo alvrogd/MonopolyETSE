@@ -737,6 +737,14 @@ public class Juego {
                 funciones.add(TipoFuncion.eliminacionTratos);
             }
 
+            if(getTurno().getAvatar().isEncarcelado()){
+                if(!isHaLanzadoDados()){
+                    if(!getTurno().balanceNegativoTrasPago(Constantes.DINERO_CARCEL)){
+                        funciones.add(TipoFuncion.salirCarcel);
+                    }
+                }
+            }
+
             funciones.add(TipoFuncion.listar);
             funciones.add(TipoFuncion.listarEdificios);
             funciones.add(TipoFuncion.listarTratos);
