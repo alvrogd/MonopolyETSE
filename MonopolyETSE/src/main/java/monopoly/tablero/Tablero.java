@@ -5,15 +5,13 @@ import monopoly.Juego;
 import monopoly.jugadores.Avatar;
 import monopoly.Dado;
 import monopoly.jugadores.Banca;
-import monopoly.tablero.jerarquiaCasillas.Casilla;
-import monopoly.tablero.jerarquiaCasillas.Grupo;
-import monopoly.tablero.jerarquiaCasillas.Impuesto;
-import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
+import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.*;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Tablero {
 
@@ -103,6 +101,53 @@ public class Tablero {
 
         avataresContenidos = new HashMap<>();
 
+    }
+
+    public Tablero(Banca banca, Juego juego, ArrayList<InformacionCasilla> informacionCasillas){
+        if(banca == null){
+            System.err.println("banca hace referencia a null");
+            System.exit(1);
+        }
+
+        if(juego == null){
+            System.err.println("juego hace referencia a null");
+            System.exit(1);
+        }
+
+        //Se crea un nuevo dado
+        this.dado = new Dado();
+
+        this.banca = banca;
+        this.juego = juego;
+
+        this.casillas = new ArrayList<>();
+
+        //Se inicializan las filas de casillas mediante un bucle for
+
+        for(int i = 0; i < 4; i++){
+            casillas.add(new ArrayList<Casilla>(10));
+            for(int j = 0; j < 10; j++) {
+
+                //Se inicializa a null los elementos del ArrayList para que cuando cada grupo cree sus casillas se
+                //calcule de forma correcta el alquiler, que va en función del número de casillas por grupo.
+                casillas.get(i).add(null);
+            }
+        }
+
+        casillasTablero = new HashMap<String, Casilla>();
+
+        grupos = new HashMap<>();
+
+        numEdificios = new HashMap<>();
+
+        for(TipoEdificio aux : TipoEdificio.values()){
+            numEdificios.put(aux, 0);
+        }
+
+        //La función nuevoTablero crea los correspondientes grupos y sus correspondientes casillas.
+        nuevoTablero(informacionCasillas);
+
+        avataresContenidos = new HashMap<>();
     }
 
     public HashMap<TipoEdificio, Integer> getNumEdificios() {
@@ -299,7 +344,7 @@ public class Tablero {
 
         //Impuesto tipo 2
 
-        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_2, 38, this, Constantes.IMPUESTO_1);
+        impuesto = new Impuesto(Constantes.NOMBRE_IMPUESTO_2, 38, this, Constantes.IMPUESTO_2);
 
         getCasillas().get(impuesto.getPosicionEnTablero()/10).set(impuesto.getPosicionEnTablero()%10,impuesto);
         getCasillasTablero().put(impuesto.getNombre(),impuesto);
@@ -342,8 +387,131 @@ public class Tablero {
 
     }
 
-    public void cambiarTablero(ArrayList<InformacionCasilla> informacionCasillas){
-        return;
+    public void nuevoTablero(ArrayList<InformacionCasilla> informacionCasillas){
+
+        Integer contador = 0;
+
+        // Se almacenará en un HashMap para cada tipo de grupo un Array que contiene tuplas de forma (Información, posición)
+        HashMap<TipoGrupo, ArrayList<Tupla>> informacionesGrupos = new HashMap<>();
+
+        for(TipoGrupo tipoGrupo : TipoGrupo.values()){
+            informacionesGrupos.put(tipoGrupo, new ArrayList<>());
+        }
+
+        for(InformacionCasilla informacionCasilla : informacionCasillas){
+            switch(informacionCasilla.getTipoCasilla()){
+                case carcel:
+                    gestionarCarcel(contador, informacionCasilla);
+                    break;
+                case comunidad:
+                    gestionarComunidad(contador, informacionCasilla);
+                    break;
+                case impuesto:
+                    gestionarImpuesto(contador, informacionCasilla);
+                    break;
+                case irCarcel:
+                    gestionarIrCarcel(contador, informacionCasilla);
+                    break;
+                case parking:
+                    gestionarParking(contador, informacionCasilla);
+                    break;
+                case salida:
+                    gestionarSalida(contador, informacionCasilla);
+                    break;
+                case servicio:
+                    gestionarPropiedad(informacionesGrupos, informacionCasilla, contador);
+                    break;
+                case solar:
+                    gestionarPropiedad(informacionesGrupos, informacionCasilla, contador);
+                    break;
+                case suerte:
+                    gestionarSuerte(contador, informacionCasilla);
+                    break;
+                case transporte:
+                    gestionarPropiedad(informacionesGrupos, informacionCasilla, contador);
+                    break;
+            }
+        }
+
+        // Ahora todas las casillas referentes a grupos se crean una vez se ha obtenido la información de todos
+
+        Set<TipoGrupo> tiposGrupos = informacionesGrupos.keySet();
+
+        for(TipoGrupo tipoGrupo : tiposGrupos){
+
+            ArrayList<Tupla> tuplas = informacionesGrupos.get(tipoGrupo);
+            tipoGrupo.setPrecioInicial(((InformacionCasilla)tuplas.get(0).getObjeto()).getGrupo().getPrecio());
+
+            Grupo grupo = new Grupo(tipoGrupo, this, true, tuplaToArray(tuplas));
+            this.grupos.put(tipoGrupo, grupo);
+
+        }
+
+    }
+
+    private ArrayList<Object>[] tuplaToArray(ArrayList<Tupla> tuplas){
+        ArrayList<ArrayList<Object>> propiedades = new ArrayList<>();
+
+        for(Tupla tupla : tuplas){
+
+            ArrayList<Object> fila = new ArrayList<>();
+            propiedades.add(fila);
+
+            fila.add((tupla.getPosicion())/10);
+            fila.add(tupla.getPosicion()%10);
+            fila.add(((InformacionCasilla)tupla.getObjeto()).getNombre());
+
+        }
+
+        return ((ArrayList<Object>[]) propiedades.toArray());
+    }
+
+    private void gestionarPropiedad(HashMap<TipoGrupo, ArrayList<Tupla>> informacionesGrupos, InformacionCasilla informacionCasilla, Integer contador){
+
+        Grupo grupo = informacionCasilla.getGrupo();
+        Tupla tupla = new Tupla(informacionCasilla, contador);
+        informacionesGrupos.get(informacionCasilla.getGrupo().getTipo()).add(tupla);
+
+    }
+
+    private void gestionarParking(Integer contador, InformacionCasilla informacionCasilla){
+        Parking parking = new Parking(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(parking);
+    }
+
+    private void gestionarIrCarcel(Integer contador, InformacionCasilla informacionCasilla){
+        IrCarcel irCarcel = new IrCarcel(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(irCarcel);
+    }
+
+    private void gestionarCarcel(Integer contador, InformacionCasilla informacionCasilla){
+        Carcel carcel = new Carcel(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(carcel);
+    }
+
+    private void gestionarSalida(Integer contador, InformacionCasilla informacionCasilla){
+        Salida salida = new Salida(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(salida);
+    }
+
+    private void gestionarImpuesto(Integer contador, InformacionCasilla informacionCasilla){
+        Impuesto impuesto = new Impuesto(informacionCasilla.getNombre(), contador, this, informacionCasilla.getImporte());
+        anadirCasillaTablero(impuesto);
+    }
+
+    private void gestionarSuerte(Integer contador, InformacionCasilla informacionCasilla){
+        SuerteCasilla suerte = new SuerteCasilla(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(suerte);
+    }
+
+    private void gestionarComunidad(Integer contador, InformacionCasilla informacionCasilla){
+        ComunidadCasilla comunidad = new ComunidadCasilla(informacionCasilla.getNombre(), contador, this);
+        anadirCasillaTablero(comunidad);
+    }
+
+    private void anadirCasillaTablero(Casilla casilla){
+        getCasillas().get(casilla.getPosicionEnTablero()/10).set(casilla.getPosicionEnTablero()%10,casilla);
+        getCasillasTablero().put(casilla.getNombre(),casilla);
     }
 
     /* Getters */
