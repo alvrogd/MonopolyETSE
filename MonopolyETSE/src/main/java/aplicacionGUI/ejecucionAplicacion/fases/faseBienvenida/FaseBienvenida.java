@@ -20,7 +20,7 @@ public class FaseBienvenida extends Fase {
      */
     public FaseBienvenida(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fondo.jpg");
+        super(aplicacionGUI, "fases.jpg");
     }
 
 

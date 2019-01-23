@@ -1,6 +1,5 @@
 package monopoly.jugadores;
 
-import aplicacion.salidaPantalla.Output;
 import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
@@ -130,8 +129,8 @@ public class Coche extends Avatar {
         // Si es un coche y se ha movido ya
         boolean noEsPosible = getTablero().getJuego().isHaHechoUnaTirada() && !forzar;
 
-        if( noEsPosible )
-            Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");
+        /*if( noEsPosible )
+            Output.sugerencia("Un coche tan sólo puede cambiar su modo de moviemiento al inicio del turno");*/
 
         return( super.noPoderCambiarMovimiento(forzar) || noEsPosible );
     }

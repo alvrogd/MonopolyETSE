@@ -500,7 +500,7 @@ public class TableroASCII {
      * @param stringBuilder stringBuilder en el que se está representando el tablero
      * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar la frase
      * @param nombre        frase a representar
-     * @param color         color de fondo de la frase a representar
+     * @param color         color de fases de la frase a representar
      */
     private static void insertarNombre(StringBuilder stringBuilder, int posicion, String nombre, TipoColor color) {
 
@@ -567,7 +567,7 @@ public class TableroASCII {
      * @param stringBuilder stringBuilder en el que se está representando el tablero
      * @param posicion      posición de la esquina superior izquierda de la casilla en la que insertar la frase
      * @param strings       strings a representar
-     * @param color         color de fondo de la frase a representar
+     * @param color         color de fases de la frase a representar
      */
     public static void insertarString(StringBuilder stringBuilder, int posicion, ArrayList<String> strings, TipoColor color) {
 
@@ -596,7 +596,7 @@ public class TableroASCII {
         charLibres = anchoCasilla - stringJunto.length() - color.getFondo().length() -
                 TipoColor.resetAnsi.getFondo().length();
 
-        // Se inserta el color de fondo
+        // Se inserta el color de fases
         stringConColor.append(color.getFondo());
 
         // Se añaden los espacios libres al inicio del nombre (en caso de un total de espacios impar, se añade el
@@ -611,7 +611,7 @@ public class TableroASCII {
         for (int i = 0; i < charLibres / 2 + charLibres % 2; i++)
             stringConColor.append(' ');
 
-        // Se quita el color de fondo
+        // Se quita el color de fases
         stringConColor.append(TipoColor.resetAnsi.getFondo());
 
         // Ahora se desplaza de modo que el texto quede centrado (dejando más espacios libres a la derecha que a la

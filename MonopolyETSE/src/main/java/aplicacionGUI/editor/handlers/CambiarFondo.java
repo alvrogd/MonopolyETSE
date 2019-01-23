@@ -12,7 +12,7 @@ public class CambiarFondo extends CambiarAtributo {
     /* Constructor */
 
     /**
-     * Se crea un handler para el cambio de la imagen de fondo de la representación de la casilla contenida en la celda
+     * Se crea un handler para el cambio de la imagen de fases de la representación de la casilla contenida en la celda
      * dada
      *
      * @param celda celda a asociar
@@ -27,7 +27,7 @@ public class CambiarFondo extends CambiarAtributo {
     /* Métodos */
 
     /**
-     * Se cambia la imagen de fondo de la representación de la casilla de la celda asociada
+     * Se cambia la imagen de fases de la representación de la casilla de la celda asociada
      *
      * @param event click que activa el handler
      */
@@ -36,7 +36,7 @@ public class CambiarFondo extends CambiarAtributo {
 
         // Se crea una ventana en la que escoger un archivo
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Escoja una imagen de fondo");
+        fileChooser.setTitle("Escoja una imagen de fases");
         File imagen = fileChooser.showOpenDialog(null);
 
         // Si el usuario ha escogido una imagen
