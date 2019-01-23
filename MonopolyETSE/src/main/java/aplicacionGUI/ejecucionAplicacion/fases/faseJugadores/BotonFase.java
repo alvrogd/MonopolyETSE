@@ -63,6 +63,9 @@ public class BotonFase{
     // Booleano para indicar si el botón a finalizado su acción
     private boolean finAccion;
 
+    // Booleano para indicar si se puede renderizar el boton
+    private boolean puedeRender;
+
     public BotonFase(FaseJugador fase, Group raiz, String nombre, TipoFuncionFase funcion, int posicionX, int posicionY){
         if(raiz == null){
             System.err.println("Raiz no inicializada");
@@ -113,7 +116,16 @@ public class BotonFase{
         this.nombreJugador = new ArrayList<>();
         this.activo = false;
         this.finAccion = false;
+        this.puedeRender = true;
 
+    }
+
+    public boolean isPuedeRender() {
+        return puedeRender;
+    }
+
+    public void setPuedeRender(boolean puedeRender) {
+        this.puedeRender = puedeRender;
     }
 
     public ArrayList<String> getNombreJugador() {
@@ -227,6 +239,7 @@ public class BotonFase{
 
     public void inhabilitarBoton(){
 
+        getGc().clearRect(0, 0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
         getSensor().setX(-1000);
         getSensor().setY(-1000);
 
@@ -253,6 +266,7 @@ public class BotonFase{
 
     public void anadirJugador(){
         new CambiarNombreJugador(getFaseJugador().getAplicacionGUI().getJugadoresCreados(), getNombreJugador(), this);
+        setActivo(false);
     }
 
     public void creacionAvatares(TipoAvatar tipoAvatar){
@@ -296,7 +310,7 @@ public class BotonFase{
         double posicionY = y - getPosicionY();
 
         if(pulsandoBoton(posicionX, posicionY)){
-
+            ejecutarAccion();
         }
 
     }
@@ -336,6 +350,7 @@ public class BotonFase{
                 for(BotonFase boton : getFaseJugador().getBotonesPagina().get(TipoFuncionFase.anadirJugador)){
                     boton.setActivo(true);
                     boton.setFinAccion(false);
+                    System.out.println("Botón: " + boton.getFuncion() + " activo.");
                 }
             }
 
@@ -364,6 +379,8 @@ public class BotonFase{
                 for(BotonFase boton : getFaseJugador().getBotones()){
                     if(boton.getFuncion().equals(TipoFuncionFase.anadirJugador)){
                         boton.setActivo(anadirJugador);
+                        if(anadirJugador)
+                            boton.setFinAccion(false);
                         break;
                     }
                 }
@@ -371,12 +388,13 @@ public class BotonFase{
                 for(BotonFase boton : getFaseJugador().getBotones()){
                     if(boton.getFuncion().equals(TipoFuncionFase.iniciarJuego)){
                         boton.setActivo(iniciarJuego);
+                        if(iniciarJuego)
+                            boton.setFinAccion(false);
                         break;
                     }
                 }
             }
             setActivo(false);
-            setFinAccion(false);
         }
 
     }

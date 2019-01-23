@@ -2,6 +2,9 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores;
 
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.ClickIzquierdo;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Pulsacion;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Release;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class FaseJugador extends Fase {
         this.botones = new ArrayList<>();
         this.botonesActuales = new ArrayList<>();
         this.botonesPagina = new HashMap<>();
+        crearBotones();
     }
 
     public void crearBotones(){
@@ -71,6 +75,15 @@ public class FaseJugador extends Fase {
     public void iniciar(){
         setIniciado(true);
 
+        // Se define la acción ante un click izquierdo
+        getEscena().setOnMouseClicked(new ClickIzquierdo(this));
+
+        // Se define la acción al presionar un botón del ratón
+        getEscena().setOnMousePressed(new Pulsacion(this));
+
+        // Se define la acción al soltar un botón del ratón
+        getEscena().setOnMouseReleased(new Release(this));
+
         // Se busca el botón de añadir jugadores y se inicia
         for(BotonFase boton : getBotones()){
             if(boton.getFuncion().equals(TipoFuncionFase.anadirJugador)){
@@ -90,11 +103,35 @@ public class FaseJugador extends Fase {
 
     }
 
+    public void handlerIzquierdo(double x, double y){
+        for(BotonFase boton : getBotonesActuales()){
+            if(boton.contienePosicion(x, y)){
+                boton.handleClickIzquierdo(x, y);
+            }
+        }
+    }
+
+    public void handlerPulsado(double x, double y){
+        for(BotonFase boton : getBotonesActuales()){
+            if(boton.contienePosicion(x, y)){
+                boton.handleClickPulsado(x, y);
+            }
+        }
+    }
+
+    public void handlerRelease(double x, double y){
+        for(BotonFase boton : getBotonesActuales()){
+            if(boton.contienePosicion(x, y)){
+                boton.handleClickSoltado(x, y);
+            }
+        }
+    }
+
     public void actualizarBotones(){
 
-        for(BotonFase boton : getBotones()){
+        setBotonesActuales(new ArrayList<>());
 
-            setBotonesActuales(new ArrayList<>());
+        for(BotonFase boton : getBotones()){
 
             if(boton.isActivo()){
                 getBotonesActuales().add(boton);
@@ -107,6 +144,8 @@ public class FaseJugador extends Fase {
     public void render(double t){
 
         actualizarBotones();
+
+        getGc().drawImage(getFondo(), 0, 0);
 
         for(BotonFase boton : getBotonesActuales()){
             boton.render();

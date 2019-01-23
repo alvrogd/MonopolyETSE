@@ -249,6 +249,7 @@ public class AplicacionGUI {
 
             case introduccionJugadores:
                 setFase(new FaseJugador(this));
+                getFase().iniciar();
                 break;
 
             case inicioJuego:
