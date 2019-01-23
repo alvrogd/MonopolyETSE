@@ -130,7 +130,8 @@ public abstract class CartaGUI {
         this.cartaDesplazamientoY = cartaDesplazamientoY;
         /*this.sensor = new Rectangle(this.cartaDesplazamientoX, this.cartaDesplazamientoY, ConstantesGUI.CARTA_ANCHO,
                 ConstantesGUI.CARTA_ALTO);*/
-        this.sensor = new Rectangle(0, 0, ConstantesGUI.BARAJA_ANCHO, ConstantesGUI.BARAJA_ALTO);
+        this.sensor = new Rectangle(this.cartaDesplazamientoX, this.cartaDesplazamientoY, ConstantesGUI.CARTA_ANCHO,
+                ConstantesGUI.CARTA_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
         // Se crean las animaciones

@@ -3,9 +3,7 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
-import aplicacionGUI.ejecucionAplicacion.TipoFase;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
+import aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.handlers.Tecla;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -35,15 +33,7 @@ public class FaseBienvenida extends Fase {
     public void iniciar() {
 
         // Se define la acción ante una combinación de teclas
-        getEscena().setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent e) {
-
-                getAplicacionGUI().setTipoFase(TipoFase.seleccionTablero);
-                getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
-            }
-        });
+        getEscena().setOnKeyPressed(new Tecla(this));
 
         setIniciado(true);
     }
@@ -67,7 +57,7 @@ public class FaseBienvenida extends Fase {
             getGc().setLineWidth(1);
 
             // Se añade el nombre de la casilla (la posición es la parte central inferior)
-            getGc().fillText("Bienvenido", 100, 100);
+            getGc().fillText("Bienvenido al Monopoly!\n\n\nPresiona una tecla para continuar...", 100, 100);
         }
     }
 
