@@ -2,6 +2,7 @@ package aplicacionGUI.informacion;
 
 import aplicacion.Aplicacion;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.informacion.cartaGUI.ComunidadGUI;
 import aplicacionGUI.informacion.cartaGUI.SuerteGUI;
 import aplicacionGUI.informacion.marcoInformacion.MarcoInformacion;
@@ -51,8 +52,10 @@ public class Informacion {
      * usuario
      * @param raiz nodo sobre el que crear un hijo para la sección de información
      * @param tablero tablero a partir del cual generar la representación de un tablero
+     * @param tableroExportado conjunto de información sobre las representaciones de las casillas al partir del cual
+     *                         extraer los nuevos fondos
      */
-    public Informacion(Group raiz, Tablero tablero) {
+    public Informacion(Group raiz, Tablero tablero, ArrayList<InformacionCasillaGUI> tableroExportado) {
 
         if (raiz == null) {
             System.err.println("Raíz no inicializada");
@@ -77,8 +80,13 @@ public class Informacion {
         this.sensor.setFill(Color.TRANSPARENT);
 
         // Se crea la representación del tablero
-        this.tableroGUI = new TableroGUI(this, this.nodo, tablero);
-        
+        if( tableroExportado == null ) {
+            this.tableroGUI = new TableroGUI(this, this.nodo, tablero);
+        }
+        else {
+            this.tableroGUI = new TableroGUI(this, this.nodo, tablero, tableroExportado);
+        }
+
         // Se crea la representación de las cartas de suerte
         this.suerteGUI = new SuerteGUI(this.nodo);
         

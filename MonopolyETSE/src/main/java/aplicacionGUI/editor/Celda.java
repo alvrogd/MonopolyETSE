@@ -361,7 +361,7 @@ public class Celda {
                 HashSet<TipoGrupo> gruposDisponibles = getGruposSolaresLibres();
 
                 if (gruposDisponibles.contains(TipoGrupo.negro)) {
-                    anadirCrearCasilla(subsubmenu, "Grupo negro", TipoCasilla.solar, getGrupoNegro());
+                    anadirCrearCasilla(subsubmenu, "Grupo marrón", TipoCasilla.solar, getGrupoNegro());
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.cyan)) {
@@ -370,12 +370,12 @@ public class Celda {
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.rosa)) {
-                    anadirCrearCasilla(subsubmenu, "Grupo rosa", TipoCasilla.solar, getGrupoRosa());
+                    anadirCrearCasilla(subsubmenu, "Grupo violeta", TipoCasilla.solar, getGrupoRosa());
 
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.naranja)) {
-                    anadirCrearCasilla(subsubmenu, "Grupo naranja", TipoCasilla.solar, getGrupoNaranja());
+                    anadirCrearCasilla(subsubmenu, "Grupo amarillo", TipoCasilla.solar, getGrupoNaranja());
 
                 }
 
@@ -385,7 +385,7 @@ public class Celda {
                 }
 
                 if (gruposDisponibles.contains(TipoGrupo.marron)) {
-                    anadirCrearCasilla(subsubmenu, "Grupo marrón", TipoCasilla.solar, getGrupoMarron());
+                    anadirCrearCasilla(subsubmenu, "Grupo blanco", TipoCasilla.solar, getGrupoMarron());
 
                 }
 

@@ -1,5 +1,8 @@
 package monopoly.tablero.jerarquiaCasillas;
 
+import monopoly.tablero.jerarquiaCasillas.Grupo;
+import monopoly.tablero.jerarquiaCasillas.TipoCasilla;
+
 public class InformacionCasilla {
 
     /* Atributos */

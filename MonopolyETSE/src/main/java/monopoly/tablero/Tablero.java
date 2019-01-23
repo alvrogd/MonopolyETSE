@@ -1,5 +1,6 @@
 package monopoly.tablero;
 
+import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.jugadores.Avatar;

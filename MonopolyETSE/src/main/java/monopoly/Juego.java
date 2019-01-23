@@ -1,11 +1,11 @@
 package monopoly;
 
 import aplicacion.salidaPantalla.Output;
+import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Banca;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.NumeroIncorrectoException;
-import monopoly.jugadores.tratos.Trato;
 import monopoly.tablero.jerarquiaCasillas.*;
 import monopoly.tablero.Tablero;
 import monopoly.tablero.TipoGrupo;

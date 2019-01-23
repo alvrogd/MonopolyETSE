@@ -3,6 +3,7 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJuego;
 import aplicacion.Aplicacion;
 import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.editor.InformacionCasillaGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.ClickIzquierdo;
@@ -10,6 +11,9 @@ import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Pulsacion;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Release;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.menuGUI.MenuGUI;
+import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
+
+import java.util.ArrayList;
 
 public class FaseJuego extends Fase {
 
@@ -76,14 +80,19 @@ public class FaseJuego extends Fase {
      */
     public void iniciar() {
 
-        // Se crea un juego de Monopoly
-        setApp(new Aplicacion());
+        // Se crea un juego de Monopoly, en función de si el usuario a creado o no un tablero personalizado
+        if (getAplicacionGUI().getTableroPersonalizado() != null) {
+            setApp(new Aplicacion(convertirInformacion()));
+        } else {
+            setApp(new Aplicacion());
+        }
 
         // todo quitar pruebas
         pruebas1();
 
         // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
-        setInformacion(new Informacion(getRaiz(), getApp().getJuego().getTablero()));
+        setInformacion(new Informacion(getRaiz(), getApp().getJuego().getTablero(),
+                getAplicacionGUI().getTableroPersonalizado()));
 
         // Se crea la sección inferior de la GUI, encargada de representar los controles y los jugadores
         setMenuGUI(new MenuGUI(getRaiz(), getApp(), "fondo.png", getInformacion().getTableroGUI()));
@@ -180,6 +189,25 @@ public class FaseJuego extends Fase {
                 "Y esto son más líneas de prueba para comprobar cómo se adapta el marco a distintos tamaños."});
         // Se activa
         informacion.getMarcoInformacion().setActivo(true);
+    }
+
+    /**
+     * Recoge de la aplicación gráfica asociada el tablero personalizado creado por el usuario y exporta la información
+     * de clases InformacionCasillaGUI a InformacionCasilla
+     *
+     * @return información convertida
+     */
+    private ArrayList<InformacionCasilla> convertirInformacion() {
+
+        ArrayList<InformacionCasilla> resultado = new ArrayList<>();
+
+        for(InformacionCasillaGUI informacionCasillaGUI : getAplicacionGUI().getTableroPersonalizado()) {
+
+            resultado.add(new InformacionCasilla(informacionCasillaGUI.getTipoCasilla(),
+                    informacionCasillaGUI.getNombre(), informacionCasillaGUI.getGrupo(), informacionCasillaGUI.getImporte()));
+        }
+
+        return(resultado);
     }
 
     /**
