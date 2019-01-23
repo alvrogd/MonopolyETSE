@@ -1,6 +1,7 @@
 package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores;
 
 import aplicacionGUI.ConstantesGUI;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.CambiarNombreJugador;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,8 +11,11 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
+import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.fases.ImagenesFases;
+
+import java.util.ArrayList;
 
 public class BotonFase{
 
@@ -49,6 +53,18 @@ public class BotonFase{
 
     // Sonido a reproducir cuando se lanzan los dados
     private static final Media sonidoDados = new Media(resources.sonidos.Sonidos.class.getResource(ConstantesGUI.SONIDO_DADOS).toString());
+
+    // ArrayList donde se almacenará el último nombre leído
+    private ArrayList<String> nombreJugador;
+
+    // Booleano que indica si el botón está activo y por lo tanto si debería imprimirse o no
+    private boolean activo;
+
+    // Booleano para indicar si el botón a finalizado su acción
+    private boolean finAccion;
+
+    // Booleano para indicar si se puede renderizar el boton
+    private boolean puedeRender;
 
     public BotonFase(FaseJugador fase, Group raiz, String nombre, TipoFuncionFase funcion, int posicionX, int posicionY){
         if(raiz == null){
@@ -97,7 +113,48 @@ public class BotonFase{
         this.boton = new Image(ImagenesFases.class.getResource(nombre + ".png").toString());
         this.botonOscuro = new Image(ImagenesFases.class.getResource(nombre + "Oscuro.png").toString());
         this.botonActual = this.boton;
+        this.nombreJugador = new ArrayList<>();
+        this.activo = false;
+        this.finAccion = false;
+        this.puedeRender = true;
 
+    }
+
+    public boolean isPuedeRender() {
+        return puedeRender;
+    }
+
+    public void setPuedeRender(boolean puedeRender) {
+        this.puedeRender = puedeRender;
+    }
+
+    public ArrayList<String> getNombreJugador() {
+        return nombreJugador;
+    }
+
+    public void setNombreJugador(ArrayList<String> nombreJugador) {
+        this.nombreJugador = nombreJugador;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        if(activo){
+            habilitarBoton();
+        } else {
+            inhabilitarBoton();
+        }
+        this.activo = activo;
+    }
+
+    public boolean isFinAccion() {
+        return finAccion;
+    }
+
+    public void setFinAccion(boolean finAccion) {
+        this.finAccion = finAccion;
     }
 
     public FaseJugador getFaseJugador() {
@@ -182,6 +239,7 @@ public class BotonFase{
 
     public void inhabilitarBoton(){
 
+        getGc().clearRect(0, 0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
         getSensor().setX(-1000);
         getSensor().setY(-1000);
 
@@ -207,23 +265,17 @@ public class BotonFase{
     }
 
     public void anadirJugador(){
-
+        new CambiarNombreJugador(getFaseJugador().getAplicacionGUI().getJugadoresCreados(), getNombreJugador(), this);
+        setActivo(false);
     }
 
-    public void coche(){
+    public void creacionAvatares(TipoAvatar tipoAvatar){
+        // En el caso de que contenga el nombre del jugador el TipoAvatar va a estar a null, se actualiza
+        if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().containsKey(getNombreJugador().get(0)))
+            getFaseJugador().getAplicacionGUI().getJugadoresCreados().remove(getNombreJugador().get(0));
 
-    }
-
-    public void esfinge(){
-
-    }
-
-    public void sombrero(){
-
-    }
-
-    public void pelota(){
-
+        getFaseJugador().getAplicacionGUI().getJugadoresCreados().put(getNombreJugador().get(0), tipoAvatar);
+        setFinAccion(true);
     }
 
     public void ejecutarAccion(){
@@ -234,16 +286,19 @@ public class BotonFase{
                 anadirJugador();
                 break;
             case coche:
-                coche();
+                creacionAvatares(TipoAvatar.coche);
                 break;
             case esfinge:
-                esfinge();
+                creacionAvatares(TipoAvatar.esfinge);
                 break;
             case sombrero:
-                sombrero();
+                creacionAvatares(TipoAvatar.sombrero);
                 break;
             case pelota:
-                pelota();
+                creacionAvatares(TipoAvatar.pelota);
+                break;
+            case iniciarJuego:
+                setFinAccion(true);
                 break;
         }
 
@@ -255,7 +310,7 @@ public class BotonFase{
         double posicionY = y - getPosicionY();
 
         if(pulsandoBoton(posicionX, posicionY)){
-
+            ejecutarAccion();
         }
 
     }
@@ -283,8 +338,72 @@ public class BotonFase{
         }
     }
 
-    public void render(double t){
-        getGc().drawImage(getBotonActual(), 0, 0);
+    /**
+     * Función utilizada para actualizar el booleano activo del botón
+     */
+    public void actualizarBoton(){
+
+        if(isFinAccion()){
+
+            // Si la función del botón es de añadir jugadores, entonces se activan los botones de los avatares
+            if(getFuncion().equals(TipoFuncionFase.anadirJugador)){
+                for(BotonFase boton : getFaseJugador().getBotonesPagina().get(TipoFuncionFase.anadirJugador)){
+                    boton.setActivo(true);
+                    boton.setFinAccion(false);
+                    System.out.println("Botón: " + boton.getFuncion() + " activo.");
+                }
+            }
+
+            if(getFuncion().equals(TipoFuncionFase.iniciarJuego)){
+                getFaseJugador().finalizar();
+            }
+
+            // En el caso de que se haya creado un avatar se mira si se ha superado el mínimo de jugadores
+            if(getFuncion().equals(TipoFuncionFase.coche) || getFuncion().equals(TipoFuncionFase.sombrero) ||
+                    getFuncion().equals(TipoFuncionFase.esfinge) || getFuncion().equals(TipoFuncionFase.pelota)){
+
+                BotonFase botonIniciar, botonAnadir;
+                boolean iniciarJuego = true;
+                boolean anadirJugador = true;
+
+                // En caso de que ya haya dos jugadores en el juego, el botón de iniciar juego empezará a aparecer
+                if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size() >= 2){
+                    iniciarJuego = false;
+                }
+
+                if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size() == 6){
+                    anadirJugador = false;
+                }
+
+                // Ahora se pondrá como activos los botones anadirJugador y iniciarJuego en función de sus booleanos
+                for(BotonFase boton : getFaseJugador().getBotones()){
+                    if(boton.getFuncion().equals(TipoFuncionFase.anadirJugador)){
+                        boton.setActivo(anadirJugador);
+                        if(anadirJugador)
+                            boton.setFinAccion(false);
+                        break;
+                    }
+                }
+
+                for(BotonFase boton : getFaseJugador().getBotones()){
+                    if(boton.getFuncion().equals(TipoFuncionFase.iniciarJuego)){
+                        boton.setActivo(iniciarJuego);
+                        if(iniciarJuego)
+                            boton.setFinAccion(false);
+                        break;
+                    }
+                }
+            }
+            setActivo(false);
+        }
+
+    }
+
+    public void render(){
+        actualizarBoton();
+        if(isActivo()) {
+            getGc().drawImage(getBotonActual(), 0, 0);
+        }
     }
 
     @Override
