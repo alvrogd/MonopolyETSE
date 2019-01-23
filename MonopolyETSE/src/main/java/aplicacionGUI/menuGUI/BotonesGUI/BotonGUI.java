@@ -144,7 +144,6 @@ public class BotonGUI {
         this.sensor = new Rectangle(0, 0, ConstantesGUI.BOTON_ANCHO, ConstantesGUI.BOTON_ALTO);
         this.sensor.setFill(Color.TRANSPARENT);
 
-        System.out.println(nombre);
         this.boton = new Image(BotonesImagenes.class.getResource(nombre + ".png").toString());
         this.botonOscuro = new Image(BotonesImagenes.class.getResource(nombre + "Oscuro.png").toString());
         this.botonActual = this.boton;
@@ -334,8 +333,8 @@ public class BotonGUI {
 
     public void inhabilitarBoton(){
 
-        getSensor().setX(-500);
-        getSensor().setY(-500);
+        getSensor().setX(-1000);
+        getSensor().setY(-1000);
 
     }
 

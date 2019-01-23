@@ -637,8 +637,9 @@ public class ConstantesGUI {
                                                         "dineroMenos17.png",
                                                         "dineroMenos18.png",
                                                         "dineroMenos19.png",
-                                                        "dineroMenos20.png",
-                                                        "dineroMenos21.png"};
+                                                        "dineroMenos20.png"};
 
-
+    // Constantes de ancho y alto de los botones de la fase de jugador
+    public final static int BOTONFASE_ANCHO = 660;
+    public final static int BOTONFASE_ALTO = 170;
 }
