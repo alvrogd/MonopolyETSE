@@ -751,7 +751,7 @@ public class Juego {
 
             // Se mira los tipos de movimiento que puede realizar
 
-            if (isHaLanzadoDados() && getTurno().getTurnosPenalizado() <= 0) {
+            if (isHaLanzadoDados() || getTurno().getTurnosPenalizado() > 0) {
                 funciones.add(TipoFuncion.finalizarTurno);
             } else {
                 funciones.add(TipoFuncion.lanzarDados);
@@ -765,7 +765,7 @@ public class Juego {
                 if (!getTurno().getAvatar().noPoderCambiarMovimiento(false))
                         funciones.add(TipoFuncion.cambiarModo);
             } catch (Exception ignored) {}
-        
+
 
             // Se mira si el usuario tiene tratos emitidos o recibidos
 
