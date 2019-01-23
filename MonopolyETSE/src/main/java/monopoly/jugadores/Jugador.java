@@ -54,6 +54,10 @@ public class Jugador extends Participante {
     // Atributo para las estadísticas globales
     private int numeroTiradas;
 
+    // Booleano para saber si se va a renderizar la animación del dinero
+    private boolean animacionMasDinero;
+    private boolean animacionMenosDinero;
+
 
 
     /* Constructor */
@@ -121,6 +125,8 @@ public class Jugador extends Participante {
         this.premiosInversionesOBote = 0;
         this.vecesEnLaCarcel = 0;
         this.pagoTasasEImpuestos = 0;
+        this.animacionMasDinero = false;
+        this.animacionMenosDinero = false;
     }
 
 
@@ -151,6 +157,21 @@ public class Jugador extends Participante {
         this.numeroTiradas = numeroTiradas;
     }
 
+    public boolean isAnimacionMasDinero() {
+        return animacionMasDinero;
+    }
+
+    public void setAnimacionMasDinero(boolean animacionMasDinero) {
+        this.animacionMasDinero = animacionMasDinero;
+    }
+
+    public boolean isAnimacionMenosDinero() {
+        return animacionMenosDinero;
+    }
+
+    public void setAnimacionMenosDinero(boolean animacionMenosDinero) {
+        this.animacionMenosDinero = animacionMenosDinero;
+    }
 
     public void incrementarNumeroTiradas(int numeroTiradas) {
 
@@ -947,6 +968,23 @@ public class Jugador extends Participante {
                 i--;
             }
         }
+    }
+
+    @Override
+    public void setFortuna(int fortuna) {
+
+        if (fortuna < 0) {
+            System.err.println("La fortuna de un participante no puede ser menor a 0");
+            System.exit( 1 );
+        }
+
+        if(fortuna > getFortuna()){
+            setAnimacionMasDinero(true);
+        } else if(fortuna < getFortuna()){
+            setAnimacionMenosDinero(true);
+        }
+
+        super.setFortuna(fortuna);
     }
 
 

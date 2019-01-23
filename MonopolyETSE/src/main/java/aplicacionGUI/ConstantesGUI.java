@@ -380,4 +380,54 @@ public class ConstantesGUI {
     // Sonido de pasar a modo avanzado
     public final static String SONIDO_AVANZADO = "modoAvanzado.wav";
 
+    public final static int ANIMACION_DINERO_ANCHO = 100;
+    public final static int ANIMACION_DINERO_ALTO = 100;
+
+    public final static String[] FRAMES_DINEROMAS = {"dineroMasReducido0.png",
+                                                        "dineroMasReducido1.png",
+                                                        "dineroMasReducido2.png",
+                                                        "dineroMasReducido3.png",
+                                                        "dineroMasReducido4.png",
+                                                        "dineroMasReducido5.png",
+                                                        "dineroMasReducido6.png",
+                                                        "dineroMasReducido7.png",
+                                                        "dineroMasReducido8.png",
+                                                        "dineroMasReducido9.png",
+                                                        "dineroMasReducido10.png",
+                                                        "dineroMasReducido11.png",
+                                                        "dineroMasReducido12.png",
+                                                        "dineroMasReducido13.png",
+                                                        "dineroMasReducido14.png",
+                                                        "dineroMasReducido15.png",
+                                                        "dineroMasReducido16.png",
+                                                        "dineroMasReducido17.png",
+                                                        "dineroMasReducido18.png",
+                                                        "dineroMasReducido19.png",
+                                                        "dineroMasReducido20.png",
+                                                        "dineroMasReducido21.png"};
+
+    public final static String[] FRAMES_DINEROMENOS = {"dineroMenosReducido0.png",
+                                                        "dineroMenosReducido1.png",
+                                                        "dineroMenosReducido2.png",
+                                                        "dineroMenosReducido3.png",
+                                                        "dineroMenosReducido4.png",
+                                                        "dineroMenosReducido5.png",
+                                                        "dineroMenosReducido6.png",
+                                                        "dineroMenosReducido7.png",
+                                                        "dineroMenosReducido8.png",
+                                                        "dineroMenosReducido9.png",
+                                                        "dineroMenosReducido10.png",
+                                                        "dineroMenosReducido11.png",
+                                                        "dineroMenosReducido12.png",
+                                                        "dineroMenosReducido13.png",
+                                                        "dineroMenosReducido14.png",
+                                                        "dineroMenosReducido15.png",
+                                                        "dineroMenosReducido16.png",
+                                                        "dineroMenosReducido17.png",
+                                                        "dineroMenosReducido18.png",
+                                                        "dineroMenosReducido19.png",
+                                                        "dineroMenosReducido20.png",
+                                                        "dineroMenosReducido21.png"};
+
+
 }
