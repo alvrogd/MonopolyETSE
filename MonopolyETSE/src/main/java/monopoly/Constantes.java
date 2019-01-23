@@ -135,8 +135,8 @@ public final class Constantes {
     public final static String NOMBRE_TRANSPORTE_3 = "King's Landing";
     public final static String NOMBRE_TRANSPORTE_4 = "Gwaihir";
 
-    public final static String NOMBRE_SERVICIO_1 = "servicio1";
-    public final static String NOMBRE_SERVICIO_2 = "servicio2";
+    public final static String NOMBRE_SERVICIO_1 = "Google";
+    public final static String NOMBRE_SERVICIO_2 = "Microsoft";
 
     public final static String NOMBRE_IMPUESTO_1 = "Sméagol's Tax";
     public final static String NOMBRE_IMPUESTO_2 = "Smaug's Tax";
