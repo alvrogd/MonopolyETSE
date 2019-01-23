@@ -1,12 +1,10 @@
 package monopoly.tablero.jerarquiaCasillas.jerarquiaAccion;
 
-import aplicacion.Aplicacion;
-import monopoly.Constantes;
+import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
-import monopoly.tablero.cartas.Carta;
 
 public class SuerteCasilla extends Accion{
 
@@ -24,6 +22,8 @@ public class SuerteCasilla extends Accion{
             System.err.println("Jugador referencia a null");
             System.exit(-1);
         }
+
+        ConsolaInterfaz.imprimir("¡Carta de suerte! Haz click encima de las cartas de suerte.");
 
         Juego.setEstarSuerte(true);
 

@@ -2,6 +2,7 @@ package aplicacionGUI.informacion.marcoInformacion;
 
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
+import aplicacionGUI.informacion.cartaGUI.CartaGUI;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,9 +15,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
+import monopoly.Juego;
 import resources.marcoInformacion.animacion.AnimacionMarcoInformacion;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MarcoInformacion {
@@ -50,6 +51,9 @@ public class MarcoInformacion {
 
     // Información a representar
     private ArrayList<String> informacion;
+
+    // Carta que contiene la información a representar
+    private CartaGUI cartaGUI;
 
     // Si se encuentra activo
     private boolean activo;
@@ -161,6 +165,14 @@ public class MarcoInformacion {
         this.informacion = informacion;
     }
 
+    public CartaGUI getCartaGUI() {
+        return cartaGUI;
+    }
+
+    public void setCartaGUI(CartaGUI cartaGUI) {
+        this.cartaGUI = cartaGUI;
+    }
+
     public boolean isActivo() {
         return activo;
     }
@@ -258,6 +270,12 @@ public class MarcoInformacion {
 
         else {
            cerrar();
+
+           if( getCartaGUI() != null ) {
+               getCartaGUI().esconderCarta();
+               Juego.setEstarComunidad(false);
+               Juego.setEstarSuerte(false);
+           }
         }
     }
 
