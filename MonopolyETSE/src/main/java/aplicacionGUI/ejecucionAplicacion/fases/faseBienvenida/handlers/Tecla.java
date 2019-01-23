@@ -3,6 +3,7 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.handlers;
 import aplicacionGUI.ejecucionAplicacion.TipoFase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.FaseBienvenida;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class Tecla implements EventHandler<KeyEvent> {
@@ -46,8 +47,27 @@ public class Tecla implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent e) {
 
-        // Se inicia la siguiente fase
-        getFaseBienvenida().getAplicacionGUI().setTipoFase(TipoFase.seleccionTablero);
-        getFaseBienvenida().getAplicacionGUI().ejecutarFase(getFaseBienvenida().getAplicacionGUI().getTipoFase());
+        if( e.isControlDown() ) {
+
+            // Si se presiona Ctrl+P, se intercambia el fondo
+            if(e.getCode().equals(KeyCode.P)) {
+
+                if( getFaseBienvenida().getFondoSeleccionado().equals(getFaseBienvenida().getFondo())) {
+                    getFaseBienvenida().setFondoSeleccionado(getFaseBienvenida().getFondoAlternativo());
+                }
+
+                else {
+                    getFaseBienvenida().setFondoSeleccionado(getFaseBienvenida().getFondo());
+                }
+            }
+
+        }
+
+        else {
+
+            // Se inicia la siguiente fase
+            getFaseBienvenida().getAplicacionGUI().setTipoFase(TipoFase.seleccionTablero);
+            getFaseBienvenida().getAplicacionGUI().ejecutarFase(getFaseBienvenida().getAplicacionGUI().getTipoFase());
+        }
     }
 }

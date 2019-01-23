@@ -639,8 +639,9 @@ public class ConstantesGUI {
                                                         "dineroMenos19.png",
                                                         "dineroMenos20.png"};
 
-    // Fondo de la fase de bienvenida
-    public final static String FASE_BIENVENIDA_FONDO = "bienvenidoWithPenin.png";
+    // Fondos de la fase de bienvenida
+    public final static String FASE_BIENVENIDA_FONDO = "bienvenido.png";
+    public final static String FASE_BIENVENIDA_ALTERNATIVO = "bienvenidoWithPenin.png";
 
     // Fondo de la fase de selección del tablero
     public final static String FASE_SELECCION_FONDO = "seleccion.png";

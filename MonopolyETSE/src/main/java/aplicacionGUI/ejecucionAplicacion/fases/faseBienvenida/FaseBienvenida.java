@@ -4,8 +4,21 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseBienvenida.handlers.Tecla;
+import javafx.scene.image.Image;
+import resources.fases.ImagenesFases;
 
 public class FaseBienvenida extends Fase {
+
+    /* Atributos */
+
+    // Fondo alternativo
+    private final Image fondoAlternativo = new Image(ImagenesFases.class.getResource(
+            ConstantesGUI.FASE_BIENVENIDA_ALTERNATIVO).toString());
+
+    // Fondo seleccionado
+    private Image fondoSeleccionado;
+
+
 
     /* Constructor */
 
@@ -17,6 +30,25 @@ public class FaseBienvenida extends Fase {
     public FaseBienvenida(AplicacionGUI aplicacionGUI) {
 
         super(aplicacionGUI, ConstantesGUI.FASE_BIENVENIDA_FONDO);
+
+        // Inicialmente, se establece el fondo normal
+        this.fondoSeleccionado = super.getFondo();
+    }
+
+
+
+    /* Getters y setters */
+
+    public Image getFondoAlternativo() {
+        return fondoAlternativo;
+    }
+
+    public Image getFondoSeleccionado() {
+        return fondoSeleccionado;
+    }
+
+    public void setFondoSeleccionado(Image fondoSeleccionado) {
+        this.fondoSeleccionado = fondoSeleccionado;
     }
 
 
@@ -46,7 +78,7 @@ public class FaseBienvenida extends Fase {
 
         if (isIniciado()) {
 
-            getGc().drawImage(getFondo(), 0, 0);
+            getGc().drawImage(getFondoSeleccionado(), 0, 0);
         }
     }
 
