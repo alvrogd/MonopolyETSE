@@ -576,6 +576,9 @@ public class ConstantesGUI {
     // Sonido de pasar a modo avanzado
     public final static String SONIDO_AVANZADO = "modoAvanzado.wav";
 
+    // Sonido del pergamino
+    public final static String SONIDO_PERGAMINO = "pergamino.wav";
+
     public final static int ANIMACION_DINERO_ANCHO = 100;
     public final static int ANIMACION_DINERO_ALTO = 100;
 

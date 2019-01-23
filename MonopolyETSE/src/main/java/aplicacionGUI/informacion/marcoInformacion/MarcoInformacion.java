@@ -6,6 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -68,6 +70,10 @@ public class MarcoInformacion {
 
     // Tick correspondiente al texto
     private int tickTexto;
+
+    // Sonido a reproducir cuando se abre/cierra el pergamino
+    private final Media sonido = new Media(resources.sonidos.Sonidos.class.getResource(
+            ConstantesGUI.SONIDO_PERGAMINO).toString());
 
 
 
@@ -214,6 +220,10 @@ public class MarcoInformacion {
         this.tickTexto = tickTexto;
     }
 
+    public Media getSonido() {
+        return sonido;
+    }
+
 
 
     /* Métodos */
@@ -267,6 +277,9 @@ public class MarcoInformacion {
         setAnimacionFinalizada(false);
         setActivo(true);
         setAbrirse(true);
+
+        MediaPlayer reproductor = new MediaPlayer(getSonido());
+        reproductor.play();
     }
 
     /**
@@ -285,6 +298,9 @@ public class MarcoInformacion {
         // Debe continuar activo pero se indica que se cierre, y no se indicará la necesidad de realizar la animación
         // hasta que finalice el fade del texto
         setAbrirse(false);
+
+        MediaPlayer reproductor = new MediaPlayer(getSonido());
+        reproductor.play();
     }
 
     /**
