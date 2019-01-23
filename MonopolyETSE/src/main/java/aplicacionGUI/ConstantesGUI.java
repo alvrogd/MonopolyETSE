@@ -156,6 +156,9 @@ public class ConstantesGUI {
                                                       "SmaugsTax.png",
                                                       "Mordor.png"};
 
+    // Nombre del marco de las casillas
+    public final static String CASILLAS_MARCO = "frameCasilla.png";
+
     // Nombres de las imágenes de los edificios
     public final static String CASA = "casa.png";
     public final static String HOTEL = "hotel.png";

@@ -48,6 +48,9 @@ public class MenuGUI{
     // Imagen de fondo para el menú
     private final Image fondo;
 
+    // Marco del menú
+    private final Image marco = new Image(MenuGUIFondo.class.getResource("marco.png").toString());
+
     // Canvas para la representación del menú
     private final Canvas canvas;
     
@@ -294,6 +297,10 @@ public class MenuGUI{
         return fondo;
     }
 
+    public Image getMarco() {
+        return marco;
+    }
+
     public void setCasillasAuxiliar(ArrayList<CasillaGUI> casillasAuxiliar) {
         this.casillasAuxiliar = casillasAuxiliar;
     }
@@ -482,7 +489,7 @@ public class MenuGUI{
             setSiguientePaso(false);
         }
 
+        // Se muestra el marco
+        getGc().drawImage(getMarco(), 0, 0);
     }
-
-
 }

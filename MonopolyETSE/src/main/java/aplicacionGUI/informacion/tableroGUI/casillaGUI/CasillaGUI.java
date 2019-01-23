@@ -66,6 +66,9 @@ public class CasillaGUI {
     private final static ImagenAnimada ANIMACION_MODO_AVANZADO = new ImagenAnimada(new AnimacionAvataresModoAvanzado(),
             ConstantesGUI.AVATARES_AVANZADO_FRAMES, 0.25);
 
+    // Marco de las casillas
+    private final static Image marco = new Image(FondosCasillas.class.getResource(ConstantesGUI.CASILLAS_MARCO).toString());
+
     // Menú contextual mostrado
     private ContextMenu menu;
 
@@ -226,6 +229,10 @@ public class CasillaGUI {
         return ANIMACION_MODO_AVANZADO;
     }
 
+    public static Image getMarco() {
+        return marco;
+    }
+
     public ContextMenu getMenu() {
         return menu;
     }
@@ -314,6 +321,9 @@ public class CasillaGUI {
 
         // Se añade la imagen
         getGc().drawImage(getFondo(), 0, 0);
+
+        // Se añade el marco
+        getGc().drawImage(getMarco(), 0, 0);
     }
 
     /**
