@@ -658,4 +658,8 @@ public class ConstantesGUI {
     // Dimensiones de cada botón de la fase de selección
     public final static int FASE_SELECCION_BOTON_ANCHO = 574;
     public final static int FASE_SELECCION_BOTON_ALTO = 500;
+
+    // Constantes de ancho y alto de los botones de la fase de jugador
+    public final static int BOTONFASE_ANCHO = 660;
+    public final static int BOTONFASE_ALTO = 170;
 }
