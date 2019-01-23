@@ -432,6 +432,7 @@ public class Tablero {
                     gestionarPropiedad(informacionesGrupos, informacionCasilla, contador);
                     break;
             }
+            contador++;
         }
 
         // Ahora todas las casillas referentes a grupos se crean una vez se ha obtenido la información de todos
@@ -441,16 +442,19 @@ public class Tablero {
         for(TipoGrupo tipoGrupo : tiposGrupos){
 
             ArrayList<Tupla> tuplas = informacionesGrupos.get(tipoGrupo);
-            tipoGrupo.setPrecioInicial(((InformacionCasilla)tuplas.get(0).getObjeto()).getGrupo().getPrecio());
-
-            Grupo grupo = new Grupo(tipoGrupo, this, true, tuplaToArray(tuplas));
-            this.grupos.put(tipoGrupo, grupo);
+            if(!tuplas.isEmpty()) {
+                tipoGrupo.setPrecioInicial(((InformacionCasilla) tuplas.get(0).getObjeto()).getGrupo().getPrecio());
+                Grupo grupo = new Grupo(tipoGrupo, this, true, tuplaToArray(tuplas));
+                this.grupos.put(tipoGrupo, grupo);
+            } else {
+                System.out.println(tipoGrupo);
+            }
 
         }
 
     }
 
-    private ArrayList<Object>[] tuplaToArray(ArrayList<Tupla> tuplas){
+    private ArrayList<ArrayList<Object>> tuplaToArray(ArrayList<Tupla> tuplas){
         ArrayList<ArrayList<Object>> propiedades = new ArrayList<>();
 
         for(Tupla tupla : tuplas){
@@ -464,7 +468,7 @@ public class Tablero {
 
         }
 
-        return ((ArrayList<Object>[]) propiedades.toArray());
+        return (propiedades);
     }
 
     private void gestionarPropiedad(HashMap<TipoGrupo, ArrayList<Tupla>> informacionesGrupos, InformacionCasilla informacionCasilla, Integer contador){
