@@ -324,15 +324,15 @@ public class ConstantesGUI {
     public final static String EDITOR_CASILLA_BLANCO = "CasillaBlanco.png";
 
     // Nombres de las imágenes de los botones del editor
-    public final static String EDITOR_BOTON_ACEPTAR = "avanzar.png";
-    public final static String EDITOR_BOTON_ACEPTAR_OSCURO = "avanzarOscuro.png";
-    public final static String EDITOR_BOTON_CANCELAR = "atras.png";
-    public final static String EDITOR_BOTON_CANCELAR_OSCURO = "atrasOscuro.png";
+    public final static String EDITOR_BOTON_ACEPTAR = "aceptar.png";
+    public final static String EDITOR_BOTON_ACEPTAR_OSCURO = "aceptarOscuro.png";
+    public final static String EDITOR_BOTON_CANCELAR = "cancelar.png";
+    public final static String EDITOR_BOTON_CANCELAR_OSCURO = "cancelarOscuro.png";
 
     // Desplazamientos de los botones del editor
-    public final static int EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_X = 1800;
+    public final static int EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_X = 1700;
     public final static int EDITOR_BOTON_ACEPTAR_DESPLAZAMIENTO_Y = 25;
-    public final static int EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_X = 1700;
+    public final static int EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_X = 1800;
     public final static int EDITOR_BOTON_CANCELAR_DESPLAZAMIENTO_Y = 25;
 
     // Dimensiones del input

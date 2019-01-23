@@ -135,7 +135,7 @@ public class RegistroGUI {
         Text text = new Text(contenido);
 
         // Se cambia la tipografía
-        text.setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, ConstantesGUI.REGISTRO_FUENTE_TAMANO));
+        text.setFont(Font.font("Segoe UI", FontWeight.NORMAL, ConstantesGUI.REGISTRO_FUENTE_TAMANO));
 
         // Se actualiza el contenido
         getPanel().setContent(text);
@@ -167,7 +167,7 @@ public class RegistroGUI {
         for (String palabra : palabras) {
 
             // Si la palabra no cabe en la actual línea, se indica un salto de línea y se resetea la longitud de línea
-            if ((longitud + palabra.length()) * (ConstantesGUI.REGISTRO_FUENTE_TAMANO - 4.7)
+            if ((longitud + palabra.length()) * (ConstantesGUI.REGISTRO_FUENTE_TAMANO - 6.6)
                     >= ConstantesGUI.REGISTRO_ANCHO) {
                 stringBuilder.append("\n");
                 longitud = 0;
