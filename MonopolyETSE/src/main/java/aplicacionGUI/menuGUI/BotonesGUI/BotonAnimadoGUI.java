@@ -5,7 +5,10 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ImagenAnimada;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
+import resources.sonidos.Sonidos;
 
 public class BotonAnimadoGUI extends BotonGUI{
 
@@ -17,6 +20,9 @@ public class BotonAnimadoGUI extends BotonGUI{
     private boolean primerFrame;
 
     private double frame;
+
+    // Sonido a reproducir cuando se pasa a modo avanzado
+    private static final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_AVANZADO).toString());
 
     // Booleano para saber en que modo está
     private boolean modo;
@@ -84,6 +90,10 @@ public class BotonAnimadoGUI extends BotonGUI{
         this.primerFrame = primerFrame;
     }
 
+    public static Media getSonido() {
+        return sonido;
+    }
+
     @Override
     public void inhabilitarBoton(){
 
@@ -105,8 +115,16 @@ public class BotonAnimadoGUI extends BotonGUI{
             double posicionY = y - getDesplazamientoY();
 
             if (pulsandoBoton(posicionX, posicionY)) {
+
                 super.handleClickIzquierdo(x, y);
                 setAnimandose(true);
+
+                // Se reproduce un sonido de "upgrade" si pasa a avanzado
+                if(!getApp().getJuego().getTurno().getAvatar().isMovimientoEstandar()) {
+                    System.out.println("Upgrade");
+                    MediaPlayer reproductor = new MediaPlayer(getSonido());
+                    reproductor.play();
+                }
             }
         }
     }

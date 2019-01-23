@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
-import monopoly.Constantes;
 import monopoly.Juego;
 import monopoly.jugadores.tratos.Inmunidad;
 import monopoly.tablero.jerarquiaCasillas.Casilla;

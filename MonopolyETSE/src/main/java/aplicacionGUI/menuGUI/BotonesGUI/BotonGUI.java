@@ -3,12 +3,12 @@ package aplicacionGUI.menuGUI.BotonesGUI;
 import aplicacion.Aplicacion;
 import aplicacion.salidaPantalla.Output;
 import aplicacionGUI.ConstantesGUI;
-import aplicacionGUI.ImagenAnimada;
-import aplicacionGUI.menuGUI.registroGUI.ConsolaInterfaz;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -27,6 +27,7 @@ import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.Edificio;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import resources.menuGUI.botones.BotonesImagenes;
+import resources.sonidos.Sonidos;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,6 +76,11 @@ public class BotonGUI {
 
     // Booleano para saber si es el botón de ayuda
     private boolean ayuda;
+
+    // Sonido a reproducir cuando se pulsa un botón
+    private static final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
+
+
 
     public BotonGUI(BotoneraGUI botonera, Group raiz, Aplicacion app, String nombre, TipoFuncion funcion, int fila, int columna, boolean animado, boolean ayuda){
 
@@ -316,6 +322,10 @@ public class BotonGUI {
 
     public Rectangle getSensor() {
         return sensor;
+    }
+
+    public static Media getSonido() {
+        return sonido;
     }
 
     public void inhabilitarBoton(){
@@ -828,6 +838,9 @@ public class BotonGUI {
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBoton(posicionX, posicionY)){
+
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
             setBotonActual(getBotonOscuro());
         }
     }

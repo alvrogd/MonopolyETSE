@@ -1,7 +1,6 @@
 package aplicacionGUI.menuGUI.JugadoresGUI;
 
 import aplicacion.Aplicacion;
-import aplicacion.excepciones.MonopolyETSEException;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.informacion.tableroGUI.TableroGUI;
 import aplicacionGUI.menuGUI.MenuGUI;
@@ -9,17 +8,17 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Translate;
-import monopoly.Constantes;
 import monopoly.jugadores.Jugador;
 import monopoly.tablero.jerarquiaCasillas.TipoFuncion;
 import resources.menuGUI.jugadores.JugadoresImagen;
-import resources.menuGUI.MenuGUIFondo;
+import resources.sonidos.Sonidos;
 
 import java.util.ArrayList;
 
@@ -47,6 +46,9 @@ public class JugadorGUI {
     private Rectangle boton;
     private Rectangle botonDescribir;
     private Rectangle botonAvatar;
+
+    // Sonido a reproducir cuando se pulsa un botón
+    private static final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
 
     /* Constructor */
 
@@ -181,6 +183,10 @@ public class JugadorGUI {
         return boton;
     }
 
+    public static Media getSonido() {
+        return sonido;
+    }
+
     public void renderBarra(){
         getGc().drawImage(getBarraActual(), 0, 0);
     }
@@ -287,8 +293,17 @@ public class JugadorGUI {
         double posicionY = y - getDesplazamientoY();
 
         if(pulsandoBotonTrato(posicionX, posicionY)){
+
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
             setBarraActual(getBarraTratoOscuro());
-        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
+
+        }
+
+        else if(pulsandoBotonDescribir(posicionX, posicionY)){
+
+            MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.play();
             setBarraActual(getBarraDescribirOscuro());
         }
     }

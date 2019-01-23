@@ -374,4 +374,7 @@ public class ConstantesGUI {
     // Sonido de click de un botón
     public final static String SONIDO_BOTON = "click.wav";
 
+    // Sonido de pasar a modo avanzado
+    public final static String SONIDO_AVANZADO = "modoAvanzado.wav";
+
 }
