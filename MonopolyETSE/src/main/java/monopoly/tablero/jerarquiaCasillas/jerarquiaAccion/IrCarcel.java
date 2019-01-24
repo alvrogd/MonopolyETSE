@@ -4,10 +4,6 @@ import aplicacion.salidaPantalla.Output;
 import monopoly.Constantes;
 import monopoly.jugadores.Avatar;
 import monopoly.jugadores.Jugador;
-import monopoly.jugadores.excepciones.EstarBancarrotaException;
-import monopoly.jugadores.excepciones.ImposibleCambiarModoException;
-import monopoly.jugadores.excepciones.ImposibleMoverseException;
-import monopoly.jugadores.excepciones.NoSerPropietarioException;
 import monopoly.tablero.Tablero;
 
 public class IrCarcel extends Especial{
@@ -41,17 +37,7 @@ public class IrCarcel extends Especial{
         // Y se añade el avatar al listado de avatares contenidos en la cárcel
         avatar.getPosicion().getAvataresContenidos().put(avatar.getIdentificador(), avatar);
 
-        Output.mensaje(
-                "          ,",
-                " __  _.-\"` `'-.",
-                "/||\\'._ __{}_(",
-                "||||  |'--.__\\",
-                "|  L.(   ^_\\^     ¡Has sido encarcelado!",
-                "\\ .-' |   _ |",
-                "| |   )\\___/",
-                "|  \\-'`:._]",
-                "\\__/;      '-.", ""
-        );
+        Output.mensaje("¡Has sido encarcelado!");
 
     }
 

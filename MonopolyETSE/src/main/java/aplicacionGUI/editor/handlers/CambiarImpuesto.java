@@ -1,5 +1,6 @@
 package aplicacionGUI.editor.handlers;
 
+import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.Celda;
 import aplicacionGUI.input.ILectorEntero;
 import aplicacionGUI.input.InputEntero;
@@ -36,7 +37,8 @@ public class CambiarImpuesto extends CambiarAtributo implements ILectorEntero {
         // todo comprobar excepciones de formato incorrecto
         // todo no se renderiza el impuesto por defecto
         // Se crea un lector de enteros
-        new InputEntero(true, 0, this);
+        new InputEntero(true, 0, this, ConstantesGUI.INPUT_ENTERO_DINERO_IMAGEN,
+                ConstantesGUI.INPUT_ENTERO_DINERO_IMAGEN_OSCURA);
     }
 
     /**
