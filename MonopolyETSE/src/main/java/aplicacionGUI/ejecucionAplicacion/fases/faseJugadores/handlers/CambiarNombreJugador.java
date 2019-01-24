@@ -39,7 +39,7 @@ public class CambiarNombreJugador implements ILectorString {
         Integer repeticiones = 0;
         // En caso de que no esté vacío se elimina el primero, ya que la cuestión es almacenar solo un único valor
 
-        if(getBotonFase().getFaseJugador().getAplicacionGUI().getJugadoresCreados().containsKey(stringLeido)){
+        /*if(getBotonFase().getFaseJugador().getAplicacionGUI().getJugadoresCreados().containsKey(stringLeido)){
             stringLeido += repeticiones;
         }
 
@@ -60,7 +60,7 @@ public class CambiarNombreJugador implements ILectorString {
                 stringLeido += repeticiones.toString();
 
                 repeticiones++;
-        }
+        }*/
         getBotonFase().setNombreJugador(stringLeido);
         // Como ya se ha leido el String, se ha finalizado la acción del botón
         getBotonFase().setFinAccion(true);
