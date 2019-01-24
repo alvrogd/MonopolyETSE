@@ -6,11 +6,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import resources.entrada.ImagenEntradaGUI;
+import resources.sonidos.Sonidos;
 
 import java.util.ArrayList;
 
@@ -62,6 +65,10 @@ public abstract class Input {
 
     // Escalado establecido
     private Scale escalado;
+
+    // Sonido a reproducir cuando se pulsa el botón
+    private final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
+
 
 
     /* Constructor */
@@ -260,6 +267,10 @@ public abstract class Input {
         this.escalado = escalado;
     }
 
+    public Media getSonido() {
+        return sonido;
+    }
+
 
 
     /* Métodos */
@@ -286,6 +297,9 @@ public abstract class Input {
 
         // Se cambia la imagen a aquella oscurecida
         setImagenSeleccionada(getImagenOscura());
+
+        MediaPlayer reproductor = new MediaPlayer(getSonido());
+        reproductor.play();
     }
 
     /**
