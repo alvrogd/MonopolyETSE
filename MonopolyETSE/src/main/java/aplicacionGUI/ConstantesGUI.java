@@ -667,4 +667,8 @@ public class ConstantesGUI {
     // Constantes de ancho y alto de los botones de la fase de jugador
     public final static int BOTONFASE_ANCHO = 660;
     public final static int BOTONFASE_ALTO = 170;
+
+    // Nombres de las imagénes de estados de los jugadores
+    public final static String BUFO_CARCEL = "bufoCarcel.png";
+    public final static String BUFO_CABEZA = "bufoRey.png";
 }

@@ -50,34 +50,40 @@ public class JugadorGUI {
     private Rectangle botonDescribir;
     private Rectangle botonAvatar;
 
+    // Imágenes de estado
+    private final static Image bufoCarcel = new Image(JugadoresImagen.class.getResource(
+            ConstantesGUI.BUFO_CARCEL).toString());
+    private final static Image bufoCabeza = new Image(JugadoresImagen.class.getResource(
+            ConstantesGUI.BUFO_CABEZA).toString());
+
     // Sonido a reproducir cuando se pulsa un botón
     private static final Media sonido = new Media(Sonidos.class.getResource(ConstantesGUI.SONIDO_BOTON).toString());
 
     /* Constructor */
 
-    public JugadorGUI(Group raiz, Jugador jugador, int numJugador, TableroGUI tableroGUI, MenuGUI menuGUI){
+    public JugadorGUI(Group raiz, Jugador jugador, int numJugador, TableroGUI tableroGUI, MenuGUI menuGUI) {
 
-        if(raiz == null){
+        if (raiz == null) {
             System.err.println("Raíz no inicializada");
             System.exit(1);
         }
 
-        if(jugador == null){
+        if (jugador == null) {
             System.err.println("Jugador no inicializado");
             System.exit(1);
         }
 
-        if(tableroGUI == null){
+        if (tableroGUI == null) {
             System.err.println("TableroGUI no inicializado");
             System.exit(1);
         }
 
-        if(numJugador < 1){
+        if (numJugador < 1) {
             System.err.println("El jugador no puede ser negativo o 0");
             System.exit(1);
         }
 
-        if(menuGUI == null){
+        if (menuGUI == null) {
             System.err.println("Menú no inicializado");
             System.exit(1);
         }
@@ -206,24 +212,33 @@ public class JugadorGUI {
     public Image getPenalizado() {
         return penalizado;
     }
+
     public static Media getSonido() {
         return sonido;
     }
 
-    public void renderBarra(){
+    public static Image getBufoCarcel() {
+        return bufoCarcel;
+    }
+
+    public static Image getBufoCabeza() {
+        return bufoCabeza;
+    }
+
+    public void renderBarra() {
         getGc().drawImage(getBarraActual(), 0, 0);
-        if(getJugador().equals(getMenuGUI().getJuego().getTurno())){
+        if (getJugador().equals(getMenuGUI().getJuego().getTurno())) {
             getGc().drawImage(getTurno(), 0, 0);
-        }  else if(getJugador().getTurnosPenalizado() > 0){
-            getGc().drawImage(getPenalizado(), 0 ,0);
+        } else if (getJugador().getTurnosPenalizado() > 0) {
+            getGc().drawImage(getPenalizado(), 0, 0);
         }
     }
 
-    public void renderAvatar(){
+    public void renderAvatar() {
         getGc().drawImage(getAvatar(), ConstantesGUI.BARRA_DESPLAZAMIENTO_AVATAR_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_AVATAR_Y);
     }
 
-    public void renderNombre(){
+    public void renderNombre() {
         getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
         getGc().setStroke(Color.TRANSPARENT);
         getGc().setFill(Color.BLACK);
@@ -232,7 +247,7 @@ public class JugadorGUI {
         getGc().fillText(getJugador().getNombre(), ConstantesGUI.BARRA_DESPLAZAMIENTO_NOMBRE_X, ConstantesGUI.BARRA_DESPLAZAMIENTO_NOMBRE_Y);
     }
 
-    public void renderDinero(){
+    public void renderDinero() {
         getGc().setFont(Font.font("Cousine Nerd Font", FontWeight.NORMAL, 12));
         getGc().setStroke(Color.TRANSPARENT);
         getGc().setFill(Color.BLACK);
@@ -246,31 +261,31 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        return(getSensor().contains(posicionX, posicionY));
+        return (getSensor().contains(posicionX, posicionY));
     }
 
-    public boolean pulsandoBotonTrato(double x, double y){
+    public boolean pulsandoBotonTrato(double x, double y) {
         double posicionX = x;
         double posicionY = y;
 
-        return(getBoton().contains(posicionX, posicionY));
+        return (getBoton().contains(posicionX, posicionY));
     }
 
-    public boolean pulsandoAvatar(double x, double y){
+    public boolean pulsandoAvatar(double x, double y) {
         double posicionX = x;
         double posicionY = y;
 
-        return(getBotonAvatar().contains(posicionX, posicionY));
+        return (getBotonAvatar().contains(posicionX, posicionY));
     }
 
-    public boolean pulsandoBotonDescribir(double x, double y){
+    public boolean pulsandoBotonDescribir(double x, double y) {
         double posicionX = x;
         double posicionY = y;
 
-        return(getBotonDescribir().contains(posicionX, posicionY));
+        return (getBotonDescribir().contains(posicionX, posicionY));
     }
 
-    public void handleTratos(){
+    public void handleTratos() {
         getMenuGUI().getBotonera().setCasillasDar(new ArrayList<>());
         getMenuGUI().getBotonera().setCasillasRecibir(new ArrayList<>());
         getMenuGUI().getBotonera().setInmunidades(new ArrayList<>());
@@ -288,7 +303,7 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(!getJugador().isEstaBancarrota()) {
+        if (!getJugador().isEstaBancarrota()) {
             if (pulsandoBotonTrato(posicionX, posicionY)) {
                 if (getMenuGUI().getBotonera().isAyuda()) {
                     Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.proponerTrato));
@@ -319,7 +334,7 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(!getJugador().isEstaBancarrota()) {
+        if (!getJugador().isEstaBancarrota()) {
             if (pulsandoBotonTrato(posicionX, posicionY)) {
 
                 MediaPlayer reproductor = new MediaPlayer(getSonido());
@@ -339,7 +354,7 @@ public class JugadorGUI {
 
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
-        if(!getJugador().isEstaBancarrota()) {
+        if (!getJugador().isEstaBancarrota()) {
             if (pulsandoBotonTrato(posicionX, posicionY)) {
                 setBarraActual(getBarra());
             } else if (pulsandoBotonDescribir(posicionX, posicionY)) {
@@ -348,17 +363,34 @@ public class JugadorGUI {
         }
     }
 
-    public void renderBancarrota(){
+    public void renderBancarrota() {
         getGc().drawImage(getBancarrota(), 0, 0);
     }
 
-    public void render(){
+    public void render() {
         renderBarra();
         renderAvatar();
         renderNombre();
         renderDinero();
-        if(getJugador().isEstaBancarrota()) {
+
+        if (getJugador().isEstaBancarrota()) {
             renderBancarrota();
+        }
+
+        renderBufos();
+    }
+
+    private void renderBufos() {
+
+        boolean cabezaImpreso = false;
+
+        if (getMenuGUI().getJuego().jugadorEnCabeza().equals(getJugador())) {
+            getGc().drawImage(getBufoCabeza(), 407, 4);
+            cabezaImpreso = true;
+        }
+
+        if (getJugador().getAvatar().isEncarcelado()) {
+            getGc().drawImage(getBufoCarcel(), cabezaImpreso ? 370 : 407, 4);
         }
     }
 

@@ -403,6 +403,7 @@ public class Tablero {
             switch(informacionCasilla.getTipoCasilla()){
                 case carcel:
                     gestionarCarcel(contador, informacionCasilla);
+                    Constantes.POSICION_CARCEL = contador;
                     break;
                 case comunidad:
                     gestionarComunidad(contador, informacionCasilla);
@@ -412,9 +413,11 @@ public class Tablero {
                     break;
                 case irCarcel:
                     gestionarIrCarcel(contador, informacionCasilla);
+                    Constantes.POSICION_IR_CARCEL = contador;
                     break;
                 case parking:
                     gestionarParking(contador, informacionCasilla);
+                    Constantes.POSICION_PARKING = contador;
                     break;
                 case salida:
                     gestionarSalida(contador, informacionCasilla);

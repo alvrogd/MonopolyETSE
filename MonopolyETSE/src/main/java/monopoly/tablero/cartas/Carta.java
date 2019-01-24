@@ -6,6 +6,7 @@ import monopoly.jugadores.Jugador;
 import monopoly.jugadores.acciones.TransferenciaMonetaria;
 import monopoly.jugadores.excepciones.*;
 import monopoly.tablero.Tablero;
+import monopoly.tablero.jerarquiaCasillas.Transporte;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaAccion.Parking;
 import monopoly.tablero.jerarquiaCasillas.jerarquiaEdificios.TipoEdificio;
 import monopoly.tablero.jerarquiaCasillas.Casilla;
@@ -163,7 +164,7 @@ public abstract class Carta {
                 jugador.incrementarPagoTasasEImpuestos(importe);
 
                 // Se incrementa el bote en el parking
-                final Parking parking = (Parking) jugador.getAvatar().getTablero().getCasillas().get(
+                Parking parking = (Parking) jugador.getAvatar().getTablero().getCasillas().get(
                         Constantes.POSICION_PARKING / 10).get(Constantes.POSICION_PARKING % 10);
 
                 parking.incrementarDinero(importe);
@@ -219,21 +220,72 @@ public abstract class Carta {
                     jugador.getAvatar().caerEnIrACarcel();
                     return;
 
-                // Si el destino es la próxima casilla de transporte (los transportes se encuentran en las posiciones
-                // 5, 15, 25 y 35
+                // Si el destino es la próxima casilla de transporte (está en la actual fila o en la siguiente)
                 case "transporte":
 
-                    // La siguiente casilla de transporte puede estar como mucho a 10 casillas de la actual
-                    posicionDestino = posicionActual + 10;
-                    posicionDestino -= (posicionDestino - 5) % 10;
+                    boolean encontrada = false;
+                    Transporte transporte = null;
 
-                    posicionDestino %= 40;
+                    // Se comprueba la actual fila
+                    for( Casilla casilla : getTablero().getCasillas().get(posicionActual / 10)) {
+
+                        if( casilla instanceof Transporte && casilla.getPosicionEnTablero() > posicionActual ) {
+                            encontrada = true;
+                            transporte = (Transporte)casilla;
+                            break;
+                        }
+                    }
+
+                    // Si aún no se ha encontrado, se mira la siguiente fila
+                    if(!encontrada) {
+
+                        for(Casilla casilla : getTablero().getCasillas().get((posicionActual / 10 + 1) % 4)) {
+
+                            if( casilla instanceof Transporte && casilla.getPosicionEnTablero() > posicionActual ) {
+                                transporte = (Transporte)casilla;
+                                break;
+                            }
+                        }
+                    }
+
+                    posicionDestino = transporte.getPosicionEnTablero();
                     break;
 
                 // En caso contrario, se obtiene la posición de destino directamente
                 default:
-                    final Casilla destino = getTablero().getCasillasTablero().get(nombreDestino);
-                    posicionDestino = destino.getPosicionEnTablero();
+
+                    switch(tipoMovimiento) {
+
+                        case moverAeropuerto:
+                            posicionDestino = Constantes.POSICION_AEROPUERTO;
+                            break;
+
+                        case moverCadiz:
+                            posicionDestino = Constantes.POSICION_CADIZ;
+                            break;
+
+                        case moverCaceres:
+                            posicionDestino = Constantes.POSICION_CACERES;
+                            break;
+
+                        case moverLeganes:
+                            posicionDestino = Constantes.POSICION_LEGANES;
+                            break;
+
+                        case moverSalida:
+                            posicionDestino = Constantes.POSICION_SALIDA;
+                            break;
+
+                        case moverValencia:
+                            posicionDestino = Constantes.POSICION_VALENCIA;
+                            break;
+
+                        case moverPamplona:
+                        default:
+                            posicionDestino = Constantes.POSICION_PAMPLONA;
+                            break;
+                    }
+
                     break;
             }
         }

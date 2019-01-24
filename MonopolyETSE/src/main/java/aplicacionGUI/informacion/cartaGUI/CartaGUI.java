@@ -368,6 +368,10 @@ public abstract class CartaGUI {
      */
     public void mostrarCarta() {
 
+        if(isAnimacionFinalizada() && isMostrandose()) {
+            return;
+        }
+
         setBarajando(false);
         setAnimacionFinalizada(false);
         setMostrandose(true);
@@ -384,6 +388,11 @@ public abstract class CartaGUI {
      * Se esconde la carta mostrada
      */
     public void esconderCarta() {
+
+        if( isAnimacionFinalizada() && !isMostrandose() ) {
+            return;
+        }
+
         setBarajando(false);
         setAnimacionFinalizada(false);
         setMostrandose(false);

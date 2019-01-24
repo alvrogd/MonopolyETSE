@@ -830,9 +830,8 @@ public abstract class Avatar {
      */
     public void caerEnIrACarcel() {
 
-        // Se elimina el avatar del listado de avatares contenidos en la casilla actual
-       final Especial irCarcel = (Especial) getTablero().getCasillas().get((Constantes.POSICION_PARKING+10)/10).get(
-               (Constantes.POSICION_PARKING+10)%10);
+       final Especial irCarcel = (Especial) getTablero().getCasillas().get(Constantes.POSICION_IR_CARCEL/10).get(
+               Constantes.POSICION_IR_CARCEL%10);
 
        irCarcel.ejecutarAccion(getJugador());
 

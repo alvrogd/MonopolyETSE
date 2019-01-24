@@ -492,6 +492,47 @@ public class Editor {
         return (resultado);
     }
 
+    public String generarNombre(String nombre) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(nombre);
+        Integer repeticiones = 0;
+
+        // En caso de que no esté vacío se elimina el primero, ya que la cuestión es almacenar solo un único valor
+        if( nombreContenido(nombre) ) {
+            stringBuilder.append(" ").append(repeticiones);
+        }
+
+        while(nombreContenido(stringBuilder.toString())) {
+
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
+                stringBuilder.append(repeticiones);
+
+                repeticiones++;
+                repeticiones %= 11;
+        }
+
+        return (stringBuilder.toString());
+    }
+
+    private boolean nombreContenido(String nombre) {
+
+        for(ArrayList<Celda> fila : getCeldas() ) {
+
+            for(Celda celda : fila ) {
+
+                if( celda.getCasillaGUI() != null ) {
+                    if(celda.getCasillaGUI().getCasilla().getNombre().equals(nombre)) {
+                        return (true);
+                    }
+                }
+            }
+        }
+
+        return (false);
+    }
+
     /**
      * Se comprueba si, en un grupo de casillas, aún no se han creado todas las que este puede contener, buscando en
      * una fila específica

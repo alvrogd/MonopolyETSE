@@ -106,49 +106,49 @@ public class CrearCasilla implements EventHandler<ActionEvent> {
         switch (getTipoCasilla()) {
 
             case carcel:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new Carcel("Cárcel", posicionTablero,
+                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new Carcel(getCelda().getEditor().generarNombre("Cárcel"), posicionTablero,
                         Celda.getTablero()), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case irCarcel:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new IrCarcel("Ir a la cárcel",
+                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new IrCarcel(getCelda().getEditor().generarNombre("Ir a la cárcel"),
                         posicionTablero, tablero), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case parking:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new Parking("Parking",
+                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new Parking(getCelda().getEditor().generarNombre("Parking"),
                         posicionTablero, tablero), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case comunidad:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new ComunidadCasilla("Casilla Comunidad",
+                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new ComunidadCasilla(getCelda().getEditor().generarNombre("Casilla Comunidad"),
                         posicionTablero, tablero), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case impuesto:
-                celda.setCasillaGUI(new ImpuestoGUI(tableroGUI, nodo, new Impuesto("Casilla Impuesto",
+                celda.setCasillaGUI(new ImpuestoGUI(tableroGUI, nodo, new Impuesto(getCelda().getEditor().generarNombre("Casilla Impuesto"),
                         posicionTablero, tablero, 0), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case servicio:
-                celda.setCasillaGUI(new PropiedadGUI(tableroGUI, nodo, new Servicio("Casilla Servicio",
+                celda.setCasillaGUI(new PropiedadGUI(tableroGUI, nodo, new Servicio(getCelda().getEditor().generarNombre("Casilla Servicio"),
                         grupo, true, posicionTablero, banca, tablero),
                         ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case solar:
-                celda.setCasillaGUI(new SolarGUI(tableroGUI, nodo, new Solar("Casilla Solar",
+                celda.setCasillaGUI(new SolarGUI(tableroGUI, nodo, new Solar(getCelda().getEditor().generarNombre("Casilla Solar"),
                         grupo, true, posicionTablero, banca, tablero),
                         ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case suerte:
-                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new SuerteCasilla("Casilla Suerte",
+                celda.setCasillaGUI(new CasillaGUI(tableroGUI, nodo, new SuerteCasilla(getCelda().getEditor().generarNombre("Casilla Suerte"),
                         posicionTablero, tablero), ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;
 
             case transporte:
-                celda.setCasillaGUI(new PropiedadGUI(tableroGUI, nodo, new Transporte("Casilla Transporte",
+                celda.setCasillaGUI(new PropiedadGUI(tableroGUI, nodo, new Transporte(getCelda().getEditor().generarNombre("Casilla Transporte"),
                         grupo, true, posicionTablero, banca, tablero),
                         ConstantesGUI.EDITOR_CASILLA_BLANCO, 0, 0, false));
                 break;

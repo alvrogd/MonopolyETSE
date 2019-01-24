@@ -4,12 +4,9 @@ import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.Editor;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
-import aplicacionGUI.ejecucionAplicacion.TipoFase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.handlers.ClickIzquierdo;
 import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.handlers.Pulsacion;
 import aplicacionGUI.ejecucionAplicacion.fases.faseEditor.handlers.Release;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 
 public class FaseEditor extends Fase {
 
@@ -32,7 +29,7 @@ public class FaseEditor extends Fase {
      */
     public FaseEditor(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fondo.jpg");
+        super(aplicacionGUI, "fondo.png");
 
         // Inicialmente, la edición no ha finalizado y no se ha iniciado el editor
         this.edicionFinalizada = false;
@@ -78,17 +75,6 @@ public class FaseEditor extends Fase {
 
         // Se define la acción al soltar un botón del ratón
         getEscena().setOnMouseReleased(new Release(this));
-
-        // Se define la acción ante una combinación de teclas
-        getEscena().setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent e) {
-
-                getAplicacionGUI().setTipoFase(TipoFase.inicioJuego);
-                getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
-            }
-        });
 
         // Se indica que se ha inicializado
         setIniciado(true);

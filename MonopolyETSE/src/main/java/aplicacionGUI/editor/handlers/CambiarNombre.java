@@ -44,6 +44,6 @@ public class CambiarNombre extends CambiarAtributo implements ILectorString {
     @Override
     public void almacenarString(String stringLeido, int identificadorAtributo) {
 
-        getCelda().getCasillaGUI().getCasilla().setNombre(stringLeido);
+        getCelda().getCasillaGUI().getCasilla().setNombre(getCelda().getEditor().generarNombre(stringLeido));
     }
 }

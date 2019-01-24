@@ -69,8 +69,9 @@ public final class Constantes {
     public final static int IMPUESTO_2 = (int) (DINERO_SALIDA / (double) 2);
 
     // Posición de casillas clave
-    public final static int POSICION_CARCEL = 10;
-    public final static int POSICION_PARKING = 20;
+    public static int POSICION_CARCEL = 10;
+    public static int POSICION_PARKING = 20;
+    public static int POSICION_IR_CARCEL = 30;
 
     // Precio de las casillas de transporte
     public final static int DINERO_TRANSPORTES = DINERO_SALIDA;
@@ -148,4 +149,13 @@ public final class Constantes {
     public final static String NOMBRE_COMUNIDAD_1 = "Comunidad";
     public final static String NOMBRE_COMUNIDAD_2 = "Comunidad";
     public final static String NOMBRE_COMUNIDAD_3 = "Comunidad";
+
+    // Posiciones de los destinos de las cartas
+    public final static int POSICION_AEROPUERTO = 35;
+    public final static int POSICION_CADIZ = 9;
+    public final static int POSICION_CACERES = 16;
+    public final static int POSICION_LEGANES = 24;
+    public final static int POSICION_SALIDA = 0;
+    public final static int POSICION_VALENCIA = 1;
+    public final static int POSICION_PAMPLONA = 32;
 }

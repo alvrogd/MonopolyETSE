@@ -42,7 +42,7 @@ public class FaseJuego extends Fase {
      */
     public FaseJuego(AplicacionGUI aplicacionGUI) {
 
-        super(aplicacionGUI, "fondo.jpg");
+        super(aplicacionGUI, "fondo.png");
 
     }
 
