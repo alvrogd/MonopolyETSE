@@ -138,6 +138,7 @@ public class AplicacionGUI {
     }*/
 
     public HashMap<String, TipoAvatar> getJugadoresCreados() {
+        System.out.println("holi " + this.jugadoresCreados);
         return jugadoresCreados;
     }
 

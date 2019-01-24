@@ -272,6 +272,7 @@ public class BotonFase{
         for(BotonFase boton : getFaseJugador().getBotones()){
             if(boton.getFuncion().equals(TipoFuncionFase.iniciarJuego)){
                 boton.setActivo(false);
+                break;
             }
         }
     }
@@ -366,7 +367,6 @@ public class BotonFase{
             // En el caso de que se haya creado un avatar se mira si se ha superado el mínimo de jugadores
             if(getFuncion().equals(TipoFuncionFase.coche) || getFuncion().equals(TipoFuncionFase.sombrero) ||
                     getFuncion().equals(TipoFuncionFase.esfinge) || getFuncion().equals(TipoFuncionFase.pelota)){
-
                 BotonFase botonIniciar, botonAnadir;
                 boolean iniciarJuego = false;
                 boolean anadirJugador = true;
@@ -411,7 +411,7 @@ public class BotonFase{
     }
 
     public void render(){
-
+        actualizarBoton();
         if(isActivo()) {
             getGc().drawImage(getBotonActual(), 0, 0);
         } else {
