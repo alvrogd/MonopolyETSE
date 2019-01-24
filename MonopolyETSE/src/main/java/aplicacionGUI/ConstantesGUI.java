@@ -565,7 +565,7 @@ public class ConstantesGUI {
 
     // Nombre de las imágenes para el input de strings
     public final static String INPUT_STRING_IMAGEN = "plantillaEntrada.png";
-    public final static String INPUT_STRING_IMAGEN_OSCURA = "plantillaEntradaDineroOscuro.png";
+    public final static String INPUT_STRING_IMAGEN_OSCURA = "plantillaEntradaOscuro.png";
 
     // Sonido de click de un botón
     public final static String SONIDO_BOTON = "click.wav";
