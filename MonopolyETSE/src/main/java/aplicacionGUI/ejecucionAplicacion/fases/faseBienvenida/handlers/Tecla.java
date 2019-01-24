@@ -66,7 +66,7 @@ public class Tecla implements EventHandler<KeyEvent> {
         else {
 
             // Se inicia la siguiente fase
-            getFaseBienvenida().getAplicacionGUI().setTipoFase(TipoFase.seleccionTablero);
+            getFaseBienvenida().getAplicacionGUI().setTipoFase(TipoFase.introduccionJugadores);
             getFaseBienvenida().getAplicacionGUI().ejecutarFase(getFaseBienvenida().getAplicacionGUI().getTipoFase());
         }
     }

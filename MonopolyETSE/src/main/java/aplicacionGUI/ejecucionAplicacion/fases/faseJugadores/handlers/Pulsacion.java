@@ -3,7 +3,6 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.FaseJugador;
 import aplicacionGUI.input.Input;
 import javafx.event.EventHandler;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
@@ -66,5 +65,14 @@ public class Pulsacion implements EventHandler<MouseEvent> {
             getFaseJugador().handlerPulsado(x, y);
         }
 
+        final ArrayList<Input> inputsActivos = getFaseJugador().getInputsActivos();
+        // Si existe algún input activo
+        if (inputsActivos.size() > 0) {
+
+            // Si el primer input contenido ha sido pulsado
+            if (inputsActivos.get(0).contienePosicion(x, y)) {
+                inputsActivos.get(0).handlePulsacion();
+            }
+        }
     }
 }

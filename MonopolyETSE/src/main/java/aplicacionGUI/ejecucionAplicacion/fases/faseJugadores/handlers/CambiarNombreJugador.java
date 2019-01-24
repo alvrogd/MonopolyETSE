@@ -2,9 +2,7 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers;
 
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.BotonFase;
 import aplicacionGUI.input.ILectorString;
-import aplicacionGUI.input.InputEntero;
 import aplicacionGUI.input.InputString;
-import javafx.event.ActionEvent;
 import monopoly.jugadores.TipoAvatar;
 
 import java.util.ArrayList;

@@ -5,7 +5,6 @@ import aplicacionGUI.ejecucionAplicacion.Fase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.ClickIzquierdo;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Pulsacion;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Release;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +150,10 @@ public class FaseJugador extends Fase {
             boton.render();
         }
 
+        // Si existe algún input activo, se renderiza el primero
+        if (getInputsActivos().size() > 0) {
+            getInputsActivos().get(0).render();
+        }
     }
 
     public void clear(){

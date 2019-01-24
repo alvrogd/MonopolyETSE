@@ -61,5 +61,15 @@ public class Release implements EventHandler<MouseEvent> {
         if(getFaseJugador().isIniciado()){
             getFaseJugador().handlerRelease(x, y);
         }
+
+        final ArrayList<Input> inputsActivos = getFaseJugador().getInputsActivos();
+        // Si existe algún input activo
+        if (inputsActivos.size() > 0) {
+
+            // Si el primer input contenido contiene la posición en la cual se pulsó el botón del ratón
+            if (inputsActivos.get(0).contienePosicion(x, y)) {
+                inputsActivos.get(0).handleRelease();
+            }
+        }
     }
 }
