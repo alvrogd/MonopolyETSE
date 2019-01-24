@@ -122,6 +122,8 @@ public class AplicacionGUI {
 
         // Inicialmente, no se ha creado un tablero personalizado
         this.tableroPersonalizado = null;
+
+        // Y no hay jugadores aún
         this.jugadoresCreados = new HashMap<>();
     }
 
