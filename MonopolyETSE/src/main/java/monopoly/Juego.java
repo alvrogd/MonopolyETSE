@@ -414,6 +414,9 @@ public class Juego {
                 //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
                 //desde el HashMap
                 if (this.iterador.hasNext()) {
+                    if(getTurno().isEstaBancarrota()){
+                        System.out.println("bancarrota");
+                    }
                     this.turno = getJugadores().get(this.iterador.next());
                     this.turno.reducirInmunidad();
                 }
