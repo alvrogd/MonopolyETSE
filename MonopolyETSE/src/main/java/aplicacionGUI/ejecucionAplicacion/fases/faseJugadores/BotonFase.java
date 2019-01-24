@@ -55,7 +55,7 @@ public class BotonFase{
     private static final Media sonidoDados = new Media(resources.sonidos.Sonidos.class.getResource(ConstantesGUI.SONIDO_DADOS).toString());
 
     // ArrayList donde se almacenará el último nombre leído
-    private ArrayList<String> nombreJugador;
+    private String nombreJugador;
 
     // Booleano que indica si el botón está activo y por lo tanto si debería imprimirse o no
     private boolean activo;
@@ -113,7 +113,6 @@ public class BotonFase{
         this.boton = new Image(ImagenesFases.class.getResource(nombre + ".png").toString());
         this.botonOscuro = new Image(ImagenesFases.class.getResource(nombre + "Oscuro.png").toString());
         this.botonActual = this.boton;
-        this.nombreJugador = new ArrayList<>();
         this.activo = false;
         this.finAccion = false;
         this.puedeRender = true;
@@ -128,11 +127,12 @@ public class BotonFase{
         this.puedeRender = puedeRender;
     }
 
-    public ArrayList<String> getNombreJugador() {
+    public String getNombreJugador() {
         return nombreJugador;
     }
 
-    public void setNombreJugador(ArrayList<String> nombreJugador) {
+    public void setNombreJugador(String nombreJugador) {
+        System.out.println(nombreJugador);
         this.nombreJugador = nombreJugador;
     }
 
@@ -265,16 +265,19 @@ public class BotonFase{
     }
 
     public void anadirJugador(){
-        new CambiarNombreJugador(getFaseJugador().getAplicacionGUI().getJugadoresCreados(), getNombreJugador(), this);
+        new CambiarNombreJugador(this);
         setActivo(false);
+
+        // Pone iniciarJuego a false
+        for(BotonFase boton : getFaseJugador().getBotones()){
+            if(boton.getFuncion().equals(TipoFuncionFase.iniciarJuego)){
+                boton.setActivo(false);
+            }
+        }
     }
 
     public void creacionAvatares(TipoAvatar tipoAvatar){
-        // En el caso de que contenga el nombre del jugador el TipoAvatar va a estar a null, se actualiza
-        if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().containsKey(getNombreJugador().get(0)))
-            getFaseJugador().getAplicacionGUI().getJugadoresCreados().remove(getNombreJugador().get(0));
-
-        getFaseJugador().getAplicacionGUI().getJugadoresCreados().put(getNombreJugador().get(0), tipoAvatar);
+        getFaseJugador().getAplicacionGUI().getJugadoresCreados().put(getNombreJugador(), tipoAvatar);
         setFinAccion(true);
     }
 
@@ -345,6 +348,8 @@ public class BotonFase{
 
         if(isFinAccion()){
 
+            System.out.println("Soy: "+ getFuncion());
+
             // Si la función del botón es de añadir jugadores, entonces se activan los botones de los avatares
             if(getFuncion().equals(TipoFuncionFase.anadirJugador)){
                 for(BotonFase boton : getFaseJugador().getBotonesPagina().get(TipoFuncionFase.anadirJugador)){
@@ -363,12 +368,13 @@ public class BotonFase{
                     getFuncion().equals(TipoFuncionFase.esfinge) || getFuncion().equals(TipoFuncionFase.pelota)){
 
                 BotonFase botonIniciar, botonAnadir;
-                boolean iniciarJuego = true;
+                boolean iniciarJuego = false;
                 boolean anadirJugador = true;
 
-                // En caso de que ya haya dos jugadores en el juego, el botón de iniciar juego empezará a aparecer
+                // En caso de que ya haya dos jugadores en el juego, el botón de iniciar juego empezará a
+                System.out.println(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size());
                 if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size() >= 2){
-                    iniciarJuego = false;
+                    iniciarJuego = true;
                 }
 
                 if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size() == 6){
@@ -393,6 +399,11 @@ public class BotonFase{
                         break;
                     }
                 }
+
+                // A mayores se desactivan todos los botones relacionados con los avatares
+                for(BotonFase boton : getFaseJugador().getBotonesPagina().get(TipoFuncionFase.anadirJugador)){
+                    boton.setActivo(false);
+                }
             }
             setActivo(false);
         }
@@ -400,9 +411,11 @@ public class BotonFase{
     }
 
     public void render(){
-        actualizarBoton();
+
         if(isActivo()) {
             getGc().drawImage(getBotonActual(), 0, 0);
+        } else {
+            getGc().clearRect(0 ,0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
         }
     }
 

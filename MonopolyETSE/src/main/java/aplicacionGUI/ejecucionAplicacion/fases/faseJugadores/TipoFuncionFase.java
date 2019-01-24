@@ -5,7 +5,7 @@ public enum TipoFuncionFase{
     coche(1075, 550, true, anadirJugador),
     esfinge(195, 350, true, anadirJugador),
     sombrero(1075, 350, true, anadirJugador),
-    pelota(195, 350, true, anadirJugador),
+    pelota(195, 550, true, anadirJugador),
     iniciarJuego(640, 640);
 
     private final int posicionX;
