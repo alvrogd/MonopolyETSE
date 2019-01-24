@@ -17,7 +17,6 @@ import monopoly.Juego;
 import monopoly.jugadores.Jugador;
 import resources.dineroMas.DineroMasImagen;
 import resources.dineroMenos.DineroMenosReducido;
-import resources.menuGUI.botones.BotonesImagenes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -258,6 +257,7 @@ public class JugadoresGUI {
             animacion.setTiempoInicio(t);
             setPrimerFrame(false);
             MediaPlayer reproductor = new MediaPlayer(getSonido());
+            reproductor.setVolume(0.6);
             reproductor.play();
         }
 
