@@ -296,23 +296,20 @@ public class JugadorGUI {
                 } else {
                     handleTratos();
                 }
-                System.out.println("Se ha pulsado el botón TRATO");
             } else if (pulsandoBotonDescribir(posicionX, posicionY)) {
                 if (getMenuGUI().getBotonera().isAyuda()) {
                     Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirJugador));
                     getMenuGUI().getBotonera().setAyuda(false);
                 } else {
-
+                    getMenuGUI().getRegistroGUI().anadirContenido(getJugador().toString());
                 }
-                System.out.println("Se ha pulsado el botón DESCRIBIR");
             } else if (pulsandoAvatar(posicionX, posicionY)) {
                 if (getMenuGUI().getBotonera().isAyuda()) {
                     Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirAvatar));
                     getMenuGUI().getBotonera().setAyuda(false);
                 } else {
-
+                    getMenuGUI().getRegistroGUI().anadirContenido(getJugador().getAvatar().toString());
                 }
-                System.out.println("Se ha pulsado el AVATAR");
             }
         }
     }

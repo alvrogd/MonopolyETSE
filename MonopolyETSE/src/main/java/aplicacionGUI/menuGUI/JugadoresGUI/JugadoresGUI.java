@@ -239,7 +239,6 @@ public class JugadoresGUI {
                 renderAnimacion(t, false, jugadorGUI);
             }
         }
-
     }
 
     private void renderAnimacion(double t, boolean masDinero, JugadorGUI jugadorGUI){
