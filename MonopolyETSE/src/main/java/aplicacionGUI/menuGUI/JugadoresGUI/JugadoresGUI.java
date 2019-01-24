@@ -263,7 +263,7 @@ public class JugadoresGUI {
 
         frame = animacion.getFrame(t);
 
-        jugadorGUI.getGc().drawImage(frame, ConstantesGUI.BARRA_JUGADOR_ANCHO-125, -15);
+        jugadorGUI.getGc().drawImage(frame, ConstantesGUI.BARRA_JUGADOR_ANCHO - 125, -15);
 
         if(animacion.getIndice(t) == animacion.getFrames().size() - 1){
             setPrimerFrame(true);

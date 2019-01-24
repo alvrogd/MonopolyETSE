@@ -3,9 +3,11 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores;
 import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
+import aplicacionGUI.ejecucionAplicacion.TipoFase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.ClickIzquierdo;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Pulsacion;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Release;
+import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.Tecla;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ public class FaseJugador extends Fase {
     // HashMap donde se almacena un ArrayList de botones a los que se accede a partir de una función raíz
     private HashMap<TipoFuncionFase, ArrayList<BotonFase>> botonesPagina;
 
-    public FaseJugador(AplicacionGUI aplicacionGUI){
+    public FaseJugador(AplicacionGUI aplicacionGUI) {
         super(aplicacionGUI, "introducirJugadores.png");
         this.botones = new ArrayList<>();
         this.botonesActuales = new ArrayList<>();
@@ -29,16 +31,16 @@ public class FaseJugador extends Fase {
         crearBotones();
     }
 
-    public void crearBotones(){
-        for(TipoFuncionFase funcion : TipoFuncionFase.values()){
+    public void crearBotones() {
+        for (TipoFuncionFase funcion : TipoFuncionFase.values()) {
 
             BotonFase boton = new BotonFase(this, getRaiz(), funcion.toString(), funcion, funcion.getPosicionX(), funcion.getPosicionY());
 
             getBotones().add(boton);
 
-            if(funcion.isPagina()){
+            if (funcion.isPagina()) {
                 // En caso de que no contenga la clave se crea el ArrayList
-                if(!getBotonesPagina().containsKey(funcion.getFuncionRaiz())){
+                if (!getBotonesPagina().containsKey(funcion.getFuncionRaiz())) {
                     getBotonesPagina().put(funcion.getFuncionRaiz(), new ArrayList<>());
                 }
 
@@ -72,8 +74,7 @@ public class FaseJugador extends Fase {
         this.botonesActuales = botonesActuales;
     }
 
-    public void iniciar(){
-        setIniciado(true);
+    public void iniciar() {
 
         // Se define la acción ante un click izquierdo
         getEscena().setOnMouseClicked(new ClickIzquierdo(this));
@@ -84,72 +85,77 @@ public class FaseJugador extends Fase {
         // Se define la acción al soltar un botón del ratón
         getEscena().setOnMouseReleased(new Release(this));
 
+        // Se define un gestor vacío para pulsaciones de teclas
+        getEscena().setOnKeyPressed(new Tecla());
+
         // Se busca el botón de añadir jugadores y se inicia
-        for(BotonFase boton : getBotones()){
-            if(boton.getFuncion().equals(TipoFuncionFase.anadirJugador)){
+        for (BotonFase boton : getBotones()) {
+            if (boton.getFuncion().equals(TipoFuncionFase.anadirJugador)) {
                 boton.setActivo(true);
             }
         }
+
+        setIniciado(true);
     }
 
-    public void finalizar(){
+    public void finalizar() {
 
         // Este método para que no haya problemas debería poner todos los botones con su activo a false.
-        /**
-         * for(BotonFase boton : getBotones()){
-         *      boton.setActivo(false);
-         * }
-         */
+        for (BotonFase boton : getBotones()) {
+            boton.setActivo(false);
+        }
 
+        getAplicacionGUI().setTipoFase(TipoFase.seleccionTablero);
+        getAplicacionGUI().ejecutarFase(getAplicacionGUI().getTipoFase());
     }
 
-    public void handlerIzquierdo(double x, double y){
-        for(BotonFase boton : getBotonesActuales()){
-            if(boton.contienePosicion(x, y)){
+    public void handlerIzquierdo(double x, double y) {
+        for (BotonFase boton : getBotonesActuales()) {
+            if (boton.contienePosicion(x, y)) {
                 boton.handleClickIzquierdo(x, y);
             }
         }
     }
 
-    public void handlerPulsado(double x, double y){
-        for(BotonFase boton : getBotonesActuales()){
-            if(boton.contienePosicion(x, y)){
+    public void handlerPulsado(double x, double y) {
+        for (BotonFase boton : getBotonesActuales()) {
+            if (boton.contienePosicion(x, y)) {
                 boton.handleClickPulsado(x, y);
             }
         }
     }
 
-    public void handlerRelease(double x, double y){
-        for(BotonFase boton : getBotonesActuales()){
-            if(boton.contienePosicion(x, y)){
+    public void handlerRelease(double x, double y) {
+        for (BotonFase boton : getBotonesActuales()) {
+            if (boton.contienePosicion(x, y)) {
                 boton.handleClickSoltado(x, y);
             }
         }
     }
 
-    public void actualizarBotones(){
+    public void actualizarBotones() {
 
         setBotonesActuales(new ArrayList<>());
 
-        for(BotonFase boton : getBotones()){
+        for (BotonFase boton : getBotones()) {
 
-            if(boton.isActivo()){
+            if (boton.isActivo()) {
                 getBotonesActuales().add(boton);
-            } else{
-                getGc().clearRect(0 ,0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
+            } else {
+                getGc().clearRect(0, 0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
             }
 
         }
 
     }
 
-    public void render(double t){
+    public void render(double t) {
 
         actualizarBotones();
 
         getGc().drawImage(getFondo(), 0, 0);
 
-        for(BotonFase boton : getBotonesActuales()){
+        for (BotonFase boton : getBotonesActuales()) {
             boton.render();
         }
 
@@ -159,7 +165,7 @@ public class FaseJugador extends Fase {
         }
     }
 
-    public void clear(){
+    public void clear() {
 
     }
 

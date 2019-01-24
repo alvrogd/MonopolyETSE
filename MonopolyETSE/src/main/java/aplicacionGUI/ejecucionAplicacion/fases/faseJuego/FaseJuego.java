@@ -12,9 +12,11 @@ import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Pulsacion;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJuego.handlers.Release;
 import aplicacionGUI.informacion.Informacion;
 import aplicacionGUI.menuGUI.MenuGUI;
+import monopoly.jugadores.TipoAvatar;
 import monopoly.tablero.jerarquiaCasillas.InformacionCasilla;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FaseJuego extends Fase {
 
@@ -88,8 +90,25 @@ public class FaseJuego extends Fase {
             setApp(new Aplicacion());
         }
 
+        // Se crean los jugadores
+        for( Map.Entry<String, TipoAvatar> entrada : getAplicacionGUI().getJugadoresCreados().entrySet() ) {
+
+            try {
+                getApp().introducirComando("crear jugador " + entrada.getKey() + " " + entrada.getValue().toString());
+            } catch (MonopolyETSEException e) {
+                System.err.println(e.toString());
+            }
+        }
+
+        // Se inicia el juego
+        try {
+            getApp().introducirComando("iniciar");
+        } catch (MonopolyETSEException e) {
+            System.err.println(e.toString());
+        }
+
         // todo quitar pruebas
-        pruebas1();
+        //pruebas1();
 
         // Se crea la sección superior de la GUI, encargada de representar información como el tablero del juego
         setInformacion(new Informacion(getRaiz(), getApp().getJuego().getTablero(),
@@ -102,7 +121,12 @@ public class FaseJuego extends Fase {
         getInformacion().setMenuGUI(menuGUI);
 
         // todo quitar pruebas
-        pruebas2();
+        //pruebas2();
+
+        // Se inicializa la información del marco de información
+        ArrayList<String> informacion = new ArrayList<>();
+        informacion.add("");
+        getInformacion().getMarcoInformacion().actualizarContenido(informacion);
 
         // Se define la acción ante un click izquierdo
         getEscena().setOnMouseClicked(new ClickIzquierdo(this));

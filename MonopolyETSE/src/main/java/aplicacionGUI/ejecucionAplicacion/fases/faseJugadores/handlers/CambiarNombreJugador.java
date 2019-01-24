@@ -3,10 +3,6 @@ package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.BotonFase;
 import aplicacionGUI.input.ILectorString;
 import aplicacionGUI.input.InputString;
-import monopoly.jugadores.TipoAvatar;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CambiarNombreJugador implements ILectorString {
 
