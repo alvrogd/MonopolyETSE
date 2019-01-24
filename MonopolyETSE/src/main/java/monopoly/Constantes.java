@@ -51,8 +51,7 @@ public final class Constantes {
             PRECIO_INICIAL_GRUPO_6 + PRECIO_INICIAL_GRUPO_7);
 
     // Dinero inicial para cada jugador
-    //public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / (double) 3);
-    public final static int DINERO_INICIAL = 1;
+    public final static int DINERO_INICIAL = (int) (SUMA_PRECIO_SOLARES / (double) 3);
 
     // Dinero de la casilla de salida
     public final static int DINERO_SALIDA = (int) (SUMA_PRECIO_SOLARES / (double) NUMERO_SOLARES);

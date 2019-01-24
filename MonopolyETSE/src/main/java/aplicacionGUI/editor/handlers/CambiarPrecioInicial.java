@@ -1,5 +1,6 @@
 package aplicacionGUI.editor.handlers;
 
+import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.editor.Celda;
 import aplicacionGUI.input.ILectorEntero;
 import aplicacionGUI.input.InputEntero;
@@ -34,7 +35,8 @@ public class CambiarPrecioInicial extends CambiarAtributo implements ILectorEnte
     public void handle(ActionEvent event) {
 
         // Se crea un lector de enteros
-        new InputEntero(true, 0, this);
+        new InputEntero(true, 0, this, ConstantesGUI.INPUT_ENTERO_DINERO_IMAGEN,
+                ConstantesGUI.INPUT_ENTERO_DINERO_IMAGEN_OSCURA);
     }
 
     /**
