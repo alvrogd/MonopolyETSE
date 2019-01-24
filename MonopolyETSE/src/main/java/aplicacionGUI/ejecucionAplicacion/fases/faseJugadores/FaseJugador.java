@@ -1,5 +1,6 @@
 package aplicacionGUI.ejecucionAplicacion.fases.faseJugadores;
 
+import aplicacionGUI.ConstantesGUI;
 import aplicacionGUI.ejecucionAplicacion.AplicacionGUI;
 import aplicacionGUI.ejecucionAplicacion.Fase;
 import aplicacionGUI.ejecucionAplicacion.fases.faseJugadores.handlers.ClickIzquierdo;
@@ -134,6 +135,8 @@ public class FaseJugador extends Fase {
 
             if(boton.isActivo()){
                 getBotonesActuales().add(boton);
+            } else{
+                getGc().clearRect(0 ,0, ConstantesGUI.BOTONFASE_ANCHO, ConstantesGUI.BOTONFASE_ALTO);
             }
 
         }
