@@ -413,21 +413,20 @@ public class Juego {
 
                 //En el caso de que haya un siguiente en el iterador el turno lo tendrá este jugador, obteniendo el jugador
                 //desde el HashMap
-                if (this.iterador.hasNext()) {
-                    if(getTurno().isEstaBancarrota()){
-                        System.out.println("bancarrota");
+                do {
+                    if (this.iterador.hasNext()) {
+                        this.turno = getJugadores().get(this.iterador.next());
+                        this.turno.reducirInmunidad();
                     }
-                    this.turno = getJugadores().get(this.iterador.next());
-                    this.turno.reducirInmunidad();
-                }
 
-                //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
-                //jugador.
-                else {
-                    this.iterador = getNombresJugadores().iterator();
-                    this.turno = getJugadores().get(this.iterador.next());
-                    this.turno.reducirInmunidad();
-                }
+                    //En caso contrario se vuelve a crear el Iterator de los nombres de jugadores y se asigna el turno al primer
+                    //jugador.
+                    else {
+                        this.iterador = getNombresJugadores().iterator();
+                        this.turno = getJugadores().get(this.iterador.next());
+                        this.turno.reducirInmunidad();
+                    }
+                }while(getTurno().isEstaBancarrota());
 
                 //En caso de que los turnos penalizados del jugador no sea 0 se decrementa una unidad.
                 if (getTurno().getTurnosPenalizado() != 0)
@@ -463,16 +462,27 @@ public class Juego {
             return;
         }
 
-        Avatar avatarJugador = jugador.getAvatar();
+        //Avatar avatarJugador = jugador.getAvatar();
 
-        getJugadores().remove(jugador.getNombre());
+        /*getJugadores().remove(jugador.getNombre());
         getNombresJugadores().remove(jugador.getNombre());
 
         getTablero().getAvataresContenidos().remove(avatarJugador.getIdentificador());
-        avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());
+        avatarJugador.getPosicion().getAvataresContenidos().remove((Character) avatarJugador.getIdentificador());*/
 
-        if (getNombresJugadores().size() == 1) {
-            Output.mensaje("¡" + getNombresJugadores().get(0) + " ha ganado el juego!");
+        int bancarrota = 0;
+        Jugador ganador = null;
+
+        for(String nombre : getNombresJugadores()){
+            if(getJugadores().get(nombre).isEstaBancarrota()){
+                bancarrota++;
+            } else {
+                ganador = getJugadores().get(nombre);
+            }
+        }
+
+        if (getNombresJugadores().size() - 1 == bancarrota) {
+            Output.mensaje("¡" + ganador.getNombre() + " ha ganado el juego!");
             this.finalizado = true;
         }
 
