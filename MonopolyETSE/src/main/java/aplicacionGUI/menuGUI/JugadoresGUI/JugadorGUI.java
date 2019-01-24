@@ -31,6 +31,8 @@ public class JugadorGUI {
     private final Image barra;
     private final Image barraTratoOscuro;
     private final Image barraDescribirOscuro;
+    private final Image turno;
+    private final Image penalizado;
 
     private Image barraActual;
     private final Image avatar;
@@ -113,6 +115,9 @@ public class JugadorGUI {
                 ConstantesGUI.BARRA_JUGADOR_ALTO, ConstantesGUI.BARRA_JUGADOR_ALTO);
         this.botonAvatar.setFill(Color.TRANSPARENT);
 
+        this.turno = new Image(JugadoresImagen.class.getResource("barraTurno.png").toString());
+        this.penalizado = new Image(JugadoresImagen.class.getResource("barraPenalizar.png").toString());
+
         this.barra = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE).toString());
         this.barraActual = this.barra;
 
@@ -121,6 +126,10 @@ public class JugadorGUI {
 
         this.avatar = tableroGUI.getRepresentacionesAvatares().get(jugador.getAvatar().getIdentificador());
 
+    }
+
+    public Image getTurno() {
+        return turno;
     }
 
     public Group getNodo() {
@@ -187,12 +196,20 @@ public class JugadorGUI {
         return boton;
     }
 
+    public Image getPenalizado() {
+        return penalizado;
+    }
     public static Media getSonido() {
         return sonido;
     }
 
     public void renderBarra(){
         getGc().drawImage(getBarraActual(), 0, 0);
+        if(getJugador().equals(getMenuGUI().getJuego().getTurno())){
+            getGc().drawImage(getTurno(), 0, 0);
+        }  else if(getJugador().getTurnosPenalizado() > 0){
+            getGc().drawImage(getPenalizado(), 0 ,0);
+        }
     }
 
     public void renderAvatar(){
