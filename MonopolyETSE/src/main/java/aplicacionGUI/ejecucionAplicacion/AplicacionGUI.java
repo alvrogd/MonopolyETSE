@@ -50,7 +50,7 @@ public class AplicacionGUI {
     private final ArrayList<Input> inputsActivos;
 
     // Jugadores almacenados
-    private final HashMap<String, TipoAvatar> jugadoresCreados;
+    private HashMap<String, TipoAvatar> jugadoresCreados;
 
     // Fase en la que se encuentra la aplicación
     private TipoFase tipoFase;
@@ -140,7 +140,6 @@ public class AplicacionGUI {
     }*/
 
     public HashMap<String, TipoAvatar> getJugadoresCreados() {
-        System.out.println("holi " + this.jugadoresCreados);
         return jugadoresCreados;
     }
 

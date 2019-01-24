@@ -278,7 +278,16 @@ public class BotonFase{
     }
 
     public void creacionAvatares(TipoAvatar tipoAvatar){
-        getFaseJugador().getAplicacionGUI().getJugadoresCreados().put(getNombreJugador(), tipoAvatar);
+        String nombre = null;
+        for(BotonFase boton : getFaseJugador().getBotones()){
+            if(boton.getFuncion().equals(TipoFuncionFase.anadirJugador)){
+                nombre = boton.getNombreJugador();
+                break;
+            }
+        }
+
+        //Una vez buscado el nombre en el buffer del botón añadirJugador se añade al hashMap
+        getFaseJugador().getAplicacionGUI().getJugadoresCreados().put(nombre, tipoAvatar);
         setFinAccion(true);
     }
 
@@ -349,14 +358,11 @@ public class BotonFase{
 
         if(isFinAccion()){
 
-            System.out.println("Soy: "+ getFuncion());
-
             // Si la función del botón es de añadir jugadores, entonces se activan los botones de los avatares
             if(getFuncion().equals(TipoFuncionFase.anadirJugador)){
                 for(BotonFase boton : getFaseJugador().getBotonesPagina().get(TipoFuncionFase.anadirJugador)){
                     boton.setActivo(true);
                     boton.setFinAccion(false);
-                    System.out.println("Botón: " + boton.getFuncion() + " activo.");
                 }
             }
 
@@ -367,12 +373,11 @@ public class BotonFase{
             // En el caso de que se haya creado un avatar se mira si se ha superado el mínimo de jugadores
             if(getFuncion().equals(TipoFuncionFase.coche) || getFuncion().equals(TipoFuncionFase.sombrero) ||
                     getFuncion().equals(TipoFuncionFase.esfinge) || getFuncion().equals(TipoFuncionFase.pelota)){
-                BotonFase botonIniciar, botonAnadir;
+
                 boolean iniciarJuego = false;
                 boolean anadirJugador = true;
 
                 // En caso de que ya haya dos jugadores en el juego, el botón de iniciar juego empezará a
-                System.out.println(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size());
                 if(getFaseJugador().getAplicacionGUI().getJugadoresCreados().size() >= 2){
                     iniciarJuego = true;
                 }
