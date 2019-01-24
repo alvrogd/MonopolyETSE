@@ -33,6 +33,7 @@ public class JugadorGUI {
     private final Image barraDescribirOscuro;
     private final Image turno;
     private final Image penalizado;
+    private final Image bancarrota;
 
     private Image barraActual;
     private final Image avatar;
@@ -121,11 +122,17 @@ public class JugadorGUI {
         this.barra = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE).toString());
         this.barraActual = this.barra;
 
+        this.bancarrota = new Image(JugadoresImagen.class.getResource("bancarrota.png").toString());
+
         this.barraTratoOscuro = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_TRATO_OSCURO).toString());
         this.barraDescribirOscuro = new Image(JugadoresImagen.class.getResource(ConstantesGUI.BARRA_NOMBRE_DESCRIBIR_OSCURO).toString());
 
         this.avatar = tableroGUI.getRepresentacionesAvatares().get(jugador.getAvatar().getIdentificador());
 
+    }
+
+    public Image getBancarrota() {
+        return bancarrota;
     }
 
     public Image getTurno() {
@@ -281,30 +288,32 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(pulsandoBotonTrato(posicionX, posicionY)){
-            if(getMenuGUI().getBotonera().isAyuda()){
-                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.proponerTrato));
-                getMenuGUI().getBotonera().setAyuda(false);
-            } else {
-                handleTratos();
-            }
-            System.out.println("Se ha pulsado el botón TRATO");
-        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
-            if(getMenuGUI().getBotonera().isAyuda()){
-                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirJugador));
-                getMenuGUI().getBotonera().setAyuda(false);
-            } else {
+        if(!getJugador().isEstaBancarrota()) {
+            if (pulsandoBotonTrato(posicionX, posicionY)) {
+                if (getMenuGUI().getBotonera().isAyuda()) {
+                    Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.proponerTrato));
+                    getMenuGUI().getBotonera().setAyuda(false);
+                } else {
+                    handleTratos();
+                }
+                System.out.println("Se ha pulsado el botón TRATO");
+            } else if (pulsandoBotonDescribir(posicionX, posicionY)) {
+                if (getMenuGUI().getBotonera().isAyuda()) {
+                    Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirJugador));
+                    getMenuGUI().getBotonera().setAyuda(false);
+                } else {
 
-            }
-            System.out.println("Se ha pulsado el botón DESCRIBIR");
-        } else if(pulsandoAvatar(posicionX, posicionY)){
-            if(getMenuGUI().getBotonera().isAyuda()){
-                Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirAvatar));
-                getMenuGUI().getBotonera().setAyuda(false);
-            } else {
+                }
+                System.out.println("Se ha pulsado el botón DESCRIBIR");
+            } else if (pulsandoAvatar(posicionX, posicionY)) {
+                if (getMenuGUI().getBotonera().isAyuda()) {
+                    Aplicacion.consola.imprimir(TipoFuncion.toString(TipoFuncion.describirAvatar));
+                    getMenuGUI().getBotonera().setAyuda(false);
+                } else {
 
+                }
+                System.out.println("Se ha pulsado el AVATAR");
             }
-            System.out.println("Se ha pulsado el AVATAR");
         }
     }
 
@@ -313,19 +322,19 @@ public class JugadorGUI {
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
 
-        if(pulsandoBotonTrato(posicionX, posicionY)){
+        if(!getJugador().isEstaBancarrota()) {
+            if (pulsandoBotonTrato(posicionX, posicionY)) {
 
-            MediaPlayer reproductor = new MediaPlayer(getSonido());
-            reproductor.play();
-            setBarraActual(getBarraTratoOscuro());
+                MediaPlayer reproductor = new MediaPlayer(getSonido());
+                reproductor.play();
+                setBarraActual(getBarraTratoOscuro());
 
-        }
+            } else if (pulsandoBotonDescribir(posicionX, posicionY)) {
 
-        else if(pulsandoBotonDescribir(posicionX, posicionY)){
-
-            MediaPlayer reproductor = new MediaPlayer(getSonido());
-            reproductor.play();
-            setBarraActual(getBarraDescribirOscuro());
+                MediaPlayer reproductor = new MediaPlayer(getSonido());
+                reproductor.play();
+                setBarraActual(getBarraDescribirOscuro());
+            }
         }
     }
 
@@ -333,12 +342,17 @@ public class JugadorGUI {
 
         double posicionX = x - getDesplazamientoX();
         double posicionY = y - getDesplazamientoY();
-
-        if(pulsandoBotonTrato(posicionX, posicionY)){
-            setBarraActual(getBarra());
-        } else if(pulsandoBotonDescribir(posicionX, posicionY)){
-            setBarraActual(getBarra());
+        if(!getJugador().isEstaBancarrota()) {
+            if (pulsandoBotonTrato(posicionX, posicionY)) {
+                setBarraActual(getBarra());
+            } else if (pulsandoBotonDescribir(posicionX, posicionY)) {
+                setBarraActual(getBarra());
+            }
         }
+    }
+
+    public void renderBancarrota(){
+        getGc().drawImage(getBancarrota(), 0, 0);
     }
 
     public void render(){
@@ -346,6 +360,9 @@ public class JugadorGUI {
         renderAvatar();
         renderNombre();
         renderDinero();
+        if(getJugador().isEstaBancarrota()) {
+            renderBancarrota();
+        }
     }
 
     @Override
