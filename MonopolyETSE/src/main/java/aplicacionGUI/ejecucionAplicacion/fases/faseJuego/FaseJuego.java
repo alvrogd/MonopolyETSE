@@ -128,6 +128,8 @@ public class FaseJuego extends Fase {
         informacion.add("");
         getInformacion().getMarcoInformacion().actualizarContenido(informacion);
 
+        getMenuGUI().getRegistroGUI().actualizarContenido("");
+
         // Se define la acción ante un click izquierdo
         getEscena().setOnMouseClicked(new ClickIzquierdo(this));
 
