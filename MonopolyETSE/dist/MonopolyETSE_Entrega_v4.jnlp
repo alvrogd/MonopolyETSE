@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="MonopolyETSE_Entrega_v4.jnlp">
+  <information>
+    <title>MonopolyETSE_Entrega_v4</title>
+    <vendor>alvar</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="MonopolyETSE_Entrega_v4.jar" size="56403159" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="MonopolyETSE_Entrega_v4" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="aplicacionGUI.main"  name="MonopolyETSE_Entrega_v4" />
+  <update check="always"/>
+</jnlp>
