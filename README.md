@@ -56,3 +56,8 @@ Concretamente, sería de interés implementar en un futuro las siguientes funcio
 - Carga de guardado de tableros personalizados
 - Carga y guardado de partidas.
 - Mejora de los tratos.
+
+## Autores del proyecto
+
+* [Álvaro Goldar Dieste](//github.com/alvrogd)
+* [Francisco Javier Cardama Santiago](//github.com/CardamaS99)
